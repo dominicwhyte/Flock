@@ -59,8 +59,8 @@ open class SimpleTabBarController: UITabBarController {
         let simpleTBC : SimpleTabBarController = self
         
         //# Set the View Transition
-        simpleTBC.viewTransition = PopViewTransition()
-        //simpleTBC?.viewTransition = CrossFadeViewTransition()
+//        simpleTBC.viewTransition = PopViewTransition()
+        simpleTBC.viewTransition = CrossFadeViewTransition()
         
         //# Set Tab Bar Style ( tab bar , tab item animation style etc )
         let style:SimpleTabBarStyle = PopTabBarStyle(tabBar: simpleTBC.tabBar)

@@ -8,7 +8,10 @@
 
 import UIKit
 
-class PeopleTableViewController: UITableViewController {
+class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate {
+    
+    internal var parentView: UIView?
+
     
     struct Constants {
         static let FRIEND_REQUEST_INDEX = 0
@@ -19,12 +22,31 @@ class PeopleTableViewController: UITableViewController {
         static let REUSE_IDENTIFIERS = ["FRIEND_REQUEST", "LIVE", "PLANNED", "ALL"]
     }
     
+    //UpdateTableViewDelegate function
+    func updateDataAndTableView(_ completion: @escaping (Bool) -> Void) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.updateAllData { (success) in
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                if (success) {
+                    Utilities.printDebugMessage("Successfully reloaded data and tableview")
+                }
+                else {
+                    Utilities.printDebugMessage("Error updating and reloading data in table view")
+                }
+                completion(success)
+            }
+        }
+    }
     
     var friends = [[User]]()
     var filteredFriends = [[User]]()
     let searchController = UISearchController(searchResultsController: nil)
     
     override func viewDidLoad() {
+        //set view for protocol
+        self.parentView = self.view
+        
         super.viewDidLoad()
         // Setup the Search Controller
         searchController.searchResultsUpdater = self
@@ -36,7 +58,23 @@ class PeopleTableViewController: UITableViewController {
         tableView.tableHeaderView = searchController.searchBar
         self.friends = parseFriends()
         self.filteredFriends = prepareArrays()
+        
+        //Refresh control
+        refreshControl?.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl?.addTarget(self, action: #selector(PeopleTableViewController.refresh(refreshControl:)), for: UIControlEvents.valueChanged)
     }
+    
+    
+    func refresh(refreshControl: UIRefreshControl) {
+        self.updateDataAndTableView { (success) in
+            if (!success) {
+                Utilities.printDebugMessage("Error reloading table data")
+            }
+            self.refreshControl?.endRefreshing()
+        }
+    }
+    
+    
     
     func prepareArrays() -> [[User]] {
         var filteredFriendsArray : [[User]] = []
@@ -111,37 +149,49 @@ class PeopleTableViewController: UITableViewController {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
         switch indexPath.section {
+            
         case Constants.FRIEND_REQUEST_INDEX:
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.REUSE_IDENTIFIERS[indexPath.section], for: indexPath) as! FriendRequestTableViewCell
-            
+            cell.setIDs(fromID: friend.FBID, toID: appDelegate.user!.FBID)
             cell.friendName.text = friend.Name
             FirebaseClient.getImageFromURL(friend.PictureURL) { (image) in
                 cell.profilePic.image = image
             }
+            //Set the delegate for tableview reloaddata updates
+            cell.delegate = self
             
             return cell
         case Constants.LIVE_FRIENDS_INDEX:
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.REUSE_IDENTIFIERS[indexPath.section], for: indexPath) as! LiveTableViewCell
             cell.friendName.text = friend.Name
             FirebaseClient.getImageFromURL(friend.PictureURL) { (image) in
-                cell.profilePic.image = image
+                DispatchQueue.main.async {
+                    cell.profilePic!.image = image
+                }
             }
             let venue = appDelegate.venues[friend.LiveClubID!]
             cell.venueName.text = venue!.VenueName
             FirebaseClient.getImageFromURL(venue!.ImageURL) { (image) in
-                cell.venuePic.image = image
+                DispatchQueue.main.async {
+                    cell.venuePic.image = image
+                }
+                
             }
             return cell
         case Constants.PLANNED_FRIENDS_INDEX:
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.REUSE_IDENTIFIERS[indexPath.section], for: indexPath) as! PlannedTableViewCell
             cell.friendName.text = friend.Name
             FirebaseClient.getImageFromURL(friend.PictureURL) { (image) in
-                cell.profilePic.image = image
+                DispatchQueue.main.async {
+                    cell.profilePic!.image = image
+                }
             }
             let venue = appDelegate.venues[friend.LiveClubID!]
             cell.venueName.text = venue!.VenueName
             FirebaseClient.getImageFromURL(venue!.ImageURL) { (image) in
-                cell.venuePic.image = image
+                DispatchQueue.main.async {
+                    cell.venuePic.image = image
+                }
             }
             return cell
         case Constants.REMAINING_FRIENDS_INDEX:
@@ -149,7 +199,9 @@ class PeopleTableViewController: UITableViewController {
             cell.friendName.text = friend.Name
             cell.profilePic!.image = UIImage()
             FirebaseClient.getImageFromURL(friend.PictureURL) { (image) in
-                cell.profilePic!.image = image
+                DispatchQueue.main.async {
+                    cell.profilePic!.image = image
+                }
             }
             return cell
         default:
@@ -174,8 +226,13 @@ extension PeopleTableViewController: UISearchBarDelegate {
 extension PeopleTableViewController: UISearchResultsUpdating {
     // MARK: - UISearchResultsUpdating Delegate
     func updateSearchResults(for searchController: UISearchController) {
-        let searchBar = searchController.searchBar
+        _ = searchController.searchBar
         filterContentForSearchText(searchController.searchBar.text!)
     }
+}
+
+protocol UpdateTableViewDelegate: class {
+    func updateDataAndTableView(_ completion: @escaping (Bool) -> Void)
+    var parentView : UIView? { get set }
 }
 

@@ -22,6 +22,22 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         loginButton.readPermissions = ["public_profile", "user_friends"]
         // Do any additional setup after loading the view.
         
+        //Autologin functionality
+        
+        if (FBSDKAccessToken.current() != nil) {
+            let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            appDelegate.masterLogin(completion: { (success) in
+                Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+                if (success) {
+                    Utilities.printDebugMessage("Successfully auto logged in")
+                    self.performSegue(withIdentifier: "LOGIN_IDENTIFIER", sender: nil)
+                }
+                else {
+                    Utilities.printDebugMessage("Error with auto login")
+                }
+            })
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -31,17 +47,21 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!)
     {
+        let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
+        
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         self.loginButton.isHidden = true
         
         if error != nil
         {
             print(error.localizedDescription)
+            Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
         }
             
         else if result.isCancelled
         {
             self.loginButton.isHidden = false
+            Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
         }
             
         else
@@ -51,16 +71,22 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
             LoginClient.login({ (status) in
                 if (status) {
                     appDelegate.masterLogin(completion: { (loginStatus) in
+                        Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
                         if(loginStatus) {
                             Utilities.printDebugMessage("Successful login")
+                            self.performSegue(withIdentifier: "LOGIN_IDENTIFIER", sender: nil)
+                        }
+                        else {
+                            Utilities.printDebugMessage("Unsucessful login")
                         }
                     })
                 }
                 else {
                     Utilities.printDebugMessage("Error logging in, login() returned false")
+                    Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
                 }
             })
-            //self.performSegue(withIdentifier: "loggedIn", sender: nil)
+            
         }
     }
     

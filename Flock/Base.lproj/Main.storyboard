@@ -22,28 +22,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zeU-mO-eqx" customClass="FBSDKLoginButton">
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zeU-mO-eqx" customClass="FBSDKLoginButton">
                                 <rect key="frame" x="164" y="476" width="46" height="30"/>
                                 <state key="normal" title="Button"/>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pak-Fa-3hl">
-                                <rect key="frame" x="164" y="617" width="46" height="30"/>
-                                <state key="normal" title="Button"/>
-                                <connections>
-                                    <segue destination="fVv-UV-qqV" kind="show" identifier="EnterApp" id="7Wc-fx-elY"/>
-                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="pak-Fa-3hl" firstAttribute="top" secondItem="zeU-mO-eqx" secondAttribute="bottom" constant="111" id="8xU-Ba-lzW"/>
-                            <constraint firstItem="pak-Fa-3hl" firstAttribute="centerX" secondItem="Brv-Zu-HOH" secondAttribute="centerX" id="XgO-98-aIl"/>
                             <constraint firstItem="zeU-mO-eqx" firstAttribute="centerX" secondItem="Brv-Zu-HOH" secondAttribute="centerX" id="lYY-dM-SiX"/>
-                            <constraint firstItem="KnB-YB-cuC" firstAttribute="top" secondItem="pak-Fa-3hl" secondAttribute="bottom" constant="20" id="wm4-4d-zku"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="loginButton" destination="zeU-mO-eqx" id="iai-VQ-VCv"/>
+                        <segue destination="fVv-UV-qqV" kind="show" identifier="LOGIN_IDENTIFIER" id="czf-0v-4t8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fVh-sK-dFc" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -224,7 +215,7 @@
         <scene sceneID="05T-6g-ueh">
             <objects>
                 <tableViewController id="BnR-h7-U3d" customClass="PeopleTableViewController" customModule="Flock" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="63" sectionHeaderHeight="28" sectionFooterHeight="28" id="JkC-R3-F8D">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="63" sectionHeaderHeight="28" sectionFooterHeight="28" id="JkC-R3-F8D">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

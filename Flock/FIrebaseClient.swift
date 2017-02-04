@@ -47,11 +47,24 @@ class FirebaseClient: NSObject
         
     }
     
+    //Returns successful completion if friend request is sent or if friend request confirmed (via two way requests)
     class func sendFriendRequest(_ fromID : String, toID : String, completion: @escaping (Bool) -> Void) {
         
         dataRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot) in
-            if (snapshot.hasChild(toID)) {
-                if (snapshot.childSnapshot(forPath: toID).hasChild("FriendRequests"))
+            //Confirm send friend request conditions
+            if (snapshot.hasChild(toID) && snapshot.hasChild(fromID) && fromID != toID) {
+                //Check that they are not already friends
+                if ((snapshot.childSnapshot(forPath: toID).hasChild("Friends") && snapshot.childSnapshot(forPath: toID).childSnapshot(forPath: "Friends").hasChild(fromID)) || (snapshot.childSnapshot(forPath: fromID).hasChild("Friends") && snapshot.childSnapshot(forPath: fromID).childSnapshot(forPath: "Friends").hasChild(toID))) {
+                    completion(false)
+                }
+                //If fromID already has a request from toID, then confirm friends
+                else if (snapshot.childSnapshot(forPath: fromID).hasChild("FriendRequests") && snapshot.childSnapshot(forPath: fromID).childSnapshot(forPath: "FriendRequests").hasChild(toID)) {
+                    confirmFriendRequest(fromID, toID: toID, completion: { (success) in
+                        completion(success)
+                    })
+                }
+                //Cases for actually adding friend request
+                else if (snapshot.childSnapshot(forPath: toID).hasChild("FriendRequests"))
                 {
                     let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]
                     let toUserDict = dictionary[toID] as! [String: AnyObject]
@@ -79,23 +92,39 @@ class FirebaseClient: NSObject
         })
     }
     
+    //Returns successful completion if friend request is rejected
+    class func rejectFriendRequest(_ fromID : String, toID : String, completion: @escaping (Bool) -> Void) {
+        
+        dataRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot) in
+            //Confirm send friend request conditions
+            if (snapshot.hasChild(toID) && snapshot.childSnapshot(forPath: toID).hasChild("FriendRequests")) {
+                //Cases for actually adding friend request
+
+                let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]
+                let toUserDict = dictionary[toID] as! [String: AnyObject]
+                    
+                var friendRequests = toUserDict["FriendRequests"] as! [String : AnyObject]
+                if (friendRequests[fromID] != nil) {
+                    friendRequests[fromID] = nil as AnyObject?
+                }
+                let updates = ["FriendRequests": friendRequests]
+                dataRef.child("Users").child(toID).updateChildValues(updates)
+                completion(true)
+            }
+            else {
+                completion(false)
+            }
+        })
+    }
+
+    
     class func confirmFriendRequest(_ fromID : String, toID : String, completion: @escaping (Bool) -> Void) {
         
         dataRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot) in
-            if(snapshot.hasChild(fromID)) {
-                Utilities.printDebugMessage("1")
-            }
-            if(snapshot.hasChild(toID)) {
-                Utilities.printDebugMessage("2")
-            }
-            if(snapshot.childSnapshot(forPath: toID).hasChild("FriendRequests")) {
-                Utilities.printDebugMessage("3")
-            }
-            if(snapshot.childSnapshot(forPath: toID).childSnapshot(forPath: "FriendRequests").hasChild(fromID)) {
-                Utilities.printDebugMessage("4")
-            }
+            // Confirm friend request conditions
             if (snapshot.hasChild(fromID) && snapshot.hasChild(toID) && snapshot.childSnapshot(forPath: toID).hasChild("FriendRequests") && snapshot.childSnapshot(forPath: toID).childSnapshot(forPath: "FriendRequests").hasChild(fromID)) {
                 let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]
+                
                 // Add the fromID to the toID friend list
                 if (snapshot.childSnapshot(forPath: toID).hasChild("Friends"))
                 {
@@ -132,27 +161,10 @@ class FirebaseClient: NSObject
                     let updates = ["Friends": [toID : toID]]
                     dataRef.child("Users").child(fromID).updateChildValues(updates)
                 }
-                
-                //Remove Friend Request
-                if (snapshot.childSnapshot(forPath: toID).hasChild("FriendRequests"))
-                {
-                    let toUserDict = dictionary[toID] as! [String: AnyObject]
-                    
-                    var friendRequests = toUserDict["FriendRequests"] as! [String : AnyObject]
-                    if (friendRequests[fromID] != nil) {
-                        friendRequests[fromID] = nil
-                    }
-                    else {
-                        Utilities.printDebugMessage("Error: friend request to remove not present")
-                    }
-                    let updates = ["FriendRequests": friendRequests]
-                    dataRef.child("Users").child(toID).updateChildValues(updates)
-                }
-                else {
-                    Utilities.printDebugMessage("Error: could not remove friend request")
-                }
-                
-                completion(true)
+                // Remove the friend request
+                self.rejectFriendRequest(fromID, toID: toID, completion: { (success) in
+                    completion(success)
+                })
                 
             }
             else {

@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "5EB12E9AFDFF2B685C9050F5CC04FC79012209DD",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "5EB12E9AFDFF2B685C9050F5CC04FC79012209DD" : 9223372036854775807,
+    "4C663F3AD4EAE0B30DC6438DA503D8C6994E57DA" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "614DB3CD-339E-4B6F-AC6D-E844D5140FD0",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "5EB12E9AFDFF2B685C9050F5CC04FC79012209DD" : "Flock\/",
+    "4C663F3AD4EAE0B30DC6438DA503D8C6994E57DA" : ""
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Flock",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Flock.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/dominicwhyte\/Flock",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "4C663F3AD4EAE0B30DC6438DA503D8C6994E57DA"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/dominicwhyte\/Flock",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "5EB12E9AFDFF2B685C9050F5CC04FC79012209DD"
+    }
+  ]
+}
