@@ -173,6 +173,42 @@ class FirebaseClient: NSObject
         })
     }
     
+    class func unFriendUser(_ fromID : String, toID : String, completion: @escaping (Bool) -> Void) {
+        
+        dataRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot) in
+            // Confirm unfriend request conditions
+            if (snapshot.hasChild(fromID) && snapshot.hasChild(toID) && snapshot.childSnapshot(forPath: toID).hasChild("Friends") && snapshot.childSnapshot(forPath: toID).childSnapshot(forPath: "Friends").hasChild(fromID) && snapshot.childSnapshot(forPath: fromID).hasChild("Friends") && snapshot.childSnapshot(forPath: fromID).childSnapshot(forPath: "Friends").hasChild(toID)) {
+                
+                //Remove fromId from toId friend list
+                let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]
+                let toUserDict = dictionary[toID] as! [String: AnyObject]
+                
+                var friends = toUserDict["Friends"] as! [String : AnyObject]
+                if (friends[fromID] != nil) {
+                    friends[fromID] = nil as AnyObject?
+                }
+                var updates = ["Friends": friends]
+                dataRef.child("Users").child(toID).updateChildValues(updates)
+                
+                //Remove toId from fromId friend list
+                let fromUserDict = dictionary[fromID] as! [String: AnyObject]
+                
+                friends = fromUserDict["Friends"] as! [String : AnyObject]
+                if (friends[toID] != nil) {
+                    friends[toID] = nil as AnyObject?
+                }
+                updates = ["Friends": friends]
+                dataRef.child("Users").child(fromID).updateChildValues(updates)
+                
+                completion(true)
+                
+            }
+            else {
+                completion(false)
+            }
+        })
+    }
+    
     class func removeVenueWithID(_ id : String) {
         
     }

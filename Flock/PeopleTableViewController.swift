@@ -27,13 +27,15 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate 
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.updateAllData { (success) in
             DispatchQueue.main.async {
-                self.tableView.reloadData()
                 if (success) {
                     Utilities.printDebugMessage("Successfully reloaded data and tableview")
+                    self.friends = self.parseFriends()
+                    self.filteredFriends = self.prepareArrays()
                 }
                 else {
                     Utilities.printDebugMessage("Error updating and reloading data in table view")
                 }
+                self.tableView.reloadData()
                 completion(success)
             }
         }
@@ -42,6 +44,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate 
     var friends = [[User]]()
     var filteredFriends = [[User]]()
     let searchController = UISearchController(searchResultsController: nil)
+    var imageCache = [String : UIImage]()
     
     override func viewDidLoad() {
         //set view for protocol
@@ -53,9 +56,8 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate 
         searchController.searchBar.delegate = self
         definesPresentationContext = true
         searchController.dimsBackgroundDuringPresentation = false
-        
-        // Setup the Scope Bar
         tableView.tableHeaderView = searchController.searchBar
+        
         self.friends = parseFriends()
         self.filteredFriends = prepareArrays()
         
@@ -139,6 +141,22 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate 
         return friends.count
     }
     
+    //Retrieve image with caching
+    func retrieveImage(imageURL : String, imageView : UIImageView) {
+        if let image = imageCache[imageURL] {
+            imageView.image = image
+        }
+        else {
+            FirebaseClient.getImageFromURL(imageURL) { (image) in
+                DispatchQueue.main.async {
+                    self.imageCache[imageURL] = image
+                    imageView.image = image
+                }
+            }
+        }
+        
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let friend: User
         if searchController.isActive && searchController.searchBar.text != "" {
@@ -154,55 +172,36 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate 
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.REUSE_IDENTIFIERS[indexPath.section], for: indexPath) as! FriendRequestTableViewCell
             cell.setIDs(fromID: friend.FBID, toID: appDelegate.user!.FBID)
             cell.friendName.text = friend.Name
-            FirebaseClient.getImageFromURL(friend.PictureURL) { (image) in
-                cell.profilePic.image = image
-            }
+            self.retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic!)
+
             //Set the delegate for tableview reloaddata updates
             cell.delegate = self
             
             return cell
+            
         case Constants.LIVE_FRIENDS_INDEX:
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.REUSE_IDENTIFIERS[indexPath.section], for: indexPath) as! LiveTableViewCell
             cell.friendName.text = friend.Name
-            FirebaseClient.getImageFromURL(friend.PictureURL) { (image) in
-                DispatchQueue.main.async {
-                    cell.profilePic!.image = image
-                }
-            }
+            self.retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic!)
             let venue = appDelegate.venues[friend.LiveClubID!]
             cell.venueName.text = venue!.VenueName
-            FirebaseClient.getImageFromURL(venue!.ImageURL) { (image) in
-                DispatchQueue.main.async {
-                    cell.venuePic.image = image
-                }
-                
-            }
+            self.retrieveImage(imageURL: venue!.ImageURL, imageView: cell.venuePic)
             return cell
+            
         case Constants.PLANNED_FRIENDS_INDEX:
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.REUSE_IDENTIFIERS[indexPath.section], for: indexPath) as! PlannedTableViewCell
             cell.friendName.text = friend.Name
-            FirebaseClient.getImageFromURL(friend.PictureURL) { (image) in
-                DispatchQueue.main.async {
-                    cell.profilePic!.image = image
-                }
-            }
+            self.retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic!)
             let venue = appDelegate.venues[friend.LiveClubID!]
             cell.venueName.text = venue!.VenueName
-            FirebaseClient.getImageFromURL(venue!.ImageURL) { (image) in
-                DispatchQueue.main.async {
-                    cell.venuePic.image = image
-                }
-            }
+            self.retrieveImage(imageURL: venue!.ImageURL, imageView: cell.venuePic)
             return cell
+            
         case Constants.REMAINING_FRIENDS_INDEX:
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.REUSE_IDENTIFIERS[indexPath.section], for: indexPath) as! AllTableViewCell
             cell.friendName.text = friend.Name
             cell.profilePic!.image = UIImage()
-            FirebaseClient.getImageFromURL(friend.PictureURL) { (image) in
-                DispatchQueue.main.async {
-                    cell.profilePic!.image = image
-                }
-            }
+            self.retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic!)
             return cell
         default:
             Utilities.printDebugMessage("Error in table view switch")
@@ -212,6 +211,12 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate 
         Utilities.printDebugMessage("Error loading people table view controller")
         let cell = UITableViewCell()
         return cell
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let searchPeopleTableViewController = segue.destination as? SearchPeopleTableViewController {
+            searchPeopleTableViewController.delegate = self
+        }
     }
     
 }

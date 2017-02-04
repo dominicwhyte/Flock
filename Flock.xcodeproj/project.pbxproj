@@ -28,6 +28,8 @@
 		5F5D37F81E4536F1008E13E4 /* PlannedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D37F71E4536F1008E13E4 /* PlannedTableViewCell.swift */; };
 		5F5D37FA1E4536F6008E13E4 /* AllTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D37F91E4536F6008E13E4 /* AllTableViewCell.swift */; };
 		5F5D37FD1E465172008E13E4 /* TODO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D37FC1E465172008E13E4 /* TODO.swift */; };
+		5F5D37FF1E466A7B008E13E4 /* SearchPeopleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D37FE1E466A7B008E13E4 /* SearchPeopleTableViewController.swift */; };
+		5F5D38041E466C17008E13E4 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D38031E466C17008E13E4 /* SearchTableViewCell.swift */; };
 		BA5666F7848A6A4A2AB82D7A /* Pods_FlockTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2763749107C5FA0E17CDA9A /* Pods_FlockTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -67,6 +69,8 @@
 		5F5D37F71E4536F1008E13E4 /* PlannedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlannedTableViewCell.swift; sourceTree = "<group>"; };
 		5F5D37F91E4536F6008E13E4 /* AllTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllTableViewCell.swift; sourceTree = "<group>"; };
 		5F5D37FC1E465172008E13E4 /* TODO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TODO.swift; sourceTree = "<group>"; };
+		5F5D37FE1E466A7B008E13E4 /* SearchPeopleTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchPeopleTableViewController.swift; sourceTree = "<group>"; };
+		5F5D38031E466C17008E13E4 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		745D6E35D61A42A5579F5B57 /* Pods-FlockTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlockTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FlockTests/Pods-FlockTests.release.xcconfig"; sourceTree = "<group>"; };
 		9311B80AF2DA5ADDCEA6C5AF /* Pods_Flock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE43BF5ECD8A2F8930ECE437 /* Pods-Flock.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flock.release.xcconfig"; path = "Pods/Target Support Files/Pods-Flock/Pods-Flock.release.xcconfig"; sourceTree = "<group>"; };
@@ -139,13 +143,12 @@
 			children = (
 				5F5D37FC1E465172008E13E4 /* TODO.swift */,
 				5F5D37971E43FFCE008E13E4 /* AppDelegate.swift */,
-				5F5D379B1E43FFCE008E13E4 /* Main.storyboard */,
-				5F5D37F11E45168D008E13E4 /* PeopleTableViewController.swift */,
-				5F5D37FB1E4536FD008E13E4 /* PeopleCells */,
-				5F5D37D01E44BE44008E13E4 /* TestingViewController.swift */,
-				5F5D37C21E440CE6008E13E4 /* LoginViewController.swift */,
-				5F5D37C11E440823008E13E4 /* Firebase */,
 				5F5D37BF1E4407D9008E13E4 /* Utilities.swift */,
+				5F5D379B1E43FFCE008E13E4 /* Main.storyboard */,
+				5F5D38001E466AA2008E13E4 /* People */,
+				5F5D38021E466AB6008E13E4 /* Testing */,
+				5F5D38011E466AB1008E13E4 /* Login */,
+				5F5D37C11E440823008E13E4 /* Firebase */,
 				5F5D37BC1E43FFF8008E13E4 /* Objects */,
 				5F5D37A11E43FFCE008E13E4 /* Assets.xcassets */,
 				5F5D37A31E43FFCE008E13E4 /* LaunchScreen.storyboard */,
@@ -192,6 +195,33 @@
 				5F5D37F91E4536F6008E13E4 /* AllTableViewCell.swift */,
 			);
 			name = PeopleCells;
+			sourceTree = "<group>";
+		};
+		5F5D38001E466AA2008E13E4 /* People */ = {
+			isa = PBXGroup;
+			children = (
+				5F5D37FB1E4536FD008E13E4 /* PeopleCells */,
+				5F5D37FE1E466A7B008E13E4 /* SearchPeopleTableViewController.swift */,
+				5F5D37F11E45168D008E13E4 /* PeopleTableViewController.swift */,
+				5F5D38031E466C17008E13E4 /* SearchTableViewCell.swift */,
+			);
+			name = People;
+			sourceTree = "<group>";
+		};
+		5F5D38011E466AB1008E13E4 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				5F5D37C21E440CE6008E13E4 /* LoginViewController.swift */,
+			);
+			name = Login;
+			sourceTree = "<group>";
+		};
+		5F5D38021E466AB6008E13E4 /* Testing */ = {
+			isa = PBXGroup;
+			children = (
+				5F5D37D01E44BE44008E13E4 /* TestingViewController.swift */,
+			);
+			name = Testing;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -403,6 +433,7 @@
 			files = (
 				5F5D37C31E440CE6008E13E4 /* LoginViewController.swift in Sources */,
 				5F5D37A01E43FFCE008E13E4 /* Flock.xcdatamodeld in Sources */,
+				5F5D37FF1E466A7B008E13E4 /* SearchPeopleTableViewController.swift in Sources */,
 				5F5D37981E43FFCE008E13E4 /* AppDelegate.swift in Sources */,
 				5F5D37F81E4536F1008E13E4 /* PlannedTableViewCell.swift in Sources */,
 				5F5D37D11E44BE44008E13E4 /* TestingViewController.swift in Sources */,
@@ -411,6 +442,7 @@
 				5F5D37F41E4536D7008E13E4 /* FriendRequestTableViewCell.swift in Sources */,
 				5F5D37C51E440F4F008E13E4 /* Venue.swift in Sources */,
 				5F5D37BE1E4405E9008E13E4 /* LoginClient.swift in Sources */,
+				5F5D38041E466C17008E13E4 /* SearchTableViewCell.swift in Sources */,
 				5F5D37C01E4407D9008E13E4 /* Utilities.swift in Sources */,
 				5F5D37F61E4536E8008E13E4 /* LiveTableViewCell.swift in Sources */,
 				5F5D37FA1E4536F6008E13E4 /* AllTableViewCell.swift in Sources */,
