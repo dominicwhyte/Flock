@@ -43,14 +43,15 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
         }))!
         tableView.reloadData()
     }
+    
     @IBAction func popSearchPeopleTableViewController(_ sender: Any) {
-        self.dismiss(animated: true) { 
+        self.dismiss(animated: true) {
             self.delegate?.updateDataAndTableView({ (success) in
                 Utilities.printDebugMessage("\(success)")
             })
         }
+
     }
-    
     //Retrieve image with caching
     func retrieveImage(imageURL : String, imageView : UIImageView) {
         if let image = imageCache[imageURL] {

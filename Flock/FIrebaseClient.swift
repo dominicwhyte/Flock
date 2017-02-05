@@ -59,7 +59,7 @@ class FirebaseClient: NSObject
                 }
                 //If fromID already has a request from toID, then confirm friends
                 else if (snapshot.childSnapshot(forPath: fromID).hasChild("FriendRequests") && snapshot.childSnapshot(forPath: fromID).childSnapshot(forPath: "FriendRequests").hasChild(toID)) {
-                    confirmFriendRequest(fromID, toID: toID, completion: { (success) in
+                    confirmFriendRequest(toID, toID: fromID, completion: { (success) in
                         completion(success)
                     })
                 }

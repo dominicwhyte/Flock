@@ -214,8 +214,10 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate 
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let searchPeopleTableViewController = segue.destination as? SearchPeopleTableViewController {
-            searchPeopleTableViewController.delegate = self
+        if let navController = segue.destination as? UINavigationController {
+            if let searchPeopleTableViewController = navController.topViewController as? SearchPeopleTableViewController {
+                searchPeopleTableViewController.delegate = self
+            }
         }
     }
     

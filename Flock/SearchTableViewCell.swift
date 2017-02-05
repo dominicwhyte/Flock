@@ -121,7 +121,7 @@ class SearchTableViewCell: UITableViewCell {
             self.acceptButton.isHidden = true
             self.statusLabel.text = ""
         case .normal:
-            self.rejectButton.isHidden = false
+            self.rejectButton.isHidden = true
             self.acceptButton.isHidden = false
             self.acceptButton.setTitle("Flock", for: .normal)
             self.statusLabel.text = ""

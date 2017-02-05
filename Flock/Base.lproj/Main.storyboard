@@ -418,7 +418,7 @@
                     <navigationItem key="navigationItem" id="zRN-hp-r5Y">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="Kbr-0A-LI2">
                             <connections>
-                                <segue destination="AN1-Og-FJJ" kind="popoverPresentation" popoverAnchorBarButtonItem="Kbr-0A-LI2" id="3Kg-Mt-uiv">
+                                <segue destination="Ne7-AY-AB1" kind="popoverPresentation" popoverAnchorBarButtonItem="Kbr-0A-LI2" id="3Kg-Mt-uiv">
                                     <popoverArrowDirection key="popoverArrowDirection" up="YES"/>
                                 </segue>
                             </connections>
@@ -440,27 +440,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" id="thz-hj-Wcm">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="143"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bkz-nd-bPh">
-                                    <rect key="frame" x="8" y="105" width="46" height="30"/>
-                                    <state key="normal" title="Button"/>
-                                    <connections>
-                                        <action selector="popSearchPeopleTableViewController:" destination="AN1-Og-FJJ" eventType="touchUpInside" id="FcS-fz-kJ1"/>
-                                    </connections>
-                                </button>
-                            </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstItem="bkz-nd-bPh" firstAttribute="leading" secondItem="thz-hj-Wcm" secondAttribute="leadingMargin" id="BCY-8m-df7"/>
-                                <constraint firstItem="bkz-nd-bPh" firstAttribute="bottom" secondItem="thz-hj-Wcm" secondAttribute="bottomMargin" id="X0c-uA-Awj"/>
-                            </constraints>
-                        </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SEARCH" id="Kca-Ln-3uO" customClass="SearchTableViewCell" customModule="Flock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="171" width="375" height="53"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="53"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Kca-Ln-3uO" id="ZII-dq-g3R">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="52"/>
@@ -527,8 +509,33 @@
                             <outlet property="delegate" destination="AN1-Og-FJJ" id="2ub-b0-MEF"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="fTW-B7-psl">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="tmp-Ws-W0h">
+                            <connections>
+                                <action selector="popSearchPeopleTableViewController:" destination="AN1-Og-FJJ" id="CIP-Un-OIL"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ubs-rk-Vq3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4896.8000000000002" y="-311.69415292353824"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Val-tK-wE9">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ne7-AY-AB1" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="oZK-Uq-8Q0">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="AN1-Og-FJJ" kind="relationship" relationship="rootViewController" id="CYY-FL-js9"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Y7M-Z2-2vY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3957.5999999999999" y="-311.69415292353824"/>
         </scene>
