@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'A9F837A600A5BE56033A86D8D4D712D5'
-               BlueprintName = 'SimpleTab-SimpleTab'
+               BlueprintIdentifier = '692F53CDA8F484C1F1C32BFE042C5955'
+               BlueprintName = 'PopupDialog'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'SimpleTab.bundle'>
+               BuildableName = 'PopupDialog.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

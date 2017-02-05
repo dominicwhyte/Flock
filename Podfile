@@ -16,6 +16,7 @@ target 'Flock' do
    pod 'SimpleTab'
    pod 'SCLAlertView'
    pod 'AASquaresLoading'
+   pod 'PopupDialog', '~> 0.5'
 
   target 'FlockTests' do
     inherit! :search_paths

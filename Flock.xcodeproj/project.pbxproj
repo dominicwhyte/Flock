@@ -30,6 +30,8 @@
 		5F5D37FD1E465172008E13E4 /* TODO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D37FC1E465172008E13E4 /* TODO.swift */; };
 		5F5D37FF1E466A7B008E13E4 /* SearchPeopleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D37FE1E466A7B008E13E4 /* SearchPeopleTableViewController.swift */; };
 		5F5D38041E466C17008E13E4 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D38031E466C17008E13E4 /* SearchTableViewCell.swift */; };
+		5F5D38061E46C867008E13E4 /* PlacesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D38051E46C867008E13E4 /* PlacesCollectionViewCell.swift */; };
+		5F5D38081E46C879008E13E4 /* PlacesCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D38071E46C879008E13E4 /* PlacesCollectionViewController.swift */; };
 		BA5666F7848A6A4A2AB82D7A /* Pods_FlockTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2763749107C5FA0E17CDA9A /* Pods_FlockTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -71,6 +73,8 @@
 		5F5D37FC1E465172008E13E4 /* TODO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TODO.swift; sourceTree = "<group>"; };
 		5F5D37FE1E466A7B008E13E4 /* SearchPeopleTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchPeopleTableViewController.swift; sourceTree = "<group>"; };
 		5F5D38031E466C17008E13E4 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
+		5F5D38051E46C867008E13E4 /* PlacesCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacesCollectionViewCell.swift; sourceTree = "<group>"; };
+		5F5D38071E46C879008E13E4 /* PlacesCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacesCollectionViewController.swift; sourceTree = "<group>"; };
 		745D6E35D61A42A5579F5B57 /* Pods-FlockTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlockTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FlockTests/Pods-FlockTests.release.xcconfig"; sourceTree = "<group>"; };
 		9311B80AF2DA5ADDCEA6C5AF /* Pods_Flock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE43BF5ECD8A2F8930ECE437 /* Pods-Flock.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flock.release.xcconfig"; path = "Pods/Target Support Files/Pods-Flock/Pods-Flock.release.xcconfig"; sourceTree = "<group>"; };
@@ -145,6 +149,7 @@
 				5F5D37971E43FFCE008E13E4 /* AppDelegate.swift */,
 				5F5D37BF1E4407D9008E13E4 /* Utilities.swift */,
 				5F5D379B1E43FFCE008E13E4 /* Main.storyboard */,
+				5F5D38091E46C87F008E13E4 /* Places */,
 				5F5D38001E466AA2008E13E4 /* People */,
 				5F5D38021E466AB6008E13E4 /* Testing */,
 				5F5D38011E466AB1008E13E4 /* Login */,
@@ -222,6 +227,15 @@
 				5F5D37D01E44BE44008E13E4 /* TestingViewController.swift */,
 			);
 			name = Testing;
+			sourceTree = "<group>";
+		};
+		5F5D38091E46C87F008E13E4 /* Places */ = {
+			isa = PBXGroup;
+			children = (
+				5F5D38051E46C867008E13E4 /* PlacesCollectionViewCell.swift */,
+				5F5D38071E46C879008E13E4 /* PlacesCollectionViewController.swift */,
+			);
+			name = Places;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -433,9 +447,11 @@
 			files = (
 				5F5D37C31E440CE6008E13E4 /* LoginViewController.swift in Sources */,
 				5F5D37A01E43FFCE008E13E4 /* Flock.xcdatamodeld in Sources */,
+				5F5D38061E46C867008E13E4 /* PlacesCollectionViewCell.swift in Sources */,
 				5F5D37FF1E466A7B008E13E4 /* SearchPeopleTableViewController.swift in Sources */,
 				5F5D37981E43FFCE008E13E4 /* AppDelegate.swift in Sources */,
 				5F5D37F81E4536F1008E13E4 /* PlannedTableViewCell.swift in Sources */,
+				5F5D38081E46C879008E13E4 /* PlacesCollectionViewController.swift in Sources */,
 				5F5D37D11E44BE44008E13E4 /* TestingViewController.swift in Sources */,
 				5F5D37FD1E465172008E13E4 /* TODO.swift in Sources */,
 				5F5D37F21E45168D008E13E4 /* PeopleTableViewController.swift in Sources */,

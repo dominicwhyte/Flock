@@ -88,7 +88,7 @@ open class SimpleTabBarStyle :NSObject {
         var i = 0
         if let items = tabBar.items {
             for item in items {
-                var barItem:SimpleTabBarItem = item as! SimpleTabBarItem
+                let barItem:SimpleTabBarItem = item as! SimpleTabBarItem
                 if initialize {
                     barItem.initialize(self, index: i )
                 } else {

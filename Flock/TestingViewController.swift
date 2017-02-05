@@ -56,7 +56,7 @@ class TestingViewController: UIViewController, UIImagePickerControllerDelegate, 
             FirebaseClient.uploadToFirebaseStorageUsingImage(selectedImage, completion: { (imageUrl) in
                 Utilities.printDebugMessage("Picture uploaded and URL added to Update URL")
                 if let imageUrl = imageUrl {
-                    FirebaseClient.addVenue(self.venueName, imageURL: imageUrl, completion: { (status) in
+                    FirebaseClient.addVenue(self.venueName, imageURL: imageUrl, logoURL: imageUrl, completion: { (status) in
                         if (status) {
                             Utilities.printDebugMessage("Added Venue Successfully")
                         }

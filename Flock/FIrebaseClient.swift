@@ -38,10 +38,10 @@ class FirebaseClient: NSObject
         }
     }
     
-    class func addVenue(_ name : String, imageURL : String, completion: @escaping (Bool) -> Void)
+    class func addVenue(_ name : String, imageURL : String, logoURL : String, completion: @escaping (Bool) -> Void)
     {
         let venueID = FirebaseClient.dataRef.child("Venues").childByAutoId().key
-        let updates = ["VenueID" : venueID, "ImageURL" : imageURL, "VenueName" : name] as [String : Any]
+        let updates = ["VenueID" : venueID, "ImageURL" : imageURL, "LogoURL" : logoURL, "VenueName" : name] as [String : Any]
         dataRef.child("Venues").child(venueID).updateChildValues(updates)
         completion(true)
         
@@ -97,7 +97,7 @@ class FirebaseClient: NSObject
         
         dataRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot) in
             //Confirm send friend request conditions
-            if (snapshot.hasChild(toID) && snapshot.childSnapshot(forPath: toID).hasChild("FriendRequests")) {
+            if (snapshot.hasChild(toID) && snapshot.childSnapshot(forPath: toID).hasChild("FriendRequests") && toID != fromID) {
                 //Cases for actually adding friend request
 
                 let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]
@@ -106,10 +106,14 @@ class FirebaseClient: NSObject
                 var friendRequests = toUserDict["FriendRequests"] as! [String : AnyObject]
                 if (friendRequests[fromID] != nil) {
                     friendRequests[fromID] = nil as AnyObject?
+                    let updates = ["FriendRequests": friendRequests]
+                    dataRef.child("Users").child(toID).updateChildValues(updates)
+                    completion(true)
                 }
-                let updates = ["FriendRequests": friendRequests]
-                dataRef.child("Users").child(toID).updateChildValues(updates)
-                completion(true)
+                else {
+                    completion(false)
+                }
+                
             }
             else {
                 completion(false)
@@ -122,7 +126,7 @@ class FirebaseClient: NSObject
         
         dataRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot) in
             // Confirm friend request conditions
-            if (snapshot.hasChild(fromID) && snapshot.hasChild(toID) && snapshot.childSnapshot(forPath: toID).hasChild("FriendRequests") && snapshot.childSnapshot(forPath: toID).childSnapshot(forPath: "FriendRequests").hasChild(fromID)) {
+            if (snapshot.hasChild(fromID) && snapshot.hasChild(toID) && snapshot.childSnapshot(forPath: toID).hasChild("FriendRequests") && snapshot.childSnapshot(forPath: toID).childSnapshot(forPath: "FriendRequests").hasChild(fromID) && toID != fromID) {
                 let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]
                 
                 // Add the fromID to the toID friend list
@@ -161,9 +165,14 @@ class FirebaseClient: NSObject
                     let updates = ["Friends": [toID : toID]]
                     dataRef.child("Users").child(fromID).updateChildValues(updates)
                 }
-                // Remove the friend request
+                // Remove the friend request, standard and should occur
                 self.rejectFriendRequest(fromID, toID: toID, completion: { (success) in
-                    completion(success)
+                    // Remove friend request from "to" to "from", which should not be present
+                    // since the two should have been auto-friended if this occurs. Hence
+                    // the typical behavior should be a false completion
+                    self.rejectFriendRequest(toID, toID: fromID, completion: { (failure) in
+                        completion(!failure && success)
+                    })
                 })
                 
             }
@@ -177,7 +186,7 @@ class FirebaseClient: NSObject
         
         dataRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot) in
             // Confirm unfriend request conditions
-            if (snapshot.hasChild(fromID) && snapshot.hasChild(toID) && snapshot.childSnapshot(forPath: toID).hasChild("Friends") && snapshot.childSnapshot(forPath: toID).childSnapshot(forPath: "Friends").hasChild(fromID) && snapshot.childSnapshot(forPath: fromID).hasChild("Friends") && snapshot.childSnapshot(forPath: fromID).childSnapshot(forPath: "Friends").hasChild(toID)) {
+            if (snapshot.hasChild(fromID) && snapshot.hasChild(toID) && snapshot.childSnapshot(forPath: toID).hasChild("Friends") && snapshot.childSnapshot(forPath: toID).childSnapshot(forPath: "Friends").hasChild(fromID) && snapshot.childSnapshot(forPath: fromID).hasChild("Friends") && snapshot.childSnapshot(forPath: fromID).childSnapshot(forPath: "Friends").hasChild(toID) && fromID != toID) {
                 
                 //Remove fromId from toId friend list
                 let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]

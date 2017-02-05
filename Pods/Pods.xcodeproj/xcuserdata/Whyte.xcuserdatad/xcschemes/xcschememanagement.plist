@@ -64,6 +64,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>PopupDialog.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>SCLAlertView.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -87,6 +92,11 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>10DF06634F0C262AEEFDD935CB1ADE63</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>1DAC6C6AC86FE8621A7D0FEA5FD918DA</key>
 		<dict>
 			<key>primary</key>
@@ -97,17 +107,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2723739B10600145E128F7B78554BFC5</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>31418D425B97E292FFAFC566D79FC144</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>52477E332C24CEC210FB6FEDA4E85418</key>
+		<key>4346CC985265B8AB4E05A44F30F58DE4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -122,7 +127,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>660347C3F4C7F6879626BC0C5E06B1C9</key>
+		<key>6571BDF135E0A7CBA715DFDEF80D71CD</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>692F53CDA8F484C1F1C32BFE042C5955</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -137,17 +147,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8FD2329A9BA03269AC4C544EC372180F</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>9D0F2E5EA1B46A5D72FFD42B0B39DBBC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>A8F77DC39F7D0CFE46DAA5C135D96A80</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A9F837A600A5BE56033A86D8D4D712D5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
