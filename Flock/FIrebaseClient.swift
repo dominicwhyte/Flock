@@ -288,6 +288,11 @@ class FirebaseClient: NSObject
         })
     }
     
+    //Add plan to user plans and add user to planned attendees in venue
+    class func addUserToVenuePlansForDate(date: String, venueID) {
+        
+    }
+    
 }
 
 

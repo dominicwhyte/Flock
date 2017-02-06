@@ -43,8 +43,6 @@ class LoginClient: NSObject
                         return
                     }
                     
-                    
-                    
                     let FBID = FBSDKAccessToken.current().userID
                     let user:[String:AnyObject] = result as! [String : AnyObject]
                     var pictureUrl = ""

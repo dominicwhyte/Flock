@@ -15,4 +15,12 @@ import Foundation
  social media cocoa pods
  https://github.com/orderella/PopupDialog
  
+ update app when loading search page
+ imessage integration
+ 
+ Rating: https://github.com/nicklockwood/iRate
+ Empty tableviews: https://github.com/dzenbot/DZNEmptyDataSet
+ Permissions: https://github.com/nickoneill/PermissionScope
+ 
+ 
  */

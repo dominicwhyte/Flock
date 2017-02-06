@@ -32,6 +32,11 @@
 		5F5D38041E466C17008E13E4 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D38031E466C17008E13E4 /* SearchTableViewCell.swift */; };
 		5F5D38061E46C867008E13E4 /* PlacesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D38051E46C867008E13E4 /* PlacesCollectionViewCell.swift */; };
 		5F5D38081E46C879008E13E4 /* PlacesCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D38071E46C879008E13E4 /* PlacesCollectionViewController.swift */; };
+		5F61AF521E47D04600BD6A0C /* PopupSubViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F61AF511E47D04600BD6A0C /* PopupSubViewController.xib */; };
+		5F61AF541E47D06800BD6A0C /* PopupSubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF531E47D06800BD6A0C /* PopupSubViewController.swift */; };
+		5F61AF561E48230C00BD6A0C /* VenueFriendTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F61AF551E48230C00BD6A0C /* VenueFriendTableViewCell.xib */; };
+		5F61AF581E48266F00BD6A0C /* VenueFriendTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF571E48266F00BD6A0C /* VenueFriendTableViewCell.swift */; };
+		5F61AF5A1E48373500BD6A0C /* DateUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF591E48373500BD6A0C /* DateUtilities.swift */; };
 		BA5666F7848A6A4A2AB82D7A /* Pods_FlockTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2763749107C5FA0E17CDA9A /* Pods_FlockTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -75,6 +80,11 @@
 		5F5D38031E466C17008E13E4 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		5F5D38051E46C867008E13E4 /* PlacesCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacesCollectionViewCell.swift; sourceTree = "<group>"; };
 		5F5D38071E46C879008E13E4 /* PlacesCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacesCollectionViewController.swift; sourceTree = "<group>"; };
+		5F61AF511E47D04600BD6A0C /* PopupSubViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PopupSubViewController.xib; sourceTree = "<group>"; };
+		5F61AF531E47D06800BD6A0C /* PopupSubViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupSubViewController.swift; sourceTree = "<group>"; };
+		5F61AF551E48230C00BD6A0C /* VenueFriendTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VenueFriendTableViewCell.xib; sourceTree = "<group>"; };
+		5F61AF571E48266F00BD6A0C /* VenueFriendTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenueFriendTableViewCell.swift; sourceTree = "<group>"; };
+		5F61AF591E48373500BD6A0C /* DateUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateUtilities.swift; sourceTree = "<group>"; };
 		745D6E35D61A42A5579F5B57 /* Pods-FlockTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlockTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FlockTests/Pods-FlockTests.release.xcconfig"; sourceTree = "<group>"; };
 		9311B80AF2DA5ADDCEA6C5AF /* Pods_Flock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE43BF5ECD8A2F8930ECE437 /* Pods-Flock.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flock.release.xcconfig"; path = "Pods/Target Support Files/Pods-Flock/Pods-Flock.release.xcconfig"; sourceTree = "<group>"; };
@@ -148,6 +158,7 @@
 				5F5D37FC1E465172008E13E4 /* TODO.swift */,
 				5F5D37971E43FFCE008E13E4 /* AppDelegate.swift */,
 				5F5D37BF1E4407D9008E13E4 /* Utilities.swift */,
+				5F61AF591E48373500BD6A0C /* DateUtilities.swift */,
 				5F5D379B1E43FFCE008E13E4 /* Main.storyboard */,
 				5F5D38091E46C87F008E13E4 /* Places */,
 				5F5D38001E466AA2008E13E4 /* People */,
@@ -232,6 +243,10 @@
 		5F5D38091E46C87F008E13E4 /* Places */ = {
 			isa = PBXGroup;
 			children = (
+				5F61AF531E47D06800BD6A0C /* PopupSubViewController.swift */,
+				5F61AF551E48230C00BD6A0C /* VenueFriendTableViewCell.xib */,
+				5F61AF571E48266F00BD6A0C /* VenueFriendTableViewCell.swift */,
+				5F61AF511E47D04600BD6A0C /* PopupSubViewController.xib */,
 				5F5D38051E46C867008E13E4 /* PlacesCollectionViewCell.swift */,
 				5F5D38071E46C879008E13E4 /* PlacesCollectionViewController.swift */,
 			);
@@ -332,9 +347,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				5F5D37CD1E4423CF008E13E4 /* GoogleService-Info.plist in Resources */,
+				5F61AF561E48230C00BD6A0C /* VenueFriendTableViewCell.xib in Resources */,
 				5F5D37A51E43FFCE008E13E4 /* LaunchScreen.storyboard in Resources */,
 				5F5D37A21E43FFCE008E13E4 /* Assets.xcassets in Resources */,
 				5F5D379D1E43FFCE008E13E4 /* Main.storyboard in Resources */,
+				5F61AF521E47D04600BD6A0C /* PopupSubViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -447,10 +464,12 @@
 			files = (
 				5F5D37C31E440CE6008E13E4 /* LoginViewController.swift in Sources */,
 				5F5D37A01E43FFCE008E13E4 /* Flock.xcdatamodeld in Sources */,
+				5F61AF581E48266F00BD6A0C /* VenueFriendTableViewCell.swift in Sources */,
 				5F5D38061E46C867008E13E4 /* PlacesCollectionViewCell.swift in Sources */,
 				5F5D37FF1E466A7B008E13E4 /* SearchPeopleTableViewController.swift in Sources */,
 				5F5D37981E43FFCE008E13E4 /* AppDelegate.swift in Sources */,
 				5F5D37F81E4536F1008E13E4 /* PlannedTableViewCell.swift in Sources */,
+				5F61AF541E47D06800BD6A0C /* PopupSubViewController.swift in Sources */,
 				5F5D38081E46C879008E13E4 /* PlacesCollectionViewController.swift in Sources */,
 				5F5D37D11E44BE44008E13E4 /* TestingViewController.swift in Sources */,
 				5F5D37FD1E465172008E13E4 /* TODO.swift in Sources */,
@@ -461,6 +480,7 @@
 				5F5D38041E466C17008E13E4 /* SearchTableViewCell.swift in Sources */,
 				5F5D37C01E4407D9008E13E4 /* Utilities.swift in Sources */,
 				5F5D37F61E4536E8008E13E4 /* LiveTableViewCell.swift in Sources */,
+				5F61AF5A1E48373500BD6A0C /* DateUtilities.swift in Sources */,
 				5F5D37FA1E4536F6008E13E4 /* AllTableViewCell.swift in Sources */,
 				5F5D37BB1E43FFF2008E13E4 /* User.swift in Sources */,
 				5F5D37C71E4411B3008E13E4 /* FIrebaseClient.swift in Sources */,

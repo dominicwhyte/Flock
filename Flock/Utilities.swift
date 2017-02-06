@@ -3,6 +3,11 @@ import Social
 import MobileCoreServices
 import AASquaresLoading
 
+struct FlockColors {
+    static let FLOCK_BLUE = UIColor(red: 76/255, green: 181/255, blue: 245/255, alpha: 1.0)
+    static let FLOCK_GRAY = UIColor(red: 183/255, green: 184/255, blue: 182/255, alpha: 1.0)
+}
+
 class Utilities {
     static func shakeView(_ shakeView: UIView) {
         let shake = CABasicAnimation(keyPath: "position")

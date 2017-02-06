@@ -7,7 +7,7 @@ class User: NSObject
     var Name: String
     var Friends: [String:String]
     var FriendRequests: [String:String]
-    var Plans: [Plan]
+    var Plans: [String : Plan]
     var PictureURL: String
     var LiveClubID: String?
     
@@ -29,18 +29,15 @@ class User: NSObject
         }
         self.PictureURL = dict["PictureURL"] as! String
         
-        Plans = []
-        if(dict["plannedVenues"] != nil && dict["plannedDates"] != nil)
-        {
-            let plannedVenues = dict["plannedVenues"] as! [String]
-            let plannedDates = dict["plannedDates"] as! [String]
-            
-            
-            for (plannedVenue, plannedDate) in zip(plannedVenues, plannedDates) {
-                let plan = Plan(date: plannedDate, venueID: plannedVenue)
-                self.Plans.append(plan)
+        Plans = [:]
+        if (dict["Plans"] != nil) {
+            let plansDict = dict["Plans"] as! [String: [String:String]]
+            for (visitID, planDict) in plansDict {
+                let date = planDict["Date"]
+                let venueID = planDict["VenueID"]
+                Plans[visitID] = Plan(date: date!, venueID: venueID!)
             }
-        } 
+        }
         
     }
 

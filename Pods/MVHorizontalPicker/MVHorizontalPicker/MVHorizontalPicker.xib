@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MVHorizontalPicker" customModule="MVHorizontalPicker" customModuleProvider="target">
+            <connections>
+                <outlet property="scrollView" destination="RX4-Yj-xSM" id="U7V-kx-7rI"/>
+                <outlet property="scrollViewWidthConstraint" destination="t7y-u6-c81" id="W6a-PN-cEj"/>
+                <outlet property="triangleIndicator" destination="DQl-0t-M1R" id="W8M-RR-Raf"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clipsSubviews="YES" contentMode="scaleToFill" id="6el-FY-fzT">
+            <rect key="frame" x="0.0" y="0.0" width="300" height="36"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DQl-0t-M1R" customClass="MVPickerTriangleIndicator" customModule="MVHorizontalPicker" customModuleProvider="target">
+                    <rect key="frame" x="144" y="0.0" width="12" height="7"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="7" id="3aW-8d-uQE"/>
+                        <constraint firstAttribute="width" constant="12" id="3gp-Ha-JJJ"/>
+                    </constraints>
+                </view>
+                <scrollView multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RX4-Yj-xSM">
+                    <rect key="frame" x="100.5" y="0.0" width="100" height="36"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="100" id="t7y-u6-c81"/>
+                    </constraints>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="89S-mS-FJ7"/>
+                    </connections>
+                </scrollView>
+                <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8ez-Bf-8Vv" customClass="MVScrollerClipView" customModule="MVHorizontalPicker" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="300" height="36"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="scrollView" destination="RX4-Yj-xSM" id="GXn-i6-sl3"/>
+                    </connections>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="DQl-0t-M1R" firstAttribute="top" secondItem="6el-FY-fzT" secondAttribute="top" id="2dl-X5-i58"/>
+                <constraint firstItem="RX4-Yj-xSM" firstAttribute="centerX" secondItem="6el-FY-fzT" secondAttribute="centerX" id="AlF-T9-OTB"/>
+                <constraint firstAttribute="bottom" secondItem="8ez-Bf-8Vv" secondAttribute="bottom" id="Gc6-ur-Qcr"/>
+                <constraint firstAttribute="bottom" secondItem="RX4-Yj-xSM" secondAttribute="bottom" id="KkG-ae-0Yr"/>
+                <constraint firstAttribute="trailing" secondItem="8ez-Bf-8Vv" secondAttribute="trailing" id="ULU-Yx-E1I"/>
+                <constraint firstItem="DQl-0t-M1R" firstAttribute="centerX" secondItem="6el-FY-fzT" secondAttribute="centerX" id="XeS-pF-Iwp"/>
+                <constraint firstItem="8ez-Bf-8Vv" firstAttribute="top" secondItem="6el-FY-fzT" secondAttribute="top" id="kPs-wA-Cfn"/>
+                <constraint firstItem="8ez-Bf-8Vv" firstAttribute="leading" secondItem="6el-FY-fzT" secondAttribute="leading" id="ua7-iA-7fi"/>
+                <constraint firstItem="RX4-Yj-xSM" firstAttribute="top" secondItem="6el-FY-fzT" secondAttribute="top" id="yar-6N-ulZ"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+</document>

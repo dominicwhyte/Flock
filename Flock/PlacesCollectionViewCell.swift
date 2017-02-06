@@ -10,6 +10,7 @@ import UIKit
 
 class PlacesCollectionViewCell: UICollectionViewCell {
     
+    
     @IBOutlet weak var placesNameLabel: UILabel!
     @IBOutlet weak var placesLogoImage: UIImageView!
     @IBOutlet weak var liveImage: UIImageView!
@@ -18,3 +19,4 @@ class PlacesCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var plannedLabel: UILabel!
     @IBOutlet weak var backgroundImage: UIImageView!
 }
+

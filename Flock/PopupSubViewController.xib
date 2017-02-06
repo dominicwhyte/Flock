@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PopupSubViewController" customModule="PopupDialog">
+            <connections>
+                <outlet property="datePicker" destination="HLy-g9-Jlm" id="5EN-dS-rwR"/>
+                <outlet property="tableViewFrameView" destination="R0S-Vr-o45" id="iyh-CP-37u"/>
+                <outlet property="venueImageView" destination="93f-NF-nyy" id="xdL-N7-0v6"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="290" height="500"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IS1-mO-qkH">
+                    <rect key="frame" x="0.0" y="0.0" width="300" height="500"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HLy-g9-Jlm" customClass="MVHorizontalPicker" customModule="MVHorizontalPicker">
+                            <rect key="frame" x="0.0" y="241" width="292" height="40"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="aBw-be-ibm"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                    <real key="value" value="2"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="edgesGradientWidth">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="93f-NF-nyy">
+                            <rect key="frame" x="0.0" y="0.0" width="292" height="164"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="164" id="IiH-bK-7Vu"/>
+                            </constraints>
+                        </imageView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fe7-aa-iik">
+                            <rect key="frame" x="0.0" y="164" width="292" height="77"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="77" id="zEK-6T-DiD"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R0S-Vr-o45">
+                            <rect key="frame" x="0.0" y="281" width="292" height="219"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="219" id="8nf-Z3-wbT"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="93f-NF-nyy" firstAttribute="top" secondItem="IS1-mO-qkH" secondAttribute="top" id="1yf-ZF-XH5"/>
+                        <constraint firstAttribute="trailing" secondItem="HLy-g9-Jlm" secondAttribute="trailing" constant="8" id="4kl-i4-vdu"/>
+                        <constraint firstItem="HLy-g9-Jlm" firstAttribute="top" secondItem="Fe7-aa-iik" secondAttribute="bottom" id="Gxo-6N-bef"/>
+                        <constraint firstItem="Fe7-aa-iik" firstAttribute="top" secondItem="93f-NF-nyy" secondAttribute="bottom" id="Sah-X1-jOa"/>
+                        <constraint firstItem="R0S-Vr-o45" firstAttribute="leading" secondItem="IS1-mO-qkH" secondAttribute="leading" id="Uzr-sE-u9u"/>
+                        <constraint firstAttribute="trailing" secondItem="Fe7-aa-iik" secondAttribute="trailing" constant="8" id="XiB-C8-kz8"/>
+                        <constraint firstAttribute="trailing" secondItem="R0S-Vr-o45" secondAttribute="trailing" constant="8" id="YVP-KQ-qBG"/>
+                        <constraint firstItem="R0S-Vr-o45" firstAttribute="top" secondItem="HLy-g9-Jlm" secondAttribute="bottom" id="h7C-fY-n6N"/>
+                        <constraint firstItem="93f-NF-nyy" firstAttribute="leading" secondItem="IS1-mO-qkH" secondAttribute="leading" id="iPW-J0-uX5"/>
+                        <constraint firstItem="HLy-g9-Jlm" firstAttribute="leading" secondItem="IS1-mO-qkH" secondAttribute="leading" id="k9a-Yc-ZPj"/>
+                        <constraint firstItem="Fe7-aa-iik" firstAttribute="leading" secondItem="IS1-mO-qkH" secondAttribute="leading" id="pYa-xd-br7"/>
+                        <constraint firstAttribute="trailing" secondItem="93f-NF-nyy" secondAttribute="trailing" constant="8" id="rIX-fv-vf0"/>
+                        <constraint firstAttribute="bottom" secondItem="R0S-Vr-o45" secondAttribute="bottom" id="uFD-C5-Eib"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="IS1-mO-qkH" secondAttribute="bottom" id="d8w-V8-fpT"/>
+                <constraint firstItem="IS1-mO-qkH" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="nIN-WD-C0j"/>
+                <constraint firstItem="IS1-mO-qkH" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="ncB-9S-Iub"/>
+                <constraint firstAttribute="trailing" secondItem="IS1-mO-qkH" secondAttribute="trailing" constant="-10" id="rlD-9w-zuN"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="263" y="268"/>
+        </view>
+    </objects>
+</document>

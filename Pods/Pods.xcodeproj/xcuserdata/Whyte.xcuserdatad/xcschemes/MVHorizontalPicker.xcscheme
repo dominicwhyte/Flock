@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '74C70AA58D445AC37D9CE91E93602BE1'
-               BlueprintName = 'SimpleTab-SimpleTab'
+               BlueprintIdentifier = '8F74ABB6AC0E2BDF6CC69390452AF5AC'
+               BlueprintName = 'MVHorizontalPicker'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'SimpleTab.bundle'>
+               BuildableName = 'MVHorizontalPicker.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
