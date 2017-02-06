@@ -119,22 +119,28 @@ class PlacesCollectionViewController: UICollectionViewController, VenueDelegate 
     func showCustomDialog(venue : Venue) {
         
         // Create a custom view controller
-        let ratingVC = PopupSubViewController(nibName: "PopupSubViewController", bundle: nil)
-        ratingVC.delegate = self
+        let popupSubView = PopupSubViewController(nibName: "PopupSubViewController", bundle: nil)
+        popupSubView.delegate = self
         // Create the dialog
-        let popup = PopupDialog(viewController: ratingVC, buttonAlignment: .horizontal, transitionStyle: .bounceDown, gestureDismissal: true)
+        let popup = PopupDialog(viewController: popupSubView, buttonAlignment: .horizontal, transitionStyle: .bounceDown, gestureDismissal: true)
         
-        // Create first button
-        let buttonOne = CancelButton(title: "CANCEL", dismissOnTap: true) {
-        }
         
         // Create second button
-        let buttonTwo = DefaultButton(title: "RATE \(venue.VenueName)", dismissOnTap: true) {
+        let attendButton = DefaultButton(title: "ATTEND \(venue.VenueName) on [insert date]", dismissOnTap: true) {
             
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            FirebaseClient.addUserToVenuePlansForDate(date: popupSubView.stringsOfUpcomingDays[popupSubView.datePicker.selectedItemIndex], venueID: self.venueToPass!.VenueID, userID: appDelegate.user!.FBID, completion: { (success) in
+                if (success) {
+                    Utilities.printDebugMessage("Successfully added plan to attend venue")
+                }
+                else {
+                    
+                }
+            })
         }
         
         // Add buttons to dialog
-        popup.addButtons([buttonTwo])
+        popup.addButtons([attendButton])
         
         // Present dialog
         present(popup, animated: true, completion: nil)
@@ -181,4 +187,5 @@ extension UIImageView {
 protocol VenueDelegate: class {
     var venueToPass : Venue? {get set}
     func retrieveImage(imageURL : String, completion: @escaping (_ image: UIImage) -> ())
+    
 }

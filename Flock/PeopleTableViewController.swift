@@ -192,7 +192,8 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate 
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.REUSE_IDENTIFIERS[indexPath.section], for: indexPath) as! PlannedTableViewCell
             cell.friendName.text = friend.Name
             self.retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic!)
-            let venue = appDelegate.venues[friend.LiveClubID!]
+            let firstPlanVenueID = Array(friend.Plans.values)[0].venueID
+            let venue = appDelegate.venues[firstPlanVenueID]
             cell.venueName.text = venue!.VenueName
             self.retrieveImage(imageURL: venue!.ImageURL, imageView: cell.venuePic)
             return cell

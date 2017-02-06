@@ -29,15 +29,16 @@ class User: NSObject
         }
         self.PictureURL = dict["PictureURL"] as! String
         
-        Plans = [:]
+        var plans : [String : Plan] = [:]
         if (dict["Plans"] != nil) {
             let plansDict = dict["Plans"] as! [String: [String:String]]
             for (visitID, planDict) in plansDict {
                 let date = planDict["Date"]
                 let venueID = planDict["VenueID"]
-                Plans[visitID] = Plan(date: date!, venueID: venueID!)
+                plans[visitID] = Plan(date: date!, venueID: venueID!)
             }
         }
+        self.Plans = plans
         
     }
 
@@ -53,7 +54,7 @@ class Plan: NSObject
         let dateString = date
         
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.dateFormat = DateUtilities.Constants.fullDateFormat
         
         let nsDate = dateFormatter.date(from: dateString)
         

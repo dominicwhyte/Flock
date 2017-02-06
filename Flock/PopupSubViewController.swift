@@ -16,8 +16,9 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var venueImageView: UIImageView!
     weak var delegate: VenueDelegate?
     let NUMBER_OF_DAYS_TO_DISPLAY = 7
-    var stringsOfUpcomingDays : [String] = []
-    let daysOfWeek = [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" ]
+    let INDEX_OF_PLANNED_ATTENDEES = 1
+    let INDEX_OF_LIVE_ATTENDEES = 0
+    var stringsOfUpcomingDays : [String] = [] // Full dates
     var imageCache = [String: UIImage]()
     //keys are yyyy-MM-dd
     var allFriendsForDate : [String : [[User]]] = [:]
@@ -25,7 +26,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     var tableView: UITableView  =   UITableView()
     
     override func viewDidLoad() {
-        datePicker.titles = self.determineTitleOrder()
+        datePicker.titles = self.determineTitleOrder(dayCount: NUMBER_OF_DAYS_TO_DISPLAY)
         datePicker.itemWidth = 100
         
         datePicker.font = UIFont.boldSystemFont(ofSize: 18.0)
@@ -51,75 +52,66 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let currentDay = datePicker.titles[datePicker.selectedItemIndex]
+        let currentDay = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]
         let friendsAttendingClubForDay = self.allFriendsForDate[currentDay]!
         return friendsAttendingClubForDay[section].count
     }
     
     func tableView(_ cellForRowAttableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let currentDay = datePicker.titles[datePicker.selectedItemIndex]
+        let currentDay = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]
         let friendsAttendingClubForDay = self.allFriendsForDate[currentDay]!
         let friend = friendsAttendingClubForDay[indexPath.section][indexPath.row]
-        var cell = tableView.dequeueReusableCell(withIdentifier: "VENUE_FRIEND")! as! VenueFriendTableViewCell
-        
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "VENUE_FRIEND")! as! VenueFriendTableViewCell
         cell.nameLabel.text = friend.Name
         retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic)
         return cell
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        let currentDay = datePicker.titles[datePicker.selectedItemIndex]
+        let currentDay = self.stringsOfUpcomingDays[datePicker.selectedItemIndex] 
         let friendsAttendingClubForDay = self.allFriendsForDate[currentDay]!
         return friendsAttendingClubForDay.count
     }
     
+    //Set the dictionary to use for tableview display, maps from full string dates to array of arrays of users
     func setFriendsForVenueForDate(venue : Venue ) {
-        var plannedFriendsForDate : [String : [[User]]] = initializePlanDictionary()
+        var allFriendsForDate : [String : [[User]]] = initializePlanDictionary()
         let plannedAttendees = venue.PlannedAttendees
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let friends = appDelegate.friends
         for (_, plannedAttendee) in plannedAttendees {
             if let friend = friends[plannedAttendee] {
                 for (_,plan) in friend.Plans {
-                    if(plan.venueID == venue.VenueID && isValidTimeFrame(dayDiff: daysUntilPlan(planDate: plan.date))) {
-                        let dayOfWeek = self.convertDateToDayOfWeek(date: plan.date)
-                        plannedFriendsForDate[dayOfWeek]![1].append(friend)
+                    if(plan.venueID == venue.VenueID && isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))) {
+                        let fullDate = DateUtilities.convertDateToStringByFormat(date: plan.date, dateFormat: DateUtilities.Constants.fullDateFormat)
+                        allFriendsForDate[fullDate]![self.INDEX_OF_PLANNED_ATTENDEES].append(friend)
                     }
                 }
             }
         }
+        
         var liveUsers : [User] = []
         for (_, currentAttendee) in venue.CurrentAttendees {
             if let friend = friends[currentAttendee] {
                 liveUsers.append(friend)
             }
         }
-        plannedFriendsForDate[self.getDayOfWeek()]![0] = liveUsers
-        self.allFriendsForDate = plannedFriendsForDate
+        allFriendsForDate[DateUtilities.getTodayFullDate()]![INDEX_OF_LIVE_ATTENDEES] = liveUsers
+        self.allFriendsForDate = allFriendsForDate
     }
     
     func initializePlanDictionary() -> [String : [[User]]]{
         var plannedFriendsForDate : [String : [[User]]] = [:]
-        for day in daysOfWeek {
+        for day in stringsOfUpcomingDays {
             plannedFriendsForDate[day] = [[],[]]
         }
         return plannedFriendsForDate
     }
     
-    func daysUntilPlan(planDate: Date) -> Int {
-        let cal = Calendar.current
-        let today = cal.startOfDay(for: Date())
-        let dayAndMonth = cal.dateComponents([.day, .month], from: planDate)
-        let nextBirthDay = cal.nextDate(after: today, matching: dayAndMonth,
-                                        matchingPolicy: .nextTimePreservingSmallerComponents)!
-        
-        let diff = cal.dateComponents([.day], from: today, to: nextBirthDay)
-        return diff.day!
-    }
+    
     
     func isValidTimeFrame(dayDiff: Int) -> Bool {
-        return (dayDiff >= 0 && dayDiff < self.daysOfWeek.count)
+        return (dayDiff >= 0 && dayDiff < NUMBER_OF_DAYS_TO_DISPLAY)
     }
     
     //Retrieve image with caching
@@ -139,50 +131,22 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     
     // Determines the order for the day of the week by getting the current day, finding the index in
     // a standard week, and iterating through array
-    func determineTitleOrder() -> [String] {
-        let currentDayOfWeek = self.getDayOfWeek()
-        let currentIndex = daysOfWeek.index(of: currentDayOfWeek)
-        var datePickerTitles : [String] = []
-        let daysOfWeekCount = daysOfWeek.count
-        for index in 0...(daysOfWeekCount-1) {
-            datePickerTitles.append(daysOfWeek[(currentIndex! + index) % daysOfWeekCount])
-        }
-        return datePickerTitles
-    }
-    
-    func setStringsOfUpcomingDays() {
-        let calendar = NSCalendar.current
-        let startDate = Date()
-        let endDate =
-        let dateRange = calendar.dateRange(startDate: startDate,
-                                           endDate: endDate,
-                                           stepUnits: .Day,
-                                           stepValue: 1)
-        
-        for date in dateRange {
-            print("It's \(date)!")
-        }
-        
+    func determineTitleOrder(dayCount : Int) -> [String] {
+        var fullArray : [String] = []
+        var dayOfWeekArray : [String] = []
         var date = Date()
-        for index in 0...(NUMBER_OF_DAYS_TO_DISPLAY-1) {
-
-            date = NSCalendar.current.date(byAdding: DateComponents., to: date)!
-
-            stringsOfUpcomingDays.append()
+        for _ in 0...(dayCount-1) {
+            fullArray.append(DateUtilities.convertDateToStringByFormat(date: date, dateFormat: DateUtilities.Constants.fullDateFormat))
+            dayOfWeekArray.append(DateUtilities.convertDateToStringByFormat(date: date, dateFormat: DateUtilities.Constants.dayOfWeekDateFormat))
+            date = Calendar.current.date(byAdding: .day, value: 1, to: date)!
         }
+        self.stringsOfUpcomingDays = fullArray
+        return dayOfWeekArray
     }
     
-    // Gets the current day of the week
-    func getDayOfWeek() -> String {
-        let date = Date()
-        return self.convertDateToDayOfWeek(date: date)
-    }
     
-    func convertDateToDayOfWeek(date : Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "EEEE"
-        let dayOfWeekString = dateFormatter.string(from: date)
-        return dayOfWeekString
-    }
+   
+    
+   
    
 }

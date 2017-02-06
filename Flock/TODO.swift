@@ -13,6 +13,7 @@ import Foundation
  Make sure there's no way to pull to refresh while searching in friends
  Make secret algorithm for hierarchy of sorting/organizing friends in search
  social media cocoa pods
+ Show multiple plans in tableview
  https://github.com/orderella/PopupDialog
  
  update app when loading search page
