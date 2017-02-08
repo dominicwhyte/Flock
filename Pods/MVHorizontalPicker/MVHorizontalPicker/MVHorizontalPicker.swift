@@ -48,7 +48,7 @@ import UIKit
             scrollViewWidthConstraint.constant = newValue
             self.layoutIfNeeded()
             if titles.count > 0 {
-                reloadSubviews(titles: titles)
+                reloadSubviews(titles)
                 updateSelectedIndex(_selectedItemIndex, animated: false)
             }
         }
@@ -85,7 +85,7 @@ import UIKit
     open var titles: [String] = [] {
         didSet {
             
-            reloadSubviews(titles: titles)
+            reloadSubviews(titles)
             
             if let firstItemView = scrollView.subviews.first as? MVPickerItemView {
                 firstItemView.selected = true
@@ -120,7 +120,7 @@ import UIKit
         super.prepareForInterfaceBuilder()
     }
 
-    fileprivate func reloadSubviews(titles: [String]) {
+    fileprivate func reloadSubviews(_ titles: [String]) {
         
         let size = scrollView.frame.size
 
@@ -137,17 +137,17 @@ import UIKit
             itemView.tintColor = self.tintColor
 
             itemView.translatesAutoresizingMaskIntoConstraints = false
-            itemView.addConstraint(itemView.makeConstraint(attribute: .width, toView: nil, constant: size.width))
-            scrollView.addConstraint(itemView.makeConstraint(attribute: .leading, toView: scrollView, constant: offsetX))
-            scrollView.addConstraint(itemView.makeEqualityConstraint(attribute: .top, toView: scrollView))
-            scrollView.addConstraint(itemView.makeEqualityConstraint(attribute: .bottom, toView: scrollView))
-            holder.addConstraint(itemView.makeEqualityConstraint(attribute: .height, toView: holder))
+            itemView.addConstraint(itemView.makeConstraint(.width, toView: nil, constant: size.width))
+            scrollView.addConstraint(itemView.makeConstraint(.leading, toView: scrollView, constant: offsetX))
+            scrollView.addConstraint(itemView.makeEqualityConstraint(.top, toView: scrollView))
+            scrollView.addConstraint(itemView.makeEqualityConstraint(.bottom, toView: scrollView))
+            holder.addConstraint(itemView.makeEqualityConstraint(.height, toView: holder))
             
             offsetX += size.width
         }
         
         if let last = scrollView.subviews.last {
-            scrollView.addConstraint(last.makeConstraint(attribute: .trailing, toView: scrollView, constant: 0))
+            scrollView.addConstraint(last.makeConstraint(.trailing, toView: scrollView, constant: 0))
         }
         scrollView.contentInset = UIEdgeInsets.zero
         scrollView.contentOffset = CGPoint.zero

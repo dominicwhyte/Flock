@@ -11,9 +11,8 @@ import UIKit
 class LiveTableViewCell: UITableViewCell {
 
     @IBOutlet weak var profilePic: UIImageView!
-    @IBOutlet weak var venuePic: UIImageView!
     @IBOutlet weak var friendName: UILabel!
-    @IBOutlet weak var venueName: UILabel!
+    @IBOutlet weak var subtitleLabel: UILabel!
     
 
 }

@@ -54,6 +54,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>MGSwipeTableCell.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>MVHorizontalPicker.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -92,6 +97,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>0A94ED80018EEDAEA8AE04A80EBB4030</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>0E579C8B6EC88FD31F0C2B47C9058B48</key>
 		<dict>
 			<key>primary</key>
@@ -112,22 +122,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>4E1263BFF45F6446CF3DE29AE234C893</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>533607A808BC64912197562E016B6085</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>588C1B6EB773DF901AA9539C8EA03469</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>5A0A28913A1212C2D1EACECBA1E58AC0</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>74C70AA58D445AC37D9CE91E93602BE1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -152,12 +157,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>9ECBD0FC3E4D2960E7D93AD3715C95FC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9F64AC11F6A6867B4E35A68D6AD131EB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>A8F77DC39F7D0CFE46DAA5C135D96A80</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C6DD942C61927AFFEC7E7FA87C3340A5</key>
+		<key>C4957BF76C6848FFDCF81661AEC762BF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -167,12 +182,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F597D25BB6315933954FB5F58D2759E3</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>FD71DA6749DC97FFB08DAC40F097BB11</key>
+		<key>F161410B60153D76A36FFEB36344ECAD</key>
 		<dict>
 			<key>primary</key>
 			<true/>

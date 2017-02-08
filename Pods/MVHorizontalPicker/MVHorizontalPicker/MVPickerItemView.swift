@@ -16,13 +16,13 @@ import UIKit
     
     var selected: Bool = false {
         didSet {
-            updateTextColor(selected: selected)
+            updateTextColor(selected)
         }
     }
     
     override var tintColor: UIColor! {
         didSet {
-            updateTextColor(selected: selected)
+            updateTextColor(selected)
         }
     }
     
@@ -46,22 +46,22 @@ import UIKit
         label.textAlignment = NSTextAlignment.center
         label.lineBreakMode = .byTruncatingMiddle
         
-        updateTextColor(selected: false)
+        updateTextColor(false)
     }
     
     func addLabel(_ label: UILabel) {
         self.addSubview(label)
         label.translatesAutoresizingMaskIntoConstraints = false
-        self.addConstraint(label.makeEqualityConstraint(attribute: .leading, toView: self))
-        self.addConstraint(label.makeEqualityConstraint(attribute: .trailing, toView: self))
-        self.addConstraint(label.makeEqualityConstraint(attribute: .centerY, toView: self))
+        self.addConstraint(label.makeEqualityConstraint(.leading, toView: self))
+        self.addConstraint(label.makeEqualityConstraint(.trailing, toView: self))
+        self.addConstraint(label.makeEqualityConstraint(.centerY, toView: self))
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
         
-    func updateTextColor(selected: Bool) {
+    func updateTextColor(_ selected: Bool) {
         
         let alpha: CGFloat = selected ? 1.0 : 0.5
         self.label.textColor = tintColor.withAlphaComponent(alpha)

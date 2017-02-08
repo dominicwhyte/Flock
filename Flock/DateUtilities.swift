@@ -53,13 +53,13 @@ class DateUtilities {
     }
     
     static func daysUntilPlan(planDate: Date) -> Int {
-        let cal = Calendar.current
-        let today = cal.startOfDay(for: Date())
-        let dayAndMonth = cal.dateComponents([.day, .month], from: planDate)
-        let nextBirthDay = cal.nextDate(after: today, matching: dayAndMonth,
-                                        matchingPolicy: .nextTimePreservingSmallerComponents)!
+        let calendar = NSCalendar.current
         
-        let diff = cal.dateComponents([.day], from: today, to: nextBirthDay)
-        return diff.day!
+        // Replace the hour (time) of both dates with 00:00
+        let date1 = calendar.startOfDay(for: Date())
+        let date2 = calendar.startOfDay(for: planDate)
+
+        let components = calendar.dateComponents([.day], from: date1, to: date2)
+        return components.day!
     }
 }

@@ -18,6 +18,7 @@ target 'Flock' do
    pod 'AASquaresLoading'
    pod 'PopupDialog', '~> 0.5'
    pod 'MVHorizontalPicker'
+   pod 'MGSwipeTableCell'
 
   target 'FlockTests' do
     inherit! :search_paths

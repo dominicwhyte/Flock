@@ -25,3 +25,23 @@ import Foundation
  
  
  */
+
+
+/*
+ Remaining to be done:
+ 
+ UI:
+ Profile
+ venue page
+ icons for popup
+ app logo
+ app tab bar icons/UI
+ search page UI
+ 
+ 
+ 
+ Backend:
+ Profile
+ button to venue page
+ 
+ */

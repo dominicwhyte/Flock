@@ -25,6 +25,12 @@
 
 import UIKit
 
+struct FlockColors {
+    static let FLOCK_BLUE = UIColor(red: 76/255, green: 181/255, blue: 245/255, alpha: 1.0)
+    static let FLOCK_GRAY = UIColor(red: 183/255, green: 184/255, blue: 182/255, alpha: 1.0)
+    static let FLOCK_LIGHT_BLUE = UIColor(red: 129/255, green: 202/255, blue: 247/255, alpha: 1.0)
+}
+
 open class SimpleTabBarController: UITabBarController {
 
     var _tabBar:SimpleTabBar?
@@ -69,7 +75,7 @@ open class SimpleTabBarController: UITabBarController {
         //# Optional - Set Tab Title attributes for selected and unselected (normal) states.
         // Or use the App tint color to set the states
         style.setTitleTextAttributes([NSFontAttributeName as NSObject : UIFont.systemFont(ofSize: 14),  NSForegroundColorAttributeName as NSObject: UIColor.lightGray], forState: .normal)
-        style.setTitleTextAttributes([NSFontAttributeName as NSObject : UIFont.systemFont(ofSize: 14),NSForegroundColorAttributeName as NSObject: colorWithHexString("4CB6BE")], forState: .selected)
+        style.setTitleTextAttributes([NSFontAttributeName as NSObject : UIFont.systemFont(ofSize: 14),NSForegroundColorAttributeName as NSObject: FlockColors.FLOCK_BLUE], forState: .selected)
         
         //# Optional - Set Tab Icon colors for selected and unselected (normal) states.
         // Or use the App tint color to set the states

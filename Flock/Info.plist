@@ -61,5 +61,12 @@
 	</dict>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Upload Venue Photos</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>OpenSans-Regular.ttf</string>
+		<string>OpenSans-Semibold.ttf</string>
+		<string>OpenSans-Light.ttf</string>
+		<string>Oswald-Regular.ttf</string>
+	</array>
 </dict>
 </plist>

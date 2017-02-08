@@ -33,6 +33,9 @@ class PlacesCollectionViewController: UICollectionViewController, VenueDelegate 
         // self.clearsSelectionOnViewWillAppear = false
 
         // Do any additional setup after loading the view.
+        UINavigationBar.appearance().tintColor = UIColor.white
+        UINavigationBar.appearance().barTintColor = FlockColors.FLOCK_BLUE
+        self.view.backgroundColor = FlockColors.FLOCK_GRAY
     }
 
     override func didReceiveMemoryWarning() {
@@ -69,8 +72,6 @@ class PlacesCollectionViewController: UICollectionViewController, VenueDelegate 
         //Setup Cell
         let venue = self.venues![indexPath.row]
         cell.placesNameLabel.text = venue.VenueName
-        Utilities.printDebugMessage(venue.VenueName)
-        
         self.retrieveImage(imageURL: venue.ImageURL, imageView: cell.backgroundImage)
         self.retrieveImage(imageURL: venue.LogoURL, imageView: cell.placesLogoImage)
         cell.liveLabel.text = "\(venue.CurrentAttendees.count)"

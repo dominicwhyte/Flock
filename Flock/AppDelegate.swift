@@ -21,12 +21,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var users = [String : User]()
     var venues = [String:Venue]()
     var friends = [String : User]()
+    var venueImages = [String : UIImage]() // indexed by IMAGEURL not VENUEID!!!!!!!!!!!!!
     var simpleTBC:SimpleTabBarController?
     var friendRequestUsers = [String : User]()
     
     func masterLogin(completion: @escaping (_ status: Bool) -> ()) {
         updateAllData { (success) in
-            completion(success)
+            
+            // For initial efficiency, get images of all venues (eating clubs) to prevent reloading
+            // at each display of the club image. Not scalable, but initially much faster
+            if(success) {
+                var imageURLArray = [String]()
+                for (_, venue) in self.venues {
+                    imageURLArray.append(venue.ImageURL)
+                    imageURLArray.append(venue.LogoURL)
+                }
+                
+                self.setAllVenueImages(venueImageURLs: imageURLArray, completion: { (venueImageSuccess) in
+                    if (!venueImageSuccess) {
+                        Utilities.printDebugMessage("Failure fetching venue images")
+                    }
+                    completion(venueImageSuccess)
+                })
+            }
         }
     }
     
@@ -41,6 +58,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
                 completion(true)
             })
+        }
+    }
+    
+    //Call only upon app launch
+    func setAllVenueImages(venueImageURLs : [String], completion: @escaping (_ status: Bool) -> ()) {
+        var venueImagesTemp = [String : UIImage]()
+        var imagesFetched = 0
+        let imagesToFetch = venueImageURLs.count
+        for imageURL in venueImageURLs {
+            FirebaseClient.getImageFromURL(imageURL, { (image) in
+                imagesFetched += 1
+                venueImagesTemp[imageURL] = image
+                if (imagesFetched >= imagesToFetch) {
+                    self.venueImages = venueImagesTemp
+                    completion(true)
+                }
+            })
+        }
+        if (imagesFetched < imagesToFetch) {
+            self.venueImages = venueImagesTemp
+            completion(false)
         }
     }
     

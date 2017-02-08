@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import MGSwipeTableCell
 
-class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate {
+class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate, CustomSearchControllerDelegate {
     
     internal var parentView: UIView?
 
@@ -41,21 +42,38 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate 
         }
     }
     
+    func configureSearchController() -> CustomSearchController {
+        // Initialize and perform a minimum configuration to the search controller.
+        let searchController = CustomSearchController(searchResultsController: self, searchBarFrame: CGRect(x: 0.0, y: 0.0, width: view.frame.width, height: 50.0), searchBarFont: UIFont(name: "Futura", size: 16.0)!, searchBarTextColor: UIColor.orange, searchBarTintColor: UIColor.black)
+        searchController.customDelegate = self
+        searchController.customSearchBar.placeholder = "Search in this awesome bar..."
+        
+        
+        return searchController
+    }
+    
+    
     var friends = [[User]]()
     var filteredFriends = [[User]]()
-    let searchController = UISearchController(searchResultsController: nil)
+    var searchController : UISearchController = UISearchController(searchResultsController: nil)
     var imageCache = [String : UIImage]()
     
     override func viewDidLoad() {
+        //searchController = configureSearchController()
         //set view for protocol
         self.parentView = self.view
-        
+         self.tableView.separatorColor = FlockColors.FLOCK_BLUE
         super.viewDidLoad()
         // Setup the Search Controller
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         definesPresentationContext = true
         searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.barTintColor = UIColor.white
+        searchController.searchBar.tintColor = FlockColors.FLOCK_GRAY
+
+        searchController.searchBar.placeholder = "Search                                                                                     "
+        
         tableView.tableHeaderView = searchController.searchBar
         
         self.friends = parseFriends()
@@ -76,7 +94,29 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate 
         }
     }
     
-    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let returnedView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 25))
+        //returnedView.backgroundColor = FlockColors.FLOCK_BLUE
+        
+        let gradient = CAGradientLayer()
+        
+        gradient.frame = returnedView.bounds
+        
+        gradient.startPoint = CGPoint(x: 0, y: 0.5)
+        gradient.endPoint = CGPoint(x: 1, y: 0.5)
+        gradient.colors = [FlockColors.FLOCK_BLUE.cgColor, FlockColors.FLOCK_LIGHT_BLUE.cgColor]
+        
+        returnedView.layer.insertSublayer(gradient, at: 0)
+
+        
+        
+        let label = UILabel(frame: CGRect(x: 10, y: 0, width: view.frame.size.width, height: 25))
+        label.textColor = .white
+        label.text = Constants.SECTION_TITLES[section]
+        returnedView.addSubview(label)
+        
+        return returnedView
+    }
     
     func prepareArrays() -> [[User]] {
         var filteredFriendsArray : [[User]] = []
@@ -120,6 +160,8 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate 
         return friendArrayArray
     }
     
+    
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if searchController.isActive && searchController.searchBar.text != "" {
             if (filteredFriends.count == 0) {
@@ -157,7 +199,25 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate 
         
     }
     
+    func didStartSearching() {
+        
+    }
+    
+    func didTapOnSearchButton() {
+        
+    }
+    
+    func didTapOnCancelButton() {
+        
+    }
+    
+    func didChangeSearchText(_ searchText: String) {
+        
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        
         let friend: User
         if searchController.isActive && searchController.searchBar.text != "" {
             friend = filteredFriends[indexPath.section][indexPath.row]
@@ -176,6 +236,9 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate 
 
             //Set the delegate for tableview reloaddata updates
             cell.delegate = self
+            cell.preservesSuperviewLayoutMargins = false
+            cell.separatorInset = UIEdgeInsets.zero
+            cell.layoutMargins = UIEdgeInsets.zero
             
             return cell
             
@@ -184,18 +247,24 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate 
             cell.friendName.text = friend.Name
             self.retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic!)
             let venue = appDelegate.venues[friend.LiveClubID!]
-            cell.venueName.text = venue!.VenueName
-            self.retrieveImage(imageURL: venue!.ImageURL, imageView: cell.venuePic)
+            //cell.venueName.text = venue!.VenueName
+            //self.retrieveImage(imageURL: venue!.ImageURL, imageView: cell.venuePic)
+            cell.preservesSuperviewLayoutMargins = false
+            cell.separatorInset = UIEdgeInsets.zero
+            cell.layoutMargins = UIEdgeInsets.zero
             return cell
             
         case Constants.PLANNED_FRIENDS_INDEX:
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.REUSE_IDENTIFIERS[indexPath.section], for: indexPath) as! PlannedTableViewCell
             cell.friendName.text = friend.Name
             self.retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic!)
-            let firstPlanVenueID = Array(friend.Plans.values)[0].venueID
-            let venue = appDelegate.venues[firstPlanVenueID]
-            cell.venueName.text = venue!.VenueName
-            self.retrieveImage(imageURL: venue!.ImageURL, imageView: cell.venuePic)
+            cell.subtitleLabel.text = "Live 2 days ago"
+            //cell.venueName.text = venue!.VenueName
+            //self.retrieveImage(imageURL: venue!.ImageURL, imageView: cell.venuePic)
+            //Setup mgswipe capability
+            cell.setupCell(plans: Array(friend.Plans.values))
+            makeViewSquare(imageView: cell.profilePic!)
+                        
             return cell
             
         case Constants.REMAINING_FRIENDS_INDEX:
@@ -203,6 +272,9 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate 
             cell.friendName.text = friend.Name
             cell.profilePic!.image = UIImage()
             self.retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic!)
+            cell.preservesSuperviewLayoutMargins = false
+            cell.separatorInset = UIEdgeInsets.zero
+            cell.layoutMargins = UIEdgeInsets.zero
             return cell
         default:
             Utilities.printDebugMessage("Error in table view switch")
@@ -211,6 +283,9 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate 
         //Should never run
         Utilities.printDebugMessage("Error loading people table view controller")
         let cell = UITableViewCell()
+        cell.preservesSuperviewLayoutMargins = false
+        cell.separatorInset = UIEdgeInsets.zero
+        cell.layoutMargins = UIEdgeInsets.zero
         return cell
     }
     
@@ -220,6 +295,13 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate 
                 searchPeopleTableViewController.delegate = self
             }
         }
+    }
+    
+    func makeViewSquare(imageView : UIView) {
+        imageView.layer.cornerRadius = imageView.frame.size.width/2
+        imageView.clipsToBounds = true
+        imageView.layer.borderWidth = 2
+        imageView.layer.borderColor = UIColor.lightGray.cgColor
     }
     
 }
@@ -243,4 +325,6 @@ protocol UpdateTableViewDelegate: class {
     func updateDataAndTableView(_ completion: @escaping (Bool) -> Void)
     var parentView : UIView? { get set }
 }
+
+
 

@@ -11,10 +11,16 @@ import MVHorizontalPicker
 
 class PopupSubViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    
+    struct Constants {
+        static let SECTION_TITLES = ["Live", "Planned"]
+    }
+    
     @IBOutlet weak var tableViewFrameView: UIView!
     @IBOutlet weak var datePicker: MVHorizontalPicker!
     @IBOutlet weak var venueImageView: UIImageView!
     weak var delegate: VenueDelegate?
+    
     let NUMBER_OF_DAYS_TO_DISPLAY = 7
     let INDEX_OF_PLANNED_ATTENDEES = 1
     let INDEX_OF_LIVE_ATTENDEES = 0
@@ -67,10 +73,18 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         return cell
     }
     
+    @IBAction func pickerValueChanged(_ sender: MVHorizontalPicker) {
+        self.tableView.reloadData()
+    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         let currentDay = self.stringsOfUpcomingDays[datePicker.selectedItemIndex] 
         let friendsAttendingClubForDay = self.allFriendsForDate[currentDay]!
         return friendsAttendingClubForDay.count
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return Constants.SECTION_TITLES[section]
     }
     
     //Set the dictionary to use for tableview display, maps from full string dates to array of arrays of users
@@ -79,12 +93,17 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         let plannedAttendees = venue.PlannedAttendees
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let friends = appDelegate.friends
+        Utilities.printDebugMessage("1")
         for (_, plannedAttendee) in plannedAttendees {
+            Utilities.printDebugMessage("2")
             if let friend = friends[plannedAttendee] {
+                Utilities.printDebugMessage("3")
                 for (_,plan) in friend.Plans {
+                    Utilities.printDebugMessage("4")
                     if(plan.venueID == venue.VenueID && isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))) {
                         let fullDate = DateUtilities.convertDateToStringByFormat(date: plan.date, dateFormat: DateUtilities.Constants.fullDateFormat)
                         allFriendsForDate[fullDate]![self.INDEX_OF_PLANNED_ATTENDEES].append(friend)
+                        Utilities.printDebugMessage("5")
                     }
                 }
             }

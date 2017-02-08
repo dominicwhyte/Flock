@@ -70,6 +70,7 @@ PODS:
     - GoogleToolboxForMac/NSString+URLArguments (= 2.1.0)
   - GoogleToolboxForMac/NSString+URLArguments (2.1.0)
   - GTMSessionFetcher/Core (1.1.7)
+  - MGSwipeTableCell (1.5.6)
   - MVHorizontalPicker (0.0.2)
   - PopupDialog (0.5.0)
   - SCLAlertView (0.7.0)
@@ -84,6 +85,7 @@ DEPENDENCIES:
   - Firebase/Core
   - Firebase/Database
   - Firebase/Storage
+  - MGSwipeTableCell
   - MVHorizontalPicker
   - PopupDialog (~> 0.5)
   - SCLAlertView
@@ -109,11 +111,12 @@ SPEC CHECKSUMS:
   GoogleSymbolUtilities: 631ee17048aa5e9ab133470d768ea997a5ef9b96
   GoogleToolboxForMac: 2b2596cbb7186865e98cadf2b1e262d851c2b168
   GTMSessionFetcher: a1f8ed39e4fe21c68957daed472c7afbcdf29166
+  MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
   MVHorizontalPicker: d0d821ef2fa0c2dd9b11c907e650f5551c2f501c
   PopupDialog: 9890441b81105b9076757af2afe2b037be682f3e
   SCLAlertView: 8a14ffc40590c619e183eed2298b854385f30be1
   SimpleTab: 4e490e339a19d0d1d26c0fa3c862188eaad73ecb
 
-PODFILE CHECKSUM: e693398c144792003a0b95bda0c30971b4e1c972
+PODFILE CHECKSUM: be35fa4b85aa8d38acd9d2a9c2c21f57eba29bb8
 
 COCOAPODS: 1.0.1

@@ -14,5 +14,6 @@ class AllTableViewCell: UITableViewCell {
 
     @IBOutlet weak var friendName: UILabel!
     
+    @IBOutlet weak var subtitleLabel: UILabel!
 
 }

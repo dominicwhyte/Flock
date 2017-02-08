@@ -37,6 +37,18 @@
 		5F61AF561E48230C00BD6A0C /* VenueFriendTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F61AF551E48230C00BD6A0C /* VenueFriendTableViewCell.xib */; };
 		5F61AF581E48266F00BD6A0C /* VenueFriendTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF571E48266F00BD6A0C /* VenueFriendTableViewCell.swift */; };
 		5F61AF5A1E48373500BD6A0C /* DateUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF591E48373500BD6A0C /* DateUtilities.swift */; };
+		5F61AF601E49949400BD6A0C /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5F61AF5B1E4993D900BD6A0C /* OpenSans-Light.ttf */; };
+		5F61AF611E49949400BD6A0C /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5F61AF5B1E4993D900BD6A0C /* OpenSans-Light.ttf */; };
+		5F61AF621E49949700BD6A0C /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5F61AF5C1E4993D900BD6A0C /* OpenSans-Regular.ttf */; };
+		5F61AF631E49949800BD6A0C /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5F61AF5C1E4993D900BD6A0C /* OpenSans-Regular.ttf */; };
+		5F61AF641E49949B00BD6A0C /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5F61AF5D1E4993D900BD6A0C /* OpenSans-Semibold.ttf */; };
+		5F61AF651E49949B00BD6A0C /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5F61AF5D1E4993D900BD6A0C /* OpenSans-Semibold.ttf */; };
+		5F61AF661E49949F00BD6A0C /* Oswald-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5F61AF5E1E4993D900BD6A0C /* Oswald-Light.ttf */; };
+		5F61AF671E4994A000BD6A0C /* Oswald-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5F61AF5E1E4993D900BD6A0C /* Oswald-Light.ttf */; };
+		5F61AF681E4994A400BD6A0C /* Oswald-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5F61AF5F1E4993D900BD6A0C /* Oswald-Regular.ttf */; };
+		5F61AF691E4994A400BD6A0C /* Oswald-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5F61AF5F1E4993D900BD6A0C /* Oswald-Regular.ttf */; };
+		5F61AF6D1E4A857E00BD6A0C /* CustomSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF6C1E4A857E00BD6A0C /* CustomSearchController.swift */; };
+		5F61AF6F1E4A858700BD6A0C /* CustomSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF6E1E4A858700BD6A0C /* CustomSearchBar.swift */; };
 		BA5666F7848A6A4A2AB82D7A /* Pods_FlockTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2763749107C5FA0E17CDA9A /* Pods_FlockTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -85,6 +97,13 @@
 		5F61AF551E48230C00BD6A0C /* VenueFriendTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VenueFriendTableViewCell.xib; sourceTree = "<group>"; };
 		5F61AF571E48266F00BD6A0C /* VenueFriendTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenueFriendTableViewCell.swift; sourceTree = "<group>"; };
 		5F61AF591E48373500BD6A0C /* DateUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateUtilities.swift; sourceTree = "<group>"; };
+		5F61AF5B1E4993D900BD6A0C /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
+		5F61AF5C1E4993D900BD6A0C /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
+		5F61AF5D1E4993D900BD6A0C /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
+		5F61AF5E1E4993D900BD6A0C /* Oswald-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-Light.ttf"; sourceTree = "<group>"; };
+		5F61AF5F1E4993D900BD6A0C /* Oswald-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-Regular.ttf"; sourceTree = "<group>"; };
+		5F61AF6C1E4A857E00BD6A0C /* CustomSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSearchController.swift; sourceTree = "<group>"; };
+		5F61AF6E1E4A858700BD6A0C /* CustomSearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSearchBar.swift; sourceTree = "<group>"; };
 		745D6E35D61A42A5579F5B57 /* Pods-FlockTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlockTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FlockTests/Pods-FlockTests.release.xcconfig"; sourceTree = "<group>"; };
 		9311B80AF2DA5ADDCEA6C5AF /* Pods_Flock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE43BF5ECD8A2F8930ECE437 /* Pods-Flock.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flock.release.xcconfig"; path = "Pods/Target Support Files/Pods-Flock/Pods-Flock.release.xcconfig"; sourceTree = "<group>"; };
@@ -171,6 +190,11 @@
 				5F5D37A61E43FFCE008E13E4 /* Info.plist */,
 				5F5D37CC1E4423CF008E13E4 /* GoogleService-Info.plist */,
 				5F5D379E1E43FFCE008E13E4 /* Flock.xcdatamodeld */,
+				5F61AF5B1E4993D900BD6A0C /* OpenSans-Light.ttf */,
+				5F61AF5C1E4993D900BD6A0C /* OpenSans-Regular.ttf */,
+				5F61AF5D1E4993D900BD6A0C /* OpenSans-Semibold.ttf */,
+				5F61AF5E1E4993D900BD6A0C /* Oswald-Light.ttf */,
+				5F61AF5F1E4993D900BD6A0C /* Oswald-Regular.ttf */,
 			);
 			path = Flock;
 			sourceTree = "<group>";
@@ -218,6 +242,8 @@
 			children = (
 				5F5D37FB1E4536FD008E13E4 /* PeopleCells */,
 				5F5D37FE1E466A7B008E13E4 /* SearchPeopleTableViewController.swift */,
+				5F61AF6C1E4A857E00BD6A0C /* CustomSearchController.swift */,
+				5F61AF6E1E4A858700BD6A0C /* CustomSearchBar.swift */,
 				5F5D37F11E45168D008E13E4 /* PeopleTableViewController.swift */,
 				5F5D38031E466C17008E13E4 /* SearchTableViewCell.swift */,
 			);
@@ -346,11 +372,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F61AF681E4994A400BD6A0C /* Oswald-Regular.ttf in Resources */,
 				5F5D37CD1E4423CF008E13E4 /* GoogleService-Info.plist in Resources */,
+				5F61AF671E4994A000BD6A0C /* Oswald-Light.ttf in Resources */,
 				5F61AF561E48230C00BD6A0C /* VenueFriendTableViewCell.xib in Resources */,
+				5F61AF601E49949400BD6A0C /* OpenSans-Light.ttf in Resources */,
+				5F61AF641E49949B00BD6A0C /* OpenSans-Semibold.ttf in Resources */,
 				5F5D37A51E43FFCE008E13E4 /* LaunchScreen.storyboard in Resources */,
 				5F5D37A21E43FFCE008E13E4 /* Assets.xcassets in Resources */,
 				5F5D379D1E43FFCE008E13E4 /* Main.storyboard in Resources */,
+				5F61AF621E49949700BD6A0C /* OpenSans-Regular.ttf in Resources */,
 				5F61AF521E47D04600BD6A0C /* PopupSubViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -359,6 +390,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F61AF691E4994A400BD6A0C /* Oswald-Regular.ttf in Resources */,
+				5F61AF651E49949B00BD6A0C /* OpenSans-Semibold.ttf in Resources */,
+				5F61AF631E49949800BD6A0C /* OpenSans-Regular.ttf in Resources */,
+				5F61AF611E49949400BD6A0C /* OpenSans-Light.ttf in Resources */,
+				5F61AF661E49949F00BD6A0C /* Oswald-Light.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -469,12 +505,14 @@
 				5F5D37FF1E466A7B008E13E4 /* SearchPeopleTableViewController.swift in Sources */,
 				5F5D37981E43FFCE008E13E4 /* AppDelegate.swift in Sources */,
 				5F5D37F81E4536F1008E13E4 /* PlannedTableViewCell.swift in Sources */,
+				5F61AF6D1E4A857E00BD6A0C /* CustomSearchController.swift in Sources */,
 				5F61AF541E47D06800BD6A0C /* PopupSubViewController.swift in Sources */,
 				5F5D38081E46C879008E13E4 /* PlacesCollectionViewController.swift in Sources */,
 				5F5D37D11E44BE44008E13E4 /* TestingViewController.swift in Sources */,
 				5F5D37FD1E465172008E13E4 /* TODO.swift in Sources */,
 				5F5D37F21E45168D008E13E4 /* PeopleTableViewController.swift in Sources */,
 				5F5D37F41E4536D7008E13E4 /* FriendRequestTableViewCell.swift in Sources */,
+				5F61AF6F1E4A858700BD6A0C /* CustomSearchBar.swift in Sources */,
 				5F5D37C51E440F4F008E13E4 /* Venue.swift in Sources */,
 				5F5D37BE1E4405E9008E13E4 /* LoginClient.swift in Sources */,
 				5F5D38041E466C17008E13E4 /* SearchTableViewCell.swift in Sources */,
