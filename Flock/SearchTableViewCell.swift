@@ -15,14 +15,12 @@ class SearchTableViewCell: UITableViewCell {
     var cellID : String?
     
     @IBOutlet weak var profilePic: UIImageView!
-    
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var rejectButton: UIButton!
     @IBOutlet weak var acceptButton: UIButton!
     
     weak var delegate: UpdateSearchTableViewDelegate?
-    
     
     @IBAction func rejectButtonPressed(_ sender: Any) {
         switch self.userState! {
@@ -47,8 +45,6 @@ class SearchTableViewCell: UITableViewCell {
             Utilities.printDebugMessage("Reject button pressed at wrong time")
             break
         }
-
-    
     }
 
     @IBAction func acceptButtonPressed(_ sender: Any) {
@@ -61,7 +57,7 @@ class SearchTableViewCell: UITableViewCell {
                 self.isUserInteractionEnabled = true
                 Utilities.printDebugMessage("Deflock status: \(success)")
             })
-
+            
         case .requestPendingFromSelf:
             //Rescind friend request sent by self
             self.isUserInteractionEnabled = false
@@ -70,7 +66,7 @@ class SearchTableViewCell: UITableViewCell {
                 self.isUserInteractionEnabled = true
                 Utilities.printDebugMessage("Rescind friend request status: \(success)")
             })
-
+            
         case .requestPendingFromUser:
             //Accept the friend request
             self.isUserInteractionEnabled = false
@@ -91,10 +87,12 @@ class SearchTableViewCell: UITableViewCell {
                 Utilities.printDebugMessage("Flocked status: \(success)")
             })
         }
+
     }
     
     func setupCell(userState: SearchPeopleTableViewController.UserStates, currentUserID: String, cellID: String) {
         delegate?.updateStateDict(FBID: cellID, state: userState)
+        
         self.userState = userState
         self.currentUserID = currentUserID
         self.cellID = cellID

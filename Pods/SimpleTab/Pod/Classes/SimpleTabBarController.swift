@@ -80,7 +80,7 @@ open class SimpleTabBarController: UITabBarController {
         //# Optional - Set Tab Icon colors for selected and unselected (normal) states.
         // Or use the App tint color to set the states
         style.setIconColor(UIColor.lightGray, forState: UIControlState.normal)
-        style.setIconColor(colorWithHexString("4CB6BE"), forState: UIControlState.selected)
+        style.setIconColor(colorWithHexString("4CB5F5"), forState: UIControlState.selected)
         
         //# Let the tab bar control know of the style
         // Note: All style settings must be done prior to this.

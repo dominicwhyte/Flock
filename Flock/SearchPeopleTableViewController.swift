@@ -10,6 +10,11 @@ import UIKit
 
 class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableViewDelegate {
     
+    struct Constants {
+        static let CELL_HEIGHT = 70
+        static let SECTION_TITLES = ["All"]
+    }
+    
     var users : [User]?
     var filteredUsers = [User]()
     let searchController = UISearchController(searchResultsController: nil)
@@ -29,7 +34,15 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
         searchController.searchBar.delegate = self
         definesPresentationContext = true
         searchController.dimsBackgroundDuringPresentation = false
+        
+        searchController.searchBar.barTintColor = UIColor.white
+        searchController.searchBar.tintColor = FlockColors.FLOCK_GRAY
+        
+        searchController.searchBar.placeholder = "Search                                                                                     "
+        
+        
         tableView.tableHeaderView = searchController.searchBar
+        self.tableView.separatorColor = FlockColors.FLOCK_BLUE
         
     }
     
@@ -82,6 +95,34 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
         return self.users!.count
     }
     
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return Constants.SECTION_TITLES[section]
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let returnedView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 25))
+        //returnedView.backgroundColor = FlockColors.FLOCK_BLUE
+        
+        let gradient = CAGradientLayer()
+        
+        gradient.frame = returnedView.bounds
+        
+        gradient.startPoint = CGPoint(x: 0, y: 0.5)
+        gradient.endPoint = CGPoint(x: 1, y: 0.5)
+        gradient.colors = [FlockColors.FLOCK_BLUE.cgColor, FlockColors.FLOCK_LIGHT_BLUE.cgColor]
+        
+        returnedView.layer.insertSublayer(gradient, at: 0)
+        
+        
+        
+        let label = UILabel(frame: CGRect(x: 10, y: 0, width: view.frame.size.width, height: 25))
+        label.textColor = .white
+        label.text = Constants.SECTION_TITLES[section]
+        returnedView.addSubview(label)
+        
+        return returnedView
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let currentUser : User = appDelegate.user!
@@ -114,10 +155,22 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "SEARCH", for: indexPath) as! SearchTableViewCell
         self.retrieveImage(imageURL: user.PictureURL, imageView: cell.profilePic)
+        self.makeViewCircle(imageView: cell.profilePic)
         cell.name.text = user.Name
         cell.setupCell(userState: userState, currentUserID: currentUser.FBID, cellID: user.FBID)
         cell.delegate = self
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return CGFloat(Constants.CELL_HEIGHT)
+    }
+    
+    func makeViewCircle(imageView : UIView) {
+        imageView.layer.cornerRadius = imageView.frame.size.width/2
+        imageView.clipsToBounds = true
+        imageView.layer.borderWidth = 2
+        imageView.layer.borderColor = UIColor.lightGray.cgColor
     }
     
     

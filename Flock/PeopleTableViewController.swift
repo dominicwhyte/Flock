@@ -263,7 +263,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
             //self.retrieveImage(imageURL: venue!.ImageURL, imageView: cell.venuePic)
             //Setup mgswipe capability
             cell.setupCell(plans: Array(friend.Plans.values))
-            makeViewSquare(imageView: cell.profilePic!)
+            makeViewCircle(imageView: cell.profilePic!)
                         
             return cell
             
@@ -297,7 +297,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         }
     }
     
-    func makeViewSquare(imageView : UIView) {
+    func makeViewCircle(imageView : UIView) {
         imageView.layer.cornerRadius = imageView.frame.size.width/2
         imageView.clipsToBounds = true
         imageView.layer.borderWidth = 2

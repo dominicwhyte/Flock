@@ -12,7 +12,7 @@ import MGSwipeTableCell
 class PlannedTableViewCell: MGSwipeTableCell, MGSwipeTableCellDelegate {
 
     struct Constants {
-        static let CELL_HEIGHT = 74
+        static let CELL_HEIGHT = 75
     }
     
     
@@ -43,8 +43,10 @@ class PlannedTableViewCell: MGSwipeTableCell, MGSwipeTableCellDelegate {
                 
                 //if the last button and there are still more plans
                 if (index == MAX_VENUES_TO_DISPLAY - 1 && plans.count > MAX_VENUES_TO_DISPLAY) {
-                    let image = UIImage(named:"cat.png")
-                    let button = MGSwipeButton(title: "", icon: self.imageResize(image: image!, sizeChange: CGSize(width: Constants.CELL_HEIGHT, height: Constants.CELL_HEIGHT)), backgroundColor: UIColor.green)
+                    let image = UIImage(named:"more.png")
+                    let button = MGSwipeButton(title: "", icon: self.imageResize(image: image!, sizeChange: CGSize(width: Constants.CELL_HEIGHT, height: Constants.CELL_HEIGHT)), backgroundColor: UIColor.clear)
+                    //button.setBackgroundImage(image, for: .normal)
+                    button.frame = CGRect(x: 0, y: 0, width: Constants.CELL_HEIGHT, height: Constants.CELL_HEIGHT)
                     leftButtonsArray.append(button)
                 }
                 //Just append the image button
@@ -54,6 +56,7 @@ class PlannedTableViewCell: MGSwipeTableCell, MGSwipeTableCellDelegate {
                         if let venueImage = venueImages[venue.ImageURL] {
                             button = MGSwipeButton(title: "", icon: nil, backgroundColor: UIColor.clear)
                             button.setBackgroundImage(venueImage, for: .normal)
+                            button.frame = CGRect(x: 0, y: 0, width: Constants.CELL_HEIGHT, height: Constants.CELL_HEIGHT)
                         }
                     }
                     leftButtonsArray.append(button)
