@@ -27,7 +27,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func masterLogin(completion: @escaping (_ status: Bool) -> ()) {
         updateAllData { (success) in
-            
             // For initial efficiency, get images of all venues (eating clubs) to prevent reloading
             // at each display of the club image. Not scalable, but initially much faster
             if(success) {
@@ -36,7 +35,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     imageURLArray.append(venue.ImageURL)
                     imageURLArray.append(venue.LogoURL)
                 }
-                
                 self.setAllVenueImages(venueImageURLs: imageURLArray, completion: { (venueImageSuccess) in
                     if (!venueImageSuccess) {
                         Utilities.printDebugMessage("Failure fetching venue images")
@@ -75,10 +73,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     completion(true)
                 }
             })
-        }
-        if (imagesFetched < imagesToFetch) {
-            self.venueImages = venueImagesTemp
-            completion(false)
         }
     }
     

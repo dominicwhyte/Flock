@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>BTNavigationDropdownMenu.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Bolts.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -79,6 +84,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>PureLayout.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>SCLAlertView.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -97,7 +107,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0A94ED80018EEDAEA8AE04A80EBB4030</key>
+		<key>086E9CCC46F3DD21F8D86705AEDA0D90</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -137,7 +147,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>7BAD0EBCAEE83CE22C3382FF40B30EB0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>7D04535608058A2FABC0D16935868FB9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7ED8118EF9719170BAD86EB2D69879AE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -157,22 +177,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9ECBD0FC3E4D2960E7D93AD3715C95FC</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>9F64AC11F6A6867B4E35A68D6AD131EB</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>A8F77DC39F7D0CFE46DAA5C135D96A80</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C4957BF76C6848FFDCF81661AEC762BF</key>
+		<key>BCD6D1351E1A7E3C34A8E6A413639B04</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BE9FE8234B7993492656563CDEF3D35E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -182,7 +197,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F161410B60153D76A36FFEB36344ECAD</key>
+		<key>FCF4CFE80F2640F0A62FFF04C0163275</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FD23F1DA220A44C7E84F356B64871271</key>
 		<dict>
 			<key>primary</key>
 			<true/>

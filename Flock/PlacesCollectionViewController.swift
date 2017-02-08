@@ -8,22 +8,78 @@
 
 import UIKit
 import PopupDialog
+import BTNavigationDropdownMenu
 
 private let reuseIdentifier = "Cell"
 
 class PlacesCollectionViewController: UICollectionViewController, VenueDelegate {
+    
+    let items = ["Princeton", "Harvard", "Dartmouth", "Stanford"]
+    var currentTab : String = "Princeton" //Which college
+    
     // MARK: - Properties
     fileprivate let reuseIdentifier = "PLACE"
-    //fileprivate let sectionInsets = UIEdgeInsets(top: 50.0, left: 20.0, bottom: 50.0, right: 20.0)
-    fileprivate let sectionInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+    fileprivate let sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     
     internal var venueToPass: Venue?
     
-    fileprivate let itemsPerRow: CGFloat = 2
-    var venues : [Venue]?
+    fileprivate let itemsPerRow: CGFloat = 1
+    var venues = [Venue]()
+    var filteredVenues = [Venue]()
+    
     var imageCache = [String : UIImage]()
+    let searchController = UISearchController(searchResultsController: nil)
+    
+    func displayVenuePopupWithVenueIDForDay(venueID : String, date : Date) {
+        var selectedVenue : Venue? = nil
+        for venue in venues {
+            Utilities.printDebugMessage("checking")
+            if venue.VenueID == venueID {
+                selectedVenue = venue
+                break
+            }
+        }
+        if let selectedVenueFound : Venue = selectedVenue {
+            self.venueToPass = selectedVenueFound
+            showCustomDialog(venue: selectedVenueFound, startDisplayDate: date)
+            
+        }
+        else {
+            Utilities.printDebugMessage("Error: cannot find venue with venueID to show")
+        }
+        
+    }
+    
     
     override func viewDidLoad() {
+        //empty background view
+        setupEmptyBackgroundView()
+        self.collectionView?.backgroundColor = UIColor.white
+        //Search
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        definesPresentationContext = true
+        searchController.dimsBackgroundDuringPresentation = false
+        
+        searchController.searchBar.barTintColor = UIColor.white
+        searchController.searchBar.tintColor = FlockColors.FLOCK_GRAY
+        
+        searchController.searchBar.placeholder = "Search                                                                                     "
+        
+        //nav bar
+        let menuView = BTNavigationDropdownMenu(navigationController: self.navigationController, containerView: self.navigationController!.view, title: items[0], items: items as [AnyObject])
+        self.navigationController?.navigationBar.tintColor = UIColor.white
+        self.navigationController?.navigationBar.barTintColor = FlockColors.FLOCK_BLUE
+        menuView.menuTitleColor = UIColor.white
+        menuView.cellTextLabelColor = FlockColors.FLOCK_BLUE
+        self.navigationItem.titleView = menuView
+        
+        
+        menuView.didSelectItemAtIndexHandler = {[weak self] (indexPath: Int) -> () in
+            self?.currentTab = self!.items[indexPath]
+            self?.collectionView?.reloadData()
+        }
+        
         super.viewDidLoad()
 
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -35,25 +91,21 @@ class PlacesCollectionViewController: UICollectionViewController, VenueDelegate 
         // Do any additional setup after loading the view.
         UINavigationBar.appearance().tintColor = UIColor.white
         UINavigationBar.appearance().barTintColor = FlockColors.FLOCK_BLUE
+        self.navigationController?.navigationBar.isTranslucent = true
+        
         self.view.backgroundColor = FlockColors.FLOCK_GRAY
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    fileprivate let image = UIImage(named: "cat.png")!.withRenderingMode(.alwaysTemplate)
+    fileprivate let topMessage = "Favorites"
+    fileprivate let bottomMessage = "You don't have any favorites yet. All your favorites will show up here."
+    
+    func setupEmptyBackgroundView() {
+        let emptyBackgroundView = EmptyBackgroundView(image: image, top: topMessage, bottom: bottomMessage)
+        collectionView?.backgroundView = emptyBackgroundView
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
-
-    // MARK: UICollectionViewDataSource
+   
+  
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
@@ -62,32 +114,51 @@ class PlacesCollectionViewController: UICollectionViewController, VenueDelegate 
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
-        return self.venues!.count
+        if (currentTab == items[0]) {
+            collectionView.backgroundView?.isHidden = true
+            // #warning Incomplete implementation, return the number of items
+            if searchController.isActive && searchController.searchBar.text != "" {
+                return self.filteredVenues.count
+            }
+            return self.venues.count
+        }
+        else {
+            //tableView.separatorStyle = .none
+            collectionView.backgroundView?.isHidden = false
+            return 0
+        }
+        
     }
     
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! PlacesCollectionViewCell
         //Setup Cell
-        let venue = self.venues![indexPath.row]
-        cell.placesNameLabel.text = venue.VenueName
-        self.retrieveImage(imageURL: venue.ImageURL, imageView: cell.backgroundImage)
-        self.retrieveImage(imageURL: venue.LogoURL, imageView: cell.placesLogoImage)
-        cell.liveLabel.text = "\(venue.CurrentAttendees.count)"
-        cell.plannedLabel.text = "\(venue.PlannedAttendees.count)"
-        cell.placesLogoImage.setRounded()
-        
-    
-        // Configure the cell
-    
+        if (currentTab == items[0]) {
+            var venue : Venue
+            
+            if searchController.isActive && searchController.searchBar.text != "" {
+                venue = filteredVenues[indexPath.row]
+            }
+            else {
+                venue = self.venues[indexPath.row]
+            }
+            
+            cell.placesNameLabel.text = venue.VenueName
+            self.retrieveImage(imageURL: venue.ImageURL, imageView: cell.backgroundImage)
+            //        cell.liveLabel.text = "\(venue.CurrentAttendees.count) live"
+            //        cell.plannedLabel.text = "\(venue.PlannedAttendees.count) planned"
+            cell.subtitleLabel.text = "\(venue.CurrentAttendees.count) live   \(venue.PlannedAttendees.count) planned"
+        }
         return cell
     }
     
+    
+    
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let venue = self.venues![indexPath.row]
+        let venue = self.venues[indexPath.row]
         self.venueToPass = venue
-        showCustomDialog(venue: venue)
+        showCustomDialog(venue: venue, startDisplayDate: nil)
     }
     
     //Retrieve image with caching
@@ -105,6 +176,14 @@ class PlacesCollectionViewController: UICollectionViewController, VenueDelegate 
         }
     }
     
+    func filterContentForSearchText(_ searchText: String) {
+        self.filteredVenues = (venues.filter({( venue : Venue) -> Bool in
+            return venue.VenueName.lowercased().contains(searchText.lowercased())
+        }))
+        collectionView?.reloadData()
+    }
+    
+    
     func retrieveImage(imageURL : String, completion: @escaping (_ image: UIImage) -> ()) {
         if let image = imageCache[imageURL] {
             completion(image)
@@ -117,11 +196,17 @@ class PlacesCollectionViewController: UICollectionViewController, VenueDelegate 
         }
     }
     
-    func showCustomDialog(venue : Venue) {
+    //Date is optional, this is if you want to start on a certain day of the week
+    func showCustomDialog(venue : Venue, startDisplayDate : Date?) {
         
         // Create a custom view controller
         let popupSubView = PopupSubViewController(nibName: "PopupSubViewController", bundle: nil)
         popupSubView.delegate = self
+        
+        if let date = startDisplayDate {
+            popupSubView.setStartDate(date: date)
+        }
+        
         // Create the dialog
         let popup = PopupDialog(viewController: popupSubView, buttonAlignment: .horizontal, transitionStyle: .bounceDown, gestureDismissal: true)
         
@@ -150,38 +235,27 @@ class PlacesCollectionViewController: UICollectionViewController, VenueDelegate 
 }
 
 
-extension PlacesCollectionViewController : UICollectionViewDelegateFlowLayout {
-    //1
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-        //2
-        let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
-        let availableWidth = view.frame.width - paddingSpace
-        let widthPerItem = availableWidth / itemsPerRow
-        
-        return CGSize(width: widthPerItem, height: widthPerItem)
-    }
-    
-    //3
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        insetForSectionAt section: Int) -> UIEdgeInsets {
-        return sectionInsets
-    }
-    
-    // 4
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return sectionInsets.left
-    }
-}
-
 extension UIImageView {
     
     func setRounded() {
         let radius = self.frame.width / 2
         self.layer.cornerRadius = radius
         self.layer.masksToBounds = true
+    }
+}
+
+extension PlacesCollectionViewController: UISearchBarDelegate {
+    // MARK: - UISearchBar Delegate
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        filterContentForSearchText(searchBar.text!)
+    }
+}
+
+extension PlacesCollectionViewController: UISearchResultsUpdating {
+    // MARK: - UISearchResultsUpdating Delegate
+    func updateSearchResults(for searchController: UISearchController) {
+        _ = searchController.searchBar
+        filterContentForSearchText(searchController.searchBar.text!)
     }
 }
 

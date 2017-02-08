@@ -25,7 +25,8 @@ class PlannedTableViewCell: MGSwipeTableCell, MGSwipeTableCellDelegate {
     var plans = [Plan]()
     
     func swipeTableCell(_ cell: MGSwipeTableCell, tappedButtonAt index: Int, direction: MGSwipeDirection, fromExpansion: Bool) -> Bool {
-        Utilities.printDebugMessage("\(index)")
+        let plan = plans[index]
+        Utilities.animateToPlacesTabWithVenueIDandDate(venueID: plan.venueID, date: plan.date)
         return true
     }
     

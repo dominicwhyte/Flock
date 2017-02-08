@@ -103,6 +103,8 @@ class TestingViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     @IBAction func updateAppPressed(_ sender: Any) {
+        
+        
         let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.updateAllData { (success) in

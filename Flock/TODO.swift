@@ -19,6 +19,7 @@ import Foundation
  update app when loading search page
  imessage integration
  
+ wipe datbase
  Rating: https://github.com/nicklockwood/iRate
  Empty tableviews: https://github.com/dzenbot/DZNEmptyDataSet
  Permissions: https://github.com/nickoneill/PermissionScope

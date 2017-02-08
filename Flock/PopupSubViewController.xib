@@ -46,7 +46,7 @@
                                 <action selector="pickerValueChanged:" destination="-1" eventType="valueChanged" id="d9D-eS-5xY"/>
                             </connections>
                         </view>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="93f-NF-nyy">
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="93f-NF-nyy">
                             <rect key="frame" x="0.0" y="0.0" width="292" height="164"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="164" id="IiH-bK-7Vu"/>

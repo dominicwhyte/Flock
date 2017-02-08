@@ -28,8 +28,27 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     var imageCache = [String: UIImage]()
     //keys are yyyy-MM-dd
     var allFriendsForDate : [String : [[User]]] = [:]
-
+    
     var tableView: UITableView  =   UITableView()
+    
+    var startDate : Date?
+    
+    func setStartDate(date : Date) {
+        self.startDate = date
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if let startDate = self.startDate {
+            if(isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: startDate))) {
+                let fullDate = DateUtilities.convertDateToStringByFormat(date: startDate, dateFormat: DateUtilities.Constants.fullDateFormat)
+                if let startIndex = stringsOfUpcomingDays.index(of: fullDate) {
+                    datePicker.setSelectedItemIndex(startIndex, animated: true)
+                }
+            }
+        }
+    }
     
     override func viewDidLoad() {
         datePicker.titles = self.determineTitleOrder(dayCount: NUMBER_OF_DAYS_TO_DISPLAY)
@@ -42,7 +61,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         datePicker.tintColor = UIColor.black
         super.viewDidLoad()
         delegate?.retrieveImage(imageURL: (delegate?.venueToPass?.ImageURL)!, completion: { (image) in
-           DispatchQueue.main.async {
+            DispatchQueue.main.async {
                 self.venueImageView.image = image
             }
         })
@@ -78,7 +97,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        let currentDay = self.stringsOfUpcomingDays[datePicker.selectedItemIndex] 
+        let currentDay = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]
         let friendsAttendingClubForDay = self.allFriendsForDate[currentDay]!
         return friendsAttendingClubForDay.count
     }
@@ -93,17 +112,12 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         let plannedAttendees = venue.PlannedAttendees
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let friends = appDelegate.friends
-        Utilities.printDebugMessage("1")
         for (_, plannedAttendee) in plannedAttendees {
-            Utilities.printDebugMessage("2")
             if let friend = friends[plannedAttendee] {
-                Utilities.printDebugMessage("3")
                 for (_,plan) in friend.Plans {
-                    Utilities.printDebugMessage("4")
                     if(plan.venueID == venue.VenueID && isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))) {
                         let fullDate = DateUtilities.convertDateToStringByFormat(date: plan.date, dateFormat: DateUtilities.Constants.fullDateFormat)
                         allFriendsForDate[fullDate]![self.INDEX_OF_PLANNED_ATTENDEES].append(friend)
-                        Utilities.printDebugMessage("5")
                     }
                 }
             }
@@ -164,8 +178,8 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     
-   
     
-   
-   
+    
+    
+    
 }

@@ -49,6 +49,7 @@
 		5F61AF691E4994A400BD6A0C /* Oswald-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5F61AF5F1E4993D900BD6A0C /* Oswald-Regular.ttf */; };
 		5F61AF6D1E4A857E00BD6A0C /* CustomSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF6C1E4A857E00BD6A0C /* CustomSearchController.swift */; };
 		5F61AF6F1E4A858700BD6A0C /* CustomSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF6E1E4A858700BD6A0C /* CustomSearchBar.swift */; };
+		5F61AF711E4B7B7100BD6A0C /* EmptyBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF701E4B7B7100BD6A0C /* EmptyBackgroundView.swift */; };
 		BA5666F7848A6A4A2AB82D7A /* Pods_FlockTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2763749107C5FA0E17CDA9A /* Pods_FlockTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -104,6 +105,7 @@
 		5F61AF5F1E4993D900BD6A0C /* Oswald-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-Regular.ttf"; sourceTree = "<group>"; };
 		5F61AF6C1E4A857E00BD6A0C /* CustomSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSearchController.swift; sourceTree = "<group>"; };
 		5F61AF6E1E4A858700BD6A0C /* CustomSearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSearchBar.swift; sourceTree = "<group>"; };
+		5F61AF701E4B7B7100BD6A0C /* EmptyBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyBackgroundView.swift; sourceTree = "<group>"; };
 		745D6E35D61A42A5579F5B57 /* Pods-FlockTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlockTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FlockTests/Pods-FlockTests.release.xcconfig"; sourceTree = "<group>"; };
 		9311B80AF2DA5ADDCEA6C5AF /* Pods_Flock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE43BF5ECD8A2F8930ECE437 /* Pods-Flock.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flock.release.xcconfig"; path = "Pods/Target Support Files/Pods-Flock/Pods-Flock.release.xcconfig"; sourceTree = "<group>"; };
@@ -274,6 +276,7 @@
 				5F61AF571E48266F00BD6A0C /* VenueFriendTableViewCell.swift */,
 				5F61AF511E47D04600BD6A0C /* PopupSubViewController.xib */,
 				5F5D38051E46C867008E13E4 /* PlacesCollectionViewCell.swift */,
+				5F61AF701E4B7B7100BD6A0C /* EmptyBackgroundView.swift */,
 				5F5D38071E46C879008E13E4 /* PlacesCollectionViewController.swift */,
 			);
 			name = Places;
@@ -499,6 +502,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5F5D37C31E440CE6008E13E4 /* LoginViewController.swift in Sources */,
+				5F61AF711E4B7B7100BD6A0C /* EmptyBackgroundView.swift in Sources */,
 				5F5D37A01E43FFCE008E13E4 /* Flock.xcdatamodeld in Sources */,
 				5F61AF581E48266F00BD6A0C /* VenueFriendTableViewCell.swift in Sources */,
 				5F5D38061E46C867008E13E4 /* PlacesCollectionViewCell.swift in Sources */,

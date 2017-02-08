@@ -11,12 +11,8 @@ import UIKit
 class PlacesCollectionViewCell: UICollectionViewCell {
     
     
+    @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var placesNameLabel: UILabel!
-    @IBOutlet weak var placesLogoImage: UIImageView!
-    @IBOutlet weak var liveImage: UIImageView!
-    @IBOutlet weak var liveLabel: UILabel!
-    @IBOutlet weak var plannedImage: UIImageView!
-    @IBOutlet weak var plannedLabel: UILabel!
     @IBOutlet weak var backgroundImage: UIImageView!
 }
 

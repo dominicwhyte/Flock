@@ -6,6 +6,7 @@ PODS:
   - Bolts/AppLinks (1.8.4):
     - Bolts/Tasks
   - Bolts/Tasks (1.8.4)
+  - BTNavigationDropdownMenu (0.4.1)
   - FacebookCore (0.2.0):
     - Bolts (~> 1.8)
     - FBSDKCoreKit (~> 4.15)
@@ -73,11 +74,13 @@ PODS:
   - MGSwipeTableCell (1.5.6)
   - MVHorizontalPicker (0.0.2)
   - PopupDialog (0.5.0)
+  - PureLayout (3.0.2)
   - SCLAlertView (0.7.0)
   - SimpleTab (0.1.1)
 
 DEPENDENCIES:
   - AASquaresLoading
+  - BTNavigationDropdownMenu
   - FacebookCore
   - FacebookLogin
   - FacebookShare
@@ -88,12 +91,14 @@ DEPENDENCIES:
   - MGSwipeTableCell
   - MVHorizontalPicker
   - PopupDialog (~> 0.5)
+  - PureLayout (~> 3.0.1)
   - SCLAlertView
   - SimpleTab
 
 SPEC CHECKSUMS:
   AASquaresLoading: 4039c25b61835d6f7c73d2d3382d6960a6039fa5
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
+  BTNavigationDropdownMenu: 093f3cbfad1572f2c222bdf8d17584d1e13380d4
   FacebookCore: 2cb3f0fbff218e9d3119cec84bae983b232412de
   FacebookLogin: c9d606504735780a9e3002465a615512e0a691a5
   FacebookShare: 8e9ee8ea06505e6a1d3d719b0cc63e840fb8aaeb
@@ -114,9 +119,10 @@ SPEC CHECKSUMS:
   MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
   MVHorizontalPicker: d0d821ef2fa0c2dd9b11c907e650f5551c2f501c
   PopupDialog: 9890441b81105b9076757af2afe2b037be682f3e
+  PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
   SCLAlertView: 8a14ffc40590c619e183eed2298b854385f30be1
   SimpleTab: 4e490e339a19d0d1d26c0fa3c862188eaad73ecb
 
-PODFILE CHECKSUM: be35fa4b85aa8d38acd9d2a9c2c21f57eba29bb8
+PODFILE CHECKSUM: a60c89140233456c338516cda987d7c84d0ebddd
 
 COCOAPODS: 1.0.1

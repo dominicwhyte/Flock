@@ -84,6 +84,24 @@ class Utilities {
         }
     }
     
+    static func animateToPlacesTabWithVenueIDandDate(venueID : String, date : Date) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.simpleTBC?.animateToTab(0, completion: { (vc) in
+            if let navController = vc as? UINavigationController {
+                if let vc = navController.topViewController as? PlacesCollectionViewController {
+                    
+                    vc.displayVenuePopupWithVenueIDForDay(venueID: venueID, date: date)
+                }
+                else {
+                    Utilities.printDebugMessage("Error: could not convert VC")
+                }
+            }
+            else {
+                Utilities.printDebugMessage("Error: could not convert VC")
+            }
+            
+        })
+    }
     
     
     
