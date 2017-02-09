@@ -71,12 +71,15 @@ PODS:
     - GoogleToolboxForMac/NSString+URLArguments (= 2.1.0)
   - GoogleToolboxForMac/NSString+URLArguments (2.1.0)
   - GTMSessionFetcher/Core (1.1.7)
+  - LFTwitterProfile (0.1.1):
+    - SnapKit (~> 3.0)
   - MGSwipeTableCell (1.5.6)
   - MVHorizontalPicker (0.0.2)
   - PopupDialog (0.5.0)
   - PureLayout (3.0.2)
   - SCLAlertView (0.7.0)
   - SimpleTab (0.1.1)
+  - SnapKit (3.0.2)
 
 DEPENDENCIES:
   - AASquaresLoading
@@ -88,6 +91,7 @@ DEPENDENCIES:
   - Firebase/Core
   - Firebase/Database
   - Firebase/Storage
+  - LFTwitterProfile
   - MGSwipeTableCell
   - MVHorizontalPicker
   - PopupDialog (~> 0.5)
@@ -116,13 +120,15 @@ SPEC CHECKSUMS:
   GoogleSymbolUtilities: 631ee17048aa5e9ab133470d768ea997a5ef9b96
   GoogleToolboxForMac: 2b2596cbb7186865e98cadf2b1e262d851c2b168
   GTMSessionFetcher: a1f8ed39e4fe21c68957daed472c7afbcdf29166
+  LFTwitterProfile: 57cc1c1602e3b4cf297b3d80b85dff16b5257ad4
   MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
   MVHorizontalPicker: d0d821ef2fa0c2dd9b11c907e650f5551c2f501c
   PopupDialog: 9890441b81105b9076757af2afe2b037be682f3e
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
   SCLAlertView: 8a14ffc40590c619e183eed2298b854385f30be1
   SimpleTab: 4e490e339a19d0d1d26c0fa3c862188eaad73ecb
+  SnapKit: 2e456761aa92d4d4067a7a5594c18769d451a8ad
 
-PODFILE CHECKSUM: a60c89140233456c338516cda987d7c84d0ebddd
+PODFILE CHECKSUM: 06685ae0086b9f426e14822bf0bb5dc0158b3c12
 
 COCOAPODS: 1.0.1

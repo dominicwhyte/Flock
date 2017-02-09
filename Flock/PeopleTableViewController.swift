@@ -57,6 +57,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
     var filteredFriends = [[User]]()
     var searchController : UISearchController = UISearchController(searchResultsController: nil)
     var imageCache = [String : UIImage]()
+    var userToPass : User?
     
     override func viewDidLoad() {
         //searchController = configureSearchController()
@@ -199,6 +200,18 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        var userToView : User
+        if searchController.isActive && searchController.searchBar.text != "" {
+            userToView = filteredFriends[indexPath.section][indexPath.row]
+        }
+        else {
+            userToView = friends[indexPath.section][indexPath.row]
+        }
+        self.userToPass = userToView
+        performSegue(withIdentifier: "PROFILE", sender: self)
+    }
+    
     func didStartSearching() {
         
     }
@@ -239,7 +252,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
             cell.preservesSuperviewLayoutMargins = false
             cell.separatorInset = UIEdgeInsets.zero
             cell.layoutMargins = UIEdgeInsets.zero
-            
+            cell.selectionStyle = .none
             return cell
             
         case Constants.LIVE_FRIENDS_INDEX:
@@ -252,6 +265,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
             cell.preservesSuperviewLayoutMargins = false
             cell.separatorInset = UIEdgeInsets.zero
             cell.layoutMargins = UIEdgeInsets.zero
+            cell.selectionStyle = .none
             return cell
             
         case Constants.PLANNED_FRIENDS_INDEX:
@@ -264,7 +278,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
             //Setup mgswipe capability
             cell.setupCell(plans: Array(friend.Plans.values))
             makeViewCircle(imageView: cell.profilePic!)
-                        
+            cell.selectionStyle = .none
             return cell
             
         case Constants.REMAINING_FRIENDS_INDEX:
@@ -275,6 +289,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
             cell.preservesSuperviewLayoutMargins = false
             cell.separatorInset = UIEdgeInsets.zero
             cell.layoutMargins = UIEdgeInsets.zero
+            cell.selectionStyle = .none
             return cell
         default:
             Utilities.printDebugMessage("Error in table view switch")
@@ -294,6 +309,14 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
             if let searchPeopleTableViewController = navController.topViewController as? SearchPeopleTableViewController {
                 searchPeopleTableViewController.delegate = self
             }
+        } else if let profileController = segue.destination as? ProfileViewController {
+            if let userToPass = userToPass {
+                profileController.user = userToPass
+            } else {
+                Utilities.printDebugMessage("Unable to pass user")
+            }
+        } else {
+            Utilities.printDebugMessage("Wasn't able to find view controller")
         }
     }
     
@@ -303,6 +326,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         imageView.layer.borderWidth = 2
         imageView.layer.borderColor = UIColor.lightGray.cgColor
     }
+
     
 }
 

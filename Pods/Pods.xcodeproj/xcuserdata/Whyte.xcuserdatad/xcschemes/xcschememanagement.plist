@@ -59,6 +59,16 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>LFTwitterProfile-LFTwitterProfile.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>LFTwitterProfile.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>MGSwipeTableCell.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -104,14 +114,14 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>SnapKit.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>086E9CCC46F3DD21F8D86705AEDA0D90</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>0E579C8B6EC88FD31F0C2B47C9058B48</key>
 		<dict>
 			<key>primary</key>
@@ -122,12 +132,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>21CE86E3E12C581328AA4938C36E5202</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>23BA9083ED0D2392A167A8AFA04427FA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>31418D425B97E292FFAFC566D79FC144</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>3D0DF585CCBBF466486E5747E8992D6C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -147,22 +167,32 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7BAD0EBCAEE83CE22C3382FF40B30EB0</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>7D04535608058A2FABC0D16935868FB9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7ED8118EF9719170BAD86EB2D69879AE</key>
+		<key>7F3856BE60667313164934B7B6C4C7F1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>8329B4DD82B7A073B34A61C9527865D0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>85374AB776738B05686A36FAD6990296</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>88F29CA72443EBDD65DF195CE541E7B6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8C8C34EF236BAF30B3922A1CBBD880AF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -182,12 +212,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BCD6D1351E1A7E3C34A8E6A413639B04</key>
+		<key>A946A60B9FE6F04ED4D3A896CB7D6E0D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BE9FE8234B7993492656563CDEF3D35E</key>
+		<key>D598F039620A4B3EDC0B21645A3BB492</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -197,7 +227,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>FCF4CFE80F2640F0A62FFF04C0163275</key>
+		<key>FA1ACBF5FBB092C53AE72F0586CA91FB</key>
 		<dict>
 			<key>primary</key>
 			<true/>

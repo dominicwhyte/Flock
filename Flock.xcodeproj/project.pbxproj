@@ -50,6 +50,7 @@
 		5F61AF711E4B7B7100BD6A0C /* EmptyBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF701E4B7B7100BD6A0C /* EmptyBackgroundView.swift */; };
 		5F61AF731E4BCBE500BD6A0C /* PlacesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF721E4BCBE500BD6A0C /* PlacesTableViewController.swift */; };
 		5F61AF751E4BCC6300BD6A0C /* PlacesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF741E4BCC6300BD6A0C /* PlacesTableViewCell.swift */; };
+		5F61AF771E4C0BE400BD6A0C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF761E4C0BE300BD6A0C /* ProfileViewController.swift */; };
 		BA5666F7848A6A4A2AB82D7A /* Pods_FlockTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2763749107C5FA0E17CDA9A /* Pods_FlockTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -106,6 +107,7 @@
 		5F61AF701E4B7B7100BD6A0C /* EmptyBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyBackgroundView.swift; sourceTree = "<group>"; };
 		5F61AF721E4BCBE500BD6A0C /* PlacesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacesTableViewController.swift; sourceTree = "<group>"; };
 		5F61AF741E4BCC6300BD6A0C /* PlacesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacesTableViewCell.swift; sourceTree = "<group>"; };
+		5F61AF761E4C0BE300BD6A0C /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		745D6E35D61A42A5579F5B57 /* Pods-FlockTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlockTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FlockTests/Pods-FlockTests.release.xcconfig"; sourceTree = "<group>"; };
 		9311B80AF2DA5ADDCEA6C5AF /* Pods_Flock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE43BF5ECD8A2F8930ECE437 /* Pods-Flock.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flock.release.xcconfig"; path = "Pods/Target Support Files/Pods-Flock/Pods-Flock.release.xcconfig"; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 				5F5D37BF1E4407D9008E13E4 /* Utilities.swift */,
 				5F61AF591E48373500BD6A0C /* DateUtilities.swift */,
 				5F5D379B1E43FFCE008E13E4 /* Main.storyboard */,
+				5F61AF781E4C0BEB00BD6A0C /* Profile */,
 				5F5D38091E46C87F008E13E4 /* Places */,
 				5F5D38001E466AA2008E13E4 /* People */,
 				5F5D38021E466AB6008E13E4 /* Testing */,
@@ -280,6 +283,14 @@
 				5F61AF701E4B7B7100BD6A0C /* EmptyBackgroundView.swift */,
 			);
 			name = Places;
+			sourceTree = "<group>";
+		};
+		5F61AF781E4C0BEB00BD6A0C /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				5F61AF761E4C0BE300BD6A0C /* ProfileViewController.swift */,
+			);
+			name = Profile;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -511,6 +522,7 @@
 				5F61AF6D1E4A857E00BD6A0C /* CustomSearchController.swift in Sources */,
 				5F61AF541E47D06800BD6A0C /* PopupSubViewController.swift in Sources */,
 				5F61AF731E4BCBE500BD6A0C /* PlacesTableViewController.swift in Sources */,
+				5F61AF771E4C0BE400BD6A0C /* ProfileViewController.swift in Sources */,
 				5F5D37D11E44BE44008E13E4 /* TestingViewController.swift in Sources */,
 				5F5D37FD1E465172008E13E4 /* TODO.swift in Sources */,
 				5F61AF751E4BCC6300BD6A0C /* PlacesTableViewCell.swift in Sources */,

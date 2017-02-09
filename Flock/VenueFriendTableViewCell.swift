@@ -12,5 +12,6 @@ class VenueFriendTableViewCell: UITableViewCell {
 
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var profilePic: UIImageView!
+    @IBOutlet weak var subtitleLabel: UILabel!
     
 }
