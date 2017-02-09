@@ -19,36 +19,66 @@ class FriendRequestTableViewCell: UITableViewCell {
         self.toID = toID
     }
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        rejectButton.setRounded()
+        acceptButton.setRounded()
+    }
+    
+    @IBOutlet weak var rejectButton: UIButton!
+    
+    @IBOutlet weak var acceptButton: UIButton!
+    
 
     @IBOutlet weak var friendName: UILabel!
     
     @IBOutlet weak var profilePic: UIImageView!
     
-    @IBAction func acceptRequest(_ sender: Any) {
-        let loadingScreen = Utilities.presentLoadingScreen(vcView: delegate!.parentView!)
-        FirebaseClient.confirmFriendRequest(fromID!, toID: toID!) { (success) in
-            self.delegate?.updateDataAndTableView({ (successReloadData) in
-                Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.delegate!.parentView!)
-                if(success && successReloadData) {
-                    Utilities.printDebugMessage("Successfully accepted friend request and reloaded data")
-                } else {
-                    Utilities.printDebugMessage("Unable to accept friend request")
-                }
-            })
-            
+    @IBAction func acceptButtonPressed(_ sender: Any) {
+        Utilities.bounceView(viewOneIsIn: self, self.acceptButton) { (success) in
+            if (!success) {
+                Utilities.printDebugMessage("Error with button animation")
+            }
+            let loadingScreen = Utilities.presentLoadingScreen(vcView: self.delegate!.parentView!)
+            FirebaseClient.confirmFriendRequest(self.fromID!, toID: self.toID!) { (success) in
+                self.delegate?.updateDataAndTableView({ (successReloadData) in
+                    Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.delegate!.parentView!)
+                    if(success && successReloadData) {
+                        Utilities.printDebugMessage("Successfully accepted friend request and reloaded data")
+                    } else {
+                        Utilities.printDebugMessage("Unable to accept friend request")
+                    }
+                })
+                
+            }
         }
     }
-    
-    @IBAction func rejectRequest(_ sender: Any) {
-        FirebaseClient.rejectFriendRequest(fromID!, toID: toID!) { (success) in
-            self.delegate?.updateDataAndTableView({ (successReloadData) in
-                if(success && successReloadData) {
-                    Utilities.printDebugMessage("Successfully rejected friend rquest")
-                } else {
-                    Utilities.printDebugMessage("Unable to reject friend request")
-                }
-            })
+    @IBAction func rejectButtonPressed(_ sender: Any) {
+        Utilities.bounceView(viewOneIsIn: self, self.rejectButton) { (success) in
+            if (!success) {
+                Utilities.printDebugMessage("Error with button animation")
+            }
+            FirebaseClient.rejectFriendRequest(self.fromID!, toID: self.toID!) { (success) in
+                self.delegate?.updateDataAndTableView({ (successReloadData) in
+                    if(success && successReloadData) {
+                        Utilities.printDebugMessage("Successfully rejected friend rquest")
+                    } else {
+                        Utilities.printDebugMessage("Unable to reject friend request")
+                    }
+                })
+            }
         }
+       
     }
     
+}
+
+
+extension UIView {
+    
+    func setRounded() {
+        let radius = self.frame.width / 2
+        self.layer.cornerRadius = radius
+        self.layer.masksToBounds = true
+    }
 }

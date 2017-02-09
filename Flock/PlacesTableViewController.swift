@@ -1,8 +1,8 @@
 //
-//  PlacesCollectionViewController.swift
+//  PlacesTableViewController.swift
 //  Flock
 //
-//  Created by Dominic Whyte on 04/02/17.
+//  Created by Dominic Whyte on 08/02/17.
 //  Copyright © 2017 Dominic Whyte. All rights reserved.
 //
 
@@ -10,14 +10,13 @@ import UIKit
 import PopupDialog
 import BTNavigationDropdownMenu
 
-private let reuseIdentifier = "Cell"
 
-class PlacesCollectionViewController: UICollectionViewController, VenueDelegate {
+
+class PlacesTableViewController: UITableViewController, VenueDelegate {
     
     let items = ["Princeton", "Harvard", "Dartmouth", "Stanford"]
     var currentTab : String = "Princeton" //Which college
     
-    // MARK: - Properties
     fileprivate let reuseIdentifier = "PLACE"
     fileprivate let sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     
@@ -29,6 +28,70 @@ class PlacesCollectionViewController: UICollectionViewController, VenueDelegate 
     
     var imageCache = [String : UIImage]()
     let searchController = UISearchController(searchResultsController: nil)
+
+
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if (currentTab == items[0]) {
+            tableView.backgroundView?.isHidden = true
+            // #warning Incomplete implementation, return the number of items
+            if searchController.isActive && searchController.searchBar.text != "" {
+                return self.filteredVenues.count
+            }
+            return self.venues.count
+        }
+        else {
+            //tableView.separatorStyle = .none
+            tableView.backgroundView?.isHidden = false
+            return 0
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! PlacesTableViewCell
+        cell.selectionStyle = .none
+        //Setup Cell
+        if (currentTab == items[0]) {
+            var venue : Venue
+            
+            if searchController.isActive && searchController.searchBar.text != "" {
+                venue = filteredVenues[indexPath.row]
+            }
+            else {
+                venue = self.venues[indexPath.row]
+            }
+            
+            cell.placesNameLabel.text = venue.VenueName
+            self.retrieveImage(imageURL: venue.ImageURL, imageView: cell.backgroundImage)
+            //        cell.liveLabel.text = "\(venue.CurrentAttendees.count) live"
+            //        cell.plannedLabel.text = "\(venue.PlannedAttendees.count) planned"
+            cell.subtitleLabel.text = "\(venue.CurrentAttendees.count) live   \(venue.PlannedAttendees.count) planned"
+        }
+        return cell
+
+    }
+    
+    let inverseGoldenRatio : CGFloat = 0.621
+    let l : CGFloat = 25.0
+    let r : CGFloat = 25.0
+    let t : CGFloat = 25.0
+    let b : CGFloat  = 60.5
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let cellHeight = inverseGoldenRatio * (CGFloat(self.view.frame.width) - l - r) + b + t
+        Utilities.printDebugMessage("\(self.view.frame.width)    \(cellHeight)")
+        return cellHeight
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let venue = self.venues[indexPath.row]
+        self.venueToPass = venue
+        showCustomDialog(venue: venue, startDisplayDate: nil)
+    }
     
     func displayVenuePopupWithVenueIDForDay(venueID : String, date : Date) {
         var selectedVenue : Venue? = nil
@@ -52,9 +115,9 @@ class PlacesCollectionViewController: UICollectionViewController, VenueDelegate 
     
     
     override func viewDidLoad() {
+        
         //empty background view
         setupEmptyBackgroundView()
-        self.collectionView?.backgroundColor = UIColor.white
         //Search
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
@@ -65,7 +128,7 @@ class PlacesCollectionViewController: UICollectionViewController, VenueDelegate 
         searchController.searchBar.tintColor = FlockColors.FLOCK_GRAY
         
         searchController.searchBar.placeholder = "Search                                                                                     "
-        
+        tableView.tableHeaderView = searchController.searchBar
         //nav bar
         let menuView = BTNavigationDropdownMenu(navigationController: self.navigationController, containerView: self.navigationController!.view, title: items[0], items: items as [AnyObject])
         self.navigationController?.navigationBar.tintColor = UIColor.white
@@ -77,17 +140,17 @@ class PlacesCollectionViewController: UICollectionViewController, VenueDelegate 
         
         menuView.didSelectItemAtIndexHandler = {[weak self] (indexPath: Int) -> () in
             self?.currentTab = self!.items[indexPath]
-            self?.collectionView?.reloadData()
+            self?.tableView?.reloadData()
         }
         
         super.viewDidLoad()
-
+        
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         self.venues = Array(appDelegate.venues.values)
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
+        
         // Do any additional setup after loading the view.
         UINavigationBar.appearance().tintColor = UIColor.white
         UINavigationBar.appearance().barTintColor = FlockColors.FLOCK_BLUE
@@ -102,64 +165,9 @@ class PlacesCollectionViewController: UICollectionViewController, VenueDelegate 
     
     func setupEmptyBackgroundView() {
         let emptyBackgroundView = EmptyBackgroundView(image: image, top: topMessage, bottom: bottomMessage)
-        collectionView?.backgroundView = emptyBackgroundView
-    }
-   
-  
-
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
-    }
-
-
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if (currentTab == items[0]) {
-            collectionView.backgroundView?.isHidden = true
-            // #warning Incomplete implementation, return the number of items
-            if searchController.isActive && searchController.searchBar.text != "" {
-                return self.filteredVenues.count
-            }
-            return self.venues.count
-        }
-        else {
-            //tableView.separatorStyle = .none
-            collectionView.backgroundView?.isHidden = false
-            return 0
-        }
-        
+        tableView?.backgroundView = emptyBackgroundView
     }
     
-
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! PlacesCollectionViewCell
-        //Setup Cell
-        if (currentTab == items[0]) {
-            var venue : Venue
-            
-            if searchController.isActive && searchController.searchBar.text != "" {
-                venue = filteredVenues[indexPath.row]
-            }
-            else {
-                venue = self.venues[indexPath.row]
-            }
-            
-            cell.placesNameLabel.text = venue.VenueName
-            self.retrieveImage(imageURL: venue.ImageURL, imageView: cell.backgroundImage)
-            //        cell.liveLabel.text = "\(venue.CurrentAttendees.count) live"
-            //        cell.plannedLabel.text = "\(venue.PlannedAttendees.count) planned"
-            cell.subtitleLabel.text = "\(venue.CurrentAttendees.count) live   \(venue.PlannedAttendees.count) planned"
-        }
-        return cell
-    }
-    
-    
-    
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let venue = self.venues[indexPath.row]
-        self.venueToPass = venue
-        showCustomDialog(venue: venue, startDisplayDate: nil)
-    }
     
     //Retrieve image with caching
     func retrieveImage(imageURL : String, imageView : UIImageView) {
@@ -180,7 +188,7 @@ class PlacesCollectionViewController: UICollectionViewController, VenueDelegate 
         self.filteredVenues = (venues.filter({( venue : Venue) -> Bool in
             return venue.VenueName.lowercased().contains(searchText.lowercased())
         }))
-        collectionView?.reloadData()
+        tableView?.reloadData()
     }
     
     
@@ -235,23 +243,20 @@ class PlacesCollectionViewController: UICollectionViewController, VenueDelegate 
 }
 
 
-extension UIImageView {
-    
-    func setRounded() {
-        let radius = self.frame.width / 2
-        self.layer.cornerRadius = radius
-        self.layer.masksToBounds = true
-    }
-}
 
-extension PlacesCollectionViewController: UISearchBarDelegate {
+
+
+
+
+
+extension PlacesTableViewController: UISearchBarDelegate {
     // MARK: - UISearchBar Delegate
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
         filterContentForSearchText(searchBar.text!)
     }
 }
 
-extension PlacesCollectionViewController: UISearchResultsUpdating {
+extension PlacesTableViewController: UISearchResultsUpdating {
     // MARK: - UISearchResultsUpdating Delegate
     func updateSearchResults(for searchController: UISearchController) {
         _ = searchController.searchBar
@@ -264,3 +269,4 @@ protocol VenueDelegate: class {
     func retrieveImage(imageURL : String, completion: @escaping (_ image: UIImage) -> ())
     
 }
+

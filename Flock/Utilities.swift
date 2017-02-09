@@ -29,6 +29,21 @@ class Utilities {
         shakeView.layer.add(shake, forKey: "position")
     }
     
+    static func bounceView(viewOneIsIn : UIView, _ viewToBounce : UIView, completion: @escaping (_ success: Bool) -> ()) {
+        viewToBounce.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+        UIView.animate(withDuration: 1,
+                       delay: 0,
+                       usingSpringWithDamping: 0.2,
+                       initialSpringVelocity: 6.0,
+                       options: .allowUserInteraction,
+                       animations: { [weak viewOneIsIn] in
+                        viewToBounce.transform = .identity
+            },
+                       completion: { (success) in
+                        completion(success)
+        })
+    }
+    
     static func printDebugMessage(_ s : String) {
         print()
         print("-------------------------------------------------------")
@@ -88,7 +103,7 @@ class Utilities {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.simpleTBC?.animateToTab(0, completion: { (vc) in
             if let navController = vc as? UINavigationController {
-                if let vc = navController.topViewController as? PlacesCollectionViewController {
+                if let vc = navController.topViewController as? PlacesTableViewController {
                     
                     vc.displayVenuePopupWithVenueIDForDay(venueID: venueID, date: date)
                 }

@@ -30,8 +30,6 @@
 		5F5D37FD1E465172008E13E4 /* TODO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D37FC1E465172008E13E4 /* TODO.swift */; };
 		5F5D37FF1E466A7B008E13E4 /* SearchPeopleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D37FE1E466A7B008E13E4 /* SearchPeopleTableViewController.swift */; };
 		5F5D38041E466C17008E13E4 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D38031E466C17008E13E4 /* SearchTableViewCell.swift */; };
-		5F5D38061E46C867008E13E4 /* PlacesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D38051E46C867008E13E4 /* PlacesCollectionViewCell.swift */; };
-		5F5D38081E46C879008E13E4 /* PlacesCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D38071E46C879008E13E4 /* PlacesCollectionViewController.swift */; };
 		5F61AF521E47D04600BD6A0C /* PopupSubViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F61AF511E47D04600BD6A0C /* PopupSubViewController.xib */; };
 		5F61AF541E47D06800BD6A0C /* PopupSubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF531E47D06800BD6A0C /* PopupSubViewController.swift */; };
 		5F61AF561E48230C00BD6A0C /* VenueFriendTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F61AF551E48230C00BD6A0C /* VenueFriendTableViewCell.xib */; };
@@ -50,6 +48,8 @@
 		5F61AF6D1E4A857E00BD6A0C /* CustomSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF6C1E4A857E00BD6A0C /* CustomSearchController.swift */; };
 		5F61AF6F1E4A858700BD6A0C /* CustomSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF6E1E4A858700BD6A0C /* CustomSearchBar.swift */; };
 		5F61AF711E4B7B7100BD6A0C /* EmptyBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF701E4B7B7100BD6A0C /* EmptyBackgroundView.swift */; };
+		5F61AF731E4BCBE500BD6A0C /* PlacesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF721E4BCBE500BD6A0C /* PlacesTableViewController.swift */; };
+		5F61AF751E4BCC6300BD6A0C /* PlacesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF741E4BCC6300BD6A0C /* PlacesTableViewCell.swift */; };
 		BA5666F7848A6A4A2AB82D7A /* Pods_FlockTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2763749107C5FA0E17CDA9A /* Pods_FlockTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -91,8 +91,6 @@
 		5F5D37FC1E465172008E13E4 /* TODO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TODO.swift; sourceTree = "<group>"; };
 		5F5D37FE1E466A7B008E13E4 /* SearchPeopleTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchPeopleTableViewController.swift; sourceTree = "<group>"; };
 		5F5D38031E466C17008E13E4 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
-		5F5D38051E46C867008E13E4 /* PlacesCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacesCollectionViewCell.swift; sourceTree = "<group>"; };
-		5F5D38071E46C879008E13E4 /* PlacesCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacesCollectionViewController.swift; sourceTree = "<group>"; };
 		5F61AF511E47D04600BD6A0C /* PopupSubViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PopupSubViewController.xib; sourceTree = "<group>"; };
 		5F61AF531E47D06800BD6A0C /* PopupSubViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupSubViewController.swift; sourceTree = "<group>"; };
 		5F61AF551E48230C00BD6A0C /* VenueFriendTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VenueFriendTableViewCell.xib; sourceTree = "<group>"; };
@@ -106,6 +104,8 @@
 		5F61AF6C1E4A857E00BD6A0C /* CustomSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSearchController.swift; sourceTree = "<group>"; };
 		5F61AF6E1E4A858700BD6A0C /* CustomSearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSearchBar.swift; sourceTree = "<group>"; };
 		5F61AF701E4B7B7100BD6A0C /* EmptyBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyBackgroundView.swift; sourceTree = "<group>"; };
+		5F61AF721E4BCBE500BD6A0C /* PlacesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacesTableViewController.swift; sourceTree = "<group>"; };
+		5F61AF741E4BCC6300BD6A0C /* PlacesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacesTableViewCell.swift; sourceTree = "<group>"; };
 		745D6E35D61A42A5579F5B57 /* Pods-FlockTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlockTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FlockTests/Pods-FlockTests.release.xcconfig"; sourceTree = "<group>"; };
 		9311B80AF2DA5ADDCEA6C5AF /* Pods_Flock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE43BF5ECD8A2F8930ECE437 /* Pods-Flock.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flock.release.xcconfig"; path = "Pods/Target Support Files/Pods-Flock/Pods-Flock.release.xcconfig"; sourceTree = "<group>"; };
@@ -271,13 +271,13 @@
 		5F5D38091E46C87F008E13E4 /* Places */ = {
 			isa = PBXGroup;
 			children = (
+				5F61AF741E4BCC6300BD6A0C /* PlacesTableViewCell.swift */,
+				5F61AF721E4BCBE500BD6A0C /* PlacesTableViewController.swift */,
 				5F61AF531E47D06800BD6A0C /* PopupSubViewController.swift */,
 				5F61AF551E48230C00BD6A0C /* VenueFriendTableViewCell.xib */,
 				5F61AF571E48266F00BD6A0C /* VenueFriendTableViewCell.swift */,
 				5F61AF511E47D04600BD6A0C /* PopupSubViewController.xib */,
-				5F5D38051E46C867008E13E4 /* PlacesCollectionViewCell.swift */,
 				5F61AF701E4B7B7100BD6A0C /* EmptyBackgroundView.swift */,
-				5F5D38071E46C879008E13E4 /* PlacesCollectionViewController.swift */,
 			);
 			name = Places;
 			sourceTree = "<group>";
@@ -505,15 +505,15 @@
 				5F61AF711E4B7B7100BD6A0C /* EmptyBackgroundView.swift in Sources */,
 				5F5D37A01E43FFCE008E13E4 /* Flock.xcdatamodeld in Sources */,
 				5F61AF581E48266F00BD6A0C /* VenueFriendTableViewCell.swift in Sources */,
-				5F5D38061E46C867008E13E4 /* PlacesCollectionViewCell.swift in Sources */,
 				5F5D37FF1E466A7B008E13E4 /* SearchPeopleTableViewController.swift in Sources */,
 				5F5D37981E43FFCE008E13E4 /* AppDelegate.swift in Sources */,
 				5F5D37F81E4536F1008E13E4 /* PlannedTableViewCell.swift in Sources */,
 				5F61AF6D1E4A857E00BD6A0C /* CustomSearchController.swift in Sources */,
 				5F61AF541E47D06800BD6A0C /* PopupSubViewController.swift in Sources */,
-				5F5D38081E46C879008E13E4 /* PlacesCollectionViewController.swift in Sources */,
+				5F61AF731E4BCBE500BD6A0C /* PlacesTableViewController.swift in Sources */,
 				5F5D37D11E44BE44008E13E4 /* TestingViewController.swift in Sources */,
 				5F5D37FD1E465172008E13E4 /* TODO.swift in Sources */,
+				5F61AF751E4BCC6300BD6A0C /* PlacesTableViewCell.swift in Sources */,
 				5F5D37F21E45168D008E13E4 /* PeopleTableViewController.swift in Sources */,
 				5F5D37F41E4536D7008E13E4 /* FriendRequestTableViewCell.swift in Sources */,
 				5F61AF6F1E4A858700BD6A0C /* CustomSearchBar.swift in Sources */,

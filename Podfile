@@ -21,6 +21,7 @@ target 'Flock' do
    pod 'MGSwipeTableCell'
    pod 'BTNavigationDropdownMenu'
    pod 'PureLayout', '~> 3.0.1'
+   pod 'LFTwitterProfile'
 
   target 'FlockTests' do
     inherit! :search_paths
