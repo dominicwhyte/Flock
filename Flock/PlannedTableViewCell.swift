@@ -10,7 +10,7 @@ import UIKit
 import MGSwipeTableCell
 
 class PlannedTableViewCell: MGSwipeTableCell, MGSwipeTableCellDelegate {
-
+    
     struct Constants {
         static let CELL_HEIGHT = 75
     }
@@ -43,25 +43,25 @@ class PlannedTableViewCell: MGSwipeTableCell, MGSwipeTableCellDelegate {
             if (plans.count > index) {
                 
                 //if the last button and there are still more plans
-                if (index == MAX_VENUES_TO_DISPLAY - 1 && plans.count > MAX_VENUES_TO_DISPLAY) {
-                    let image = UIImage(named:"more.png")
-                    let button = MGSwipeButton(title: "", icon: self.imageResize(image: image!, sizeChange: CGSize(width: Constants.CELL_HEIGHT, height: Constants.CELL_HEIGHT)), backgroundColor: UIColor.clear)
-                    //button.setBackgroundImage(image, for: .normal)
-                    button.frame = CGRect(x: 0, y: 0, width: Constants.CELL_HEIGHT, height: Constants.CELL_HEIGHT)
-                    leftButtonsArray.append(button)
-                }
+                //                if (index == MAX_VENUES_TO_DISPLAY - 1 && plans.count > MAX_VENUES_TO_DISPLAY) {
+                //                    let image = UIImage(named:"more.png")
+                //                    let button = MGSwipeButton(title: "", icon: self.imageResize(image: image!, sizeChange: CGSize(width: Constants.CELL_HEIGHT, height: Constants.CELL_HEIGHT)), backgroundColor: UIColor.clear)
+                //                    //button.setBackgroundImage(image, for: .normal)
+                //                    button.frame = CGRect(x: 0, y: 0, width: Constants.CELL_HEIGHT, height: Constants.CELL_HEIGHT)
+                //                    leftButtonsArray.append(button)
+                //                }
                 //Just append the image button
-                else {
-                    var button = MGSwipeButton(title: "", icon: UIImage(named:"cat.png"), backgroundColor: UIColor.blue)
-                    if let venue = venues[plans[index].venueID] {
-                        if let venueImage = venueImages[venue.ImageURL] {
-                            button = MGSwipeButton(title: "", icon: nil, backgroundColor: UIColor.clear)
-                            button.setBackgroundImage(venueImage, for: .normal)
-                            button.frame = CGRect(x: 0, y: 0, width: Constants.CELL_HEIGHT, height: Constants.CELL_HEIGHT)
-                        }
+                
+                var button = MGSwipeButton(title: "", icon: UIImage(named:"cat.png"), backgroundColor: UIColor.blue)
+                if let venue = venues[plans[index].venueID] {
+                    if let venueImage = venueImages[venue.ImageURL] {
+                        button = MGSwipeButton(title: "", icon: nil, backgroundColor: UIColor.clear)
+                        button.setBackgroundImage(venueImage, for: .normal)
+                        button.frame = CGRect(x: 0, y: 0, width: Constants.CELL_HEIGHT, height: Constants.CELL_HEIGHT)
                     }
-                    leftButtonsArray.append(button)
                 }
+                leftButtonsArray.append(button)
+                
             }
         }
         
@@ -74,7 +74,7 @@ class PlannedTableViewCell: MGSwipeTableCell, MGSwipeTableCellDelegate {
         
         // Configure delegate
         self.delegate = self
-
+        
     }
     
     func imageResize (image:UIImage, sizeChange:CGSize)-> UIImage{
@@ -88,8 +88,8 @@ class PlannedTableViewCell: MGSwipeTableCell, MGSwipeTableCellDelegate {
         let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
         return scaledImage!
     }
-
-
+    
+    
 }
 
 

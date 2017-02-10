@@ -249,10 +249,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
 
             //Set the delegate for tableview reloaddata updates
             cell.delegate = self
-            cell.preservesSuperviewLayoutMargins = false
-            cell.separatorInset = UIEdgeInsets.zero
-            cell.layoutMargins = UIEdgeInsets.zero
-            cell.selectionStyle = .none
+            setupCell(cell: cell)
             return cell
             
         case Constants.LIVE_FRIENDS_INDEX:
@@ -262,10 +259,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
             //let venue = appDelegate.venues[friend.LiveClubID!]
             //cell.venueName.text = venue!.VenueName
             //self.retrieveImage(imageURL: venue!.ImageURL, imageView: cell.venuePic)
-            cell.preservesSuperviewLayoutMargins = false
-            cell.separatorInset = UIEdgeInsets.zero
-            cell.layoutMargins = UIEdgeInsets.zero
-            cell.selectionStyle = .none
+            setupCell(cell: cell)
             return cell
             
         case Constants.PLANNED_FRIENDS_INDEX:
@@ -277,8 +271,9 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
             //self.retrieveImage(imageURL: venue!.ImageURL, imageView: cell.venuePic)
             //Setup mgswipe capability
             cell.setupCell(plans: Array(friend.Plans.values))
-            makeViewCircle(imageView: cell.profilePic!)
-            cell.selectionStyle = .none
+            cell.profilePic.makeViewCircle()
+            cell.profilePic.makeViewCircle()
+            setupCell(cell: cell)
             return cell
             
         case Constants.REMAINING_FRIENDS_INDEX:
@@ -287,9 +282,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
             cell.profilePic!.image = UIImage()
             self.retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic!)
             cell.preservesSuperviewLayoutMargins = false
-            cell.separatorInset = UIEdgeInsets.zero
-            cell.layoutMargins = UIEdgeInsets.zero
-            cell.selectionStyle = .none
+            setupCell(cell: cell)
             return cell
         default:
             Utilities.printDebugMessage("Error in table view switch")
@@ -298,10 +291,15 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         //Should never run
         Utilities.printDebugMessage("Error loading people table view controller")
         let cell = UITableViewCell()
+        setupCell(cell: cell)
+        return cell
+    }
+    
+    fileprivate func setupCell(cell : UITableViewCell) {
         cell.preservesSuperviewLayoutMargins = false
         cell.separatorInset = UIEdgeInsets.zero
         cell.layoutMargins = UIEdgeInsets.zero
-        return cell
+        cell.selectionStyle = .none
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -320,14 +318,18 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         }
     }
     
-    func makeViewCircle(imageView : UIView) {
-        imageView.layer.cornerRadius = imageView.frame.size.width/2
-        imageView.clipsToBounds = true
-        imageView.layer.borderWidth = 2
-        imageView.layer.borderColor = UIColor.lightGray.cgColor
-    }
+    
 
     
+}
+
+extension UIImageView {
+    func makeViewCircle() {
+        self.layer.cornerRadius = self.frame.size.width/2
+        self.clipsToBounds = true
+        self.layer.borderWidth = 2
+        self.layer.borderColor = UIColor.lightGray.cgColor
+    }
 }
 
 extension PeopleTableViewController: UISearchBarDelegate {

@@ -14,12 +14,14 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     
     struct Constants {
         static let SECTION_TITLES = ["Live", "Planned"]
+        static let CELL_HEIGHT : CGFloat = 74.0
     }
     
     @IBOutlet weak var tableViewFrameView: UIView!
     @IBOutlet weak var datePicker: MVHorizontalPicker!
     @IBOutlet weak var venueImageView: UIImageView!
     weak var delegate: VenueDelegate?
+    
     
     let NUMBER_OF_DAYS_TO_DISPLAY = 7
     let INDEX_OF_PLANNED_ATTENDEES = 1
@@ -74,6 +76,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.register(UINib(nibName: "VenueFriendTableViewCell", bundle: nil), forCellReuseIdentifier: "VENUE_FRIEND")
         setFriendsForVenueForDate(venue: delegate!.venueToPass!)
         self.view.addSubview(tableView)
+        setAttendButtonTitle()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -87,13 +90,23 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         let friendsAttendingClubForDay = self.allFriendsForDate[currentDay]!
         let friend = friendsAttendingClubForDay[indexPath.section][indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "VENUE_FRIEND")! as! VenueFriendTableViewCell
+        cell.profilePic.makeViewCircle()
         cell.nameLabel.text = friend.Name
         retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic)
         return cell
     }
     
     @IBAction func pickerValueChanged(_ sender: MVHorizontalPicker) {
+        setAttendButtonTitle()
         self.tableView.reloadData()
+    }
+    
+    func setAttendButtonTitle() {
+        let venueString = self.delegate!.venueToPass!.VenueName.uppercased()
+        let dateString = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]
+        let date = DateUtilities.getDateFromString(date: dateString)
+        let dateStringInFormat = DateUtilities.convertDateToStringByFormat(date: date, dateFormat: "MMMM d")
+        self.delegate?.changeButtonTitle(title: "ATTEND \(venueString) ON \(dateStringInFormat)")
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -141,6 +154,9 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         return plannedFriendsForDate
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return Constants.CELL_HEIGHT
+    }
     
     
     func isValidTimeFrame(dayDiff: Int) -> Bool {
@@ -176,10 +192,5 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         self.stringsOfUpcomingDays = fullArray
         return dayOfWeekArray
     }
-    
-    
-    
-    
-    
     
 }

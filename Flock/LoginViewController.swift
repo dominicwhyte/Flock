@@ -19,7 +19,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         
         loginButton.delegate = self
         loginButton.center = self.view.center
-        loginButton.readPermissions = ["public_profile", "user_friends"]
+        loginButton.readPermissions = ["public_profile", "user_friends", "email"]
         // Do any additional setup after loading the view.
         
         //Autologin functionality

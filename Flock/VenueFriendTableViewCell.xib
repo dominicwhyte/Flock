@@ -29,21 +29,21 @@
                 <rect key="frame" x="0.0" y="0.0" width="375" height="74"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DhH-zx-asg">
-                        <rect key="frame" x="8" y="8" width="58.5" height="58.5"/>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DhH-zx-asg">
+                        <rect key="frame" x="8" y="8" width="59" height="59"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="DhH-zx-asg" secondAttribute="height" multiplier="1:1" id="6i6-CT-7MR"/>
                             <constraint firstAttribute="height" constant="58.5" id="F71-8S-7K7"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A99-gh-IOh">
-                        <rect key="frame" x="74" y="13" width="52.5" height="27.5"/>
+                        <rect key="frame" x="75" y="13" width="53" height="28"/>
                         <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VJp-Oi-Y1O">
-                        <rect key="frame" x="74" y="41" width="36.5" height="20.5"/>
+                        <rect key="frame" x="75" y="41" width="37" height="21"/>
                         <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>

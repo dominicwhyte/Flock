@@ -27,7 +27,7 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
         super.viewDidLoad()
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        self.users = Array(appDelegate.users.values)
+        self.users = orderUsers(users: Array(appDelegate.users.values), facebookFriends: appDelegate.facebookFriendsFBIDs)
         
         //Search
         searchController.searchResultsUpdater = self
@@ -40,10 +40,14 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
         
         searchController.searchBar.placeholder = "Search                                                                                     "
         
-        
         tableView.tableHeaderView = searchController.searchBar
         self.tableView.separatorColor = FlockColors.FLOCK_BLUE
-        
+    }
+    
+    func orderUsers(users : [User], facebookFriends : [String:String]) -> [User] {
+        return users.sorted { (user1, user2) -> Bool in
+            (facebookFriends[user1.FBID] != nil)
+        }
     }
     
     func updateStateDict(FBID : String, state : SearchPeopleTableViewController.UserStates) {

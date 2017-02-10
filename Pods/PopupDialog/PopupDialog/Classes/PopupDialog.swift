@@ -51,7 +51,7 @@ final public class PopupDialog: UIViewController {
     }
 
     /// The set of buttons
-    fileprivate var buttons = [PopupDialogButton]()
+    public var buttons = [PopupDialogButton]()
 
     /// Whether keyboard has shifted view
     internal var keyboardShown = false

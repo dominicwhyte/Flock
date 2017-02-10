@@ -29,7 +29,7 @@ open class TwitterProfileViewController: UIViewController {
     }
   }
   
-  open let segmentedControlContainerHeight: CGFloat = 46
+  open let segmentedControlContainerHeight: CGFloat = 0
   
   open var username: String? {
     didSet {

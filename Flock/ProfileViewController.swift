@@ -89,7 +89,9 @@ class ProfileViewController: TwitterProfileViewController {
         self.username = user.Name
         self.plans = Array(user.Plans.values)
         FirebaseClient.getImageFromURL(user.PictureURL) { (image) in
-            self.profileImage = image
+            DispatchQueue.main.async {
+                self.profileImage = image
+            }
         }
 
     
@@ -126,7 +128,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         let venue = appDelegate.venues[plan.venueID]!
         let cell = tableView.dequeueReusableCell(withIdentifier: "VENUE_FRIEND", for: indexPath) as! VenueFriendTableViewCell
         cell.nameLabel.text = venue.VenueName
-        cell.subtitleLabel.text = DateUtilities.convertDateToStringByFormat(date: plan.date, dateFormat: "MMMM dd")
+        cell.subtitleLabel.text = DateUtilities.convertDateToStringByFormat(date: plan.date, dateFormat: "MMMM d")
         cell.profilePic.image = appDelegate.venueImages[venue.ImageURL]
         cell.selectionStyle = .none
         return cell

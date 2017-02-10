@@ -383,10 +383,10 @@ class FirebaseClient: NSObject
     
     
     //Add plan to user plans and add user to planned attendees in venue
-    class func addUserToVenueLive(date: String, venueID : String, userID : String, completion: @escaping (Bool) -> Void) {
-        addUserToVenueCurrentAttendees(venueID: venueID, userID: userID) { (venueSuccess) in
+    class func addUserToVenueLive(date: String, venueID : String, userID : String, add : Bool,  completion: @escaping (Bool) -> Void) {
+        addUserToVenueCurrentAttendees(venueID: venueID, userID: userID, add: add) { (venueSuccess) in
             if (venueSuccess) {
-                addLiveToUserForDate(date: date, venueID: venueID, userID: userID, completion: { (userSuccess) in
+                addLiveToUserForDate(date: date, venueID: venueID, userID: userID, add: add, completion: { (userSuccess) in
                     completion(userSuccess)
                 })
             }
@@ -396,7 +396,7 @@ class FirebaseClient: NSObject
         }
     }
     
-    static func addUserToVenueCurrentAttendees(venueID : String, userID : String, completion: @escaping (Bool) -> Void) {
+    static func addUserToVenueCurrentAttendees(venueID : String, userID : String, add: Bool, completion: @escaping (Bool) -> Void) {
         
         dataRef.child("Venues").observeSingleEvent(of: .value, with: { (snapshot) in
             //Confirm send friend request conditions
@@ -410,9 +410,14 @@ class FirebaseClient: NSObject
                         let venueDict = dictionary[venueID] as! [String: AnyObject]
                         
                         var currentAttendees = venueDict["CurrentAttendees"] as! [String : AnyObject]
-                        if (currentAttendees[userID] == nil) {
-                            currentAttendees[userID] = userID as AnyObject?
+                        if(add) {
+                            if (currentAttendees[userID] == nil) {
+                                currentAttendees[userID] = userID as AnyObject?
+                            }
+                        } else {
+                            currentAttendees[userID] = nil
                         }
+                        
                         let updates = ["CurrentAttendees": currentAttendees]
                         dataRef.child("Venues").child(venueID).updateChildValues(updates)
                         completion(true)
@@ -421,8 +426,10 @@ class FirebaseClient: NSObject
                     //Planned attendees dict not present
                 else
                 {
-                    let updates = ["CurrentAttendees": [userID : userID]]
-                    dataRef.child("Venues").child(venueID).updateChildValues(updates)
+                    if(add) {
+                        let updates = ["CurrentAttendees": [userID : userID]]
+                        dataRef.child("Venues").child(venueID).updateChildValues(updates)
+                    }
                     completion(true)
                 }
                 
@@ -434,12 +441,16 @@ class FirebaseClient: NSObject
         
     }
     
-    static func addLiveToUserForDate(date: String, venueID : String, userID : String, completion: @escaping (Bool) -> Void) {
+    static func addLiveToUserForDate(date: String, venueID : String, userID : String, add: Bool, completion: @escaping (Bool) -> Void) {
         dataRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot) in
             //Confirm send friend request conditions
             if (snapshot.hasChild(userID)) {
-                let updates = ["LiveClubID": venueID]
-                dataRef.child("Users").child(userID).updateChildValues(updates)
+                if(add) {
+                    let updates = ["LiveClubID": venueID]
+                    dataRef.child("Users").child(userID).updateChildValues(updates)
+                } else {
+                    dataRef.child("Users").child(userID).child("LiveClubID").removeValue()
+                }
                 completion(true)
             }
             else {
@@ -447,6 +458,54 @@ class FirebaseClient: NSObject
             }
         })
     }
+    
+    //get the user's friends, as an array of FBIDs
+    class func getFriends(_ completion: @escaping ([String]) -> Void) {
+        if let FBID = FBSDKAccessToken.current().userID {
+            let credential = FIRFacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
+            FIRAuth.auth()?.signIn(with: credential) { (user, error) in
+                if let error = error {
+                    print(error.localizedDescription)
+                    return
+                }
+                    
+                else
+                {
+                    let parameters = ["fields": "uid"]
+                    
+                    // FB get current user
+                    let request = FBSDKGraphRequest(graphPath: "/\(FBID)/friends", parameters: parameters, tokenString: FBSDKAccessToken.current().tokenString, version: nil, httpMethod: "GET")
+                    
+                    // POST current user to Firebase
+                    request!.start(completionHandler: { (connection, result, requestError) -> Void in
+                        
+                        if requestError != nil {
+                            print(requestError?.localizedDescription ?? "Error with localized desc")
+                            return
+                        }
+                        
+                        
+                        let user:[String:AnyObject] = result as! [String : AnyObject]
+                        var friendsList : [String] = []
+                        
+                        if let friends = user["data"] as? NSArray {
+                            for friend in friends {
+                                if let fr = friend as? NSDictionary {
+                                    friendsList.append(fr["id"]! as! String)
+                                }
+                            }
+                        }
+                        completion(friendsList)
+                    })
+                }
+            }
+            
+        }
+        else {
+            completion([])
+        }
+    }
+
     
 }
 

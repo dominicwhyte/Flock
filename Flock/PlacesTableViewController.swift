@@ -204,6 +204,12 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         }
     }
     
+    func changeButtonTitle(title: String) {
+        latestAttendButton?.setTitle(title, for: .normal)
+    }
+    
+    var latestAttendButton : DefaultButton?
+    
     //Date is optional, this is if you want to start on a certain day of the week
     func showCustomDialog(venue : Venue, startDisplayDate : Date?) {
         
@@ -220,7 +226,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         
         
         // Create second button
-        let attendButton = DefaultButton(title: "ATTEND \(venue.VenueName) on [insert date]", dismissOnTap: true) {
+        let attendButton = DefaultButton(title: "ATTEND \(venue.VenueName.uppercased())", dismissOnTap: true) {
             
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             FirebaseClient.addUserToVenuePlansForDate(date: popupSubView.stringsOfUpcomingDays[popupSubView.datePicker.selectedItemIndex], venueID: self.venueToPass!.VenueID, userID: appDelegate.user!.FBID, completion: { (success) in
@@ -232,7 +238,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
                 }
             })
         }
-        
+        latestAttendButton = attendButton
         // Add buttons to dialog
         popup.addButtons([attendButton])
         
@@ -267,6 +273,7 @@ extension PlacesTableViewController: UISearchResultsUpdating {
 protocol VenueDelegate: class {
     var venueToPass : Venue? {get set}
     func retrieveImage(imageURL : String, completion: @escaping (_ image: UIImage) -> ())
+    func changeButtonTitle(title: String)
     
 }
 

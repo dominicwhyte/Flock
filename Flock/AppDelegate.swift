@@ -13,6 +13,7 @@ import FBSDKCoreKit
 import FirebaseAuth
 import SimpleTab
 import CoreLocation
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
@@ -30,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var simpleTBC:SimpleTabBarController?
     var locationManager = CLLocationManager()
     var friendRequestUsers = [String : User]()
+    var facebookFriendsFBIDs : [String : String] = [:]
     
     func masterLogin(completion: @escaping (_ status: Bool) -> ()) {
         updateAllData { (success) in
@@ -51,6 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
+    //Function to update data, use for refreshing (?)
     func updateAllData(completion: @escaping (_ status: Bool) -> ()) {
         LoginClient.retrieveData { (user, venues) in
             assert(user != nil && venues != nil)
@@ -76,11 +79,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 venueImagesTemp[imageURL] = image
                 if (imagesFetched >= imagesToFetch) {
                     self.venueImages = venueImagesTemp
-                    completion(true)
+                    
+                    //Get facebook friends, to populate this. Do in here since only done on app launch
+                    FirebaseClient.getFriends { (friends) in
+                        for friend in friends {
+                            self.facebookFriendsFBIDs[friend] = friend
+                        }
+                        completion(true)
+                    }
                 }
             })
         }
     }
+    
+    
     
     func getAllUsers(completion: @escaping (_ status: Bool) -> ()) {
         FirebaseClient.getAllUsers { (users) in
@@ -123,13 +135,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
     }
     
+    func requestNotificationPermission(application : UIApplication) {
+        if #available(iOS 10.0, *) {
+            UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]) { (granted, error) in
+                
+                if granted {
+                    UIApplication.shared.registerForRemoteNotifications()
+                }
+                
+            }
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    
     func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
         
         Utilities.printDebugMessage("visit: \(visit.coordinate.latitude),\(visit.coordinate.longitude)")
         showNotification(body: "Visit: \(visit)")
         let visitLocation = CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
         if let venueID = self.whichClubIsUserIn(visitLocation: visitLocation) {
-            FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: venueID, userID: self.user!.FBID, completion: { (success) in
+            FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: venueID, userID: self.user!.FBID, add: true, completion: { (success) in
                 if(success) {
                     Utilities.printDebugMessage("Successfully uploaded visit to database")
                 }
@@ -139,19 +165,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         //if visit.departureDate > Date() {
         if (visit.departureDate.compare(NSDate.distantFuture).rawValue == 0) {
             // A visit has begun, but not yet ended. User must still be at the place.
-            FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: "-KcBNbASBTPdCIiwFv2m", userID: self.user!.FBID, completion: { (success) in
+            FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: "-KcBNbASBTPdCIiwFv2m", userID: self.user!.FBID, add: true, completion: { (success) in
                 if(success) {
                     Utilities.printDebugMessage("Arrived to venue")
                 }
             })
         } else {
-            FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: "-KcBNbASBTPdCIiwFv2m", userID: self.user!.FBID, completion: { (success) in
+            FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: "-KcBNbASBTPdCIiwFv2m", userID: self.user!.FBID, add: true, completion: { (success) in
                 if(success) {
                     Utilities.printDebugMessage("Leaving venue")
                 }
             })
         }
-        FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: "-KcBOlWnYeNXN1FWTnFv", userID: self.user!.FBID, completion: { (success) in
+        FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: "-KcBOlWnYeNXN1FWTnFv", userID: self.user!.FBID, add: true, completion: { (success) in
             if(success) {
                 Utilities.printDebugMessage("Visit logged")
             }
@@ -195,6 +221,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         FIRApp.configure()
         self.setupLocationServices()
+        
+        
+        
+        
+        
+        
+        
         return true
     }
     
