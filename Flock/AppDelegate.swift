@@ -12,10 +12,15 @@ import Firebase
 import FBSDKCoreKit
 import FirebaseAuth
 import SimpleTab
+import CoreLocation
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
 
+    struct Constants {
+        static let CRITICAL_RADIUS = 23.0 // meters
+    }
+    
     var window: UIWindow?
     var user: User?
     var users = [String : User]()
@@ -23,6 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var friends = [String : User]()
     var venueImages = [String : UIImage]() // indexed by IMAGEURL not VENUEID!!!!!!!!!!!!!
     var simpleTBC:SimpleTabBarController?
+    var locationManager = CLLocationManager()
     var friendRequestUsers = [String : User]()
     
     func masterLogin(completion: @escaping (_ status: Bool) -> ()) {
@@ -103,6 +109,84 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     
+    // CoreLocation CLVisit Code
+    func startMonitoringVisits() { self.locationManager.startMonitoringVisits() }
+    func stopMonitoringVisits() { self.locationManager.stopMonitoringVisits() }
+    
+    func setupLocationServices() {
+        locationManager.delegate = self
+        if (CLLocationManager.authorizationStatus() == .notDetermined) {
+            locationManager.requestAlwaysAuthorization()
+        } else if (CLLocationManager.authorizationStatus() == .authorizedAlways){
+            self.startMonitoringVisits()
+        }
+        
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
+        
+        Utilities.printDebugMessage("visit: \(visit.coordinate.latitude),\(visit.coordinate.longitude)")
+        showNotification(body: "Visit: \(visit)")
+        let visitLocation = CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
+        if let venueID = self.whichClubIsUserIn(visitLocation: visitLocation) {
+            FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: venueID, userID: self.user!.FBID, completion: { (success) in
+                if(success) {
+                    Utilities.printDebugMessage("Successfully uploaded visit to database")
+                }
+            })
+        }
+        // Not quite sure how to do this comparison. Maybe one of the following
+        //if visit.departureDate > Date() {
+        if (visit.departureDate.compare(NSDate.distantFuture).rawValue == 0) {
+            // A visit has begun, but not yet ended. User must still be at the place.
+            FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: "-KcBNbASBTPdCIiwFv2m", userID: self.user!.FBID, completion: { (success) in
+                if(success) {
+                    Utilities.printDebugMessage("Arrived to venue")
+                }
+            })
+        } else {
+            FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: "-KcBNbASBTPdCIiwFv2m", userID: self.user!.FBID, completion: { (success) in
+                if(success) {
+                    Utilities.printDebugMessage("Leaving venue")
+                }
+            })
+        }
+        FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: "-KcBOlWnYeNXN1FWTnFv", userID: self.user!.FBID, completion: { (success) in
+            if(success) {
+                Utilities.printDebugMessage("Visit logged")
+            }
+        })
+    }
+    
+    // Notification function for local testing/debugging
+    func showNotification(body: String) {
+        let notification = UILocalNotification()
+        notification.alertAction = nil
+        notification.alertBody = body
+        UIApplication.shared.presentLocalNotificationNow(notification)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if (CLLocationManager.authorizationStatus() == .authorizedAlways){
+            self.startMonitoringVisits()
+        }
+    }
+    
+    // Determines if user is in club and returns venueID of appropriate club
+    func whichClubIsUserIn(visitLocation : CLLocation) -> String? {
+        
+        for venue in Array(self.venues.values) {
+            if let venueLocation = venue.VenueLocation {
+                let distanceInMeters = visitLocation.distance(from: venueLocation)
+                if(distanceInMeters < Constants.CRITICAL_RADIUS) {
+                    return venue.VenueID
+                }
+            }
+        }
+        return nil
+    }
+
+    
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         return FBSDKApplicationDelegate.sharedInstance().application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
     }
@@ -110,6 +194,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         FIRApp.configure()
+        self.setupLocationServices()
         return true
     }
     

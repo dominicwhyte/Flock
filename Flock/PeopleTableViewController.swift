@@ -259,7 +259,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.REUSE_IDENTIFIERS[indexPath.section], for: indexPath) as! LiveTableViewCell
             cell.friendName.text = friend.Name
             self.retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic!)
-            let venue = appDelegate.venues[friend.LiveClubID!]
+            //let venue = appDelegate.venues[friend.LiveClubID!]
             //cell.venueName.text = venue!.VenueName
             //self.retrieveImage(imageURL: venue!.ImageURL, imageView: cell.venuePic)
             cell.preservesSuperviewLayoutMargins = false

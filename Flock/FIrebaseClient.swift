@@ -380,6 +380,74 @@ class FirebaseClient: NSObject
         })
     }
     
+    
+    
+    //Add plan to user plans and add user to planned attendees in venue
+    class func addUserToVenueLive(date: String, venueID : String, userID : String, completion: @escaping (Bool) -> Void) {
+        addUserToVenueCurrentAttendees(venueID: venueID, userID: userID) { (venueSuccess) in
+            if (venueSuccess) {
+                addLiveToUserForDate(date: date, venueID: venueID, userID: userID, completion: { (userSuccess) in
+                    completion(userSuccess)
+                })
+            }
+            else {
+                
+            }
+        }
+    }
+    
+    static func addUserToVenueCurrentAttendees(venueID : String, userID : String, completion: @escaping (Bool) -> Void) {
+        
+        dataRef.child("Venues").observeSingleEvent(of: .value, with: { (snapshot) in
+            //Confirm send friend request conditions
+            if (snapshot.hasChild(venueID)) {
+                if (snapshot.childSnapshot(forPath: venueID).hasChild("CurrentAttendees") ) {
+                    if (snapshot.childSnapshot(forPath: venueID).childSnapshot(forPath: "CurrentAttendees").hasChild(userID)) {
+                        completion(false)
+                    }
+                    else {
+                        let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]
+                        let venueDict = dictionary[venueID] as! [String: AnyObject]
+                        
+                        var currentAttendees = venueDict["CurrentAttendees"] as! [String : AnyObject]
+                        if (currentAttendees[userID] == nil) {
+                            currentAttendees[userID] = userID as AnyObject?
+                        }
+                        let updates = ["CurrentAttendees": currentAttendees]
+                        dataRef.child("Venues").child(venueID).updateChildValues(updates)
+                        completion(true)
+                    }
+                }
+                    //Planned attendees dict not present
+                else
+                {
+                    let updates = ["CurrentAttendees": [userID : userID]]
+                    dataRef.child("Venues").child(venueID).updateChildValues(updates)
+                    completion(true)
+                }
+                
+            }
+            else {
+                completion(false)
+            }
+        })
+        
+    }
+    
+    static func addLiveToUserForDate(date: String, venueID : String, userID : String, completion: @escaping (Bool) -> Void) {
+        dataRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot) in
+            //Confirm send friend request conditions
+            if (snapshot.hasChild(userID)) {
+                let updates = ["LiveClubID": venueID]
+                dataRef.child("Users").child(userID).updateChildValues(updates)
+                completion(true)
+            }
+            else {
+                completion(false)
+            }
+        })
+    }
+    
 }
 
 
