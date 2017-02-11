@@ -86,11 +86,14 @@ class LoginClient: NSObject
         
     }
     
-    class func logout()
-    {
+    class func logout(vc : UIViewController) {
         Utilities.printDebugMessage("Logout called")
         FBSDKAccessToken.setCurrent(nil)
         try! FIRAuth.auth()!.signOut()
+        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let loginViewController: UIViewController = storyboard.instantiateViewController(withIdentifier: "loginViewController")
+        
+        vc.present(loginViewController, animated: true, completion: nil)
     }
     
     

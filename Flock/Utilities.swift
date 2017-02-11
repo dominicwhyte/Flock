@@ -10,6 +10,14 @@ struct FlockColors {
 }
 
 class Utilities {
+    static func setUnderlinedTextAttribute(text : String, button : UIButton) {
+        let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: text)
+        attributeString.addAttribute(NSUnderlineStyleAttributeName, value: 1, range: NSMakeRange(0, attributeString.length))
+        let range = NSRange(location: 0, length: text.characters.count)
+        attributeString.addAttribute(NSForegroundColorAttributeName, value: UIColor.white , range: range)
+        button.setAttributedTitle(attributeString, for: .normal)
+    }
+    
     static func shakeView(_ shakeView: UIView) {
         let shake = CABasicAnimation(keyPath: "position")
         let xDelta = CGFloat(5)

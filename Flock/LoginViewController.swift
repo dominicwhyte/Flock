@@ -9,26 +9,60 @@
 import UIKit
 import FBSDKLoginKit
 import SimpleTab
+import AASquaresLoading
 
 class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 
+    @IBOutlet weak var termsAndConditionsLabel: UIButton!
     @IBOutlet weak var loginButton: FBSDKLoginButton!
+    var loadingSquare : AASquaresLoading?
+    
+    @IBOutlet weak var loadingSquareScreenView: UIView!
+    
+    let SECONDS_UNTIL_ABORT_LOGIN = 1
     
     override func viewDidLoad() {
-        super.viewDidLoad()
+        loadingSquare = AASquaresLoading(target: self.loadingSquareScreenView, size: 40)
+        loadingSquareScreenView.isHidden = true
         
+        super.viewDidLoad()
+        if (FBSDKAccessToken.current() != nil) {
+            loginButton.isHidden = true
+        }
+        else {
+            loginButton.isHidden = false
+        }
         loginButton.delegate = self
         loginButton.center = self.view.center
         loginButton.readPermissions = ["public_profile", "user_friends", "email"]
-        // Do any additional setup after loading the view.
+        self.view!.addSubview(loginButton)
+        loginButton.alpha = 0
+        termsAndConditionsLabel.alpha = 0
         
+        // Do any additional setup after loading the view.
+        Utilities.setUnderlinedTextAttribute(text: "Terms and Conditions", button: termsAndConditionsLabel)
+        
+        
+        setGradientBackground()
         //Autologin functionality
         
         if (FBSDKAccessToken.current() != nil) {
-            let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
+            setUIForLogin()
+            //C
+            var userNotRetrieved = true
+            //Flawed implementation - leads to crashes since login thread is not killed
+//            let deadlineTime = DispatchTime.now() + .seconds(SECONDS_UNTIL_ABORT_LOGIN)
+//            DispatchQueue.main.asyncAfter(deadline: deadlineTime, execute: {
+//                if (userNotRetrieved) {
+//                    Utilities.printDebugMessage("Abandon loading")
+//                    LoginClient.logout(vc: self)
+//                    self.resetUIForCancelledLogin()
+//                }
+//            })
+            
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             appDelegate.masterLogin(completion: { (success) in
-                Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+                userNotRetrieved = false
                 if (success) {
                     Utilities.printDebugMessage("Successfully auto logged in")
                     self.performSegue(withIdentifier: "LOGIN_IDENTIFIER", sender: nil)
@@ -39,29 +73,72 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
             })
         }
     }
+    
+    
+    @IBAction func termsAndConditionsWasPressed(_ sender: Any) {
+        Utilities.printDebugMessage("Show terms and conditions!")
+    }
+    
+    func setGradientBackground() {
+        let colorTop =  UIColor.white.cgColor
+        let colorBottom = UIColor.black.cgColor
+        
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [ colorTop, colorBottom]
+        gradientLayer.locations = [ 0.0, 1.0]
+        gradientLayer.frame = self.view.bounds
+        
+        self.view.layer.insertSublayer(gradientLayer, at: 0)
+    }
+    
+    func setUIForLogin() {
+        DispatchQueue.main.async {
+            self.view.isUserInteractionEnabled = false
+            self.loginButton.isHidden = true
+            
+            self.loadingSquareScreenView.isHidden = false
+            self.loadingSquare!.isHidden = false
+            self.loadingSquare!.color = UIColor.white
+            self.loadingSquare!.backgroundColor = UIColor.clear
+            self.loadingSquare!.start()
+        }
+    }
+    
+    func resetUIForCancelledLogin() {
+        DispatchQueue.main.async {
+            self.view.isUserInteractionEnabled = true
+            self.loginButton.isHidden = false
+            
+            self.loadingSquareScreenView.isHidden = true
+            self.loadingSquare!.isHidden = true
+            self.loadingSquare!.color = UIColor.white
+            self.loadingSquare!.backgroundColor = UIColor.clear
+            self.loadingSquare!.stop()
+        }
+    }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        termsAndConditionsLabel.fadeIn()
+        loginButton.fadeIn()
     }
     
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!)
     {
-        let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
-        
+        setUIForLogin()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        self.loginButton.isHidden = true
         
         if error != nil
         {
             print(error.localizedDescription)
-            Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+            resetUIForCancelledLogin()
         }
             
         else if result.isCancelled
         {
             self.loginButton.isHidden = false
-            Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+            resetUIForCancelledLogin()
         }
             
         else
@@ -71,7 +148,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
             LoginClient.login({ (status) in
                 if (status) {
                     appDelegate.masterLogin(completion: { (loginStatus) in
-                        Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
                         if(loginStatus) {
                             Utilities.printDebugMessage("Successful login")
                             self.performSegue(withIdentifier: "LOGIN_IDENTIFIER", sender: nil)
@@ -79,11 +155,14 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                         else {
                             Utilities.printDebugMessage("Unsucessful login")
                         }
+                        
+                        self.resetUIForCancelledLogin()
                     })
                 }
                 else {
                     Utilities.printDebugMessage("Error logging in, login() returned false")
-                    Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+                    
+                    self.resetUIForCancelledLogin()
                 }
             })
             
@@ -92,7 +171,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!)
     {
-        LoginClient.logout()
+        LoginClient.logout(vc: self)
     }
 
     
@@ -107,4 +186,23 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     }
     
 
+}
+
+extension UIView {
+    func fadeIn(_ duration: TimeInterval = 1.0, delay: TimeInterval = 0.0, completion: @escaping ((Bool) -> Void) = {(finished: Bool) -> Void in}) {
+        UIView.animate(withDuration: duration, delay: delay, options: UIViewAnimationOptions.curveEaseIn, animations: {
+            self.alpha = 1.0
+        }, completion: completion)  }
+    
+    func fadeOut(_ duration: TimeInterval = 3.0, delay: TimeInterval = 0.0, completion: @escaping (Bool) -> Void = {(finished: Bool) -> Void in}) {
+        UIView.animate(withDuration: duration, delay: delay, options: UIViewAnimationOptions.curveEaseIn, animations: {
+            self.alpha = 0.0
+        }, completion: completion)
+    }
+    
+    func fadeOutPartially(_ duration: TimeInterval = 2.0, delay: TimeInterval = 0.0, completion: @escaping (Bool) -> Void = {(finished: Bool) -> Void in}) {
+        UIView.animate(withDuration: duration, delay: delay, options: UIViewAnimationOptions.curveLinear, animations: {
+            self.alpha = 0.4
+        }, completion: completion)
+    }
 }

@@ -85,6 +85,9 @@ class ProfileViewController: TwitterProfileViewController {
     }
     
     func setupUser(user : User) {
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(logoutButtonPressed))
+        self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
+        
         self.user = user
         self.username = user.Name
         self.plans = Array(user.Plans.values)
@@ -97,9 +100,35 @@ class ProfileViewController: TwitterProfileViewController {
     
     }
     
+    func logoutButtonPressed() {
+        // 1
+        let optionMenu = UIAlertController(title: nil, message: "Are you sure you would like to logout?", preferredStyle: .actionSheet)
+        
+        // 2
+        let deleteAction = UIAlertAction(title: "Logout", style: .destructive, handler: {
+            (alert: UIAlertAction!) -> Void in
+            LoginClient.logout(vc: self)
+        })
+        
+        //
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
+            (alert: UIAlertAction!) -> Void in
+        })
+        
+        
+        // 4
+        optionMenu.addAction(deleteAction)
+        optionMenu.addAction(cancelAction)
+        
+        // 5
+        self.present(optionMenu, animated: true, completion: nil)
+    }
+    
     override func scrollView(forSegment index: Int) -> UIScrollView {
         return tableView
     }
+    
+    
 
 }
 
