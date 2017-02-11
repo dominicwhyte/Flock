@@ -22,6 +22,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var venueImageView: UIImageView!
     weak var delegate: VenueDelegate?
     
+    @IBOutlet weak var liveLabel: UILabel!
     
     let NUMBER_OF_DAYS_TO_DISPLAY = 7
     let INDEX_OF_PLANNED_ATTENDEES = 1
@@ -60,7 +61,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         
         datePicker.borderWidth = 1
         
-        datePicker.tintColor = UIColor.black
+        datePicker.tintColor = FlockColors.FLOCK_GRAY
         super.viewDidLoad()
         delegate?.retrieveImage(imageURL: (delegate?.venueToPass?.ImageURL)!, completion: { (image) in
             DispatchQueue.main.async {
@@ -70,6 +71,8 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         
         //tableview
         tableView.frame         =   tableViewFrameView.frame
+        let frame = CGRect(x: tableViewFrameView.frame.minX, y: tableViewFrameView.frame.minY, width: tableViewFrameView.frame.width + 50.0, height: tableViewFrameView.frame.height)
+        tableView.frame = frame
         tableView.delegate      =   self
         tableView.dataSource    =   self
         
@@ -94,6 +97,30 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         cell.nameLabel.text = friend.Name
         retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let returnedView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 25))
+        //returnedView.backgroundColor = FlockColors.FLOCK_BLUE
+        
+        let gradient = CAGradientLayer()
+        
+        gradient.frame = returnedView.bounds
+        
+        gradient.startPoint = CGPoint(x: 0, y: 0.5)
+        gradient.endPoint = CGPoint(x: 1, y: 0.5)
+        gradient.colors = [FlockColors.FLOCK_BLUE.cgColor, FlockColors.FLOCK_LIGHT_BLUE.cgColor]
+        
+        returnedView.layer.insertSublayer(gradient, at: 0)
+        
+        
+        
+        let label = UILabel(frame: CGRect(x: 10, y: 0, width: view.frame.size.width, height: 25))
+        label.textColor = .white
+        label.text = Constants.SECTION_TITLES[section]
+        returnedView.addSubview(label)
+        
+        return returnedView
     }
     
     @IBAction func pickerValueChanged(_ sender: MVHorizontalPicker) {

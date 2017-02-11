@@ -189,7 +189,9 @@ extension TwitterProfileViewController {
     self.headerCoverView = coverImageView
     
     // blur effect on top of coverImageView
-    let blurEffect = UIBlurEffect(style: .dark)
+    
+    /*
+    let blurEffect = UIBlurEffect(style: .light)
     let _blurEffectView = UIVisualEffectView(effect: blurEffect)
     _blurEffectView.alpha = 0
     self.blurEffectView = _blurEffectView
@@ -197,7 +199,7 @@ extension TwitterProfileViewController {
     _stickyHeaderContainer.addSubview(_blurEffectView)
     _blurEffectView.snp.makeConstraints { (make) in
       make.edges.equalTo(_stickyHeaderContainer)
-    }
+    }*/
     
     // Detail Title
     let _navigationDetailLabel = UILabel()
@@ -337,7 +339,7 @@ extension TwitterProfileViewController: UIScrollViewDelegate {
         height: newHeight)
       
       // blurring effect amplitude
-      self.blurEffectView.alpha = min(1, bounceProgress * 2)
+      // self.blurEffectView.alpha = min(1, bounceProgress * 2)
       
       // scaling effect
       let scalingFactor = 1 + min(log(bounceProgress + 1), 2)
@@ -353,7 +355,7 @@ extension TwitterProfileViewController: UIScrollViewDelegate {
     } else {
       
       // anything to be set if contentOffset.y is positive
-      self.blurEffectView.alpha = 0
+      //self.blurEffectView.alpha = 0
       self.mainScrollView.scrollIndicatorInsets = computeMainScrollViewIndicatorInsets()
     }
     
@@ -396,7 +398,7 @@ extension TwitterProfileViewController: UIScrollViewDelegate {
         
         let totalHeight = titleLabel.bounds.height + 35
         let detailProgress = max(0, min((contentOffset.y - titleLabelLocationY) / totalHeight, 1))
-        blurEffectView.alpha = detailProgress
+        //blurEffectView.alpha = detailProgress
         animateNaivationTitleAt(progress: detailProgress)
       }
     }

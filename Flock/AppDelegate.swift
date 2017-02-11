@@ -171,7 +171,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 }
             })
         } else {
-            FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: "-KcBNbASBTPdCIiwFv2m", userID: self.user!.FBID, add: true, completion: { (success) in
+            FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: "-KcBOi2Q0twAcR3-KjPJ", userID: self.user!.FBID, add: true, completion: { (success) in
                 if(success) {
                     Utilities.printDebugMessage("Leaving venue")
                 }
@@ -221,13 +221,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         FIRApp.configure()
         self.setupLocationServices()
-        
-        
-        
-        
-        
-        
-        
+        self.requestNotificationPermission(application: application)
+
         return true
     }
     

@@ -226,7 +226,8 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         
         
         // Create second button
-        let attendButton = DefaultButton(title: "ATTEND \(venue.VenueName.uppercased())", dismissOnTap: true) {
+        let todaysDate = DateUtilities.convertDateToStringByFormat(date: Date(), dateFormat: "MMMM d")
+        let attendButton = DefaultButton(title: "ATTEND \(venue.VenueName.uppercased()) ON \(todaysDate)", dismissOnTap: true) {
             
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             FirebaseClient.addUserToVenuePlansForDate(date: popupSubView.stringsOfUpcomingDays[popupSubView.datePicker.selectedItemIndex], venueID: self.venueToPass!.VenueID, userID: appDelegate.user!.FBID, completion: { (success) in
