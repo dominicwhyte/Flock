@@ -96,59 +96,57 @@ class LoginClient: NSObject
         vc.present(loginViewController, animated: true, completion: nil)
     }
     
-    
-    //Gets the logged in User and the Venues
-    class func queryData(_ completion: @escaping (NSDictionary, [NSDictionary]) -> Void)
-    {
-        let FBID : String = FBSDKAccessToken.current().userID!
-        var userDict = [:] as NSDictionary
-        var venueDicts = [] as [NSDictionary]
-        
-        //Get the overall snapshot
-        dataRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            //USER
-            if (snapshot.hasChild("Users") && snapshot.childSnapshot(forPath: "Users").hasChild(FBID)) {
-                userDict = snapshot.childSnapshot(forPath: "Users").childSnapshot(forPath: FBID).value as! NSDictionary
-            }
-            
-            //VENUES
-            if (snapshot.hasChild("Venues")) {
-                let venueDict :[String: NSDictionary] = snapshot.childSnapshot(forPath: "Venues").value as! [String : NSDictionary]
-                for venue in venueDict {
-                    venueDicts.append(venue.value)
-                }
-            }
-            //Called only when the respective dictionaries have been created
-            completion(userDict, venueDicts)
-            
-        })
-    }
-    
-    
-    
     //Load up the user, that is: fetch all projects and all updates.
-    class func retrieveData(_ completion: @escaping (User?, [String:Venue]?) -> Void)
+    class func retrieveData(_ completion: @escaping ((User, [String:Venue], [String : User])?) -> Void)
     {
+        
         if (FBSDKAccessToken.current().userID != nil) {
-            queryData { (userDict, venueDicts) in
+            
+            let FBID : String = FBSDKAccessToken.current().userID!
+            
+            //Get the overall snapshot
+            dataRef.observeSingleEvent(of: .value, with: { (snapshot) in
                 
-                let user = User(dict: userDict as! [String : AnyObject])
-                var venues : [String:Venue] = [:]
-                
-                for venueDict in venueDicts
-                {
-                    let venue = Venue(dict: venueDict as! [String : AnyObject])
-                    venues[venue.VenueID] = venue
+                //USER and USERS
+                if (snapshot.hasChild("Users") && snapshot.childSnapshot(forPath: "Users").hasChild(FBID)) {
+                    Utilities.printDebugMessage("Getting data")
+                    
+                    var venues = [String:Venue]()
+                    var users = [String : User]()
+                    let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]
+                    
+                    //USERS
+                    let userDicts = dictionary["Users"] as! [String: AnyObject]
+                    
+                    for (_,user) in userDicts {
+                        let newUser = User(dict: user as! [String : AnyObject])
+                        users[newUser.FBID] = newUser
+                    }
+                    
+                    //USER
+                    let userDict = userDicts[FBID] as! [String : AnyObject]
+                    let user = User(dict: userDict)
+                    
+                    //VENUES
+                    
+                    if (snapshot.hasChild("Venues")) {
+                        let venueDicts = dictionary["Venues"] as! [String: AnyObject]
+                        for (_,venueDict) in venueDicts {
+                            let venue = Venue(dict: venueDict as! [String : AnyObject])
+                            venues[venue.VenueID] = venue
+                        }
+                    }
+                    completion((user,venues, users))
                 }
-                
-                
-                completion(user, venues)
-            }
+                else {
+                    completion(nil)
+                }
+            })
+            
         }
         else {
             Utilities.printDebugMessage("Error retrieving user, userFBID was NIL")
-            completion(nil, nil)
+            completion(nil)
         }
     }
     

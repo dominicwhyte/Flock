@@ -262,31 +262,7 @@ class FirebaseClient: NSObject
         
     }
     
-    //Gets the logged in User and the Venues
-    class func getAllUsers(_ completion: @escaping ([String : User]) -> Void)
-    {
-        
-        var userDicts = [String : NSDictionary]()
-        
-        //Get the overall snapshot
-        dataRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            
-            //USER
-            if (snapshot.hasChild("Users")) {
-                userDicts = snapshot.childSnapshot(forPath: "Users").value as! [String : NSDictionary]
-            }
-            var users = [String : User]()
-            
-            for (_,user) in userDicts {
-                let newUser = User(dict: user as! [String : AnyObject])
-                users[newUser.FBID] = newUser
-            }
-            //Called only when the respective dictionaries have been created
-            completion(users)
-            
-        })
-    }
+    
     
     
     //Add plan to user plans and add user to planned attendees in venue
@@ -446,7 +422,7 @@ class FirebaseClient: NSObject
             //Confirm send friend request conditions
             if (snapshot.hasChild(userID)) {
                 if(add) {
-                    let updates = ["LiveClubID": venueID]
+                    let updates = ["LiveClubID": venueID, "LastLive": date]
                     dataRef.child("Users").child(userID).updateChildValues(updates)
                 } else {
                     dataRef.child("Users").child(userID).child("LiveClubID").removeValue()

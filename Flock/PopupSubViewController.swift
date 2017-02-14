@@ -24,7 +24,6 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     
     @IBOutlet weak var liveLabel: UILabel!
     
-    let NUMBER_OF_DAYS_TO_DISPLAY = 7
     let INDEX_OF_PLANNED_ATTENDEES = 1
     let INDEX_OF_LIVE_ATTENDEES = 0
     var stringsOfUpcomingDays : [String] = [] // Full dates
@@ -44,7 +43,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if let startDate = self.startDate {
-            if(isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: startDate))) {
+            if(DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: startDate))) {
                 let fullDate = DateUtilities.convertDateToStringByFormat(date: startDate, dateFormat: DateUtilities.Constants.fullDateFormat)
                 if let startIndex = stringsOfUpcomingDays.index(of: fullDate) {
                     datePicker.setSelectedItemIndex(startIndex, animated: true)
@@ -54,7 +53,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     override func viewDidLoad() {
-        datePicker.titles = self.determineTitleOrder(dayCount: NUMBER_OF_DAYS_TO_DISPLAY)
+        datePicker.titles = self.determineTitleOrder(dayCount: DateUtilities.Constants.NUMBER_OF_DAYS_TO_DISPLAY)
         datePicker.itemWidth = 100
         
         datePicker.font = UIFont.boldSystemFont(ofSize: 18.0)
@@ -155,7 +154,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         for (_, plannedAttendee) in plannedAttendees {
             if let friend = friends[plannedAttendee] {
                 for (_,plan) in friend.Plans {
-                    if(plan.venueID == venue.VenueID && isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))) {
+                    if(plan.venueID == venue.VenueID && DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))) {
                         let fullDate = DateUtilities.convertDateToStringByFormat(date: plan.date, dateFormat: DateUtilities.Constants.fullDateFormat)
                         allFriendsForDate[fullDate]![self.INDEX_OF_PLANNED_ATTENDEES].append(friend)
                     }
@@ -185,10 +184,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         return Constants.CELL_HEIGHT
     }
     
-    
-    func isValidTimeFrame(dayDiff: Int) -> Bool {
-        return (dayDiff >= 0 && dayDiff < NUMBER_OF_DAYS_TO_DISPLAY)
-    }
+
     
     //Retrieve image with caching
     func retrieveImage(imageURL : String, imageView : UIImageView) {

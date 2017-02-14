@@ -18,7 +18,7 @@ class Venue: NSObject
         self.LogoURL = dict["LogoURL"] as! String
         self.VenueName = dict["VenueName"] as! String
         
-        if let latitude = dict["latitude"] as? CLLocationDegrees, let longitude = dict["latitude"] as? CLLocationDegrees {
+        if let latitude = dict["Latitude"] as? Double, let longitude = dict["Longitude"] as? Double {
             self.VenueLocation = CLLocation(latitude: latitude, longitude: longitude)
         }
         

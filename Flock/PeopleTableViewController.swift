@@ -153,7 +153,17 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
                     friendArrayArray[Constants.LIVE_FRIENDS_INDEX].append(friend)
                 }
                 if(friend.Plans.count > 0) {
-                    friendArrayArray[Constants.PLANNED_FRIENDS_INDEX].append(friend)
+                    
+                    for (visitID, plan) in friend.Plans {
+                        if(!DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))) {
+                            friend.Plans[visitID] = nil
+                        }
+                    }
+                    if(friend.Plans.count > 0) {
+                        friendArrayArray[Constants.PLANNED_FRIENDS_INDEX].append(friend)
+                    } else {
+                        friendArrayArray[Constants.REMAINING_FRIENDS_INDEX].append(friend)
+                    }
                 }
             }
         }
@@ -255,6 +265,12 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         case Constants.LIVE_FRIENDS_INDEX:
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.REUSE_IDENTIFIERS[indexPath.section], for: indexPath) as! LiveTableViewCell
             cell.friendName.text = friend.Name
+            if let venueID = friend.LiveClubID {
+                if (appDelegate.venues[venueID] != nil) {
+                    cell.setupCell(venue: appDelegate.venues[venueID]!)
+                }
+            }
+            cell.profilePic.makeViewCircle()
             self.retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic!)
             //let venue = appDelegate.venues[friend.LiveClubID!]
             //cell.venueName.text = venue!.VenueName
@@ -266,22 +282,30 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.REUSE_IDENTIFIERS[indexPath.section], for: indexPath) as! PlannedTableViewCell
             cell.friendName.text = friend.Name
             self.retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic!)
-            cell.subtitleLabel.text = "Live 2 days ago"
+            let plansCount = friend.Plans.values.count
+            cell.subtitleLabel.text = Utilities.setPlurality(string: "\(plansCount) plan", count: plansCount)
             //cell.venueName.text = venue!.VenueName
             //self.retrieveImage(imageURL: venue!.ImageURL, imageView: cell.venuePic)
             //Setup mgswipe capability
             cell.setupCell(plans: Array(friend.Plans.values))
-            cell.profilePic.makeViewCircle()
             cell.profilePic.makeViewCircle()
             setupCell(cell: cell)
             return cell
             
         case Constants.REMAINING_FRIENDS_INDEX:
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.REUSE_IDENTIFIERS[indexPath.section], for: indexPath) as! AllTableViewCell
+            if let lastLive = friend.LastLive {
+                let negativeDaysSinceLive = DateUtilities.daysUntilPlan(planDate: lastLive)
+                cell.subtitleLabel.text = "Live \(negativeDaysSinceLive * -1) \(Utilities.setPlurality(string: "day", count: negativeDaysSinceLive * -1)) ago"
+            }
+            else {
+                cell.subtitleLabel.text = "Not yet Live"
+            }
             cell.friendName.text = friend.Name
             cell.profilePic!.image = UIImage()
             self.retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic!)
             cell.preservesSuperviewLayoutMargins = false
+            cell.profilePic.makeViewCircle()
             setupCell(cell: cell)
             return cell
         default:

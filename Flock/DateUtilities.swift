@@ -15,6 +15,7 @@ class DateUtilities {
     struct Constants {
         static let dayOfWeekDateFormat = "EEEE"
         static let fullDateFormat = "yyyy-MM-dd"
+        static let NUMBER_OF_DAYS_TO_DISPLAY = 7
     }
     
     static func getDateFromString(date: String) -> Date{
@@ -61,5 +62,9 @@ class DateUtilities {
 
         let components = calendar.dateComponents([.day], from: date1, to: date2)
         return components.day!
+    }
+    
+    static func isValidTimeFrame(dayDiff: Int) -> Bool {
+        return (dayDiff >= 0 && dayDiff < Constants.NUMBER_OF_DAYS_TO_DISPLAY)
     }
 }

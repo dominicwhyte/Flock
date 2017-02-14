@@ -53,18 +53,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
-    //Function to update data, use for refreshing (?)
+    //Function to update data, use for refreshing
     func updateAllData(completion: @escaping (_ status: Bool) -> ()) {
-        LoginClient.retrieveData { (user, venues) in
-            assert(user != nil && venues != nil)
-            self.user = user
-            self.venues = venues!
-            self.getAllUsers(completion: { (status) in
-                if(!status) {
-                    Utilities.printDebugMessage("Could not get all users?")
-                }
+        LoginClient.retrieveData { (data) in
+            if let (user, venues, users) = data {
+                Utilities.printDebugMessage("got it")
+                self.user = user
+                self.venues = venues
+                self.users = users
+                self.getAllFriends()
                 completion(true)
-            })
+            }
+            else {
+                Utilities.printDebugMessage("Error updating all data")
+                completion(false)
+            }
         }
     }
     
@@ -92,15 +95,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
-    
-    
-    func getAllUsers(completion: @escaping (_ status: Bool) -> ()) {
-        FirebaseClient.getAllUsers { (users) in
-            self.users = users
-            self.getAllFriends()
-            completion(true)
+    //call this function if an imageURL is not in the venueImages cache
+    func getMissingImage(imageURL : String, completion: @escaping (_ status: Bool) -> ()) {
+        FirebaseClient.getImageFromURL(imageURL) { (image) in
+            if let image = image {
+                self.venueImages[imageURL] = image
+                completion(true)
+            }
+            else {
+                completion(false)
+            }
         }
     }
+    
+    
     
     func getAllFriends() {
         if(user == nil) {
@@ -152,36 +160,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
         
         Utilities.printDebugMessage("visit: \(visit.coordinate.latitude),\(visit.coordinate.longitude)")
-        showNotification(body: "Visit: \(visit)")
+        
         let visitLocation = CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
+        let isArriving = !(visit.departureDate.compare(NSDate.distantFuture).rawValue == 0)
+        if let (venueName, distToVenue) = distanceToNearestClub(visitLocation: visitLocation) {
+            showNotification(body: "Closest to venue: \(venueName), \(distToVenue) meters away. Is arriving: \(isArriving) Visit: \(visit)")
+        }
         if let venueID = self.whichClubIsUserIn(visitLocation: visitLocation) {
-            FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: venueID, userID: self.user!.FBID, add: true, completion: { (success) in
+            FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: venueID, userID: self.user!.FBID, add: isArriving, completion: { (success) in
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                if (isArriving) {
+                    self.showNotification(body: "VENUE CHOSEN Arriving at \(appDelegate.venues[venueID]!.VenueName)")
+                }
+                else {
+                    self.showNotification(body: "VENUE CHOSEN Departing \(appDelegate.venues[venueID]!.VenueName)")
+                }
                 if(success) {
                     Utilities.printDebugMessage("Successfully uploaded visit to database")
                 }
             })
         }
-        // Not quite sure how to do this comparison. Maybe one of the following
-        //if visit.departureDate > Date() {
-        if (visit.departureDate.compare(NSDate.distantFuture).rawValue == 0) {
-            // A visit has begun, but not yet ended. User must still be at the place.
-            FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: "-KcBNbASBTPdCIiwFv2m", userID: self.user!.FBID, add: true, completion: { (success) in
-                if(success) {
-                    Utilities.printDebugMessage("Arrived to venue")
-                }
-            })
-        } else {
-            FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: "-KcBOi2Q0twAcR3-KjPJ", userID: self.user!.FBID, add: true, completion: { (success) in
-                if(success) {
-                    Utilities.printDebugMessage("Leaving venue")
-                }
-            })
-        }
-        FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: "-KcBOlWnYeNXN1FWTnFv", userID: self.user!.FBID, add: true, completion: { (success) in
-            if(success) {
-                Utilities.printDebugMessage("Visit logged")
-            }
-        })
     }
     
     // Notification function for local testing/debugging
@@ -196,6 +194,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         if (CLLocationManager.authorizationStatus() == .authorizedAlways){
             self.startMonitoringVisits()
         }
+    }
+    
+    //Test function
+    func distanceToNearestClub(visitLocation : CLLocation) -> (String, Double)? {
+        for venue in Array(self.venues.values) {
+            if let venueLocation = venue.VenueLocation {
+                let distanceInMeters = visitLocation.distance(from: venueLocation)
+                return (venue.VenueName, Double(distanceInMeters))
+            }
+        }
+        return nil
     }
     
     // Determines if user is in club and returns venueID of appropriate club

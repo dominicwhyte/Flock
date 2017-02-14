@@ -10,6 +10,7 @@ class User: NSObject
     var Plans: [String : Plan]
     var PictureURL: String
     var LiveClubID: String?
+    var LastLive: Date?
     
     init(dict: [String: AnyObject])
     {
@@ -39,7 +40,10 @@ class User: NSObject
             }
         }
         self.Plans = plans
-        
+        if (dict["LastLive"] != nil) {
+            let dateString = dict["LastLive"] as! String
+            self.LastLive = DateUtilities.getDateFromString(date: dateString)
+        }
     }
 
 }
@@ -51,14 +55,7 @@ class Plan: NSObject
     
     init(date : String, venueID : String)
     {
-        let dateString = date
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = DateUtilities.Constants.fullDateFormat
-        
-        let nsDate = dateFormatter.date(from: dateString)
-        
-        self.date = nsDate!
+        self.date = DateUtilities.getDateFromString(date: date)
         self.venueID =  venueID
     }
     

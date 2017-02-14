@@ -127,7 +127,12 @@ class Utilities {
     }
     
     
-        
+    static func setPlurality(string : String, count : Int) -> String {
+        if (count == 1) {
+            return string
+        }
+        return string + "s"
+    }
     
     
 }

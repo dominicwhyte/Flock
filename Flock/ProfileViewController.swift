@@ -79,26 +79,27 @@ class ProfileViewController: TwitterProfileViewController {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if (self.user == nil || self.user!.FBID == appDelegate.user!.FBID) {
             setupUser(user: appDelegate.user!)
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(logoutButtonPressed))
+            self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
         } else {
             setupUser(user: user!)
         }
     }
     
     func setupUser(user : User) {
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(logoutButtonPressed))
-        self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
-        
         self.user = user
         self.username = user.Name
-        self.plans = Array(user.Plans.values)
+        self.plans = Array(user.Plans.values).filter({ (plan) -> Bool in
+            DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))
+        })
         FirebaseClient.getImageFromURL(user.PictureURL) { (image) in
             DispatchQueue.main.async {
                 self.profileImage = image
             }
         }
-
-    
     }
+    
+    
     
     func logoutButtonPressed() {
         // 1
@@ -142,7 +143,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.user!.Plans.count
+        return self.plans.count
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -158,7 +159,23 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "VENUE_FRIEND", for: indexPath) as! VenueFriendTableViewCell
         cell.nameLabel.text = venue.VenueName
         cell.subtitleLabel.text = DateUtilities.convertDateToStringByFormat(date: plan.date, dateFormat: "MMMM d")
-        cell.profilePic.image = appDelegate.venueImages[venue.ImageURL]
+        if let venueImage = appDelegate.venueImages[venue.ImageURL] {
+            cell.profilePic.image = venueImage
+        }
+        else {
+            appDelegate.getMissingImage(imageURL: venue.ImageURL, completion: { (status) in
+                if (status) {
+                    DispatchQueue.main.async {
+                        if let venueImage = appDelegate.venueImages[venue.ImageURL] {
+                            cell.profilePic.image = venueImage
+                        }
+                        else {
+                            Utilities.printDebugMessage("Error: could not retrieve image")
+                        }
+                    }
+                }
+            })
+        }
         cell.selectionStyle = .none
         return cell
     }
