@@ -32,11 +32,18 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
                     Utilities.printDebugMessage("Successfully reloaded data and tableview")
                     self.friends = self.parseFriends()
                     self.filteredFriends = self.prepareArrays()
+                    if self.searchController.isActive && self.searchController.searchBar.text != "" {
+                        //reloads the table
+                        self.filterContentForSearchText(self.searchController.searchBar.text!)
+                    }
+                    else {
+                        
+                        self.tableView.reloadData()
+                    }
                 }
                 else {
                     Utilities.printDebugMessage("Error updating and reloading data in table view")
                 }
-                self.tableView.reloadData()
                 completion(success)
             }
         }

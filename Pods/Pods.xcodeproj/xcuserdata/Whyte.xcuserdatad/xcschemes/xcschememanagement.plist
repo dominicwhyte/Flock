@@ -79,6 +79,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>PermissionScope.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-Flock.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -122,7 +127,27 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>076F52C00D03B662E2C629DBD3745EA1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>0D2EC794F8EE934D3133123618F1BBA2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>0E579C8B6EC88FD31F0C2B47C9058B48</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1A071D0F84056328F47E24D5ABD8C358</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1C41FE68514CA081FFE9A868256AF3F9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -147,12 +172,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3D0DF585CCBBF466486E5747E8992D6C</key>
+		<key>4E1263BFF45F6446CF3DE29AE234C893</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>4E1263BFF45F6446CF3DE29AE234C893</key>
+		<key>4EBCEDB816F050E09E8118AB51011832</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -167,27 +192,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>6611E75E284DA5A132AD9FD522661F7B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>7D04535608058A2FABC0D16935868FB9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7F3856BE60667313164934B7B6C4C7F1</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>8329B4DD82B7A073B34A61C9527865D0</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>85374AB776738B05686A36FAD6990296</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>88F29CA72443EBDD65DF195CE541E7B6</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -212,7 +227,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A946A60B9FE6F04ED4D3A896CB7D6E0D</key>
+		<key>C55E46AC6A1E70A6AA25E306AE545375</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -223,11 +238,6 @@
 			<true/>
 		</dict>
 		<key>DD707E469C8D0BEA816D740155A3B629</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>FA1ACBF5FBB092C53AE72F0586CA91FB</key>
 		<dict>
 			<key>primary</key>
 			<true/>

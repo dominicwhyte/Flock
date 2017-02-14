@@ -9,6 +9,7 @@
 import UIKit
 import PopupDialog
 import BTNavigationDropdownMenu
+import SCLAlertView
 
 
 
@@ -28,13 +29,40 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     
     var imageCache = [String : UIImage]()
     let searchController = UISearchController(searchResultsController: nil)
-
-
+    
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-
+    //UpdateTableViewDelegate function
+    func updateDataAndTableView(_ completion: @escaping (Bool) -> Void) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.updateAllData { (success) in
+            DispatchQueue.main.async {
+                if (success) {
+                    Utilities.printDebugMessage("Successfully reloaded data and tableview")
+                    self.venues = Array(appDelegate.venues.values)
+                    self.filteredVenues = []
+                    if self.searchController.isActive && self.searchController.searchBar.text != "" {
+                        //reloads the table
+                        self.filterContentForSearchText(self.searchController.searchBar.text!)
+                    }
+                    else {
+                        
+                        self.tableView.reloadData()
+                    }
+                    
+                }
+                else {
+                    Utilities.printDebugMessage("Error updating and reloading data in table view")
+                }
+                completion(success)
+            }
+        }
+    }
+    
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (currentTab == items[0]) {
             tableView.backgroundView?.isHidden = true
@@ -72,7 +100,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             cell.subtitleLabel.text = "\(venue.CurrentAttendees.count) live   \(venue.PlannedAttendees.count) planned"
         }
         return cell
-
+        
     }
     
     let inverseGoldenRatio : CGFloat = 0.621
@@ -83,7 +111,6 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let cellHeight = inverseGoldenRatio * (CGFloat(self.view.frame.width) - l - r) + b + t
-        Utilities.printDebugMessage("\(self.view.frame.width)    \(cellHeight)")
         return cellHeight
     }
     
@@ -143,6 +170,10 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             self?.tableView?.reloadData()
         }
         
+        refreshControl?.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl?.addTarget(self, action: #selector(PeopleTableViewController.refresh(refreshControl:)), for: UIControlEvents.valueChanged)
+        
+        
         super.viewDidLoad()
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -157,6 +188,15 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         self.navigationController?.navigationBar.isTranslucent = true
         
         self.view.backgroundColor = FlockColors.FLOCK_GRAY
+    }
+    
+    func refresh(refreshControl: UIRefreshControl) {
+        self.updateDataAndTableView { (success) in
+            if (!success) {
+                Utilities.printDebugMessage("Error reloading table data")
+            }
+            self.refreshControl?.endRefreshing()
+        }
     }
     
     fileprivate let image = UIImage(named: "cat.png")!.withRenderingMode(.alwaysTemplate)
@@ -227,15 +267,31 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         
         // Create second button
         let todaysDate = DateUtilities.convertDateToStringByFormat(date: Date(), dateFormat: "MMMM d")
-        let attendButton = DefaultButton(title: "ATTEND \(venue.VenueName.uppercased()) ON \(todaysDate)", dismissOnTap: true) {
-            
+        let attendButton = DefaultButton(title: "ATTEND \(venue.VenueNickName.uppercased()) ON \(todaysDate.uppercased())", dismissOnTap: true) {
+            Utilities.printDebugMessage("Attending \(venue.VenueNickName.uppercased())")
+            let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            FirebaseClient.addUserToVenuePlansForDate(date: popupSubView.stringsOfUpcomingDays[popupSubView.datePicker.selectedItemIndex], venueID: self.venueToPass!.VenueID, userID: appDelegate.user!.FBID, completion: { (success) in
+            let date = popupSubView.stringsOfUpcomingDays[popupSubView.datePicker.selectedItemIndex]
+            
+            //Add Venue and present popup
+            FirebaseClient.addUserToVenuePlansForDate(date: date, venueID: self.venueToPass!.VenueID, userID: appDelegate.user!.FBID, completion: { (success) in
                 if (success) {
                     Utilities.printDebugMessage("Successfully added plan to attend venue")
+                    self.updateDataAndTableView({ (success) in
+                        Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+                        if (success) {
+                            DispatchQueue.main.async {
+                                self.displayAttendedPopup(venueName: self.venueToPass!.VenueNickName, attendFullDate: date)
+                            }
+                        }
+                        else {
+                            Utilities.printDebugMessage("Error reloading tableview in venues")
+                        }
+                    })
                 }
                 else {
-                    
+                    Utilities.printDebugMessage("Error adding user to venue plans for date")
+                    Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
                 }
             })
         }
@@ -246,7 +302,18 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         // Present dialog
         present(popup, animated: true, completion: nil)
     }
-
+    
+    func displayAttendedPopup(venueName : String, attendFullDate : String) {
+        let displayDate = DateUtilities.convertDateToStringByFormat(date: DateUtilities.getDateFromString(date: attendFullDate), dateFormat: DateUtilities.Constants.uiDisplayFormat)
+        let alert = SCLAlertView()
+        _ = alert.addButton("First Button", target:self, selector:#selector(PlacesTableViewController.shareWithFlock))
+        print("Second button tapped")
+        _ = alert.showSuccess(Utilities.generateRandomCongratulatoryPhrase(), subTitle: "You're going to \(venueName) on \(displayDate)")
+    }
+    
+    func shareWithFlock() {
+        print("First button tapped")
+    }
 }
 
 

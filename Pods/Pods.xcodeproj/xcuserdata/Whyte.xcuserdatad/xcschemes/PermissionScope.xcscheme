@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '4EBCEDB816F050E09E8118AB51011832'
-               BlueprintName = 'SimpleTab-SimpleTab'
+               BlueprintIdentifier = 'C55E46AC6A1E70A6AA25E306AE545375'
+               BlueprintName = 'PermissionScope'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'SimpleTab.bundle'>
+               BuildableName = 'PermissionScope.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

@@ -12,14 +12,17 @@ import SCLAlertView
 class TestingViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     //The most recently selected venueName, or empty string if none
     var venueName : String = ""
+    var venueNickName : String = ""
     
     //Add a Venue
     @IBAction func createViewButtonPressed(_ sender: Any) {
         let alert = SCLAlertView()
-        let txt = alert.addTextField("Enter your name")
+        let txt = alert.addTextField("Enter Venue name")
+        let txt2 = alert.addTextField("Enter Venue nickname")
         alert.addButton("Upload Venue Image and Create Venue") {
             if (txt.text != nil) && txt.text! != "" {
                 self.venueName = txt.text!
+                self.venueNickName = txt2.text!
                 Utilities.presentImagePicker(vc: self, vcDelegate: self)
             }
             else {
@@ -56,7 +59,7 @@ class TestingViewController: UIViewController, UIImagePickerControllerDelegate, 
             FirebaseClient.uploadToFirebaseStorageUsingImage(selectedImage, completion: { (imageUrl) in
                 Utilities.printDebugMessage("Picture uploaded and URL added to Update URL")
                 if let imageUrl = imageUrl {
-                    FirebaseClient.addVenue(self.venueName, imageURL: imageUrl, logoURL: imageUrl, completion: { (status) in
+                    FirebaseClient.addVenue(self.venueName, imageURL: imageUrl, logoURL: imageUrl, nickname: self.venueNickName, completion: { (status) in
                         if (status) {
                             Utilities.printDebugMessage("Added Venue Successfully")
                         }

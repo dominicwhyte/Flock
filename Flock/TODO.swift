@@ -25,6 +25,15 @@ import Foundation
  Permissions: https://github.com/nickoneill/PermissionScope
  
  
+ 
+ updated places page when attending
+ popup when attending somwewhere
+ update profile after attending
+ ability to update profile
+ ability to remove plan
+ 
+ 
+ 
  */
 
 

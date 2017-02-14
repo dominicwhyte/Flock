@@ -10,6 +10,10 @@ struct FlockColors {
 }
 
 class Utilities {
+    struct Constants {
+        static let CONGRATULATORY_WORDS_LIST = ["Awesome!", "Phenomenal!", "Hot dog!", "Terrific"]
+    }
+    
     static func setUnderlinedTextAttribute(text : String, button : UIButton) {
         let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: text)
         attributeString.addAttribute(NSUnderlineStyleAttributeName, value: 1, range: NSMakeRange(0, attributeString.length))
@@ -134,6 +138,11 @@ class Utilities {
         return string + "s"
     }
     
+    
+    static func generateRandomCongratulatoryPhrase() -> String {
+        let random = Int(arc4random_uniform(UInt32(Constants.CONGRATULATORY_WORDS_LIST.count)))
+        return Constants.CONGRATULATORY_WORDS_LIST[random]
+    }
     
 }
 

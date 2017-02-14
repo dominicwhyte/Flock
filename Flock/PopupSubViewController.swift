@@ -128,7 +128,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func setAttendButtonTitle() {
-        let venueString = self.delegate!.venueToPass!.VenueName.uppercased()
+        let venueString = self.delegate!.venueToPass!.VenueNickName.uppercased()
         let dateString = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]
         let date = DateUtilities.getDateFromString(date: dateString)
         let dateStringInFormat = DateUtilities.convertDateToStringByFormat(date: date, dateFormat: "MMMM d")

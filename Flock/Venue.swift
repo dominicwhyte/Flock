@@ -9,6 +9,7 @@ class Venue: NSObject
     var VenueLocation : CLLocation?
     var PlannedAttendees: [String:String]
     var CurrentAttendees: [String:String]
+    var VenueNickName: String
     
     
     init(dict: [String: AnyObject])
@@ -33,6 +34,11 @@ class Venue: NSObject
             self.CurrentAttendees = dict["CurrentAttendees"] as! [String:String]
         } else {
             self.CurrentAttendees = [:]
+        }
+        if(dict["VenueNickName"] != nil) {
+            self.VenueNickName = dict["VenueNickName"] as! String
+        } else {
+            self.VenueNickName = self.VenueName
         }
     }
     

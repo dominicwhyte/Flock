@@ -22,6 +22,7 @@ target 'Flock' do
    pod 'BTNavigationDropdownMenu'
    pod 'PureLayout', '~> 3.0.1'
    pod 'LFTwitterProfile'
+   pod 'PermissionScope'
 
   target 'FlockTests' do
     inherit! :search_paths

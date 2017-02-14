@@ -63,6 +63,8 @@
 	<string>Upload Venue Photos</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Allow Flock to use location services to check if you&apos;re in a venue. You can turn this off anytime from your settings in your Profile.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Allow Flock to access your contacts so you can add your friends!</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>OpenSans-Regular.ttf</string>

@@ -10,9 +10,10 @@ import UIKit
 import FBSDKLoginKit
 import SimpleTab
 import AASquaresLoading
+import PermissionScope
 
 class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
-
+    let multiPscope = PermissionScope()
     @IBOutlet weak var termsAndConditionsLabel: UIButton!
     @IBOutlet weak var loginButton: FBSDKLoginButton!
     var loadingSquare : AASquaresLoading?
@@ -22,6 +23,8 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     let SECONDS_UNTIL_ABORT_LOGIN = 1
     
     override func viewDidLoad() {
+        PermissionUtilities.setupPermissionScope(permissionScope: multiPscope)
+        
         loadingSquare = AASquaresLoading(target: self.loadingSquareScreenView, size: 40)
         loadingSquareScreenView.isHidden = true
         
@@ -71,6 +74,10 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                     Utilities.printDebugMessage("Error with auto login")
                 }
             })
+        }
+        //Request permissions
+        else {
+            PermissionUtilities.getPermissionsIfDenied(permissionScope: multiPscope)
         }
     }
     

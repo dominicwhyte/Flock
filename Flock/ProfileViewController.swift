@@ -9,11 +9,14 @@
 import Foundation
 import UIKit
 import LFTwitterProfile
+import PermissionScope
 
 
 
 class ProfileViewController: TwitterProfileViewController {
-
+    
+    let multiPscope = PermissionScope()
+    
     struct Constants {
         static let SECTION_TITLES = ["Plans"]
         static let CELL_HEIGHT = 75
@@ -64,6 +67,10 @@ class ProfileViewController: TwitterProfileViewController {
         return returnedView
     }
     
+    
+    
+    
+    
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return Constants.SECTION_TITLES[section]
     }
@@ -73,6 +80,8 @@ class ProfileViewController: TwitterProfileViewController {
     }
     
     override func viewDidLoad() {
+        PermissionUtilities.setupPermissionScope(permissionScope: multiPscope)
+        
         super.viewDidLoad()
         
         self.locationString = "Hong Kong"
@@ -84,6 +93,7 @@ class ProfileViewController: TwitterProfileViewController {
         } else {
             setupUser(user: user!)
         }
+        PermissionUtilities.getPermissionsIfNotYetSet(permissionScope: multiPscope)
     }
     
     func setupUser(user : User) {

@@ -143,6 +143,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
     }
     
+    //Temporary function
     func requestNotificationPermission(application : UIApplication) {
         if #available(iOS 10.0, *) {
             UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]) { (granted, error) in
@@ -198,13 +199,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     //Test function
     func distanceToNearestClub(visitLocation : CLLocation) -> (String, Double)? {
+        var minDistance = Double.infinity
+        var closestVenueName : String?
+        
         for venue in Array(self.venues.values) {
             if let venueLocation = venue.VenueLocation {
                 let distanceInMeters = visitLocation.distance(from: venueLocation)
-                return (venue.VenueName, Double(distanceInMeters))
+                if distanceInMeters < minDistance {
+                    minDistance = distanceInMeters
+                    closestVenueName = venue.VenueName
+                }
             }
         }
-        return nil
+        if(closestVenueName != nil) {
+            return (closestVenueName!, minDistance)
+        } else {
+            return nil
+        }
     }
     
     // Determines if user is in club and returns venueID of appropriate club
@@ -229,8 +240,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         FIRApp.configure()
-        self.setupLocationServices()
-        self.requestNotificationPermission(application: application)
+        //self.setupLocationServices()
+        //self.requestNotificationPermission(application: application)
 
         return true
     }

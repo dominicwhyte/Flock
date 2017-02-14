@@ -38,10 +38,10 @@ class FirebaseClient: NSObject
         }
     }
     
-    class func addVenue(_ name : String, imageURL : String, logoURL : String, completion: @escaping (Bool) -> Void)
+    class func addVenue(_ name : String, imageURL : String, logoURL : String, nickname : String, completion: @escaping (Bool) -> Void)
     {
         let venueID = FirebaseClient.dataRef.child("Venues").childByAutoId().key
-        let updates = ["VenueID" : venueID, "ImageURL" : imageURL, "LogoURL" : logoURL, "VenueName" : name] as [String : Any]
+        let updates = ["VenueID" : venueID, "ImageURL" : imageURL, "LogoURL" : logoURL, "VenueName" : name, "VenueNickName" : nickname] as [String : Any]
         dataRef.child("Venues").child(venueID).updateChildValues(updates)
         completion(true)
         
@@ -274,7 +274,7 @@ class FirebaseClient: NSObject
                 })
             }
             else {
-                
+                completion(false)
             }
         }
     }
@@ -286,7 +286,7 @@ class FirebaseClient: NSObject
             if (snapshot.hasChild(venueID)) {
                 if (snapshot.childSnapshot(forPath: venueID).hasChild("PlannedAttendees") ) {
                     if (snapshot.childSnapshot(forPath: venueID).childSnapshot(forPath: "PlannedAttendees").hasChild(userID)) {
-                        completion(false)
+                        completion(true)
                     }
                     else {
                         let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]
