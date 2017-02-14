@@ -240,8 +240,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         FIRApp.configure()
-        //self.setupLocationServices()
-        //self.requestNotificationPermission(application: application)
+        self.setupLocationServices()
+        self.requestNotificationPermission(application: application)
 
         return true
     }

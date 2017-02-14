@@ -11,7 +11,7 @@ struct FlockColors {
 
 class Utilities {
     struct Constants {
-        static let CONGRATULATORY_WORDS_LIST = ["Awesome!", "Phenomenal!", "Hot dog!", "Terrific"]
+        static let CONGRATULATORY_WORDS_LIST = ["Awesome!", "Phenomenal!", "Hot dog!", "Terrific!", "Marvelous!", "Wonderful!", "Sensational!", "Superb!", "Sublime!", "Brilliant!", "Peachy!", "Splendiferous!", "Outstanding!", "Legendary!"]
     }
     
     static func setUnderlinedTextAttribute(text : String, button : UIButton) {

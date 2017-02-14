@@ -79,6 +79,11 @@
 			<key>orderHint</key>
 			<integer>12</integer>
 		</dict>
+		<key>PermissionScope.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>24</integer>
+		</dict>
 		<key>Pods-Flock.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -122,12 +127,32 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>076F52C00D03B662E2C629DBD3745EA1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>0A94ED80018EEDAEA8AE04A80EBB4030</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>0D2EC794F8EE934D3133123618F1BBA2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>0E579C8B6EC88FD31F0C2B47C9058B48</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1A071D0F84056328F47E24D5ABD8C358</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1C41FE68514CA081FFE9A868256AF3F9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -162,12 +187,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>4EBCEDB816F050E09E8118AB51011832</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>533607A808BC64912197562E016B6085</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>5A0A28913A1212C2D1EACECBA1E58AC0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>6611E75E284DA5A132AD9FD522661F7B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -233,6 +268,11 @@
 			<true/>
 		</dict>
 		<key>C4957BF76C6848FFDCF81661AEC762BF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C55E46AC6A1E70A6AA25E306AE545375</key>
 		<dict>
 			<key>primary</key>
 			<true/>
