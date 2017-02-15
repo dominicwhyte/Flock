@@ -290,6 +290,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             //Add Venue and present popup
             FirebaseClient.addUserToVenuePlansForDate(date: date, venueID: self.venueToPass!.VenueID, userID: appDelegate.user!.FBID, add: true, completion: { (success) in
                 if (success) {
+                    appDelegate.profileNeedsToUpdate = true
                     Utilities.printDebugMessage("Successfully added plan to attend venue")
                     self.updateDataAndTableView({ (success) in
                         Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)

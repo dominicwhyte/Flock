@@ -17,6 +17,8 @@ class TwitterProfileHeaderView: UIView {
 
   @IBOutlet weak var contentView: UIView!
   
+  @IBOutlet weak var messageButton: RoundButton!
+
   let maxHeight: CGFloat = 80
   let minHeight: CGFloat = 50
   
@@ -37,6 +39,9 @@ class TwitterProfileHeaderView: UIView {
     
     iconHeightConstraint.constant = height
   }
+ 
+    @IBAction func messageButtonPressed(_ sender: Any) {
+    }
   
   /*override func sizeThatFits(_ size: CGSize) -> CGSize {
     //descriptionLabel.sizeToFit()

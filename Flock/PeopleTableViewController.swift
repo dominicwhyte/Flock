@@ -219,6 +219,8 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         var userToView : User
+        
+
         if searchController.isActive && searchController.searchBar.text != "" {
             userToView = filteredFriends[indexPath.section][indexPath.row]
         }
@@ -342,6 +344,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         } else if let profileController = segue.destination as? ProfileViewController {
             if let userToPass = userToPass {
                 profileController.user = userToPass
+                profileController.didComeFromFriendsPage = true
             } else {
                 Utilities.printDebugMessage("Unable to pass user")
             }

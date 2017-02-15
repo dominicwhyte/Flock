@@ -11,7 +11,7 @@ import UIKit
 import LFTwitterProfile
 import PermissionScope
 import SCLAlertView
-
+import FacebookShare
 
 
 class ProfileViewController: TwitterProfileViewController {
@@ -28,6 +28,7 @@ class ProfileViewController: TwitterProfileViewController {
     var custom: UIView!
     var label: UILabel!
     var user: User?
+    var didComeFromFriendsPage: Bool = false
     var plans: [Plan] = [Plan]()
     
     
@@ -110,6 +111,18 @@ class ProfileViewController: TwitterProfileViewController {
         }
     }
     
+    /*@IBAction func settingsButtonPressed(_ sender: Any) {
+        let content = LinkShareContent(url: URL(string: "www.google.com")!)
+        let shareDialog = MessageDialog(content: content)
+        shareDialog.completion = { result in
+            // Handle share results
+        }
+        do {
+            try shareDialog.show()
+        } catch {
+            print(error)
+        }
+    }*/
     
     
     override func viewDidLoad() {
@@ -126,8 +139,10 @@ class ProfileViewController: TwitterProfileViewController {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if (self.user == nil || self.user!.FBID == appDelegate.user!.FBID) {
             user = appDelegate.user!
-            self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(logoutButtonPressed))
-            self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
+            if(!didComeFromFriendsPage) {
+                self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(logoutButtonPressed))
+                self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
+            }
         } else {
             user = self.user!
         }
@@ -135,7 +150,9 @@ class ProfileViewController: TwitterProfileViewController {
         self.user = user!
         self.username = user!.Name
         self.plans = Array(user!.Plans.values).filter({ (plan) -> Bool in
-            DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))
+            Utilities.printDebugMessage("VenueID: \(plan.venueID), Date: \(plan.date)")
+            return DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))
+            
         })
         FirebaseClient.getImageFromURL(user!.PictureURL) { (image) in
             DispatchQueue.main.async {
@@ -206,6 +223,9 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         cell.subtitleLabel.text = DateUtilities.convertDateToStringByFormat(date: plan.date, dateFormat: "MMMM d")
         if let venueImage = appDelegate.venueImages[venue.ImageURL] {
             cell.profilePic.image = venueImage
+            cell.profilePic.clipsToBounds = true
+            cell.profilePic.layer.borderWidth = 2
+            cell.profilePic.layer.borderColor = UIColor.lightGray.cgColor
         }
         else {
             appDelegate.getMissingImage(imageURL: venue.ImageURL, completion: { (status) in
@@ -213,6 +233,9 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
                     DispatchQueue.main.async {
                         if let venueImage = appDelegate.venueImages[venue.ImageURL] {
                             cell.profilePic.image = venueImage
+                            cell.profilePic.clipsToBounds = true
+                            cell.profilePic.layer.borderWidth = 2
+                            cell.profilePic.layer.borderColor = UIColor.lightGray.cgColor
                         }
                         else {
                             Utilities.printDebugMessage("Error: could not retrieve image")
