@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import LFTwitterProfile
 import PermissionScope
+import SCLAlertView
 
 
 
@@ -225,6 +226,69 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return CGFloat(Constants.CELL_HEIGHT)
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == UITableViewCellEditingStyle.delete) {
+            // handle delete (by removing the data from your array and updating the tableview)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let plan = self.plans[indexPath.row]
+        let venue = appDelegate.venues[plan.venueID]!
+        let date = DateUtilities.getStringFromDate(date: plan.date)
+        
+        let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
+            // delete item at indexPath
+            let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
+            FirebaseClient.addUserToVenuePlansForDate(date: date, venueID: venue.VenueID, userID: appDelegate.user!.FBID, add: false, completion: { (success) in
+                if (success) {
+                    Utilities.printDebugMessage("Successfully removed plan to attend venue")
+                    self.updateDataAndTableView({ (success) in
+                        Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+                        if (success) {
+                            DispatchQueue.main.async {
+                                self.displayUnAttendedPopup(venueName: venue.VenueNickName, attendFullDate: date)
+                            }
+                        }
+                        else {
+                            Utilities.printDebugMessage("Error reloading tableview in venues")
+                        }
+                    })
+                }
+                else {
+                    Utilities.printDebugMessage("Error adding user to venue plans for date")
+                    Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+                }
+            })
+        }
+        
+        /* V2.0
+         let share = UITableViewRowAction(style: .normal, title: "Share") { (action, indexPath) in
+            // share item at indexPath
+        }
+        */
+        
+        //share.backgroundColor = FlockColors.FLOCK_BLUE
+        delete.backgroundColor = FlockColors.FLOCK_GRAY
+        
+        //return [delete, share]
+        return [delete]
+    }
+    
+    func displayUnAttendedPopup(venueName : String, attendFullDate : String) {
+        let displayDate = DateUtilities.convertDateToStringByFormat(date: DateUtilities.getDateFromString(date: attendFullDate), dateFormat: DateUtilities.Constants.uiDisplayFormat)
+        let alert = SCLAlertView()
+        _ = alert.addButton("First Button", target:self, selector:#selector(PlacesTableViewController.shareWithFlock))
+        print("Second button tapped")
+        _ = alert.showSuccess("Confirmed", subTitle: "You've removed your plan to go to \(venueName) on \(displayDate)")
     }
 }
 

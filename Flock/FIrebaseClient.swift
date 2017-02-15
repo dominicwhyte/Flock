@@ -266,10 +266,10 @@ class FirebaseClient: NSObject
     
     
     //Add plan to user plans and add user to planned attendees in venue
-    class func addUserToVenuePlansForDate(date: String, venueID : String, userID : String, completion: @escaping (Bool) -> Void) {
-        addUserToVenuePlannedAttendees(venueID: venueID, userID: userID) { (venueSuccess) in
+    class func addUserToVenuePlansForDate(date: String, venueID : String, userID : String, add: Bool, completion: @escaping (Bool) -> Void) {
+        addUserToVenuePlannedAttendees(venueID: venueID, userID: userID, add: add) { (venueSuccess) in
             if (venueSuccess) {
-                addPlanToUserForDate(date: date, venueID: venueID, userID: userID, completion: { (userSuccess) in
+                addPlanToUserForDate(date: date, venueID: venueID, userID: userID, add : add, completion: { (userSuccess) in
                     completion(userSuccess)
                 })
             }
@@ -279,33 +279,55 @@ class FirebaseClient: NSObject
         }
     }
     
-    static func addUserToVenuePlannedAttendees(venueID : String, userID : String, completion: @escaping (Bool) -> Void) {
+    static func addUserToVenuePlannedAttendees(venueID : String, userID : String,  add: Bool, completion: @escaping (Bool) -> Void) {
         
-        dataRef.child("Venues").observeSingleEvent(of: .value, with: { (snapshot) in
+        dataRef.observeSingleEvent(of: .value, with: { (snapshot) in
             //Confirm send friend request conditions
-            if (snapshot.hasChild(venueID)) {
-                if (snapshot.childSnapshot(forPath: venueID).hasChild("PlannedAttendees") ) {
-                    if (snapshot.childSnapshot(forPath: venueID).childSnapshot(forPath: "PlannedAttendees").hasChild(userID)) {
-                        completion(true)
-                    }
-                    else {
-                        let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]
-                        let venueDict = dictionary[venueID] as! [String: AnyObject]
-                        
-                        var plannedAttendees = venueDict["PlannedAttendees"] as! [String : AnyObject]
+            if (snapshot.childSnapshot(forPath: "Venues").hasChild(venueID)) {
+                if (snapshot.childSnapshot(forPath: "Venues").childSnapshot(forPath: venueID).hasChild("PlannedAttendees") ) {
+                    let dictionary :[String:AnyObject] = snapshot.childSnapshot(forPath: "Venues").value as! [String : AnyObject]
+                    let venueDict = dictionary[venueID] as! [String: AnyObject]
+                    
+                    var plannedAttendees = venueDict["PlannedAttendees"] as! [String : AnyObject]
+                    
+                    // If adding to plans
+                    if(add) {
                         if (plannedAttendees[userID] == nil) {
                             plannedAttendees[userID] = userID as AnyObject?
                         }
-                        let updates = ["PlannedAttendees": plannedAttendees]
-                        dataRef.child("Venues").child(venueID).updateChildValues(updates)
-                        completion(true)
                     }
+                    // If removing from plans
+                    else {
+                        let userDictionary :[String:AnyObject] = snapshot.childSnapshot(forPath: "Users").value as! [String : AnyObject]
+                        let userDict = userDictionary[userID] as! [String: AnyObject]
+                        let plansDict = userDict["Plans"] as! [String : AnyObject]
+                        
+                        var uniquePlansCount = 0
+                        for (_, plan) in plansDict {
+                            let dateString = (plan["Date"] as! String)
+                            let date = DateUtilities.getDateFromString(date: dateString)
+                            let isValidTimeFrame = DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: date))
+                            if((plan["VenueID"] as! String) == venueID && isValidTimeFrame) {
+                                uniquePlansCount += 1
+                            }
+                        }
+                        
+                        if(uniquePlansCount == 1) {
+                            plannedAttendees[userID] = nil
+                        }
+                    }
+                    let updates = ["PlannedAttendees": plannedAttendees]
+                    dataRef.child("Venues").child(venueID).updateChildValues(updates)
+                    completion(true)
+                    
                 }
                  //Planned attendees dict not present
                 else
                 {
-                    let updates = ["PlannedAttendees": [userID : userID]]
-                    dataRef.child("Venues").child(venueID).updateChildValues(updates)
+                    if(add) {
+                        let updates = ["PlannedAttendees": [userID : userID]]
+                        dataRef.child("Venues").child(venueID).updateChildValues(updates)
+                    }
                     completion(true)
                 }
                 
@@ -317,7 +339,7 @@ class FirebaseClient: NSObject
 
     }
     
-    static func addPlanToUserForDate(date: String, venueID : String, userID : String, completion: @escaping (Bool) -> Void) {
+    static func addPlanToUserForDate(date: String, venueID : String, userID : String, add: Bool, completion: @escaping (Bool) -> Void) {
         dataRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot) in
             //Confirm send friend request conditions
             if (snapshot.hasChild(userID)) {
@@ -325,15 +347,28 @@ class FirebaseClient: NSObject
                     let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]
                     let userDict = dictionary[userID] as! [String: AnyObject]
                     var plansDict = userDict["Plans"] as! [String : AnyObject]
-                    
-                    let uniqueVisitID = UUID().uuidString
-                    let planDetails = ["Date" : date, "VenueID" : venueID]
-                    if (plansDict[uniqueVisitID] == nil) {
-                        plansDict[uniqueVisitID] = planDetails as AnyObject?
+                    // Adding plan to user
+                    if(add) {
+                        let uniqueVisitID = UUID().uuidString
+                        let planDetails = ["Date" : date, "VenueID" : venueID]
+                        if (plansDict[uniqueVisitID] == nil) {
+                            plansDict[uniqueVisitID] = planDetails as AnyObject?
+                        }
+                        else {
+                            Utilities.printDebugMessage("Error: unique IDs are not unique")
+                        }
                     }
+                    // Removing plan from user 
                     else {
-                        Utilities.printDebugMessage("Error: unique IDs are not unique")
+                        for (uniqueVisitID, plan) in plansDict {
+                            if((plan["Date"] as! String) == date && (plan["VenueID"] as! String) == venueID) {
+                                if (plansDict[uniqueVisitID] != nil) {
+                                    plansDict[uniqueVisitID] = nil
+                                }
+                            }
+                        }
                     }
+
                     let updates = ["Plans": plansDict]
                     dataRef.child("Users").child(userID).updateChildValues(updates)
                     completion(true)
@@ -341,12 +376,14 @@ class FirebaseClient: NSObject
                     //Planned attendees dict not present
                 else
                 {
-                    let uniqueVisitID = UUID().uuidString
-                    let planDetails = ["Date" : date, "VenueID" : venueID]
-                    let plansDict = [uniqueVisitID : planDetails]
-                    let updates = ["Plans": plansDict]
-                    dataRef.child("Users").child(userID).updateChildValues(updates)
-                    completion(true)
+                    if(add) {
+                        let uniqueVisitID = UUID().uuidString
+                        let planDetails = ["Date" : date, "VenueID" : venueID]
+                        let plansDict = [uniqueVisitID : planDetails]
+                        let updates = ["Plans": plansDict]
+                        dataRef.child("Users").child(userID).updateChildValues(updates)
+                        completion(true)
+                    }
                 }
                 
             }

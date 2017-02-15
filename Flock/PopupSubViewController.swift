@@ -128,7 +128,6 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func setAttendButtonTitle() {
-        Utilities.printDebugMessage("Hi I'm here!")
         let venueString = self.delegate!.venueToPass!.VenueNickName.uppercased()
         let dateString = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]
         let date = DateUtilities.getDateFromString(date: dateString)
@@ -140,6 +139,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
             for user in plannedUsersForDate {
                 Utilities.printDebugMessage("checking")
                 if(user.FBID == appDelegate.user!.FBID) {
+                    Utilities.printDebugMessage("disabling")
                     disable = true
                     break
                 }

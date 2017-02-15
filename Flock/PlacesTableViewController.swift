@@ -248,7 +248,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         latestAttendButton?.isEnabled = !shouldDisable
         latestAttendButton?.setTitle(title, for: .normal)
         if let latestAttendButton = latestAttendButton {
-            if(!shouldDisable) {
+            if(shouldDisable) {
                 self.disableButton(button: latestAttendButton)
             } else {
                 latestAttendButton.backgroundColor = FlockColors.FLOCK_BLUE
@@ -288,7 +288,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             
             
             //Add Venue and present popup
-            FirebaseClient.addUserToVenuePlansForDate(date: date, venueID: self.venueToPass!.VenueID, userID: appDelegate.user!.FBID, completion: { (success) in
+            FirebaseClient.addUserToVenuePlansForDate(date: date, venueID: self.venueToPass!.VenueID, userID: appDelegate.user!.FBID, add: true, completion: { (success) in
                 if (success) {
                     Utilities.printDebugMessage("Successfully added plan to attend venue")
                     self.updateDataAndTableView({ (success) in
@@ -312,7 +312,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         attendButton.isEnabled = self.shouldAttendButtonBeEnabledUponInitialPopup(appDelegate: appDelegate)
         attendButton.backgroundColor = FlockColors.FLOCK_BLUE
-        attendButton.titleLabel?.textColor = UIColor.white
+        attendButton.setTitleColor(.white, for: .normal)
         if(!attendButton.isEnabled) {
             self.disableButton(button: attendButton)
         }
