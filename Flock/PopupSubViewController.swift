@@ -77,8 +77,8 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         
         tableView.register(UINib(nibName: "VenueFriendTableViewCell", bundle: nil), forCellReuseIdentifier: "VENUE_FRIEND")
         setFriendsForVenueForDate(venue: delegate!.venueToPass!)
-        self.view.addSubview(tableView)
         setAttendButtonTitle()
+        self.view.addSubview(tableView)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -128,11 +128,29 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func setAttendButtonTitle() {
+        Utilities.printDebugMessage("Hi I'm here!")
         let venueString = self.delegate!.venueToPass!.VenueNickName.uppercased()
         let dateString = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]
         let date = DateUtilities.getDateFromString(date: dateString)
         let dateStringInFormat = DateUtilities.convertDateToStringByFormat(date: date, dateFormat: "MMMM d")
-        self.delegate?.changeButtonTitle(title: "ATTEND \(venueString) ON \(dateStringInFormat)")
+        
+        var disable = false
+        if let plannedUsersForDate = self.allFriendsForDate[dateString]?[INDEX_OF_PLANNED_ATTENDEES] {
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            for user in plannedUsersForDate {
+                Utilities.printDebugMessage("checking")
+                if(user.FBID == appDelegate.user!.FBID) {
+                    disable = true
+                    break
+                }
+            }
+        } else {
+            disable = true
+            Utilities.printDebugMessage("Something wrong with date dictionary - doesn't contain dateString")
+        }
+        
+        
+        self.delegate?.changeButtonTitle(title: "ATTEND \(venueString) ON \(dateStringInFormat.uppercased())", shouldDisable: disable)
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {

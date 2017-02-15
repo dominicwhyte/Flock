@@ -203,7 +203,7 @@ extension TwitterProfileViewController {
     
     // Detail Title
     let _navigationDetailLabel = UILabel()
-    _navigationDetailLabel.text = "121 Tweets"
+    _navigationDetailLabel.text = ""
     _navigationDetailLabel.textColor = UIColor.white
     _navigationDetailLabel.font = UIFont.boldSystemFont(ofSize: 13.0)
     _stickyHeaderContainer.addSubview(_navigationDetailLabel)

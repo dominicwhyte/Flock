@@ -244,8 +244,21 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         }
     }
     
-    func changeButtonTitle(title: String) {
+    func changeButtonTitle(title: String, shouldDisable: Bool) {
+        latestAttendButton?.isEnabled = !shouldDisable
         latestAttendButton?.setTitle(title, for: .normal)
+        if let latestAttendButton = latestAttendButton {
+            if(!shouldDisable) {
+                self.disableButton(button: latestAttendButton)
+            } else {
+                latestAttendButton.backgroundColor = FlockColors.FLOCK_BLUE
+            }
+        }
+    }
+    
+    func disableButton(button : UIButton) {
+        button.backgroundColor = FlockColors.FLOCK_GRAY
+        //button.alpha = 0.7
     }
     
     var latestAttendButton : DefaultButton?
@@ -273,6 +286,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             let date = popupSubView.stringsOfUpcomingDays[popupSubView.datePicker.selectedItemIndex]
             
+            
             //Add Venue and present popup
             FirebaseClient.addUserToVenuePlansForDate(date: date, venueID: self.venueToPass!.VenueID, userID: appDelegate.user!.FBID, completion: { (success) in
                 if (success) {
@@ -295,12 +309,32 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
                 }
             })
         }
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        attendButton.isEnabled = self.shouldAttendButtonBeEnabledUponInitialPopup(appDelegate: appDelegate)
+        attendButton.backgroundColor = FlockColors.FLOCK_BLUE
+        attendButton.titleLabel?.textColor = UIColor.white
+        if(!attendButton.isEnabled) {
+            self.disableButton(button: attendButton)
+        }
         latestAttendButton = attendButton
         // Add buttons to dialog
         popup.addButtons([attendButton])
         
         // Present dialog
         present(popup, animated: true, completion: nil)
+    }
+    
+    func shouldAttendButtonBeEnabledUponInitialPopup(appDelegate : AppDelegate) -> Bool {
+        let user = appDelegate.user!
+        let today = DateUtilities.convertDateToStringByFormat(date: Date(), dateFormat: DateUtilities.Constants.fullDateFormat)
+        for (_, plan) in user.Plans {
+            let planDate = DateUtilities.convertDateToStringByFormat(date: plan.date, dateFormat: DateUtilities.Constants.fullDateFormat)
+            if(planDate == today && plan.venueID == self.venueToPass!.VenueID) {
+                return false
+            }
+        }
+        return true
+        
     }
     
     func displayAttendedPopup(venueName : String, attendFullDate : String) {
@@ -341,7 +375,7 @@ extension PlacesTableViewController: UISearchResultsUpdating {
 protocol VenueDelegate: class {
     var venueToPass : Venue? {get set}
     func retrieveImage(imageURL : String, completion: @escaping (_ image: UIImage) -> ())
-    func changeButtonTitle(title: String)
+    func changeButtonTitle(title: String, shouldDisable: Bool)
     
 }
 

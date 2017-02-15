@@ -32,6 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var locationManager = CLLocationManager()
     var friendRequestUsers = [String : User]()
     var facebookFriendsFBIDs : [String : String] = [:]
+    var profileNeedsToUpdate = true
     
     func masterLogin(completion: @escaping (_ status: Bool) -> ()) {
         updateAllData { (success) in
@@ -55,6 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     //Function to update data, use for refreshing
     func updateAllData(completion: @escaping (_ status: Bool) -> ()) {
+        self.profileNeedsToUpdate = true
         LoginClient.retrieveData { (data) in
             if let (user, venues, users) = data {
                 Utilities.printDebugMessage("got it")
@@ -123,7 +125,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         for (_,friendRequestFBID) in user!.FriendRequests {
             friendRequestUsersDict[friendRequestFBID] = users[friendRequestFBID]
         }
-
+        friendDict[user!.FBID] = user!
         self.friendRequestUsers = friendRequestUsersDict
         self.friends = friendDict
     }
@@ -240,7 +242,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         FIRApp.configure()
-        self.setupLocationServices()
+        //self.setupLocationServices()
         self.requestNotificationPermission(application: application)
 
         return true

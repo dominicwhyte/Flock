@@ -79,30 +79,64 @@ class ProfileViewController: TwitterProfileViewController {
         return Constants.SECTION_TITLES.count
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        if(appDelegate.profileNeedsToUpdate) {
+            Utilities.printDebugMessage("Updating profile page")
+            self.setupUser()
+            self.tableView.reloadData()
+            appDelegate.profileNeedsToUpdate = false
+        }
+    }
+    
+    //UpdateTableViewDelegate function
+    func updateDataAndTableView(_ completion: @escaping (Bool) -> Void) {
+        let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.updateAllData { (success) in
+            DispatchQueue.main.async {
+                Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+                if (success) {
+                    self.setupUser()
+                    self.tableView.reloadData()
+                }
+                else {
+                    Utilities.printDebugMessage("Error updating and reloading data in table view")
+                }
+                completion(success)
+            }
+        }
+    }
+    
+    
+    
     override func viewDidLoad() {
         PermissionUtilities.setupPermissionScope(permissionScope: multiPscope)
         
         super.viewDidLoad()
-        
+        self.setupUser()
         self.locationString = "Hong Kong"
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        if (self.user == nil || self.user!.FBID == appDelegate.user!.FBID) {
-            setupUser(user: appDelegate.user!)
-            self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(logoutButtonPressed))
-            self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
-        } else {
-            setupUser(user: user!)
-        }
         PermissionUtilities.getPermissionsIfNotYetSet(permissionScope: multiPscope)
     }
     
-    func setupUser(user : User) {
-        self.user = user
-        self.username = user.Name
-        self.plans = Array(user.Plans.values).filter({ (plan) -> Bool in
+    func setupUser() {
+        let user : User?
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        if (self.user == nil || self.user!.FBID == appDelegate.user!.FBID) {
+            user = appDelegate.user!
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(logoutButtonPressed))
+            self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
+        } else {
+            user = self.user!
+        }
+        
+        self.user = user!
+        self.username = user!.Name
+        self.plans = Array(user!.Plans.values).filter({ (plan) -> Bool in
             DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))
         })
-        FirebaseClient.getImageFromURL(user.PictureURL) { (image) in
+        FirebaseClient.getImageFromURL(user!.PictureURL) { (image) in
             DispatchQueue.main.async {
                 self.profileImage = image
             }

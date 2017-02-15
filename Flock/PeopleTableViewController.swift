@@ -266,6 +266,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
 
             //Set the delegate for tableview reloaddata updates
             cell.delegate = self
+            cell.profilePic.makeViewCircle()
             setupCell(cell: cell)
             return cell
             
