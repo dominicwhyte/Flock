@@ -61,9 +61,7 @@ class PlannedTableViewCell: MGSwipeTableCell, MGSwipeTableCellDelegate {
                             }
                         })
                     }
-
                 }
-                
                 leftButtonsArray.append(button)
                 
             }

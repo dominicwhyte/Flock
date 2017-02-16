@@ -19,7 +19,7 @@ import UserNotifications
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
 
     struct Constants {
-        static let CRITICAL_RADIUS = 23.0 // meters
+        static let CRITICAL_RADIUS : Double = 40.0 // meters
     }
     
     var window: UIWindow?
@@ -167,10 +167,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         Utilities.printDebugMessage("visit: \(visit.coordinate.latitude),\(visit.coordinate.longitude)")
         
         let visitLocation = CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
-        let isArriving = !(visit.departureDate.compare(NSDate.distantFuture).rawValue == 0)
+        let isArriving = (visit.departureDate.compare(NSDate.distantFuture).rawValue == 0)
         if let (venueName, distToVenue) = distanceToNearestClub(visitLocation: visitLocation) {
-            showNotification(body: "Closest to venue: \(venueName), \(distToVenue) meters away. Is arriving: \(isArriving) Visit: \(visit)")
+            showNotification(body: "Closest venue: \(venueName), \(distToVenue) m away. Is arriving: \(isArriving). ")
         }
+        let ascendingVenues = distanceToClubsAscending(visitLocation: visitLocation)
+        var body : String = ""
+        for venue in ascendingVenues {
+            body += "\(venue.venueName) is \(venue.distAway) m away.\n"
+        }
+        showNotification(body: body)
+        
         if let venueID = self.whichClubIsUserIn(visitLocation: visitLocation) {
             FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: venueID, userID: self.user!.FBID, add: isArriving, completion: { (success) in
                 let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -201,7 +208,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
-    //Test function
     func distanceToNearestClub(visitLocation : CLLocation) -> (String, Double)? {
         var minDistance = Double.infinity
         var closestVenueName : String?
@@ -220,6 +226,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         } else {
             return nil
         }
+    }
+    
+    //testing function
+    func distanceToClubsAscending(visitLocation : CLLocation) -> [VisitLocation] {
+        var visitLocations = [VisitLocation]()
+        
+        for venue in Array(self.venues.values) {
+            if let venueLocation = venue.VenueLocation {
+                let distanceInMeters = visitLocation.distance(from: venueLocation)
+                visitLocations.append(VisitLocation(distAway: distanceInMeters, venueName: venue.VenueName))
+            }
+        }
+        visitLocations.sort { (vl1, vl2) -> Bool in
+            vl1.distAway < vl2.distAway
+        }
+        return visitLocations
     }
     
     // Determines if user is in club and returns venueID of appropriate club
@@ -325,5 +347,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
 
 
+}
+
+class VisitLocation: NSObject
+{
+    var distAway: Double
+    var venueName: String
+    
+    init(distAway : Double, venueName : String)
+    {
+        self.distAway = distAway
+        self.venueName = venueName
+    }
+    
 }
 

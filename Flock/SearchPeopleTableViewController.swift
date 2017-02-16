@@ -162,7 +162,7 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
         self.makeViewCircle(imageView: cell.profilePic)
         cell.name.text = user.Name
         cell.setupCell(userState: userState, currentUserID: currentUser.FBID, cellID: user.FBID)
-        cell.delegate = self
+        cell.searchDelegate = self
         return cell
     }
     
@@ -176,7 +176,7 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
         imageView.layer.borderWidth = 2
         imageView.layer.borderColor = UIColor.lightGray.cgColor
     }
-    
+    /*
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let currentUser : User = appDelegate.user!
@@ -226,7 +226,10 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == UITableViewCellEditingStyle.delete) {
             // handle delete (by removing the data from your array and updating the tableview)
+            Utilities.printDebugMessage("fired double")
+            
         }
+        Utilities.printDebugMessage("fired")
     }
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
@@ -236,13 +239,14 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
         let delete = UITableViewRowAction(style: .default, title: "Unflock") { (action, indexPath) in
             let userToUnfriend = self.users![indexPath.row]
             // delete item at indexPath
-            let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
+            //let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
             let cell = tableView.cellForRow(at: indexPath) as! SearchTableViewCell
           
             cell.setupCell(userState: .normal, currentUserID: appDelegate.user!.FBID, cellID: userToUnfriend.FBID)
             
+            
             FirebaseClient.unFriendUser(userToUnfriend.FBID, toID: appDelegate.user!.FBID, completion: { (success) in
-                Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+                //Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
                 Utilities.printDebugMessage("Deflock status: \(success)")
                 cell.setEditing(false, animated: true)
                 
@@ -256,7 +260,7 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
         //return [delete, share]
         return [delete]
     }
-    
+    */
 }
 
 

@@ -22,17 +22,16 @@ import Foundation
  wipe datbase
  Rating: https://github.com/nicklockwood/iRate
  Empty tableviews: https://github.com/dzenbot/DZNEmptyDataSet
- Permissions: https://github.com/nickoneill/PermissionScope
  
- 
+ make people unlive
  
  updated places page when attending
  popup when attending somwewhere
  update profile after attending
  ability to update profile
  ability to remove plan
- 
- 
+ bug with when planning to attend, doesn't appear in profile
+ timeout for laoding time
  
  */
 

@@ -90,6 +90,7 @@ class ProfileViewController: TwitterProfileViewController {
             self.setupUser()
             self.tableView.reloadData()
             appDelegate.profileNeedsToUpdate = false
+            self.view.setNeedsDisplay()
         }
     }
     
@@ -135,7 +136,7 @@ class ProfileViewController: TwitterProfileViewController {
         
         super.viewDidLoad()
         self.setupUser()
-        self.locationString = "Hong Kong"
+        self.locationString = ""
         PermissionUtilities.getPermissionsIfNotYetSet(permissionScope: multiPscope)
     }
     
@@ -318,7 +319,17 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         print("Second button tapped")
         _ = alert.showSuccess("Confirmed", subTitle: "You've removed your plan to go to \(venueName) on \(displayDate)")
     }
+    
+    
+    
+    
+    
 }
+
+
+
+
+
 
 //--------------------------------------
 // MARK: - Photo Content

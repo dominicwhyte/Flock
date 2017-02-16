@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import MGSwipeTableCell
 
-class SearchTableViewCell: UITableViewCell {
+class SearchTableViewCell: MGSwipeTableCell, MGSwipeTableCellDelegate {
     
     var userState : SearchPeopleTableViewController.UserStates?
     var currentUserID : String?
@@ -20,7 +21,24 @@ class SearchTableViewCell: UITableViewCell {
     @IBOutlet weak var rejectButton: UIButton!
     @IBOutlet weak var acceptButton: UIButton!
     
-    weak var delegate: UpdateSearchTableViewDelegate?
+    weak var searchDelegate: UpdateSearchTableViewDelegate?
+    
+    func swipeTableCell(_ cell: MGSwipeTableCell, tappedButtonAt index: Int, direction: MGSwipeDirection, fromExpansion: Bool) -> Bool {
+        
+        // delete item at indexPath
+        //let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
+        self.setupCell(userState: .normal, currentUserID: currentUserID!, cellID: cellID!)
+        
+        
+        FirebaseClient.unFriendUser(cellID!, toID: currentUserID!, completion: { (success) in
+            //Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+            Utilities.printDebugMessage("Deflock status: \(success)")
+            cell.setEditing(false, animated: true)
+            
+        })
+
+        return true
+    }
     
     @IBAction func rejectButtonPressed(_ sender: Any) {
         switch self.userState! {
@@ -70,7 +88,7 @@ class SearchTableViewCell: UITableViewCell {
         case .requestPendingFromUser:
             //Accept the friend request
             self.isUserInteractionEnabled = false
-            setupCell(userState: .normal, currentUserID: currentUserID!, cellID: cellID!)
+            setupCell(userState: .alreadyFriends, currentUserID: currentUserID!, cellID: cellID!)
             FirebaseClient.confirmFriendRequest(cellID!, toID: currentUserID!, completion: { (success) in
                 self.isUserInteractionEnabled = true
                 Utilities.printDebugMessage("Friend request confirmation status: \(success)")
@@ -91,8 +109,8 @@ class SearchTableViewCell: UITableViewCell {
     }
     
     func setupCell(userState: SearchPeopleTableViewController.UserStates, currentUserID: String, cellID: String) {
-        delegate?.updateStateDict(FBID: cellID, state: userState)
-        
+        searchDelegate?.updateStateDict(FBID: cellID, state: userState)
+        self.delegate = self
         self.userState = userState
         self.currentUserID = currentUserID
         self.cellID = cellID
@@ -101,59 +119,50 @@ class SearchTableViewCell: UITableViewCell {
         case .alreadyFriends:
             self.rejectButton.isHidden = true
             self.acceptButton.isHidden = false
-            self.acceptButton.setTitle("Unflock", for: .normal)
-            self.statusLabel.text = "Friends"
-            
-            // New version
-            self.acceptButton.setTitle(nil, for: .normal)
-            self.acceptButton.setImage(UIImage(named: "whiteCancelIcon"), for: .normal)
-            self.acceptButton.imageView?.backgroundColor = FlockColors.FLOCK_GRAY
-            self.acceptButton.imageView?.setRounded()
+            self.statusLabel.text = "In Flock"
+            //setup swipe
+            self.rightButtons = [MGSwipeButton(title: "Unflock", backgroundColor: UIColor.red)]
+            self.rightSwipeSettings.transition = MGSwipeTransition.border
+            self.acceptButton.setBackgroundImage(UIImage(named: "whiteCancelIcon"), for: .normal)
+            self.acceptButton.backgroundColor = FlockColors.FLOCK_GRAY
+            self.acceptButton.setRounded()
         case .requestPendingFromSelf:
+            self.rightButtons = []
             self.rejectButton.isHidden = true
             self.acceptButton.isHidden = false
-            self.acceptButton.setTitle("Cancel", for: .normal)
             self.statusLabel.text = "Pending"
-            
-            // New version
-            self.acceptButton.setTitle(nil, for: .normal)
-            self.acceptButton.imageView?.backgroundColor = FlockColors.FLOCK_GRAY
-            self.acceptButton.setImage(UIImage(named: "whiteCancelIcon"), for: .normal)
-            self.acceptButton.imageView?.setRounded()
+            self.acceptButton.backgroundColor = FlockColors.FLOCK_GRAY
+            self.acceptButton.setBackgroundImage(UIImage(named: "whiteCancelIcon"), for: .normal)
+            self.acceptButton.setRounded()
         case .requestPendingFromUser:
+            self.rightButtons = []
             self.rejectButton.isHidden = false
             self.acceptButton.isHidden = false
-            self.rejectButton.setTitle("Reject", for: .normal)
-            self.acceptButton.setTitle("Accept", for: .normal)
-            self.statusLabel.text = "Pending"
+            self.statusLabel.text = "Flock Request"
             
             // New version
-            self.rejectButton.setTitle(nil, for: .normal)
-            self.acceptButton.imageView?.backgroundColor = FlockColors.FLOCK_GRAY
-            self.rejectButton.setImage(UIImage(named: "whiteCancelIcon"), for: .normal)
-            self.rejectButton.imageView?.setRounded()
+
+            self.acceptButton.backgroundColor = FlockColors.FLOCK_GRAY
+            self.rejectButton.setBackgroundImage(UIImage(named: "whiteCancelIcon"), for: .normal)
+            self.rejectButton.setRounded()
             
-            self.acceptButton.setTitle(nil, for: .normal)
-            self.acceptButton.imageView?.backgroundColor = FlockColors.FLOCK_BLUE
-            self.acceptButton.setImage(UIImage(named: "whiteAddIcon"), for: .normal)
-            self.acceptButton.imageView?.setRounded()
+            self.acceptButton.backgroundColor = FlockColors.FLOCK_BLUE
+            self.acceptButton.setBackgroundImage(UIImage(named: "whiteCheckmarkIcon"), for: .normal)
+            self.acceptButton.setRounded()
         case .ourself:
+            self.rightButtons = []
             self.rejectButton.isHidden = true
             self.acceptButton.isHidden = true
-            self.statusLabel.text = ""
+            self.statusLabel.text = "Me"
         case .normal:
+            self.rightButtons = []
             self.rejectButton.isHidden = true
             self.acceptButton.isHidden = false
-            self.acceptButton.setTitle("Flock", for: .normal)
             self.statusLabel.text = ""
-            
-            // New version
-            self.acceptButton.setTitle(nil, for: .normal)
-            self.acceptButton.imageView?.backgroundColor = FlockColors.FLOCK_BLUE
-            self.acceptButton.setImage(UIImage(named: "whiteAddIcon"), for: .normal)
-            self.acceptButton.imageView?.setRounded()
+            self.acceptButton.backgroundColor = FlockColors.FLOCK_BLUE
+            self.acceptButton.setBackgroundImage(UIImage(named: "whiteAddIcon"), for: .normal)
+            self.acceptButton.setRounded()
         }
-        
     }
 
 

@@ -19,7 +19,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         static let LIVE_FRIENDS_INDEX = 1
         static let PLANNED_FRIENDS_INDEX = 2
         static let REMAINING_FRIENDS_INDEX = 3
-        static let SECTION_TITLES = ["Friend Requests", "Live", "Planned", "All"]
+        static let SECTION_TITLES = ["Flock Requests", "Live", "Planned", "All"]
         static let REUSE_IDENTIFIERS = ["FRIEND_REQUEST", "LIVE", "PLANNED", "ALL"]
     }
     
