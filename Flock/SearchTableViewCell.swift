@@ -103,17 +103,40 @@ class SearchTableViewCell: UITableViewCell {
             self.acceptButton.isHidden = false
             self.acceptButton.setTitle("Unflock", for: .normal)
             self.statusLabel.text = "Friends"
+            
+            // New version
+            self.acceptButton.setTitle(nil, for: .normal)
+            self.acceptButton.setImage(UIImage(named: "whiteCancelIcon"), for: .normal)
+            self.acceptButton.imageView?.backgroundColor = FlockColors.FLOCK_GRAY
+            self.acceptButton.imageView?.setRounded()
         case .requestPendingFromSelf:
             self.rejectButton.isHidden = true
             self.acceptButton.isHidden = false
             self.acceptButton.setTitle("Cancel", for: .normal)
             self.statusLabel.text = "Pending"
+            
+            // New version
+            self.acceptButton.setTitle(nil, for: .normal)
+            self.acceptButton.imageView?.backgroundColor = FlockColors.FLOCK_GRAY
+            self.acceptButton.setImage(UIImage(named: "whiteCancelIcon"), for: .normal)
+            self.acceptButton.imageView?.setRounded()
         case .requestPendingFromUser:
             self.rejectButton.isHidden = false
             self.acceptButton.isHidden = false
             self.rejectButton.setTitle("Reject", for: .normal)
             self.acceptButton.setTitle("Accept", for: .normal)
             self.statusLabel.text = "Pending"
+            
+            // New version
+            self.rejectButton.setTitle(nil, for: .normal)
+            self.acceptButton.imageView?.backgroundColor = FlockColors.FLOCK_GRAY
+            self.rejectButton.setImage(UIImage(named: "whiteCancelIcon"), for: .normal)
+            self.rejectButton.imageView?.setRounded()
+            
+            self.acceptButton.setTitle(nil, for: .normal)
+            self.acceptButton.imageView?.backgroundColor = FlockColors.FLOCK_BLUE
+            self.acceptButton.setImage(UIImage(named: "whiteAddIcon"), for: .normal)
+            self.acceptButton.imageView?.setRounded()
         case .ourself:
             self.rejectButton.isHidden = true
             self.acceptButton.isHidden = true
@@ -123,10 +146,15 @@ class SearchTableViewCell: UITableViewCell {
             self.acceptButton.isHidden = false
             self.acceptButton.setTitle("Flock", for: .normal)
             self.statusLabel.text = ""
+            
+            // New version
+            self.acceptButton.setTitle(nil, for: .normal)
+            self.acceptButton.imageView?.backgroundColor = FlockColors.FLOCK_BLUE
+            self.acceptButton.setImage(UIImage(named: "whiteAddIcon"), for: .normal)
+            self.acceptButton.imageView?.setRounded()
         }
         
     }
 
-    
 
 }

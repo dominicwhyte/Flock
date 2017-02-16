@@ -70,7 +70,6 @@ class PermissionUtilities {
             return
         }
     }
-    
     //Show the popup for permissions
     static func showPermissionsPopup(permissionScope : PermissionScope) {
         permissionScope.show(

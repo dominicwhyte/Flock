@@ -12,6 +12,7 @@ import LFTwitterProfile
 import PermissionScope
 import SCLAlertView
 import FacebookShare
+import FBSDKShareKit
 
 
 class ProfileViewController: TwitterProfileViewController {
@@ -111,18 +112,22 @@ class ProfileViewController: TwitterProfileViewController {
         }
     }
     
-    /*@IBAction func settingsButtonPressed(_ sender: Any) {
-        let content = LinkShareContent(url: URL(string: "www.google.com")!)
-        let shareDialog = MessageDialog(content: content)
-        shareDialog.completion = { result in
-            // Handle share results
-        }
+    @IBAction func settingsButtonPressed(_ sender: Any) {
+        PermissionUtilities.showPermissionsPopup(permissionScope: multiPscope)
+    }
+    
+    func showShareDialog<C: ContentProtocol>(_ content: C, mode: ShareDialogMode = .automatic) {
+        let dialog = MessageDialog(content:  content)
+        //dialog.presentingViewController = self
+        //dialog.mode = mode
         do {
-            try shareDialog.show()
-        } catch {
-            print(error)
+            try dialog.show()
+        } catch (let error) {
+            let alertController = UIAlertController(nibName: "Failed to present share dialog with error \(error)", bundle: nil)
+            present(alertController, animated: true, completion: nil)
         }
-    }*/
+    }
+
     
     
     override func viewDidLoad() {
@@ -312,6 +317,24 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         _ = alert.addButton("First Button", target:self, selector:#selector(PlacesTableViewController.shareWithFlock))
         print("Second button tapped")
         _ = alert.showSuccess("Confirmed", subTitle: "You've removed your plan to go to \(venueName) on \(displayDate)")
+    }
+}
+
+//--------------------------------------
+// MARK: - Photo Content
+//--------------------------------------
+extension ProfileViewController {
+    
+    @IBAction func showShareDialogPhotoContent() {
+        var content = LinkShareContent(url: URL(string: "https://newsroom.fb.com/")!,
+                                       title: "Hey Dominic! I'm heading to Cap tonight - you down?",
+                                       description: "",
+                                       imageURL: URL(string: "https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=0ahUKEwjpyLO-m5PSAhWBbCYKHRu9ASAQjBwIBA&url=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2F8%2F8d%2FCap_and_Gown_Club_Princeton.JPG&psig=AFQjCNGcFatzb0BNLyVx_vYfiPy3BfCx-g&ust=1487286332305134"))
+        
+        // placeId is hardcoded here, see https://developers.facebook.com/docs/graph-api/using-graph-api/#search for building a place picker.
+        content.placeId = "166793820034304"
+        
+        showShareDialog(content, mode: .automatic)
     }
 }
 
