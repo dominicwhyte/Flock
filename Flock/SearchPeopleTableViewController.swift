@@ -177,7 +177,85 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
         imageView.layer.borderColor = UIColor.lightGray.cgColor
     }
     
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let currentUser : User = appDelegate.user!
+        let user: User
+        if searchController.isActive && searchController.searchBar.text != "" {
+            user = filteredUsers[indexPath.row]
+        } else {
+            user = users![indexPath.row]
+        }
+        
+        var userState : UserStates
+        if (stateCache[user.FBID] != nil) {
+            userState = stateCache[user.FBID]!
+        }
+        else if (currentUser.Friends[user.FBID] != nil) {
+            userState = UserStates.alreadyFriends
+        }
+        else if (user.FriendRequests[currentUser.FBID] != nil) {
+            userState = UserStates.requestPendingFromSelf
+        }
+        else if (currentUser.FriendRequests[user.FBID] != nil) {
+            userState = UserStates.requestPendingFromUser
+        }
+        else if (user.FBID == currentUser.FBID) {
+            userState = UserStates.ourself
+        }
+        else {
+            userState = UserStates.normal
+        }
+
+        switch userState {
+        case .alreadyFriends:
+            return true
+        case .requestPendingFromSelf:
+            return false
+        case .requestPendingFromUser:
+            //Reject the friend request
+            return false
+        case .ourself:
+            return false
+        case .normal:
+            return false
+        }
+       
+    }
     
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == UITableViewCellEditingStyle.delete) {
+            // handle delete (by removing the data from your array and updating the tableview)
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
+        let delete = UITableViewRowAction(style: .default, title: "Unflock") { (action, indexPath) in
+            let userToUnfriend = self.users![indexPath.row]
+            // delete item at indexPath
+            let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
+            let cell = tableView.cellForRow(at: indexPath) as! SearchTableViewCell
+          
+            cell.setupCell(userState: .normal, currentUserID: appDelegate.user!.FBID, cellID: userToUnfriend.FBID)
+            
+            FirebaseClient.unFriendUser(userToUnfriend.FBID, toID: appDelegate.user!.FBID, completion: { (success) in
+                Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+                Utilities.printDebugMessage("Deflock status: \(success)")
+                cell.setEditing(false, animated: true)
+                
+            })
+        }
+        
+        
+        //share.backgroundColor = FlockColors.FLOCK_BLUE
+        delete.backgroundColor = FlockColors.FLOCK_GRAY
+        
+        //return [delete, share]
+        return [delete]
+    }
     
 }
 

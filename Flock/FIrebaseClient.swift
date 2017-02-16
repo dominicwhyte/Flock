@@ -246,8 +246,13 @@ class FirebaseClient: NSObject
                     
                     //create image object from data and assign to image
                     if (data != nil) {
-                        let image = (UIImage(data: data!)!)
-                        completion(image)
+                        if let image = UIImage(data: data!) {
+                            completion(image)
+                        }
+                        else {
+                            Utilities.printDebugMessage("ERROR: could not get image from data")
+                            completion(nil)
+                        }
                     }
                     else {
                         completion(nil)
