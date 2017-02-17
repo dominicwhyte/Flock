@@ -43,6 +43,8 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
                 if (success) {
                     Utilities.printDebugMessage("Successfully reloaded data and tableview")
                     self.venues = Array(appDelegate.venues.values)
+                    //self.venues = self.filterVenuePlannedAttendees(venues: Array(appDelegate.venues.values))
+
                     self.filteredVenues = []
                     if self.searchController.isActive && self.searchController.searchBar.text != "" {
                         //reloads the table
@@ -62,6 +64,25 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         }
     }
     
+    func filterVenuePlannedAttendees(venues: [Venue]) -> [Venue] {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let users = appDelegate.users
+        var venuesToReturn = [Venue]()
+        for venue in venues {
+            let plannedAttendees = venue.PlannedAttendees
+            for (_,attendee) in plannedAttendees {
+                let user = users[attendee]
+                let plans = user?.Plans
+                for (_, plan) in plans! {
+                    if(!DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))) {
+                        venue.PlannedAttendees[attendee] = nil
+                    }
+                }
+            }
+            venuesToReturn.append(venue)
+        }
+        return venuesToReturn
+    }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (currentTab == items[0]) {
@@ -74,7 +95,10 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         }
         else {
             //tableView.separatorStyle = .none
+            Utilities.printDebugMessage("No venues yet for this location.")
             tableView.backgroundView?.isHidden = false
+            self.view.setNeedsLayout()
+            self.view.layoutIfNeeded()
             return 0
         }
     }
@@ -178,6 +202,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         self.venues = Array(appDelegate.venues.values)
+        //self.venues = filterVenuePlannedAttendees(venues: Array(appDelegate.venues.values))
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -280,7 +305,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         
         // Create second button
         let todaysDate = DateUtilities.convertDateToStringByFormat(date: Date(), dateFormat: "MMMM d")
-        let attendButton = DefaultButton(title: "ATTEND \(venue.VenueNickName.uppercased()) ON \(todaysDate.uppercased())", dismissOnTap: true) {
+        let attendButton = DefaultButton(title: "GO TO \(venue.VenueNickName.uppercased()) ON \(todaysDate.uppercased())", dismissOnTap: true) {
             Utilities.printDebugMessage("Attending \(venue.VenueNickName.uppercased())")
             let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -341,7 +366,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     func displayAttendedPopup(venueName : String, attendFullDate : String) {
         let displayDate = DateUtilities.convertDateToStringByFormat(date: DateUtilities.getDateFromString(date: attendFullDate), dateFormat: DateUtilities.Constants.uiDisplayFormat)
         let alert = SCLAlertView()
-        _ = alert.addButton("First Button", target:self, selector:#selector(PlacesTableViewController.shareWithFlock))
+        //_ = alert.addButton("First Button", target:self, selector:#selector(PlacesTableViewController.shareWithFlock))
         print("Second button tapped")
         _ = alert.showSuccess(Utilities.generateRandomCongratulatoryPhrase(), subTitle: "You're going to \(venueName) on \(displayDate)")
     }

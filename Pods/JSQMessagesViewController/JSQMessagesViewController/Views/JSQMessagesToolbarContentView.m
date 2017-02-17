@@ -90,7 +90,6 @@ const CGFloat kJSQMessagesToolbarContentViewHorizontalSpacingDefault = 8.0f;
     if (CGRectEqualToRect(leftBarButtonItem.frame, CGRectZero)) {
         leftBarButtonItem.frame = self.leftBarButtonContainerView.bounds;
     }
-
     self.leftBarButtonContainerView.hidden = NO;
     self.leftHorizontalSpacingConstraint.constant = kJSQMessagesToolbarContentViewHorizontalSpacingDefault;
     self.leftBarButtonItemWidth = CGRectGetWidth(leftBarButtonItem.frame);

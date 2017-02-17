@@ -164,7 +164,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
         
         Utilities.printDebugMessage("visit: \(visit.coordinate.latitude),\(visit.coordinate.longitude)")
-        
+        manager.desiredAccuracy = kCLLocationAccuracyBest
+        manager.requestLocation()
         let visitLocation = CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
         let isArriving = (visit.departureDate.compare(NSDate.distantFuture).rawValue == 0)
         if let (venueName, distToVenue) = distanceToNearestClub(visitLocation: visitLocation) {
@@ -191,6 +192,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 }
             })
         }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let currentLocation = locations[0]
+        let ascendingVenues = distanceToClubsAscending(visitLocation: currentLocation)
+        var body : String = "GPS ACCURACY:\n"
+        for venue in ascendingVenues {
+            body += "\(venue.venueName) is \(venue.distAway) m away.\n"
+        }
+        showNotification(body: body)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error)
     }
     
     // Notification function for local testing/debugging

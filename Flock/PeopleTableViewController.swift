@@ -314,7 +314,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
                 cell.subtitleLabel.text = "Live \(negativeDaysSinceLive * -1) \(Utilities.setPlurality(string: "day", count: negativeDaysSinceLive * -1)) ago"
             }
             else {
-                cell.subtitleLabel.text = "Not yet Live"
+                cell.subtitleLabel.text = "Not yet live"
             }
             cell.friendName.text = friend.Name
             cell.profilePic!.image = UIImage()

@@ -14,6 +14,8 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     
     struct Constants {
         static let SECTION_TITLES = ["Live", "Planned"]
+        static let LIVE_SECTION_ROW = 0
+        static let PLANNED_SECTION_ROW = 1
         static let CELL_HEIGHT : CGFloat = 74.0
     }
     
@@ -68,7 +70,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         
         datePicker.borderWidth = 1
         
-        datePicker.tintColor = FlockColors.FLOCK_GRAY
+        datePicker.tintColor = UIColor.black
         super.viewDidLoad()
         delegate?.retrieveImage(imageURL: (delegate?.venueToPass?.ImageURL)!, completion: { (image) in
             DispatchQueue.main.async {
@@ -103,6 +105,13 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         let cell = tableView.dequeueReusableCell(withIdentifier: "VENUE_FRIEND")! as! VenueFriendTableViewCell
         cell.profilePic.makeViewCircle()
         cell.nameLabel.text = friend.Name
+        let planCount = friend.Plans.count
+        if(indexPath.section == Constants.LIVE_SECTION_ROW) {
+            cell.subtitleLabel.text = "Currently Live"
+        }
+        else {
+            cell.subtitleLabel.text = Utilities.setPlurality(string: "\(planCount) plan", count: planCount)
+        }
         retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic)
         return cell
     }
@@ -140,9 +149,9 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     func setLabelsForGraphic() {
         let currentDay = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]
         self.liveFriendsLabel.text = Utilities.setPlurality(string: "\(self.allCurrentFriendsForDateCountDict) Live\nFriend", count: self.allCurrentFriendsForDateCountDict)
-        self.liveAttendeesLabel.text = "\(self.allCurrentAttendeesForDateCountDict) Total\nLive"
+        self.liveAttendeesLabel.text = "\(self.allCurrentAttendeesForDateCountDict) Live\nTotal"
         self.plannedFriendsLabel.text = Utilities.setPlurality(string: "\(self.allPlannedFriendsForDateCountDict[currentDay]!) Planned\nFriend", count: self.allPlannedFriendsForDateCountDict[currentDay]!)
-        self.plannedAttendeesLabel.text = "\(self.allPlannedAttendeesForDateCountDict[currentDay]!) Total\nPlanned"
+        self.plannedAttendeesLabel.text = "\(self.allPlannedAttendeesForDateCountDict[currentDay]!) Planned\nTotal"
         
     }
     
@@ -169,7 +178,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         }
         
         
-        self.delegate?.changeButtonTitle(title: "ATTEND \(venueString) ON \(dateStringInFormat.uppercased())", shouldDisable: disable)
+        self.delegate?.changeButtonTitle(title: "GO TO \(venueString) ON \(dateStringInFormat.uppercased())", shouldDisable: disable)
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -191,22 +200,28 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         let users = appDelegate.users
         for (_, plannedAttendee) in plannedAttendees {
             if let friend = friends[plannedAttendee] {
-                for (_,plan) in friend.Plans {
-                    if(plan.venueID == venue.VenueID && DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))) {
-                        let fullDate = DateUtilities.convertDateToStringByFormat(date: plan.date, dateFormat: DateUtilities.Constants.fullDateFormat)
-                        allFriendsForDate[fullDate]![self.INDEX_OF_PLANNED_ATTENDEES].append(friend)
-
-                        self.allPlannedFriendsForDateCountDict[fullDate]! += 1
-                        self.allPlannedAttendeesForDateCountDict[fullDate]! += 1
+                for (visitID,plan) in friend.Plans {
+                    if(DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))) {
+                        if(plan.venueID == venue.VenueID) {
+                            let fullDate = DateUtilities.convertDateToStringByFormat(date: plan.date, dateFormat: DateUtilities.Constants.fullDateFormat)
+                            allFriendsForDate[fullDate]![self.INDEX_OF_PLANNED_ATTENDEES].append(friend)
+                            
+                            self.allPlannedFriendsForDateCountDict[fullDate]! += 1
+                            self.allPlannedAttendeesForDateCountDict[fullDate]! += 1
+                        }
+                    } else {
+                        friend.Plans[visitID] = nil
                     }
                 }
             }
             else if let user = users[plannedAttendee] {
                 for (_,plan) in user.Plans {
-                    if(plan.venueID == venue.VenueID && DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))) {
-                        let fullDate = DateUtilities.convertDateToStringByFormat(date: plan.date, dateFormat: DateUtilities.Constants.fullDateFormat)
-                        
-                        self.allPlannedAttendeesForDateCountDict[fullDate]! += 1
+                    if(DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))) {
+                        if(plan.venueID == venue.VenueID) {
+                            let fullDate = DateUtilities.convertDateToStringByFormat(date: plan.date, dateFormat: DateUtilities.Constants.fullDateFormat)
+                            
+                            self.allPlannedAttendeesForDateCountDict[fullDate]! += 1
+                        }
                     }
                 }
             }
