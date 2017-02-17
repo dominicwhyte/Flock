@@ -11,16 +11,24 @@ import MGSwipeTableCell
 
 class LiveTableViewCell: MGSwipeTableCell, MGSwipeTableCellDelegate {
     var venue : Venue?
-    
+    var FBID : String?
+    var chatDelegate : ChatDelegate?
     struct Constants {
         static let CELL_HEIGHT = 75
     }
+    @IBOutlet weak var chatButton: UIButton!
     
     func swipeTableCell(_ cell: MGSwipeTableCell, tappedButtonAt index: Int, direction: MGSwipeDirection, fromExpansion: Bool) -> Bool {
         if let venue = venue {
             Utilities.animateToPlacesTabWithVenueIDandDate(venueID: venue.VenueID, date: Date())
         }
         return true
+    }
+    
+    @IBAction func chatPressed(_ sender: Any) {
+        if let FBID = FBID {
+            chatDelegate?.callSegueFromCell(fbid: FBID)
+        }
     }
     
     @IBOutlet weak var profilePic: UIImageView!

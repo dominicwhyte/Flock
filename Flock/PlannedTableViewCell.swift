@@ -15,14 +15,22 @@ class PlannedTableViewCell: MGSwipeTableCell, MGSwipeTableCellDelegate {
         static let CELL_HEIGHT = 75
     }
     
+    @IBAction func chatButtonPressed(_ sender: Any) {
+        if let FBID = FBID {
+            self.chatDelegate?.callSegueFromCell(fbid: FBID)
+        }
+        
+    }
+    @IBOutlet weak var chatButton: UIButton!
     
     @IBOutlet weak var profilePic: UIImageView!
     @IBOutlet weak var friendName: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     
     let MAX_VENUES_TO_DISPLAY = 3
-    
+    var FBID : String?
     var plans = [Plan]()
+    var chatDelegate : ChatDelegate?
     
     func swipeTableCell(_ cell: MGSwipeTableCell, tappedButtonAt index: Int, direction: MGSwipeDirection, fromExpansion: Bool) -> Bool {
         let plan = plans[index]

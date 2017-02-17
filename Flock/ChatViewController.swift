@@ -12,50 +12,82 @@ import Firebase
 
 class ChatViewController: JSQMessagesViewController {
     
-    private lazy var channelRef: FIRDatabaseReference = FIRDatabase.database().reference().child("channels")
-    private var channelRefHandle: FIRDatabaseHandle?
-    private var channel: Channel?
+    //channelRef into the correct channel ID
+    //Set during segue
+    var channelRef: FIRDatabaseReference?
+    var friendUser: User?
+    var friendImage: UIImage?
+    var userImage: UIImage?
     
-    private lazy var messageRef: FIRDatabaseReference = self.channelRef.child("messages")
+    
+    private lazy var messageRef: FIRDatabaseReference = self.channelRef!.child("messages")
     private var newMessageRefHandle: FIRDatabaseHandle?
     
     lazy var outgoingBubbleImageView: JSQMessagesBubbleImage = self.setupOutgoingBubble()
     lazy var incomingBubbleImageView: JSQMessagesBubbleImage = self.setupIncomingBubble()
     
+    //typing
+    private lazy var userIsTypingRef: FIRDatabaseReference = self.channelRef!.child("typingIndicator").child(self.senderId)
+    private lazy var usersTypingQuery: FIRDatabaseQuery = self.channelRef!.child("typingIndicator").queryOrderedByValue().queryEqual(toValue: true)
+    private var localTyping = false
+    
     var messages = [JSQMessage]()
     
-    private func createChannel(channelName : String) {
-        let newChannelRef = channelRef.childByAutoId() // 2
-        let channelItem = [ // 3
-            "name": channelName
-        ]
-        newChannelRef.setValue(channelItem) // 4
+
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        observeTyping()
+    }
+    
+    private func observeTyping() {
+        let typingIndicatorRef = channelRef!.child("typingIndicator")
+        userIsTypingRef = typingIndicatorRef.child(senderId)
+        userIsTypingRef.onDisconnectRemoveValue()
+        usersTypingQuery = typingIndicatorRef.queryOrderedByValue().queryEqual(toValue: true)
+        
+        usersTypingQuery.observe(.value) { (data: FIRDataSnapshot) in
+            
+            // You're the only typing, don't show the indicator
+            if data.childrenCount == 1 && self.isTyping {
+                return
+            }
+            
+            // Are there others typing?
+            self.showTypingIndicator = data.childrenCount > 0
+            self.scrollToBottom(animated: true)
+        }
+    }
+    
+    var isTyping: Bool {
+        get {
+            return localTyping
+        }
+        set {
+            localTyping = newValue
+            userIsTypingRef.setValue(newValue)
+        }
+    }
+    
+    override func textViewDidChange(_ textView: UITextView) {
+        super.textViewDidChange(textView)
+        // If the text is not empty, the user is typing
+        isTyping = textView.text != ""
     }
     
     deinit {
-        if let refHandle = channelRefHandle {
-            channelRef.removeObserver(withHandle: refHandle)
+        if let refHandle = newMessageRefHandle {
+            messageRef.removeObserver(withHandle: refHandle)
         }
+//        if let refHandle = updatedMessageRefHandle {
+//            messageRef.removeObserver(withHandle: refHandle)
+//        }
     }
 
-    // MARK: Firebase related methods
-    private func observeChannels() {
-        // Use the observe method to listen for new
-        // channels being written to the Firebase DB
-        channelRefHandle = channelRef.observe(.childAdded, with: { (snapshot) -> Void in // 1
-            let channelData = snapshot.value as! Dictionary<String, AnyObject> // 2
-            let id = snapshot.key
-            if let name = channelData["name"] as! String!, name.characters.count > 0 { // 3
-                self.channel = Channel(id: id, name: name)
-            } else {
-                print("Error! Could not decode channel data")
-            }
-        })
-    }
     
     private func setupOutgoingBubble() -> JSQMessagesBubbleImage {
         let bubbleImageFactory = JSQMessagesBubbleImageFactory()
-        return bubbleImageFactory!.outgoingMessagesBubbleImage(with: UIColor.jsq_messageBubbleBlue())
+        return bubbleImageFactory!.outgoingMessagesBubbleImage(with: FlockColors.FLOCK_BLUE)
     }
     
     private func setupIncomingBubble() -> JSQMessagesBubbleImage {
@@ -63,16 +95,20 @@ class ChatViewController: JSQMessagesViewController {
         return bubbleImageFactory!.incomingMessagesBubbleImage(with: UIColor.jsq_messageBubbleLightGray())
     }
     
+    @IBAction func backButtonPressed(_ sender: Any) {
+        self.dismiss(animated: true) { 
+            //do nothing
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        observeChannels()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         self.senderId = appDelegate.user?.FBID
         self.senderDisplayName = appDelegate.user?.Name
         
         // No avatars
-        collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSize.zero
-        collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSize.zero
+        collectionView?.collectionViewLayout.incomingAvatarViewSize = CGSize(width: kJSQMessagesCollectionViewAvatarSizeDefault, height:kJSQMessagesCollectionViewAvatarSizeDefault )
+        collectionView?.collectionViewLayout.outgoingAvatarViewSize = CGSize(width: kJSQMessagesCollectionViewAvatarSizeDefault, height:kJSQMessagesCollectionViewAvatarSizeDefault )
         
         // messages from someone else
         addMessage(withId: "foo", name: "Mr.Bolt", text: "I am so fast!")
@@ -104,7 +140,21 @@ class ChatViewController: JSQMessagesViewController {
     }
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAt indexPath: IndexPath!) -> JSQMessageAvatarImageDataSource! {
-        return nil
+        let message = messages[indexPath.item]
+        
+        if let userImage = userImage, let friendImage = friendImage {
+            if message.senderId == senderId {
+                return JSQMessagesAvatarImage(avatarImage: userImage, highlightedImage: userImage, placeholderImage: userImage)
+            }
+            else {
+                //NOT SCALABLE FOR GROUPS
+                return JSQMessagesAvatarImage(avatarImage: friendImage, highlightedImage: friendImage, placeholderImage: friendImage)
+            }
+        }
+        else {
+            let image = UIImage(named: "appLogo")
+            return JSQMessagesAvatarImage(avatarImage: image, highlightedImage: image, placeholderImage: image)
+        }
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -135,7 +185,7 @@ class ChatViewController: JSQMessagesViewController {
     }
     
     private func observeMessages() {
-        messageRef = channelRef.child("messages")
+        messageRef = channelRef!.child("messages")
         // 1.
         let messageQuery = messageRef.queryLimited(toLast:25)
         

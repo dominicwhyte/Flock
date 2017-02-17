@@ -59,7 +59,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         self.profileNeedsToUpdate = true
         LoginClient.retrieveData { (data) in
             if let (user, venues, users) = data {
-                Utilities.printDebugMessage("got it")
                 self.user = user
                 self.venues = venues
                 self.users = users

@@ -124,13 +124,13 @@ class FirebaseClient: NSObject
     
     class func confirmFriendRequest(_ fromID : String, toID : String, completion: @escaping (Bool) -> Void) {
         
-        dataRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot) in
+        dataRef.observeSingleEvent(of: .value, with: { (snapshot) in
             // Confirm friend request conditions
-            if (snapshot.hasChild(fromID) && snapshot.hasChild(toID) && snapshot.childSnapshot(forPath: toID).hasChild("FriendRequests") && snapshot.childSnapshot(forPath: toID).childSnapshot(forPath: "FriendRequests").hasChild(fromID) && toID != fromID) {
-                let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]
+            if (snapshot.childSnapshot(forPath: "Users").hasChild(fromID) && snapshot.childSnapshot(forPath: "Users").hasChild(toID) && snapshot.childSnapshot(forPath: "Users").childSnapshot(forPath: toID).hasChild("FriendRequests") && snapshot.childSnapshot(forPath: "Users").childSnapshot(forPath: toID).childSnapshot(forPath: "FriendRequests").hasChild(fromID) && toID != fromID) {
+                let dictionary :[String:AnyObject] = snapshot.childSnapshot(forPath: "Users").value as! [String : AnyObject]
                 
                 // Add the fromID to the toID friend list
-                if (snapshot.childSnapshot(forPath: toID).hasChild("Friends"))
+                if (snapshot.childSnapshot(forPath: "Users").childSnapshot(forPath: toID).hasChild("Friends"))
                 {
                     let toUserDict = dictionary[toID] as! [String: AnyObject]
                     
@@ -148,7 +148,7 @@ class FirebaseClient: NSObject
                     dataRef.child("Users").child(toID).updateChildValues(updates)
                 }
                 // Add the toID to the fromID friend list
-                if (snapshot.childSnapshot(forPath: fromID).hasChild("Friends"))
+                if (snapshot.childSnapshot(forPath: "Users").childSnapshot(forPath: fromID).hasChild("Friends"))
                 {
                     let fromUserDict = dictionary[fromID] as! [String: AnyObject]
                     
@@ -171,7 +171,11 @@ class FirebaseClient: NSObject
                     // since the two should have been auto-friended if this occurs. Hence
                     // the typical behavior should be a false completion
                     self.rejectFriendRequest(toID, toID: fromID, completion: { (failure) in
-                        completion(!failure && success)
+                        
+                        addChannelForTwoFriends(fromID: fromID, toID: toID, usersDictionary: dictionary, snapshot: snapshot, completion: { (channelSuccess) in
+                            
+                            completion(!failure && success && channelSuccess)
+                        })
                     })
                 })
                 
@@ -181,6 +185,55 @@ class FirebaseClient: NSObject
             }
         })
     }
+    //Creates a channel for two friends, and adds the channel to both the users' ChannelIDs Dicts
+    class func addChannelForTwoFriends(fromID : String, toID : String, usersDictionary : [String: AnyObject], snapshot : FIRDataSnapshot, completion: @escaping (Bool) -> Void)
+    {
+        
+        //Check if the users do not already have a channel together, else do nothing
+        if (!(snapshot.childSnapshot(forPath: "Users").childSnapshot(forPath: toID).hasChild("ChannelIDs") && snapshot.childSnapshot(forPath: "Users").childSnapshot(forPath: fromID).hasChild("ChannelIDs") && snapshot.childSnapshot(forPath: "Users").childSnapshot(forPath: toID).childSnapshot(forPath: "ChannelIDs").hasChild(fromID) && snapshot.childSnapshot(forPath: "Users").childSnapshot(forPath: fromID).childSnapshot(forPath: "ChannelIDs").hasChild(toID)))
+        {
+            let channelID = createChannel(channelName: "Flock Chat")
+            //toID has no channelIDs
+            if (!snapshot.childSnapshot(forPath: "Users").childSnapshot(forPath: toID).hasChild("ChannelIDs")) {
+                let updates = ["ChannelIDs": [fromID:channelID]]
+                dataRef.child("Users").child(toID).updateChildValues(updates)
+            }
+            else {
+                let toIDUserDict = usersDictionary[toID] as! [String: AnyObject]
+                
+                var channelDict = toIDUserDict["ChannelIDs"] as! [String : String]
+                channelDict[fromID] = channelID
+                let updates = ["ChannelIDs": channelDict]
+                dataRef.child("Users").child(toID).updateChildValues(updates)
+
+            }
+            //fromID has no channelIDs
+            if (!snapshot.childSnapshot(forPath: "Users").childSnapshot(forPath: fromID).hasChild("ChannelIDs")) {
+                let updates = ["ChannelIDs": [toID:channelID]]
+                dataRef.child("Users").child(fromID).updateChildValues(updates)
+            }
+            else {
+                let fromIDUserDict = usersDictionary[fromID] as! [String: AnyObject]
+                
+                var channelDict = fromIDUserDict["ChannelIDs"] as! [String : String]
+                channelDict[toID] = channelID
+                let updates = ["ChannelIDs": channelDict]
+                dataRef.child("Users").child(fromID).updateChildValues(updates)
+            }
+        }
+        completion(true)
+    }
+    
+    class func createChannel(channelName : String) -> String {
+        let newChannelRef = dataRef.child("channels").childByAutoId() // 2
+        let channelItem = [ // 3
+            "name": channelName
+        ]
+        newChannelRef.setValue(channelItem) // 4
+        Utilities.printDebugMessage("This is yo key: \(newChannelRef.key)")
+        return newChannelRef.key
+    }
+    
     
     class func unFriendUser(_ fromID : String, toID : String, completion: @escaping (Bool) -> Void) {
         

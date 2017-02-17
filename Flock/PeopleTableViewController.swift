@@ -8,11 +8,12 @@
 
 import UIKit
 import MGSwipeTableCell
+import Firebase
 
-class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate, CustomSearchControllerDelegate {
+class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate, CustomSearchControllerDelegate, ChatDelegate {
     
     internal var parentView: UIView?
-
+    
     
     struct Constants {
         static let FRIEND_REQUEST_INDEX = 0
@@ -70,7 +71,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         //searchController = configureSearchController()
         //set view for protocol
         self.parentView = self.view
-         self.tableView.separatorColor = FlockColors.FLOCK_BLUE
+        self.tableView.separatorColor = FlockColors.FLOCK_BLUE
         super.viewDidLoad()
         // Setup the Search Controller
         searchController.searchResultsUpdater = self
@@ -79,7 +80,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         searchController.dimsBackgroundDuringPresentation = false
         searchController.searchBar.barTintColor = UIColor.white
         searchController.searchBar.tintColor = FlockColors.FLOCK_GRAY
-
+        
         searchController.searchBar.placeholder = "Search                                                                                     "
         
         tableView.tableHeaderView = searchController.searchBar
@@ -115,7 +116,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         gradient.colors = [FlockColors.FLOCK_BLUE.cgColor, FlockColors.FLOCK_LIGHT_BLUE.cgColor]
         
         returnedView.layer.insertSublayer(gradient, at: 0)
-
+        
         
         
         let label = UILabel(frame: CGRect(x: 10, y: 0, width: view.frame.size.width, height: 25))
@@ -220,7 +221,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         var userToView : User
         
-
+        
         if searchController.isActive && searchController.searchBar.text != "" {
             userToView = filteredFriends[indexPath.section][indexPath.row]
         }
@@ -265,7 +266,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
             cell.setIDs(fromID: friend.FBID, toID: appDelegate.user!.FBID)
             cell.friendName.text = friend.Name
             self.retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic!)
-
+        
             //Set the delegate for tableview reloaddata updates
             cell.delegate = self
             cell.profilePic.makeViewCircle()
@@ -281,10 +282,12 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
                 }
             }
             cell.profilePic.makeViewCircle()
+            cell.chatButton.setRounded()
+            cell.chatButton.isHidden = (appDelegate.user!.FBID == friend.FBID)
+            cell.FBID = friend.FBID
+            cell.chatDelegate = self
             self.retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic!)
-            //let venue = appDelegate.venues[friend.LiveClubID!]
-            //cell.venueName.text = venue!.VenueName
-            //self.retrieveImage(imageURL: venue!.ImageURL, imageView: cell.venuePic)
+            
             setupCell(cell: cell)
             return cell
             
@@ -294,11 +297,13 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
             self.retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic!)
             let plansCount = friend.Plans.values.count
             cell.subtitleLabel.text = Utilities.setPlurality(string: "\(plansCount) plan", count: plansCount)
-            //cell.venueName.text = venue!.VenueName
-            //self.retrieveImage(imageURL: venue!.ImageURL, imageView: cell.venuePic)
-            //Setup mgswipe capability
+            
             cell.setupCell(plans: Array(friend.Plans.values))
             cell.profilePic.makeViewCircle()
+            cell.FBID = friend.FBID
+            cell.chatButton.setRounded()
+            cell.chatButton.isHidden = (appDelegate.user!.FBID == friend.FBID)
+            cell.chatDelegate = self
             setupCell(cell: cell)
             return cell
             
@@ -316,6 +321,10 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
             self.retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic!)
             cell.preservesSuperviewLayoutMargins = false
             cell.profilePic.makeViewCircle()
+            cell.FBID = friend.FBID
+            cell.chatButton.setRounded()
+            cell.chatButton.isHidden = (appDelegate.user!.FBID == friend.FBID)
+            cell.chatDelegate = self
             setupCell(cell: cell)
             return cell
         default:
@@ -336,10 +345,30 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         cell.selectionStyle = .none
     }
     
+    func callSegueFromCell(fbid: String) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        if let user = appDelegate.user, let friendUser = appDelegate.users[fbid] {
+            if let channelID = user.ChannelIDs[fbid] {
+                 performSegue(withIdentifier: "CHAT_IDENTIFIER", sender: (channelID, friendUser))
+            }
+        }
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let navController = segue.destination as? UINavigationController {
             if let searchPeopleTableViewController = navController.topViewController as? SearchPeopleTableViewController {
                 searchPeopleTableViewController.delegate = self
+            }
+            else if let chatViewController = navController.topViewController as? ChatViewController {
+                if let (channelID, friendUser) = sender as? (String, User) {
+                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                    if let friendImage = imageCache[friendUser.PictureURL], let userImage = imageCache[appDelegate.user!.PictureURL] {
+                        chatViewController.userImage = userImage
+                        chatViewController.friendImage = friendImage
+                    }
+                    chatViewController.channelRef = FIRDatabase.database().reference().child("channels").child(channelID)
+                    chatViewController.friendUser = friendUser
+                }
             }
         } else if let profileController = segue.destination as? ProfileViewController {
             if let userToPass = userToPass {
@@ -353,8 +382,6 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         }
     }
     
-    
-
     
 }
 
@@ -387,5 +414,7 @@ protocol UpdateTableViewDelegate: class {
     var parentView : UIView? { get set }
 }
 
-
+protocol ChatDelegate: class {
+    func callSegueFromCell(fbid: String)
+}
 

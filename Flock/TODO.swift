@@ -32,7 +32,7 @@ import Foundation
  ability to remove plan
  bug with when planning to attend, doesn't appear in profile
  timeout for laoding time
- 
+ when dom is bored: fix typing bug
  */
 
 

@@ -11,6 +11,7 @@ class User: NSObject
     var PictureURL: String
     var LiveClubID: String?
     var LastLive: Date?
+    var ChannelIDs: [String:String]
     
     init(dict: [String: AnyObject])
     {
@@ -43,6 +44,11 @@ class User: NSObject
         if (dict["LastLive"] != nil) {
             let dateString = dict["LastLive"] as! String
             self.LastLive = DateUtilities.getDateFromString(date: dateString)
+        }
+        if(dict["ChannelIDs"] != nil) {
+            self.ChannelIDs = dict["ChannelIDs"] as! [String:String]
+        } else {
+            self.ChannelIDs = [:]
         }
     }
 

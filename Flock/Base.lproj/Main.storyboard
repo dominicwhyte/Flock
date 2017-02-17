@@ -98,10 +98,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" id="YpE-8O-jHk">
+                        <barButtonItem key="leftBarButtonItem" title="Back" id="mf4-Ij-CLS">
+                            <connections>
+                                <action selector="backButtonPressed:" destination="EaH-oo-eaD" id="jXb-lY-TyO"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bBU-Kf-A40" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2404" y="1884"/>
+            <point key="canvasLocation" x="4884" y="677"/>
         </scene>
         <!--Simple Tab Bar Controller-->
         <scene sceneID="QJu-si-53K">
@@ -196,7 +203,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kV2-Rf-b2O" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2880.8000000000002" y="394.45277361319341"/>
+            <point key="canvasLocation" x="2846" y="557"/>
         </scene>
         <!--Profile View Controller-->
         <scene sceneID="Iyo-7F-iDM">
@@ -212,11 +219,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="NCb-KM-e5j">
-                        <barButtonItem key="rightBarButtonItem" image="SettingsIcon" id="tIa-gh-9FS">
-                            <connections>
-                                <segue destination="EaH-oo-eaD" kind="show" id="rT1-vm-bcP"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="SettingsIcon" id="tIa-gh-9FS"/>
                     </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uxc-dH-Ckz" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -288,7 +291,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qAb-8e-JwW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2793" y="1146"/>
+            <point key="canvasLocation" x="2667" y="1458"/>
         </scene>
         <!--Profile-->
         <scene sceneID="dFX-9e-9D8">
@@ -353,13 +356,13 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jqD-ur-HwF">
-                                            <rect key="frame" x="70" y="12.5" width="52.5" height="27.5"/>
+                                            <rect key="frame" x="70" y="12" width="53" height="28"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flock Request" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7T8-S6-gZw">
-                                            <rect key="frame" x="70" y="38" width="93.5" height="20.5"/>
+                                            <rect key="frame" x="70" y="38" width="94" height="21"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -436,17 +439,32 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tuq-dF-fOz">
+                                            <rect key="frame" x="329" y="22" width="30" height="30"/>
+                                            <color key="backgroundColor" red="0.29803921570000003" green="0.70980392160000005" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="Tuq-dF-fOz" secondAttribute="height" multiplier="1:1" id="9Kx-mS-gBP"/>
+                                                <constraint firstAttribute="height" constant="30" id="boB-Ro-9X9"/>
+                                            </constraints>
+                                            <state key="normal" backgroundImage="ChatIcon"/>
+                                            <connections>
+                                                <action selector="chatPressed:" destination="hZ9-uE-4dK" eventType="touchUpInside" id="IRx-9h-J4P"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="aiC-dO-V8B" firstAttribute="leading" secondItem="kJa-pc-JEd" secondAttribute="leadingMargin" id="21C-Sc-hyT"/>
                                         <constraint firstItem="NnP-CV-DXo" firstAttribute="leading" secondItem="aiC-dO-V8B" secondAttribute="trailing" constant="8" symbolic="YES" id="5Th-dr-b9g"/>
+                                        <constraint firstItem="Tuq-dF-fOz" firstAttribute="centerY" secondItem="kJa-pc-JEd" secondAttribute="centerY" id="6hH-jw-QUo"/>
                                         <constraint firstItem="NnP-CV-DXo" firstAttribute="centerY" secondItem="kJa-pc-JEd" secondAttribute="centerY" multiplier="0.7" id="8RN-lv-LMf"/>
                                         <constraint firstItem="GR1-Fe-AYz" firstAttribute="top" secondItem="NnP-CV-DXo" secondAttribute="bottom" constant="-2" id="B5m-PW-q84"/>
                                         <constraint firstItem="GR1-Fe-AYz" firstAttribute="leading" secondItem="NnP-CV-DXo" secondAttribute="leading" id="Qws-dO-adD"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Tuq-dF-fOz" secondAttribute="trailing" constant="8" id="abo-jw-V6N"/>
                                         <constraint firstItem="aiC-dO-V8B" firstAttribute="centerY" secondItem="kJa-pc-JEd" secondAttribute="centerY" id="mBv-ZP-NUz"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="chatButton" destination="Tuq-dF-fOz" id="ReM-Vm-jHS"/>
                                     <outlet property="friendName" destination="NnP-CV-DXo" id="1ya-Tf-tlY"/>
                                     <outlet property="profilePic" destination="aiC-dO-V8B" id="jq7-bp-N8A"/>
                                     <outlet property="subtitleLabel" destination="GR1-Fe-AYz" id="2nN-U3-L4B"/>
@@ -479,10 +497,24 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Zk-up-tmu">
+                                            <rect key="frame" x="329" y="22" width="30" height="30"/>
+                                            <color key="backgroundColor" red="0.29803921570000003" green="0.70980392160000005" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="30" id="lNy-zQ-f1d"/>
+                                                <constraint firstAttribute="width" secondItem="3Zk-up-tmu" secondAttribute="height" multiplier="1:1" id="tCG-GH-Dx4"/>
+                                            </constraints>
+                                            <state key="normal" backgroundImage="ChatIcon"/>
+                                            <connections>
+                                                <action selector="chatButtonPressed:" destination="0MJ-rN-crY" eventType="touchUpInside" id="92F-VA-j6N"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstAttribute="trailingMargin" secondItem="3Zk-up-tmu" secondAttribute="trailing" constant="8" id="4Yt-eO-cKM"/>
                                         <constraint firstItem="y8d-lu-XWQ" firstAttribute="leading" secondItem="cYP-jZ-xXp" secondAttribute="trailing" constant="8" symbolic="YES" id="RgC-d7-I1T"/>
                                         <constraint firstItem="cYP-jZ-xXp" firstAttribute="leading" secondItem="Lbd-XL-jWx" secondAttribute="leadingMargin" id="SPe-9P-G9V"/>
+                                        <constraint firstItem="3Zk-up-tmu" firstAttribute="centerY" secondItem="Lbd-XL-jWx" secondAttribute="centerY" id="YDP-Ws-5Rj"/>
                                         <constraint firstItem="mXs-Ka-riF" firstAttribute="leading" secondItem="y8d-lu-XWQ" secondAttribute="leading" id="YoH-Lc-Ecn"/>
                                         <constraint firstItem="mXs-Ka-riF" firstAttribute="top" secondItem="y8d-lu-XWQ" secondAttribute="bottom" constant="-2" id="boO-qz-SQH"/>
                                         <constraint firstItem="cYP-jZ-xXp" firstAttribute="centerY" secondItem="Lbd-XL-jWx" secondAttribute="centerY" id="djD-pk-28D"/>
@@ -490,6 +522,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="chatButton" destination="3Zk-up-tmu" id="fg6-hM-13n"/>
                                     <outlet property="friendName" destination="y8d-lu-XWQ" id="rC2-60-Fa9"/>
                                     <outlet property="profilePic" destination="cYP-jZ-xXp" id="vTC-hd-ivV"/>
                                     <outlet property="subtitleLabel" destination="mXs-Ka-riF" id="3OG-TO-Mv2"/>
@@ -511,28 +544,43 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="22X-fU-DME">
-                                            <rect key="frame" x="70" y="12.5" width="52.5" height="27.5"/>
+                                            <rect key="frame" x="70" y="12" width="53" height="28"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kds-ef-jo8">
-                                            <rect key="frame" x="70" y="38" width="37" height="20.5"/>
+                                            <rect key="frame" x="70" y="38" width="37" height="21"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="46L-NI-xaM">
+                                            <rect key="frame" x="329" y="22" width="30" height="30"/>
+                                            <color key="backgroundColor" red="0.29803921570000003" green="0.70980392160000005" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="30" id="Eta-40-MsO"/>
+                                                <constraint firstAttribute="width" secondItem="46L-NI-xaM" secondAttribute="height" multiplier="1:1" id="wf8-oZ-Kao"/>
+                                            </constraints>
+                                            <state key="normal" image="ChatIcon"/>
+                                            <connections>
+                                                <action selector="chatPressed:" destination="Dio-vA-lqJ" eventType="touchUpInside" id="aku-RM-gQI"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="22X-fU-DME" firstAttribute="leading" secondItem="ArQ-PF-85q" secondAttribute="trailing" constant="8" symbolic="YES" id="ALu-Kn-kLg"/>
                                         <constraint firstItem="22X-fU-DME" firstAttribute="centerY" secondItem="gN4-g0-GAL" secondAttribute="centerY" multiplier="0.7" id="AlN-us-Z3E"/>
                                         <constraint firstItem="kds-ef-jo8" firstAttribute="leading" secondItem="22X-fU-DME" secondAttribute="leading" id="ZQb-Sa-KlY"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="46L-NI-xaM" secondAttribute="trailing" constant="8" id="cdw-51-u2b"/>
                                         <constraint firstItem="kds-ef-jo8" firstAttribute="top" secondItem="22X-fU-DME" secondAttribute="bottom" constant="-2" id="eAN-wG-CDD"/>
+                                        <constraint firstItem="46L-NI-xaM" firstAttribute="centerY" secondItem="gN4-g0-GAL" secondAttribute="centerY" id="iQM-xp-Dgc"/>
                                         <constraint firstItem="ArQ-PF-85q" firstAttribute="centerY" secondItem="gN4-g0-GAL" secondAttribute="centerY" id="mrM-xu-wX3"/>
                                         <constraint firstItem="ArQ-PF-85q" firstAttribute="leading" secondItem="gN4-g0-GAL" secondAttribute="leadingMargin" id="pN5-zd-bSn"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="chatButton" destination="46L-NI-xaM" id="rcX-Uz-viv"/>
                                     <outlet property="friendName" destination="22X-fU-DME" id="L1B-Vy-Gv8"/>
                                     <outlet property="profilePic" destination="ArQ-PF-85q" id="NGg-jn-LXM"/>
                                     <outlet property="subtitleLabel" destination="kds-ef-jo8" id="P0K-wU-e8n"/>
@@ -559,11 +607,12 @@
                     </refreshControl>
                     <connections>
                         <segue destination="jcX-Jh-PWr" kind="show" identifier="PROFILE" id="3oN-hO-BQ6"/>
+                        <segue destination="KcW-Kd-qrk" kind="presentation" identifier="CHAT_IDENTIFIER" id="C6s-Ax-d0w"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sJe-UR-PIj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2992.8000000000002" y="-310.79460269865069"/>
+            <point key="canvasLocation" x="3036" y="-564"/>
         </scene>
         <!--Search People Table View Controller-->
         <scene sceneID="pYR-s7-D8W">
@@ -590,13 +639,13 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AnO-09-XGE">
-                                            <rect key="frame" x="70" y="12.5" width="52.5" height="27.5"/>
+                                            <rect key="frame" x="70" y="12" width="53" height="28"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pending" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E7Z-R2-c0C">
-                                            <rect key="frame" x="70" y="38" width="55" height="20.5"/>
+                                            <rect key="frame" x="70" y="38" width="55" height="21"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -654,7 +703,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="fTW-B7-psl">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="tmp-Ws-W0h">
+                        <barButtonItem key="leftBarButtonItem" title="Back" id="tmp-Ws-W0h">
                             <connections>
                                 <action selector="popSearchPeopleTableViewController:" destination="AN1-Og-FJJ" id="CIP-Un-OIL"/>
                             </connections>
@@ -702,8 +751,27 @@
             </objects>
             <point key="canvasLocation" x="1721" y="458"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="9wy-Ge-0lt">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="KcW-Kd-qrk" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="SMT-26-elT">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="EaH-oo-eaD" kind="relationship" relationship="rootViewController" id="ckc-5j-bLz"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KtF-pv-nny" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3633" y="394"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="ChatIcon" width="384" height="384"/>
         <image name="Marker-32" width="32" height="32"/>
         <image name="Meeting-32" width="32" height="32"/>
         <image name="SettingsIcon" width="22" height="22"/>
