@@ -113,6 +113,12 @@ class ProfileViewController: TwitterProfileViewController {
         }
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let chatVC = segue.destination as? ChatViewController {
+            //let channel =
+        }
+    }
+    
     @IBAction func settingsButtonPressed(_ sender: Any) {
         PermissionUtilities.showPermissionsPopup(permissionScope: multiPscope)
     }

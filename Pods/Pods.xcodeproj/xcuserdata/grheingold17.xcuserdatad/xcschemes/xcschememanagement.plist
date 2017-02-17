@@ -59,6 +59,16 @@
 			<key>orderHint</key>
 			<integer>9</integer>
 		</dict>
+		<key>JSQMessagesViewController.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>25</integer>
+		</dict>
+		<key>JSQSystemSoundPlayer.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>26</integer>
+		</dict>
 		<key>LFTwitterProfile-LFTwitterProfile.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -147,6 +157,11 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>1127CF0915F7AD8E32019EDEC1F53275</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>1A071D0F84056328F47E24D5ABD8C358</key>
 		<dict>
 			<key>primary</key>
@@ -157,12 +172,27 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>1DA7BF9881DFD38FDE62DA60825242CC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>1DAC6C6AC86FE8621A7D0FEA5FD918DA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>1ED4DFAAD25E1999D0244868457A351E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>21CE86E3E12C581328AA4938C36E5202</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>22CC92E8B575FDA542E483DE4C55BAA8</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -197,7 +227,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>55471E5BAFC2C24CD730AB71D59738CB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>59CDDB315DD2B098E0CD9ED56B026F4B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>5A0A28913A1212C2D1EACECBA1E58AC0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5AC0EAD0A7E22B482E6A40B133108CB5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -298,6 +343,11 @@
 			<true/>
 		</dict>
 		<key>FD23F1DA220A44C7E84F356B64871271</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FFB7EB50D2A044617EE671F0DCC0AA25</key>
 		<dict>
 			<key>primary</key>
 			<true/>
