@@ -144,6 +144,26 @@ class Utilities {
         return Constants.CONGRATULATORY_WORDS_LIST[random]
     }
     
+    static func showWalkthrough(vcDelegate : BWWalkthroughViewControllerDelegate, vc : UIViewController) {
+        // Get view controllers and build the walkthrough
+        let stb = UIStoryboard(name: "Walkthrough", bundle: nil)
+        let walkthrough = stb.instantiateViewController(withIdentifier: "walk") as! BWWalkthroughViewController
+        let page_zero = stb.instantiateViewController(withIdentifier: "walk0")
+        let page_one = stb.instantiateViewController(withIdentifier: "walk1")
+        let page_two = stb.instantiateViewController(withIdentifier: "walk2")
+        let page_three = stb.instantiateViewController(withIdentifier: "walk3")
+        
+        // Attach the pages to the master
+        walkthrough.delegate = vcDelegate
+        walkthrough.add(viewController:page_one)
+        walkthrough.add(viewController:page_two)
+        walkthrough.add(viewController:page_three)
+        walkthrough.add(viewController:page_zero)
+        
+        vc.present(walkthrough, animated: true, completion: nil)
+
+    }
+    
 }
 
 extension UIColor {

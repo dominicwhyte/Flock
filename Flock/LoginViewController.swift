@@ -12,17 +12,24 @@ import SimpleTab
 import AASquaresLoading
 import PermissionScope
 
-class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
+class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, BWWalkthroughViewControllerDelegate {
     let multiPscope = PermissionScope()
     @IBOutlet weak var termsAndConditionsLabel: UIButton!
     @IBOutlet weak var loginButton: FBSDKLoginButton!
     var loadingSquare : AASquaresLoading?
     
+    @IBOutlet weak var flockLogo: UIImageView!
     @IBOutlet weak var loadingSquareScreenView: UIView!
     
+    @IBOutlet weak var walkThroughButton: UIButton!
     let SECONDS_UNTIL_ABORT_LOGIN = 1
     
     override func viewDidLoad() {
+        walkThroughButton.layer.borderWidth = 1
+        walkThroughButton.layer.borderColor = UIColor.white.cgColor
+        walkThroughButton.layer.cornerRadius = 3
+        walkThroughButton.layer.masksToBounds = true
+        flockLogo.alpha = 0
         PermissionUtilities.setupPermissionScope(permissionScope: multiPscope)
         
         loadingSquare = AASquaresLoading(target: self.loadingSquareScreenView, size: 40)
@@ -30,16 +37,17 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         
         super.viewDidLoad()
         if (FBSDKAccessToken.current() != nil) {
-            loginButton.isHidden = true
+            hideButtons(hidden: true)
         }
         else {
-            loginButton.isHidden = false
+            hideButtons(hidden: false)
         }
         loginButton.delegate = self
         loginButton.center = self.view.center
         loginButton.readPermissions = ["public_profile", "user_friends", "email"]
         self.view!.addSubview(loginButton)
         loginButton.alpha = 0
+        walkThroughButton.alpha = 0
         termsAndConditionsLabel.alpha = 0
         
         // Do any additional setup after loading the view.
@@ -77,8 +85,37 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         }
         //Request permissions
         else {
-            PermissionUtilities.getPermissionsIfDenied(permissionScope: multiPscope)
+            
+            //show walkthrough if not yet shown
+            let userDefaults = UserDefaults.standard
+            
+            if !userDefaults.bool(forKey: "walkthroughPresented") {
+                Utilities.showWalkthrough(vcDelegate: self, vc: self)
+                
+                userDefaults.set(true, forKey: "walkthroughPresented")
+                userDefaults.synchronize()
+            }
         }
+    }
+    
+    func walkthroughPageDidChange(_ pageNumber: Int) {
+        print("Current Page \(pageNumber)")
+    }
+    
+    func walkthroughCloseButtonPressed() {
+        self.dismiss(animated: true, completion: nil)
+        
+        PermissionUtilities.getPermissionsIfDenied(permissionScope: multiPscope)
+    }
+    
+    
+    func hideButtons(hidden : Bool) {
+        walkThroughButton.isHidden = hidden
+        loginButton.isHidden = hidden
+    }
+    
+    @IBAction func walkthroughButtonPressed(_ sender: Any) {
+        Utilities.showWalkthrough(vcDelegate: self, vc: self)
     }
     
     
@@ -101,7 +138,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     func setUIForLogin() {
         DispatchQueue.main.async {
             self.view.isUserInteractionEnabled = false
-            self.loginButton.isHidden = true
+            self.hideButtons(hidden: true)
             
             self.loadingSquareScreenView.isHidden = false
             self.loadingSquare!.isHidden = false
@@ -114,7 +151,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     func resetUIForCancelledLogin() {
         DispatchQueue.main.async {
             self.view.isUserInteractionEnabled = true
-            self.loginButton.isHidden = false
+            self.hideButtons(hidden: false)
             
             self.loadingSquareScreenView.isHidden = true
             self.loadingSquare!.isHidden = true
@@ -129,6 +166,8 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         super.viewDidAppear(animated)
         termsAndConditionsLabel.fadeIn()
         loginButton.fadeIn()
+        flockLogo.fadeIn()
+        walkThroughButton.fadeIn()
     }
     
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!)
@@ -144,7 +183,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
             
         else if result.isCancelled
         {
-            self.loginButton.isHidden = false
+            self.hideButtons(hidden: false)
             resetUIForCancelledLogin()
         }
             

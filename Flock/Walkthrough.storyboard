@@ -1,9 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,7 +13,7 @@
         <!--Walkthrough View Controller-->
         <scene sceneID="f1r-A2-2vT">
             <objects>
-                <viewController storyboardIdentifier="walk" id="txJ-gV-nlq" customClass="BWWalkthroughViewController" customModule="BWWalkthrough" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="walk" id="txJ-gV-nlq" customClass="BWWalkthroughViewController" customModule="Flock" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="N4y-CV-VgM"/>
                         <viewControllerLayoutGuide type="bottom" id="VXm-Ru-t4o"/>
@@ -89,7 +90,7 @@
         <!--Walkthrough Page View Controller-->
         <scene sceneID="hhd-kh-VF3">
             <objects>
-                <viewController storyboardIdentifier="walk2" id="XYk-C3-fzG" customClass="BWWalkthroughPageViewController" customModule="BWWalkthrough" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="walk2" id="XYk-C3-fzG" customClass="BWWalkthroughPageViewController" customModule="Flock" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Pn5-dG-6Iv"/>
                         <viewControllerLayoutGuide type="bottom" id="Qmb-H6-Z3E"/>
@@ -172,7 +173,7 @@
         <!--Walkthrough Page View Controller-->
         <scene sceneID="8Tf-D7-UzW">
             <objects>
-                <viewController storyboardIdentifier="walk0" id="a0v-IS-EXc" customClass="BWWalkthroughPageViewController" customModule="BWWalkthrough" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="walk0" id="a0v-IS-EXc" customClass="BWWalkthroughPageViewController" customModule="Flock" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="At2-Nx-1U5"/>
                         <viewControllerLayoutGuide type="bottom" id="Q0s-D3-K13"/>
@@ -235,7 +236,7 @@
         <!--Custom Page View Controller-->
         <scene sceneID="5mS-PA-mNj">
             <objects>
-                <viewController storyboardIdentifier="walk3" id="2tr-5e-K2b" customClass="CustomPageViewController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="walk3" id="2tr-5e-K2b" customClass="CustomPageViewController" customModule="Flock" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="P0S-X1-bG6"/>
                         <viewControllerLayoutGuide type="bottom" id="Deg-VZ-J6w"/>
@@ -287,7 +288,7 @@
         <!--Walkthrough Page View Controller-->
         <scene sceneID="ywq-dR-M81">
             <objects>
-                <viewController storyboardIdentifier="walk1" id="JbJ-Ac-xgR" customClass="BWWalkthroughPageViewController" customModule="BWWalkthrough" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="walk1" id="JbJ-Ac-xgR" customClass="BWWalkthroughPageViewController" customModule="Flock" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="P6H-j1-FXv"/>
                         <viewControllerLayoutGuide type="bottom" id="bbg-ej-M6o"/>

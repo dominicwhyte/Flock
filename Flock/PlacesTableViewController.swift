@@ -86,7 +86,8 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (currentTab == items[0]) {
-            tableView.backgroundView?.isHidden = true
+            tableView.separatorStyle = .singleLine
+            tableView.backgroundView?.isHidden = false
             // #warning Incomplete implementation, return the number of items
             if searchController.isActive && searchController.searchBar.text != "" {
                 return self.filteredVenues.count
@@ -94,9 +95,10 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             return self.venues.count
         }
         else {
-            //tableView.separatorStyle = .none
+            tableView.separatorStyle = .none
             Utilities.printDebugMessage("No venues yet for this location.")
             tableView.backgroundView?.isHidden = false
+            setupEmptyBackgroundView()
             self.view.setNeedsLayout()
             self.view.layoutIfNeeded()
             return 0
@@ -167,8 +169,6 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     
     override func viewDidLoad() {
         
-        //empty background view
-        setupEmptyBackgroundView()
         //Search
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
@@ -212,7 +212,10 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         UINavigationBar.appearance().barTintColor = FlockColors.FLOCK_BLUE
         self.navigationController?.navigationBar.isTranslucent = true
         
-        self.view.backgroundColor = FlockColors.FLOCK_GRAY
+        //self.view.backgroundColor = FlockColors.FLOCK_GRAY
+        self.view.backgroundColor = UIColor.clear
+        //empty background view
+        setupEmptyBackgroundView()
     }
     
     func refresh(refreshControl: UIRefreshControl) {
@@ -229,8 +232,27 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     fileprivate let bottomMessage = "You don't have any favorites yet. All your favorites will show up here."
     
     func setupEmptyBackgroundView() {
-        let emptyBackgroundView = EmptyBackgroundView(image: image, top: topMessage, bottom: bottomMessage)
+//        let emptyBackgroundView = EmptyBackgroundView(image: image, top: topMessage, bottom: bottomMessage)
+//        emptyBackgroundView.backgroundColor = UIColor.purple
+        let emptyBackgroundView = UIView(frame: self.view.frame)
+        emptyBackgroundView.backgroundColor = FlockColors.FLOCK_GRAY
+        let imageView = UIImageView(frame: CGRect(x: emptyBackgroundView.center.x, y: emptyBackgroundView.center.y, width: 100, height: 100))
+
+        imageView.image = #imageLiteral(resourceName: "star-large")
+         imageView.contentMode = UIViewContentMode.scaleAspectFit
+//        let horizConstraint = NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: emptyBackgroundView, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0)
+//        let vertConstraint = NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: emptyBackgroundView, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: 0)
+//        
+//        let widthConstraint = NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 100)
+//        let heightConstraint = NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 100)
+//        
+//        
+//        
+//        emptyBackgroundView.addConstraints([vertConstraint, horizConstraint, widthConstraint, heightConstraint])
+        
+        emptyBackgroundView.addSubview(imageView)
         tableView?.backgroundView = emptyBackgroundView
+        
     }
     
     
