@@ -235,10 +235,27 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
 //        let emptyBackgroundView = EmptyBackgroundView(image: image, top: topMessage, bottom: bottomMessage)
 //        emptyBackgroundView.backgroundColor = UIColor.purple
         let emptyBackgroundView = UIView(frame: self.view.frame)
-        emptyBackgroundView.backgroundColor = FlockColors.FLOCK_GRAY
-        let imageView = UIImageView(frame: CGRect(x: emptyBackgroundView.center.x, y: emptyBackgroundView.center.y, width: 100, height: 100))
+        emptyBackgroundView.backgroundColor = UIColor.lightGray//FlockColors.FLOCK_GRAY
+        
+        // Add image
+        let width = CGFloat(100)
+        let height = CGFloat(100)
+        let xOffset = CGFloat(width/2)
+        let yOffset = CGFloat(height/2)
+        let imageView = UIImageView(frame: CGRect(x: emptyBackgroundView.center.x - xOffset, y: emptyBackgroundView.center.y - yOffset, width: width, height: height))
 
-        imageView.image = #imageLiteral(resourceName: "star-large")
+        switch self.currentTab {
+        case items[1]:
+            imageView.image = #imageLiteral(resourceName: "Harvard")
+        case items[2]:
+            imageView.image = #imageLiteral(resourceName: "Dartmouth")
+        case items[3]:
+            imageView.image = #imageLiteral(resourceName: "Stanford")
+        default:
+            break
+        }
+        
+        
          imageView.contentMode = UIViewContentMode.scaleAspectFit
 //        let horizConstraint = NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: emptyBackgroundView, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0)
 //        let vertConstraint = NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: emptyBackgroundView, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: 0)
@@ -249,6 +266,15 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
 //        
 //        
 //        emptyBackgroundView.addConstraints([vertConstraint, horizConstraint, widthConstraint, heightConstraint])
+        
+        // Add label(s)
+        let label = UILabel(frame: CGRect(x: emptyBackgroundView.center.x - CGFloat(65),y: emptyBackgroundView.center.y - height,width: 130,height: 50))
+        //label.center = CGPointMake(160, 284)
+        label.textAlignment = NSTextAlignment.center
+        label.text = "Coming Soon!"
+        label.textColor = UIColor.white
+        emptyBackgroundView.addSubview(label)
+        
         
         emptyBackgroundView.addSubview(imageView)
         tableView?.backgroundView = emptyBackgroundView
