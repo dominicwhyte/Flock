@@ -16,7 +16,7 @@ import CoreLocation
 import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate, UNUserNotificationCenterDelegate {
 
     struct Constants {
         static let CRITICAL_RADIUS : Double = 60.0 // meters
@@ -315,6 +315,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
     }
     
+    
+    func registerForPushNotifications(application: UIApplication) {
+        
+        let notificationSettings = UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil)
+
+        application.registerUserNotificationSettings(notificationSettings)
+    }
+    
     //Temporary function
     func requestNotificationPermission(application : UIApplication) {
         if #available(iOS 10.0, *) {
@@ -481,6 +489,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
         return nil
     }
+    
+    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
+        if notificationSettings.types != .none {
+            application.registerForRemoteNotifications()
+        }
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        
+        let token = String(data: deviceToken, encoding: .utf8)
+        
+        print("Device Token: \(token)")
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("Failed to register:", error)
+    }
 
     
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
@@ -492,6 +517,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         FIRApp.configure()
         self.setupLocationServices()
         self.requestNotificationPermission(application: application)
+        registerForPushNotifications(application: application)
 
         return true
     }
