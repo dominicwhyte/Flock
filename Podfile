@@ -24,6 +24,7 @@ target 'Flock' do
    pod 'PureLayout', '~> 3.0.1'
    pod 'LFTwitterProfile'
    pod 'PermissionScope'
+   pod 'BWWalkthrough'
 
   target 'FlockTests' do
     inherit! :search_paths

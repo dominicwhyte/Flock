@@ -110,11 +110,6 @@ class ChatViewController: JSQMessagesViewController {
         collectionView?.collectionViewLayout.incomingAvatarViewSize = CGSize(width: kJSQMessagesCollectionViewAvatarSizeDefault, height:kJSQMessagesCollectionViewAvatarSizeDefault )
         collectionView?.collectionViewLayout.outgoingAvatarViewSize = CGSize(width: kJSQMessagesCollectionViewAvatarSizeDefault, height:kJSQMessagesCollectionViewAvatarSizeDefault )
         
-        // messages from someone else
-        addMessage(withId: "foo", name: "Mr.Bolt", text: "I am so fast!")
-        // messages sent from local sender
-        addMessage(withId: senderId, name: "Me", text: "I bet I can run faster than you!")
-        addMessage(withId: senderId, name: "Me", text: "I like to run!")
         // animates the receiving of a new message on the view
         finishReceivingMessage()
         

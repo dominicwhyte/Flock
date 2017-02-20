@@ -70,7 +70,7 @@ open class PopTabBarStyle: SimpleTabBarStyle {
         let fromBarItem:SimpleTabBarItem = tabBar.barItems[fromIndex]
         
         self.selectorView.frame.origin.x = toBarItem.frame.origin.x + self.selectorSideInsets
-        self.selectorView.frame.offsetBy(dx: 0, dy: 10)
+        self.selectorView.frame.offsetBy(dx: 0, dy: 0)
         
         
         UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions(), animations: { () -> Void in

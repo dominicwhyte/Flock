@@ -69,7 +69,7 @@ open class SimpleTabBarController: UITabBarController {
         simpleTBC.viewTransition = CrossFadeViewTransition()
         
         //# Set Tab Bar Style ( tab bar , tab item animation style etc )
-        let style:SimpleTabBarStyle = PopTabBarStyle(tabBar: simpleTBC.tabBar)
+        let style:SimpleTabBarStyle = ElegantTabBarStyle(tabBar: simpleTBC.tabBar)
         //var style:SimpleTabBarStyle = ElegantTabBarStyle(tabBar: simpleTBC!.tabBar)
         
         //# Optional - Set Tab Title attributes for selected and unselected (normal) states.

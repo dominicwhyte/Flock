@@ -65,6 +65,10 @@ class DateUtilities {
         return components.day!
     }
     
+    static func isDateBeforeToday(date: Date) -> Bool {
+        return (self.daysUntilPlan(planDate: date) < 0)
+    }
+    
     static func isValidTimeFrame(dayDiff: Int) -> Bool {
         return (dayDiff >= 0 && dayDiff < Constants.NUMBER_OF_DAYS_TO_DISPLAY)
     }

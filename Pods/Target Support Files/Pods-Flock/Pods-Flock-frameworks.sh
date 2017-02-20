@@ -86,6 +86,7 @@ strip_invalid_archs() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/AASquaresLoading/AASquaresLoading.framework"
   install_framework "$BUILT_PRODUCTS_DIR/BTNavigationDropdownMenu/BTNavigationDropdownMenu.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/BWWalkthrough/BWWalkthrough.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Bolts/Bolts.framework"
   install_framework "$BUILT_PRODUCTS_DIR/FBSDKCoreKit/FBSDKCoreKit.framework"
   install_framework "$BUILT_PRODUCTS_DIR/FBSDKLoginKit/FBSDKLoginKit.framework"
@@ -110,6 +111,7 @@ fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/AASquaresLoading/AASquaresLoading.framework"
   install_framework "$BUILT_PRODUCTS_DIR/BTNavigationDropdownMenu/BTNavigationDropdownMenu.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/BWWalkthrough/BWWalkthrough.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Bolts/Bolts.framework"
   install_framework "$BUILT_PRODUCTS_DIR/FBSDKCoreKit/FBSDKCoreKit.framework"
   install_framework "$BUILT_PRODUCTS_DIR/FBSDKLoginKit/FBSDKLoginKit.framework"

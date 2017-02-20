@@ -125,6 +125,7 @@
                         <segue destination="RrJ-Ui-UhR" kind="relationship" relationship="viewControllers" id="sBD-oo-f50"/>
                         <segue destination="6Hi-b6-CvB" kind="relationship" relationship="viewControllers" id="Fbs-VX-5V2"/>
                         <segue destination="QnL-CR-aJK" kind="relationship" relationship="viewControllers" id="PQY-G6-8nX"/>
+                        <segue destination="7uX-SL-9kr" kind="relationship" relationship="viewControllers" id="xjm-Tl-lke"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fqd-Wz-96c" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -312,6 +313,90 @@
             </objects>
             <point key="canvasLocation" x="618" y="1146"/>
         </scene>
+        <!--Chat-->
+        <scene sceneID="XSx-Kn-wYe">
+            <objects>
+                <navigationController id="7uX-SL-9kr" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Chat" image="Chat-32" id="EZe-cp-YhZ" customClass="SimpleTabBarItem" customModule="SimpleTab"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="lZm-IH-lbX">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="acR-ql-6yd" kind="relationship" relationship="rootViewController" id="zhR-Yi-Ydz"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lET-Bm-r1p" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="216" y="-557"/>
+        </scene>
+        <!--Chats Table View Controller-->
+        <scene sceneID="5Kf-pc-uQJ">
+            <objects>
+                <tableViewController id="acR-ql-6yd" customClass="ChatsTableViewController" customModule="Flock" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="111" sectionHeaderHeight="28" sectionFooterHeight="28" id="1iC-tx-FUn">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CHAT" rowHeight="100" id="zCx-Vr-tbC" customClass="ChatTableViewCell" customModule="Flock" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="100"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zCx-Vr-tbC" id="3fI-FC-49S">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="99"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="k5W-Fq-2rr">
+                                            <rect key="frame" x="8" y="14" width="72" height="72"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="k5W-Fq-2rr" secondAttribute="height" multiplier="1:1" id="hX1-CT-JnQ"/>
+                                                <constraint firstAttribute="height" constant="72" id="oog-rA-aeQ"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qZq-eX-T9b">
+                                            <rect key="frame" x="88" y="14" width="53" height="28"/>
+                                            <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yie-D7-dVa">
+                                            <rect key="frame" x="88" y="40" width="37" height="21"/>
+                                            <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="yie-D7-dVa" firstAttribute="top" secondItem="qZq-eX-T9b" secondAttribute="bottom" constant="-2" id="84V-10-4Uw"/>
+                                        <constraint firstItem="k5W-Fq-2rr" firstAttribute="leading" secondItem="3fI-FC-49S" secondAttribute="leadingMargin" id="C6i-HO-4Yb"/>
+                                        <constraint firstItem="k5W-Fq-2rr" firstAttribute="centerY" secondItem="3fI-FC-49S" secondAttribute="centerY" id="I0d-sq-6wa"/>
+                                        <constraint firstItem="qZq-eX-T9b" firstAttribute="centerY" secondItem="3fI-FC-49S" secondAttribute="centerY" multiplier="0.7" constant="-7" id="NMP-oZ-4HZ"/>
+                                        <constraint firstItem="qZq-eX-T9b" firstAttribute="leading" secondItem="k5W-Fq-2rr" secondAttribute="trailing" constant="8" symbolic="YES" id="eH6-vd-LQJ"/>
+                                        <constraint firstItem="yie-D7-dVa" firstAttribute="leading" secondItem="qZq-eX-T9b" secondAttribute="leading" id="hUR-ai-Rba"/>
+                                        <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="yie-D7-dVa" secondAttribute="trailing" id="tQx-jQ-l9M"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="chatImage" destination="k5W-Fq-2rr" id="sdd-oe-jPa"/>
+                                    <outlet property="chatSubtitle" destination="yie-D7-dVa" id="st6-lj-ygf"/>
+                                    <outlet property="chatTitle" destination="qZq-eX-T9b" id="sRG-MA-3g2"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="acR-ql-6yd" id="agD-Od-OQW"/>
+                            <outlet property="delegate" destination="acR-ql-6yd" id="AFO-n5-dsa"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="B2f-Vk-sV1"/>
+                    <connections>
+                        <segue destination="KcW-Kd-qrk" kind="presentation" identifier="CHAT_IDENTIFIER" id="aNt-J0-525"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZXb-CJ-G82" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1103.2" y="-516.79160419790105"/>
+        </scene>
         <!--Friends-->
         <scene sceneID="veW-a2-ceH">
             <objects>
@@ -356,13 +441,13 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jqD-ur-HwF">
-                                            <rect key="frame" x="70" y="12.5" width="52.5" height="27.5"/>
+                                            <rect key="frame" x="70" y="12" width="53" height="28"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flock Request" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7T8-S6-gZw">
-                                            <rect key="frame" x="70" y="38" width="93.5" height="20.5"/>
+                                            <rect key="frame" x="70" y="38" width="94" height="21"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -428,13 +513,13 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NnP-CV-DXo">
-                                            <rect key="frame" x="70" y="12.5" width="52.5" height="27.5"/>
+                                            <rect key="frame" x="70" y="12" width="53" height="28"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GR1-Fe-AYz">
-                                            <rect key="frame" x="70" y="38" width="37" height="20.5"/>
+                                            <rect key="frame" x="70" y="38" width="37" height="21"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -486,13 +571,13 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y8d-lu-XWQ">
-                                            <rect key="frame" x="70" y="12.5" width="52.5" height="27.5"/>
+                                            <rect key="frame" x="70" y="12" width="53" height="28"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mXs-Ka-riF">
-                                            <rect key="frame" x="70" y="38" width="37" height="20.5"/>
+                                            <rect key="frame" x="70" y="38" width="37" height="21"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -544,13 +629,13 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="22X-fU-DME">
-                                            <rect key="frame" x="70" y="12.5" width="52.5" height="27.5"/>
+                                            <rect key="frame" x="70" y="12" width="53" height="28"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kds-ef-jo8">
-                                            <rect key="frame" x="70" y="38" width="37" height="20.5"/>
+                                            <rect key="frame" x="70" y="38" width="37" height="21"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -639,13 +724,13 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AnO-09-XGE">
-                                            <rect key="frame" x="70" y="12.5" width="52.5" height="27.5"/>
+                                            <rect key="frame" x="70" y="12" width="53" height="28"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pending" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E7Z-R2-c0C">
-                                            <rect key="frame" x="70" y="38" width="55" height="20.5"/>
+                                            <rect key="frame" x="70" y="38" width="55" height="21"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -771,6 +856,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Chat-32" width="32" height="32"/>
         <image name="ChatIcon" width="384" height="384"/>
         <image name="Marker-32" width="32" height="32"/>
         <image name="Meeting-32" width="32" height="32"/>
@@ -781,6 +867,7 @@
         <image name="whiteCheckmarkIcon" width="384" height="384"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="aNt-J0-525"/>
         <segue reference="3oN-hO-BQ6"/>
     </inferredMetricsTieBreakers>
 </document>

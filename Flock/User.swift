@@ -8,6 +8,8 @@ class User: NSObject
     var Friends: [String:String]
     var FriendRequests: [String:String]
     var Plans: [String : Plan]
+    var Executions: [String : Execution]
+    var Loyalties: [String : Int]
     var PictureURL: String
     var LiveClubID: String?
     var LastLive: Date?
@@ -41,6 +43,24 @@ class User: NSObject
             }
         }
         self.Plans = plans
+        
+        var executions : [String : Execution] = [:]
+        if (dict["Executions"] != nil) {
+            let executionsDict = dict["Executions"] as! [String: [String:String]]
+            for (visitID, executionDict) in executionsDict {
+                let date = executionDict["Date"]
+                let venueID = executionDict["VenueID"]
+                executions[visitID] = Execution(date: date!, venueID: venueID!)
+            }
+        }
+        self.Executions = executions
+        
+        if(dict["Loyalties"] != nil) {
+            self.Loyalties = dict["Loyalties"] as! [String:Int]
+        } else {
+            self.Loyalties = [:]
+        }
+
         if (dict["LastLive"] != nil) {
             let dateString = dict["LastLive"] as! String
             self.LastLive = DateUtilities.getDateFromString(date: dateString)
@@ -64,5 +84,16 @@ class Plan: NSObject
         self.date = DateUtilities.getDateFromString(date: date)
         self.venueID =  venueID
     }
+}
+
+class Execution: NSObject
+{
+    var date: Date
+    var venueID: String
     
+    init(date : String, venueID : String)
+    {
+        self.date = DateUtilities.getDateFromString(date: date)
+        self.venueID =  venueID
+    }
 }

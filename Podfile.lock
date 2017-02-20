@@ -7,6 +7,7 @@ PODS:
     - Bolts/Tasks
   - Bolts/Tasks (1.8.4)
   - BTNavigationDropdownMenu (0.4.1)
+  - BWWalkthrough (1.1.0)
   - FacebookCore (0.2.0):
     - Bolts (~> 1.8)
     - FBSDKCoreKit (~> 4.15)
@@ -88,6 +89,7 @@ PODS:
 DEPENDENCIES:
   - AASquaresLoading
   - BTNavigationDropdownMenu
+  - BWWalkthrough
   - FacebookCore
   - FacebookLogin
   - FacebookShare
@@ -109,6 +111,7 @@ SPEC CHECKSUMS:
   AASquaresLoading: 4039c25b61835d6f7c73d2d3382d6960a6039fa5
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   BTNavigationDropdownMenu: 093f3cbfad1572f2c222bdf8d17584d1e13380d4
+  BWWalkthrough: 0c27ad2773a25c8f4fb9004bc7d6685deb35fecc
   FacebookCore: 2cb3f0fbff218e9d3119cec84bae983b232412de
   FacebookLogin: c9d606504735780a9e3002465a615512e0a691a5
   FacebookShare: 8e9ee8ea06505e6a1d3d719b0cc63e840fb8aaeb
@@ -138,6 +141,6 @@ SPEC CHECKSUMS:
   SimpleTab: 4e490e339a19d0d1d26c0fa3c862188eaad73ecb
   SnapKit: 2e456761aa92d4d4067a7a5594c18769d451a8ad
 
-PODFILE CHECKSUM: 181bed79673af056c8eeb1399598f52242a532c6
+PODFILE CHECKSUM: 1e387250b70b2e413bb2d1559dd5440b3291012e
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.1.1

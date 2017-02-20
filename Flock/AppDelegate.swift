@@ -19,7 +19,7 @@ import UserNotifications
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
 
     struct Constants {
-        static let CRITICAL_RADIUS : Double = 40.0 // meters
+        static let CRITICAL_RADIUS : Double = 60.0 // meters
     }
     
     var window: UIWindow?
@@ -33,6 +33,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var friendRequestUsers = [String : User]()
     var facebookFriendsFBIDs : [String : String] = [:]
     var profileNeedsToUpdate = true
+    var isArriving = true
+    var venueStatistics : Statistics?
     
     func masterLogin(completion: @escaping (_ status: Bool) -> ()) {
         updateAllData { (success) in
@@ -63,6 +65,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 self.venues = venues
                 self.users = users
                 self.getAllFriends()
+                //Move to master login if slow
+                self.computeAllStats()
                 completion(true)
             }
             else {
@@ -109,7 +113,172 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
+    func computeAllStats() {
+        self.venueStatistics = self.computeVenueStats()
+            //for (venueID, venue) in self.venues {
+                //Utilities.printDebugMessage("\(venue.VenueName.uppercased())\nMax Plans: \(maxPlansInOneNight[venueID]), Loyalty: \(loyalty[venueID]), Popularity: \(popularity[venueID]), Lifetime Live: \(lifetimeLive[venueID])\n")
+            //}
+           
+        
+//        if let (favoriteClub, totalLiveClubs, loyalty, flockSize) = self.computeUserStats(user: self.user!) {
+//            Utilities.printDebugMessage("Favorite Club: \(favoriteClub), Total Live Clubs: \(totalLiveClubs), Loyalty: \(loyalty), Flock Size: \(flockSize)\n")
+//        }
+        
+    }
     
+    func computeVenueStats() -> Statistics {
+        // Stats to return
+        var maxPlansInOneNight = [String:Int]() // Map from venueID to maxPlansInOneNight
+        var loyalty = [String:Double]() // Maps from venueID to loyaltyFraction
+        var popularity = [String:Int]() // Maps from venueID to popularityRanking
+        var lifetimeLive = [String:Int]() // Maps from venueID to lifetimeLiveCount
+        
+        // COMPUTE ALL HERE
+        var popularityTracker = [String:Int]()
+        var totalPlansForVenue = [String : Int]()
+        var venueLoyaltyCounts = [String:Int]()
+        var venuePlanCountsForDatesForVenues = [String: [Date:Int]]()
+        
+        for (_, user) in self.users {
+            // LOYALTY
+            // 1: Determine the loyalty counts for each club
+            for (venueID, loyalty) in user.Loyalties {
+                venueLoyaltyCounts[venueID] = loyalty
+            }
+            // 2: Determine the total plans for each club
+
+            for (_,plan) in user.Plans {
+                if let planCountForDatesForVenue = venuePlanCountsForDatesForVenues[plan.venueID] {
+                    if let count = planCountForDatesForVenue[plan.date] {
+                        var newPlanCounts = planCountForDatesForVenue
+                        newPlanCounts[plan.date] = count + 1
+                        venuePlanCountsForDatesForVenues[plan.venueID] = newPlanCounts
+                    } else {
+                        var newPlanCounts = planCountForDatesForVenue
+                        newPlanCounts[plan.date] = 1
+                        venuePlanCountsForDatesForVenues[plan.venueID] = newPlanCounts
+                    }
+                } else {
+                    venuePlanCountsForDatesForVenues[plan.venueID] = [plan.date : 1]
+                }
+            }
+            
+            // 2.5: Lifetime Live
+            for (_,execution) in user.Executions {
+                if let _ = lifetimeLive[execution.venueID] {
+                    lifetimeLive[execution.venueID]! += 1
+                } else {
+                    lifetimeLive[execution.venueID] = 1
+                }
+            }
+            
+            // 3: Compute (max) plans in a night for each club
+            for(venueID, dateCountDictionary) in venuePlanCountsForDatesForVenues {
+                var maxPlans = 0
+                for (date, count) in dateCountDictionary {
+                    if(count > maxPlans) {
+                        maxPlans = count
+                    }
+                    // This is for loyalty, not maxPlans
+                    if(DateUtilities.isDateBeforeToday(date: date)) {
+                        if let _ = totalPlansForVenue[venueID] {
+                            totalPlansForVenue[venueID]! += count
+                        } else {
+                            totalPlansForVenue[venueID] = count
+                        }
+                    }
+                }
+                maxPlansInOneNight[venueID] = maxPlans
+            }
+
+            
+            // Compute loyalty ratio
+            for (venueID, totalPlans) in totalPlansForVenue {
+                if let loyaltyCount = venueLoyaltyCounts[venueID] {
+                    loyalty[venueID] = Double(loyaltyCount)/Double(totalPlans)
+                } else {
+                    loyalty[venueID] = 0
+                }
+            }
+            
+            if let favoriteClub = self.computeFavoriteClubForUser(user: user) {
+                if let _ = popularityTracker[favoriteClub] {
+                    popularityTracker[favoriteClub]! += 1
+                } else {
+                    popularityTracker[favoriteClub] = 1
+                }
+            }
+        }
+        
+        // Determine favorite club rankings
+        var venueIDs = Array(popularityTracker.keys)
+        venueIDs.sort { (ID1, ID2) -> Bool in
+            let popularity1 = popularityTracker[ID1]
+            let popularity2 = popularityTracker[ID2]
+            return popularity1! > popularity2!
+        }
+        var rank = 1
+        for venueID in venueIDs {
+            popularity[venueID] = rank
+            rank += 1
+        }
+        return Statistics(maxPlansInOneNight: maxPlansInOneNight, loyalty: loyalty, popularity: popularity, lifetimeLive: lifetimeLive)
+    }
+    
+    func computeUserStats(user : User) -> (String?, Int, Double?, Int)? {
+        // Stats to return
+        var favoriteClub : String?
+        var totalLiveClubs : Int = 0
+        var loyalty : Double?
+        var flockSize : Int = 0
+        // TOTAL LIVE CLUBS
+        totalLiveClubs = user.Executions.count
+        
+        // FAVORITE CLUB
+        favoriteClub = self.computeFavoriteClubForUser(user: user)
+        
+        // FLOCK SIZE
+        flockSize = user.Friends.count
+        
+        // LOYALTY
+        var totalLoyalty = 0
+        for(_, loyalty) in user.Loyalties {
+            totalLoyalty += loyalty
+        }
+        var totalPreviousPlans = 0
+        for (_, plan) in user.Plans {
+            if(DateUtilities.isDateBeforeToday(date: plan.date)) {
+                totalPreviousPlans += 1
+            }
+        }
+        
+        if(totalPreviousPlans == 0) {
+            loyalty = 1.0
+        } else {
+            loyalty = Double(totalLoyalty)/Double(totalPreviousPlans)
+        }
+        return (favoriteClub, totalLiveClubs, loyalty, flockSize)
+    }
+    
+    func computeFavoriteClubForUser(user : User) -> String? {
+        var venueAttendance = [String : Int]() // Maps from venueID to attendanceCount
+        for (_, execution) in user.Executions {
+            if let attendance = venueAttendance[execution.venueID] {
+                venueAttendance[execution.venueID] = attendance + 1
+            } else {
+                venueAttendance[execution.venueID] = 1
+            }
+        }
+        var favoriteVenue : String?
+        var favoriteVenueAttendance = 0
+        for (venue, attendance) in venueAttendance {
+            if(attendance > favoriteVenueAttendance) {
+                favoriteVenue = venue
+                favoriteVenueAttendance = attendance
+            }
+        }
+        return favoriteVenue
+    }
     
     func getAllFriends() {
         if(user == nil) {
@@ -163,23 +332,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
         
-        Utilities.printDebugMessage("visit: \(visit.coordinate.latitude),\(visit.coordinate.longitude)")
-        manager.desiredAccuracy = kCLLocationAccuracyBest
-        manager.requestLocation()
         let visitLocation = CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
         let isArriving = (visit.departureDate.compare(NSDate.distantFuture).rawValue == 0)
-        if let (venueName, distToVenue) = distanceToNearestClub(visitLocation: visitLocation) {
-            showNotification(body: "Closest venue: \(venueName), \(distToVenue) m away. Is arriving: \(isArriving). ")
-        }
+        self.isArriving = isArriving
+        manager.desiredAccuracy = kCLLocationAccuracyBest
+        manager.requestLocation()
+        var body = ""
         let ascendingVenues = distanceToClubsAscending(visitLocation: visitLocation)
-        var body : String = ""
         for venue in ascendingVenues {
             body += "\(venue.venueName) is \(venue.distAway) m away.\n"
         }
         showNotification(body: body)
         
+        
         if let venueID = self.whichClubIsUserIn(visitLocation: visitLocation) {
-            FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: venueID, userID: self.user!.FBID, add: isArriving, completion: { (success) in
+            // Check if user was previously live somewhere else
+            var previousLiveID : String?
+            if(self.user!.LiveClubID != nil) {
+                previousLiveID  = self.user!.LiveClubID
+            } else {
+                previousLiveID = nil
+            }
+            
+            FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: venueID, previousLiveID: previousLiveID, userID: self.user!.FBID, add: isArriving, completion: { (success) in
                 let appDelegate = UIApplication.shared.delegate as! AppDelegate
                 if (isArriving) {
                     self.showNotification(body: "VENUE CHOSEN Arriving at \(appDelegate.venues[venueID]!.VenueName)")
@@ -191,17 +366,52 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                     Utilities.printDebugMessage("Successfully uploaded visit to database")
                 }
             })
+        } else {
+            if let venueID = self.user!.LiveClubID {
+                FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: venueID, previousLiveID: nil, userID: self.user!.FBID, add: false, completion: { (success) in
+                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                    self.showNotification(body: "DEPARTING VENUE: \(appDelegate.venues[venueID]!.VenueName)")
+                    
+                    if(success) {
+                        Utilities.printDebugMessage("Successfully uploaded visit to database")
+                    }
+                })
+            }
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let currentLocation = locations[0]
-        let ascendingVenues = distanceToClubsAscending(visitLocation: currentLocation)
+        // For testing purposes print out all locations in ascending order of distance
+        let visitLocation = locations[0]
+        let ascendingVenues = distanceToClubsAscending(visitLocation: visitLocation)
         var body : String = "GPS ACCURACY:\n"
         for venue in ascendingVenues {
             body += "\(venue.venueName) is \(venue.distAway) m away.\n"
         }
         showNotification(body: body)
+        
+        
+        if let venueID = self.whichClubIsUserIn(visitLocation: visitLocation) {
+            var previousLiveID : String?
+            if(self.user!.LiveClubID != nil) {
+                previousLiveID = self.user!.LiveClubID
+            } else {
+                previousLiveID = nil
+            }
+            FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: venueID, previousLiveID : previousLiveID, userID: self.user!.FBID, add: self.isArriving, completion: { (success) in
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                if (self.isArriving) {
+                    self.showNotification(body: "VENUE CHOSEN Arriving at \(appDelegate.venues[venueID]!.VenueName)")
+                }
+                else {
+                    self.showNotification(body: "VENUE CHOSEN Departing \(appDelegate.venues[venueID]!.VenueName)")
+                }
+                if(success) {
+                    Utilities.printDebugMessage("Successfully uploaded visit to database")
+                }
+            })
+        }
+        
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -372,6 +582,24 @@ class VisitLocation: NSObject
     {
         self.distAway = distAway
         self.venueName = venueName
+    }
+    
+}
+
+class Statistics: NSObject
+{
+    var maxPlansInOneNight = [String:Int]() // Map from venueID to maxPlansInOneNight
+    var loyalty = [String:Double]() // Maps from venueID to loyaltyFraction
+    var popularity = [String:Int]() // Maps from venueID to popularityRanking
+    var lifetimeLive = [String:Int]() // Maps from venueID to lifetimeLiveCount
+    
+    
+    init(maxPlansInOneNight: [String:Int], loyalty : [String:Double], popularity : [String:Int], lifetimeLive : [String:Int])
+    {
+        self.maxPlansInOneNight = maxPlansInOneNight
+        self.loyalty = loyalty
+        self.popularity = popularity
+        self.lifetimeLive = lifetimeLive
     }
     
 }
