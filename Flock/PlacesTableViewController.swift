@@ -108,6 +108,9 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! PlacesTableViewCell
         cell.selectionStyle = .none
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let stats = appDelegate.venueStatistics!
+        
         //Setup Cell
         if (currentTab == items[0]) {
             var venue : Venue
@@ -118,22 +121,36 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             else {
                 venue = self.venues[indexPath.row]
             }
-            
+            if let lifetime = stats.lifetimeLive[venue.VenueID] {
+                cell.rightStatLabel.text = "\(String(lifetime))"
+                
+            }
+            else {
+                cell.rightStatLabel.text = "0\nLifetime"
+            }
+            if let biggestNight = stats.maxPlansInOneNight[venue.VenueID] {
+                cell.leftStatLabel.text = "\(String(biggestNight))"
+            }
+            else {
+                cell.leftStatLabel.text = "0\nBiggest Night"
+            }
             cell.placesNameLabel.text = venue.VenueName
             self.retrieveImage(imageURL: venue.ImageURL, imageView: cell.backgroundImage)
             //        cell.liveLabel.text = "\(venue.CurrentAttendees.count) live"
             //        cell.plannedLabel.text = "\(venue.PlannedAttendees.count) planned"
-            cell.subtitleLabel.text = "\(venue.CurrentAttendees.count) live   \(venue.PlannedAttendees.count) planned"
+            
+            cell.subtitleLabel.text = "Illustrious af"
+            
         }
         return cell
         
     }
     
     let inverseGoldenRatio : CGFloat = 0.621
-    let l : CGFloat = 25.0
-    let r : CGFloat = 25.0
-    let t : CGFloat = 25.0
-    let b : CGFloat  = 60.5
+    let l : CGFloat = 12
+    let r : CGFloat = 12
+    let t : CGFloat = 12
+    let b : CGFloat  = 70
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let cellHeight = inverseGoldenRatio * (CGFloat(self.view.frame.width) - l - r) + b + t

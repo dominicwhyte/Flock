@@ -89,9 +89,10 @@ class ProfileViewController: TwitterProfileViewController {
         if(appDelegate.profileNeedsToUpdate) {
             Utilities.printDebugMessage("Updating profile page")
             self.setupUser()
-            self.tableView.reloadData()
-            appDelegate.profileNeedsToUpdate = false
+            appDelegate.profileNeedsToUpdate = true
+            self.view.setNeedsLayout()
             self.view.setNeedsDisplay()
+            self.tableView.reloadData()
         }
     }
     

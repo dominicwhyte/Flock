@@ -14,4 +14,8 @@ class PlacesTableViewCell: UITableViewCell {
     @IBOutlet weak var placesNameLabel: UILabel!
     @IBOutlet weak var backgroundImage: UIImageView!
     
+    @IBOutlet weak var leftStatLabel: UILabel!
+    @IBOutlet weak var rightStatLabel: UILabel!
+    
+    
 }

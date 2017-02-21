@@ -24,8 +24,8 @@ open class TwitterProfileViewController: UIViewController {
   
   open var profileHeaderViewHeight: CGFloat = 160 {
     didSet {
-      //self.view.setNeedsLayout()
-      //self.view.layoutIfNeeded()
+//      self.view.setNeedsLayout()
+//      self.view.layoutIfNeeded()
     }
   }
   
@@ -311,11 +311,14 @@ extension TwitterProfileViewController {
   
   func updateMainScrollViewFrame() {
     
-    let bottomHeight = max(currentScrollView.bounds.height, 800)
+    //let bottomHeight = max(currentScrollView.bounds.height, 800)
     
+//    self.mainScrollView.contentSize = CGSize(
+//      width: view.bounds.width,
+//      height: stickyheaderContainerViewHeight + profileHeaderViewHeight + segmentedControlContainer.bounds.height + bottomHeight)
     self.mainScrollView.contentSize = CGSize(
-      width: view.bounds.width,
-      height: stickyheaderContainerViewHeight + profileHeaderViewHeight + segmentedControlContainer.bounds.height + bottomHeight)
+        width: view.bounds.width,
+        height: stickyheaderContainerViewHeight + profileHeaderViewHeight)
   }
 }
 
