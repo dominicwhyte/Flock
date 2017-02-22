@@ -13,7 +13,7 @@ class ChatTableViewCell: UITableViewCell {
     @IBOutlet weak var chatImage: UIImageView!
     @IBOutlet weak var chatTitle: UILabel!
     @IBOutlet weak var chatSubtitle: UILabel!
-    @IBOutlet weak var goToChatButton: UIButton!
+    @IBOutlet weak var unreadMessagesLabel: UILabel!
 
 
 }

@@ -28,6 +28,7 @@ class ChatsTableViewController: UITableViewController {
             self.conversations.append(conversation)
             Utilities.printDebugMessage("getting conversation for \(friend.Name)")
         }
+        self.retrieveUserImageWithoutSetting(imageURL: self.user!.PictureURL)
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -56,6 +57,15 @@ class ChatsTableViewController: UITableViewController {
         
     }
     
+    func retrieveUserImageWithoutSetting(imageURL : String) {
+        FirebaseClient.getImageFromURL(imageURL) { (image) in
+            DispatchQueue.main.async {
+                self.imageCache[imageURL] = image
+            }
+        }
+
+    }
+    
     var conversations = [Conversation]()
     var user : User?
     var imageCache = [String : UIImage]()
@@ -82,6 +92,7 @@ class ChatsTableViewController: UITableViewController {
         
         cell.chatTitle.text = conversation.participant.Name
         cell.chatSubtitle.text = ""
+        cell.unreadMessagesLabel.isHidden = true
         var unreadCount = 0
         if(conversation.lastMessage == nil) {
             let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
@@ -91,11 +102,9 @@ class ChatsTableViewController: UITableViewController {
             let messageRef = channelRef.child("messages")
             // 1.
             let messageQuery = messageRef.queryLimited(toLast:10)
-            Utilities.printDebugMessage("I'm there")
             let _ = messageQuery.observe(.childAdded, with: { (snapshot) -> Void in
                 // 3
                 let messageData = snapshot.value as! Dictionary<String, String>
-                Utilities.printDebugMessage("In here")
                 if let id = messageData["senderId"] as String!, let _ = messageData["senderName"] as String!, let text = messageData["text"] as String!, text.characters.count > 0 {
                     // 4
                     //self.addMessage(withId: id, name: name, text: text)
@@ -103,11 +112,12 @@ class ChatsTableViewController: UITableViewController {
                     conversation.lastSenderId = id
                     
                     if let hasBeenRead = (messageData["hasBeenRead"] != nil) as Bool!{
-                        if(!hasBeenRead) {
+                        if(!hasBeenRead && (id != self.user!.FBID)) {
                             unreadCount += 1
                         }
+                        Utilities.printDebugMessage(messageData["hasBeenRead"]! as String)
                     }
-                        
+                    Utilities.printDebugMessage("\(unreadCount)")
                     
                 } else {
                     print("Error! Could not decode message data")
@@ -124,6 +134,19 @@ class ChatsTableViewController: UITableViewController {
                         }
                     } else {
                         cell.chatSubtitle.text = ""
+                    }
+                    
+                    // Unread messages
+                    if(unreadCount > 0 && unreadCount < 5) {
+                        cell.unreadMessagesLabel.isHidden = false
+                        cell.unreadMessagesLabel.text = "\(unreadCount)"
+                        cell.unreadMessagesLabel.layer.cornerRadius = cell.unreadMessagesLabel.frame.size.width/2
+                        cell.unreadMessagesLabel.clipsToBounds = true
+                    } else if(unreadCount > 5) {
+                        cell.unreadMessagesLabel.isHidden = false
+                        cell.unreadMessagesLabel.text = "5+"
+                        cell.unreadMessagesLabel.layer.cornerRadius = cell.unreadMessagesLabel.frame.size.width/2
+                        cell.unreadMessagesLabel.clipsToBounds = true
                     }
                 }
             })
@@ -142,6 +165,7 @@ class ChatsTableViewController: UITableViewController {
         return cell
         
     }
+
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let conversation = conversations[indexPath.row]

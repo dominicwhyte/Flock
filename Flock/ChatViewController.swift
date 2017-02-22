@@ -32,6 +32,8 @@ class ChatViewController: JSQMessagesViewController {
     private var localTyping = false
     
     var messages = [JSQMessage]()
+    var hasBeenReadArray = [Bool]()
+    var sendDates = [String]()
     
 
     
@@ -61,7 +63,8 @@ class ChatViewController: JSQMessagesViewController {
     
     var isTyping: Bool {
         get {
-            return localTyping
+            //return localTyping
+            return false
         }
         set {
             localTyping = newValue
@@ -72,7 +75,9 @@ class ChatViewController: JSQMessagesViewController {
     override func textViewDidChange(_ textView: UITextView) {
         super.textViewDidChange(textView)
         // If the text is not empty, the user is typing
-        isTyping = textView.text != ""
+        //isTyping = textView.text != ""
+        // the above is overwritten until we can figure out what's going on
+        isTyping = false
     }
     
     deinit {
@@ -155,13 +160,37 @@ class ChatViewController: JSQMessagesViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = super.collectionView(collectionView, cellForItemAt: indexPath) as! JSQMessagesCollectionViewCell
         let message = messages[indexPath.item]
+        let hasBeenRead = hasBeenReadArray[indexPath.item]
+        if(self.messages.count - indexPath.item < 5) {
+            if(hasBeenRead) {
+                cell.cellBottomLabel.text = "Read"
+            } else {
+                cell.cellBottomLabel.text = "Unread"
+            }
+        }
+        let sendDate = sendDates[indexPath.item]
         
+        if(sendDate != "") {
+            cell.cellTopLabel.text = sendDate
+        }
+
+        cell.messageBubbleTopLabel.text = message.senderDisplayName
         if message.senderId == senderId {
             cell.textView?.textColor = UIColor.white
         } else {
             cell.textView?.textColor = UIColor.black
         }
         return cell
+    }
+    
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellTopLabelAt indexPath: IndexPath!) -> CGFloat {
+        return kJSQMessagesCollectionViewCellLabelHeightDefault
+    }
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellBottomLabelAt indexPath: IndexPath!) -> CGFloat {
+        return kJSQMessagesCollectionViewCellLabelHeightDefault
+    }
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForMessageBubbleTopLabelAt indexPath: IndexPath!) -> CGFloat {
+        return kJSQMessagesCollectionViewCellLabelHeightDefault
     }
     
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
@@ -171,6 +200,7 @@ class ChatViewController: JSQMessagesViewController {
             "senderName": senderDisplayName!,
             "text": text!,
             "hasBeenRead" : "false",
+            "sendDate" : DateUtilities.convertDateToStringByFormat(date: Date(), dateFormat: "MMM d h:mma")
             ]
         
         itemRef.setValue(messageItem) // 3
@@ -194,19 +224,41 @@ class ChatViewController: JSQMessagesViewController {
             if let id = messageData["senderId"] as String!, let name = messageData["senderName"] as String!, let text = messageData["text"] as String!, text.characters.count > 0 {
                 // 4
                 
-                self.addMessage(withId: id, name: name, text: text)
+                var hasBeenRead = false
+                if (messageData["hasBeenRead"] != nil) {
+                    if(messageData["hasBeenRead"]! as String == "false") {
+                        hasBeenRead = false
+                    } else {
+                        hasBeenRead = true
+                    }
+                }
+                
+                var sendDate : String
+                if (messageData["sendDate"] != nil) {
+                    sendDate = messageData["sendDate"] as String!
+                } else {
+                    sendDate = ""
+                }
                 
                 // 5
-                self.finishReceivingMessage()
                 
                 // 6 Update FireBase
-                let updates = [ // 2
-                    "senderId": id,
-                    "senderName": name,
-                    "text": text,
-                    "hasBeenRead" : "true",
-                    ]
-                self.messageRef.child(snapshot.key).updateChildValues(updates)
+                if(id != self.senderId) {
+                    hasBeenRead = true
+                }
+                
+                self.addMessage(withId: id, name: name, text: text, hasBeenRead: hasBeenRead, sendDate : sendDate)
+                if(id != self.senderId) {
+                    let updates = [ // 2
+                        "senderId": id,
+                        "senderName": name,
+                        "text": text,
+                        "hasBeenRead" : "true",
+                        "sendDate" : sendDate
+                        ]
+                    self.messageRef.child(snapshot.key).updateChildValues(updates)
+                }
+                self.finishReceivingMessage()
                 
             } else {
                 print("Error! Could not decode message data")
@@ -214,9 +266,11 @@ class ChatViewController: JSQMessagesViewController {
         })
     }
     
-    private func addMessage(withId id: String, name: String, text: String) {
+    private func addMessage(withId id: String, name: String, text: String, hasBeenRead: Bool, sendDate: String) {
         if let message = JSQMessage(senderId: id, displayName: name, text: text) {
             messages.append(message)
+            hasBeenReadArray.append(hasBeenRead)
+            sendDates.append(sendDate)
         }
     }
 
