@@ -170,6 +170,7 @@ class ChatViewController: JSQMessagesViewController {
             "senderId": senderId!,
             "senderName": senderDisplayName!,
             "text": text!,
+            "hasBeenRead" : "false",
             ]
         
         itemRef.setValue(messageItem) // 3
@@ -192,10 +193,21 @@ class ChatViewController: JSQMessagesViewController {
             
             if let id = messageData["senderId"] as String!, let name = messageData["senderName"] as String!, let text = messageData["text"] as String!, text.characters.count > 0 {
                 // 4
+                
                 self.addMessage(withId: id, name: name, text: text)
                 
                 // 5
                 self.finishReceivingMessage()
+                
+                // 6 Update FireBase
+                let updates = [ // 2
+                    "senderId": id,
+                    "senderName": name,
+                    "text": text,
+                    "hasBeenRead" : "true",
+                    ]
+                self.messageRef.child(snapshot.key).updateChildValues(updates)
+                
             } else {
                 print("Error! Could not decode message data")
             }

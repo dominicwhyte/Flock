@@ -22,6 +22,11 @@ class ProfileViewController: UIViewController, ProfileDelegate {
     var plans: [Plan] = [Plan]()
     let multiPscope = PermissionScope()
  
+    
+    @IBOutlet weak var flockSizeLabel: UILabel!
+    @IBOutlet weak var favoriteClubLabel: UILabel!
+    @IBOutlet weak var profileName: UILabel!
+    @IBOutlet weak var profilePic: UIImageView!
     var tableView: UITableView?
     var tableViewController : ProfileTableViewController?
     
@@ -46,6 +51,7 @@ class ProfileViewController: UIViewController, ProfileDelegate {
             self.view.setNeedsDisplay()
             if let tableView = self.tableView {
                 tableView.reloadData()
+                tableView.separatorColor = FlockColors.FLOCK_BLUE
             }
             else {
                 Utilities.printDebugMessage("Error reloading tableview from parent")
@@ -81,10 +87,19 @@ class ProfileViewController: UIViewController, ProfileDelegate {
         else {
             Utilities.printDebugMessage("Error 3: reloading tableVC from parent")
         }
+        self.profileName.text = user?.Name
+        self.flockSizeLabel.text = "Flock Size:\n\(user!.Friends.count)"
+        if let favoriteClubID = appDelegate.computeFavoriteClubForUser(user: user!) {
+            let clubName = appDelegate.venues[favoriteClubID]!.VenueNickName
+            self.favoriteClubLabel.text = "Favorite Club:\n\(clubName)"
+        } else {
+            self.favoriteClubLabel.text = "Favorite Club:\n None Yet!"
+        }
         
         FirebaseClient.getImageFromURL(user!.PictureURL) { (image) in
             DispatchQueue.main.async {
-                //self.profileImage = image
+                self.profilePic.image = image
+                self.profilePic.formatProfilePicture()
                 Utilities.printDebugMessage("this aint doing shit")
             }
         }
@@ -139,6 +154,13 @@ class ProfileViewController: UIViewController, ProfileDelegate {
             Utilities.printDebugMessage("Error: could not get table vc")
         }
     }
-    
+}
 
+extension UIImageView {
+    func formatProfilePicture() {
+        self.layer.cornerRadius = 8
+        self.clipsToBounds = true
+        self.layer.borderWidth = 4
+        self.layer.borderColor = UIColor.white.cgColor //UIColor.lightGray.cgColor
+    }
 }

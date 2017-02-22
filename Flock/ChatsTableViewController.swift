@@ -17,6 +17,7 @@ class ChatsTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tableView.separatorColor = FlockColors.FLOCK_BLUE
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         self.user = appDelegate.user!
         Utilities.printDebugMessage("1")
@@ -81,7 +82,7 @@ class ChatsTableViewController: UITableViewController {
         
         cell.chatTitle.text = conversation.participant.Name
         cell.chatSubtitle.text = ""
-        
+        var unreadCount = 0
         if(conversation.lastMessage == nil) {
             let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
             
@@ -89,7 +90,7 @@ class ChatsTableViewController: UITableViewController {
             
             let messageRef = channelRef.child("messages")
             // 1.
-            let messageQuery = messageRef.queryLimited(toLast:1)
+            let messageQuery = messageRef.queryLimited(toLast:10)
             Utilities.printDebugMessage("I'm there")
             let _ = messageQuery.observe(.childAdded, with: { (snapshot) -> Void in
                 // 3
@@ -100,6 +101,14 @@ class ChatsTableViewController: UITableViewController {
                     //self.addMessage(withId: id, name: name, text: text)
                     conversation.lastMessage = text
                     conversation.lastSenderId = id
+                    
+                    if let hasBeenRead = (messageData["hasBeenRead"] != nil) as Bool!{
+                        if(!hasBeenRead) {
+                            unreadCount += 1
+                        }
+                    }
+                        
+                    
                 } else {
                     print("Error! Could not decode message data")
                 }

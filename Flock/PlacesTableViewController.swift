@@ -86,7 +86,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (currentTab == items[0]) {
-            tableView.separatorStyle = .singleLine
+            tableView.separatorStyle = .none
             tableView.backgroundView?.isHidden = false
             // #warning Incomplete implementation, return the number of items
             if searchController.isActive && searchController.searchBar.text != "" {
