@@ -63,6 +63,7 @@
 		5FA3CABD1E565BA300247CC4 /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA3CABC1E565BA300247CC4 /* Channel.swift */; };
 		5FA3CABF1E565D2200247CC4 /* ChatClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA3CABE1E565D2200247CC4 /* ChatClient.swift */; };
 		5FC8C5641E52A8B80076F388 /* PermissionUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC8C5631E52A8B80076F388 /* PermissionUtilities.swift */; };
+		5FE16B771E5D332500904FC2 /* ProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE16B761E5D332500904FC2 /* ProfileTableViewController.swift */; };
 		BA5666F7848A6A4A2AB82D7A /* Pods_FlockTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2763749107C5FA0E17CDA9A /* Pods_FlockTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -133,6 +134,7 @@
 		5FA3CABC1E565BA300247CC4 /* Channel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
 		5FA3CABE1E565D2200247CC4 /* ChatClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatClient.swift; sourceTree = "<group>"; };
 		5FC8C5631E52A8B80076F388 /* PermissionUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PermissionUtilities.swift; sourceTree = "<group>"; };
+		5FE16B761E5D332500904FC2 /* ProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTableViewController.swift; sourceTree = "<group>"; };
 		745D6E35D61A42A5579F5B57 /* Pods-FlockTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlockTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FlockTests/Pods-FlockTests.release.xcconfig"; sourceTree = "<group>"; };
 		9311B80AF2DA5ADDCEA6C5AF /* Pods_Flock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE43BF5ECD8A2F8930ECE437 /* Pods-Flock.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flock.release.xcconfig"; path = "Pods/Target Support Files/Pods-Flock/Pods-Flock.release.xcconfig"; sourceTree = "<group>"; };
@@ -343,6 +345,7 @@
 			children = (
 				5F61AF761E4C0BE300BD6A0C /* ProfileViewControllerCopy.swift */,
 				583DF4EF1E5CF5D300E0622A /* ProfileViewController.swift */,
+				5FE16B761E5D332500904FC2 /* ProfileTableViewController.swift */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -585,6 +588,7 @@
 				5F5D37F81E4536F1008E13E4 /* PlannedTableViewCell.swift in Sources */,
 				5F61AF6D1E4A857E00BD6A0C /* CustomSearchController.swift in Sources */,
 				5F61AF541E47D06800BD6A0C /* PopupSubViewController.swift in Sources */,
+				5FE16B771E5D332500904FC2 /* ProfileTableViewController.swift in Sources */,
 				5F61AF731E4BCBE500BD6A0C /* PlacesTableViewController.swift in Sources */,
 				5FA3CABB1E565ADA00247CC4 /* ChatViewController.swift in Sources */,
 				58F1F49B1E5959C10065DA38 /* BWWalkthroughViewController.swift in Sources */,
