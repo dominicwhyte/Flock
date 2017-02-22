@@ -2,150 +2,46 @@
 //  ProfileViewController.swift
 //  Flock
 //
-//  Created by Dominic Whyte on 08/02/17.
+//  Created by Grant Rheingold on 2/21/17.
 //  Copyright © 2017 Dominic Whyte. All rights reserved.
 //
 
 import Foundation
 import UIKit
-import LFTwitterProfile
 import PermissionScope
 import SCLAlertView
 import FacebookShare
 import FBSDKShareKit
 
-
-class ProfileViewController: TwitterProfileViewController {
-   
-    
-    let multiPscope = PermissionScope()
+class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     struct Constants {
         static let SECTION_TITLES = ["Plans"]
         static let CELL_HEIGHT = 75
     }
     
-    var tableView: UITableView!
-    
-    var custom: UIView!
-    var label: UILabel!
+    // Variables other ViewControllers might be concerned with
     var user: User?
     var didComeFromFriendsPage: Bool = false
     var plans: [Plan] = [Plan]()
-    
-    
-    override func numberOfSegments() -> Int {
-        return 1
-    }
-    
-    override func segmentTitle(forSegment index: Int) -> String {
-        return "Segment \(index)"
-    }
-    
-    override func prepareForLayout() {
-        // TableViews
-        self.tableView = UITableView(frame: CGRect.zero, style: .plain)
-        
-        self.setupTables()
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let returnedView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 25))
-        //returnedView.backgroundColor = FlockColors.FLOCK_BLUE
-        
-        let gradient = CAGradientLayer()
-        
-        gradient.frame = returnedView.bounds
-        
-        gradient.startPoint = CGPoint(x: 0, y: 0.5)
-        gradient.endPoint = CGPoint(x: 1, y: 0.5)
-        gradient.colors = [FlockColors.FLOCK_BLUE.cgColor, FlockColors.FLOCK_LIGHT_BLUE.cgColor]
-        
-        returnedView.layer.insertSublayer(gradient, at: 0)
-        
-        let label = UILabel(frame: CGRect(x: 10, y: 0, width: view.frame.size.width, height: 25))
-        label.textColor = .white
-        label.text = Constants.SECTION_TITLES[section]
-        returnedView.addSubview(label)
-        
-        return returnedView
-    }
-    
-    
-    
-    
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return Constants.SECTION_TITLES[section]
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return Constants.SECTION_TITLES.count
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        if(appDelegate.profileNeedsToUpdate) {
-            Utilities.printDebugMessage("Updating profile page")
-            self.setupUser()
-            appDelegate.profileNeedsToUpdate = true
-            self.view.setNeedsLayout()
-            self.view.setNeedsDisplay()
-            self.tableView.reloadData()
-        }
-    }
-    
-    //UpdateTableViewDelegate function
-    func updateDataAndTableView(_ completion: @escaping (Bool) -> Void) {
-        let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        appDelegate.updateAllData { (success) in
-            DispatchQueue.main.async {
-                Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
-                if (success) {
-                    self.setupUser()
-                    self.tableView.reloadData()
-                }
-                else {
-                    Utilities.printDebugMessage("Error updating and reloading data in table view")
-                }
-                completion(success)
-            }
-        }
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let chatVC = segue.destination as? ChatViewController {
-            //let channel =
-        }
-    }
-    
-    @IBAction func settingsButtonPressed(_ sender: Any) {
-        PermissionUtilities.showPermissionsPopup(permissionScope: multiPscope)
-    }
-    
-    func showShareDialog<C: ContentProtocol>(_ content: C, mode: ShareDialogMode = .automatic) {
-        let dialog = MessageDialog(content:  content)
-        //dialog.presentingViewController = self
-        //dialog.mode = mode
-        do {
-            try dialog.show()
-        } catch (let error) {
-            let alertController = UIAlertController(nibName: "Failed to present share dialog with error \(error)", bundle: nil)
-            present(alertController, animated: true, completion: nil)
-        }
-    }
-
-    
-    
+    let multiPscope = PermissionScope()
+ 
+    @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
-        PermissionUtilities.setupPermissionScope(permissionScope: multiPscope)
         
         super.viewDidLoad()
         self.setupUser()
-        self.locationString = ""
-        PermissionUtilities.getPermissionsIfNotYetSet(permissionScope: multiPscope)
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        self.tableView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        tableView.register(UINib(nibName: "VenueFriendTableViewCell", bundle: nil), forCellReuseIdentifier: "VENUE_FRIEND")
+
+        // Do any additional setup after loading the view.
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
     
     func setupUser() {
@@ -162,7 +58,7 @@ class ProfileViewController: TwitterProfileViewController {
         }
         
         self.user = user!
-        self.username = user!.Name
+        //self.username = user!.Name
         self.plans = Array(user!.Plans.values).filter({ (plan) -> Bool in
             Utilities.printDebugMessage("VenueID: \(plan.venueID), Date: \(plan.date)")
             return DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))
@@ -170,12 +66,10 @@ class ProfileViewController: TwitterProfileViewController {
         })
         FirebaseClient.getImageFromURL(user!.PictureURL) { (image) in
             DispatchQueue.main.async {
-                self.profileImage = image
+                //self.profileImage = image
             }
         }
     }
-    
-    
     
     func logoutButtonPressed() {
         // 1
@@ -200,22 +94,37 @@ class ProfileViewController: TwitterProfileViewController {
         // 5
         self.present(optionMenu, animated: true, completion: nil)
     }
+
+    // TABLEVIEW FUNCTIONS
     
-    override func scrollView(forSegment index: Int) -> UIScrollView {
-        return tableView
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let returnedView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 25))
+        //returnedView.backgroundColor = FlockColors.FLOCK_BLUE
+        
+        let gradient = CAGradientLayer()
+        
+        gradient.frame = returnedView.bounds
+        
+        gradient.startPoint = CGPoint(x: 0, y: 0.5)
+        gradient.endPoint = CGPoint(x: 1, y: 0.5)
+        gradient.colors = [FlockColors.FLOCK_BLUE.cgColor, FlockColors.FLOCK_LIGHT_BLUE.cgColor]
+        
+        returnedView.layer.insertSublayer(gradient, at: 0)
+        
+        let label = UILabel(frame: CGRect(x: 10, y: 0, width: view.frame.size.width, height: 25))
+        label.textColor = .white
+        label.text = Constants.SECTION_TITLES[section]
+        returnedView.addSubview(label)
+        
+        return returnedView
     }
     
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return Constants.SECTION_TITLES[section]
+    }
     
-
-}
-
-// MARK: UITableViewDelegates & DataSources
-extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
-    
-    fileprivate func setupTables() {
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-        tableView.register(UINib(nibName: "VenueFriendTableViewCell", bundle: nil), forCellReuseIdentifier: "VENUE_FRIEND")
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return Constants.SECTION_TITLES.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -309,15 +218,36 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         
         /* V2.0
          let share = UITableViewRowAction(style: .normal, title: "Share") { (action, indexPath) in
-            // share item at indexPath
-        }
-        */
+         // share item at indexPath
+         }
+         */
         
         //share.backgroundColor = FlockColors.FLOCK_BLUE
         delete.backgroundColor = FlockColors.FLOCK_GRAY
         
         //return [delete, share]
         return [delete]
+    }
+
+    // END OF TABLEVIEW FUNCTIONS
+    
+    //UpdateTableViewDelegate function
+    func updateDataAndTableView(_ completion: @escaping (Bool) -> Void) {
+        let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.updateAllData { (success) in
+            DispatchQueue.main.async {
+                Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+                if (success) {
+                    self.setupUser()
+                    self.tableView.reloadData()
+                }
+                else {
+                    Utilities.printDebugMessage("Error updating and reloading data in table view")
+                }
+                completion(success)
+            }
+        }
     }
     
     func displayUnAttendedPopup(venueName : String, attendFullDate : String) {
@@ -329,31 +259,15 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     
-    
-    
-    
-}
 
+    /*
+    // MARK: - Navigation
 
-
-
-
-
-//--------------------------------------
-// MARK: - Photo Content
-//--------------------------------------
-extension ProfileViewController {
-    
-    @IBAction func showShareDialogPhotoContent() {
-        var content = LinkShareContent(url: URL(string: "https://newsroom.fb.com/")!,
-                                       title: "Hey Dominic! I'm heading to Cap tonight - you down?",
-                                       description: "",
-                                       imageURL: URL(string: "https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=0ahUKEwjpyLO-m5PSAhWBbCYKHRu9ASAQjBwIBA&url=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2F8%2F8d%2FCap_and_Gown_Club_Princeton.JPG&psig=AFQjCNGcFatzb0BNLyVx_vYfiPy3BfCx-g&ust=1487286332305134"))
-        
-        // placeId is hardcoded here, see https://developers.facebook.com/docs/graph-api/using-graph-api/#search for building a place picker.
-        content.placeId = "166793820034304"
-        
-        showShareDialog(content, mode: .automatic)
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
     }
-}
+    */
 
+}
