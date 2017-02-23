@@ -406,12 +406,12 @@
 				TargetAttributes = {
 					5F5D37931E43FFCE008E13E4 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = VW332592P5;
+						DevelopmentTeam = 23Q5KM3Q2Z;
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Push = {
-								enabled = 0;
+								enabled = 1;
 							};
 							com.apple.iCloud = {
 								enabled = 0;
@@ -753,11 +753,12 @@
 			baseConfigurationReference = 14B541D1C8FF72DC87A9426B /* Pods-Flock.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = VW332592P5;
+				CODE_SIGN_ENTITLEMENTS = Flock/Flock.entitlements;
+				DEVELOPMENT_TEAM = 23Q5KM3Q2Z;
 				INFOPLIST_FILE = Flock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Flock.Flock;
+				PRODUCT_BUNDLE_IDENTIFIER = FindYourFlock.FindYourFlock;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -768,11 +769,12 @@
 			baseConfigurationReference = BE43BF5ECD8A2F8930ECE437 /* Pods-Flock.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = VW332592P5;
+				CODE_SIGN_ENTITLEMENTS = Flock/Flock.entitlements;
+				DEVELOPMENT_TEAM = 23Q5KM3Q2Z;
 				INFOPLIST_FILE = Flock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Flock.Flock;
+				PRODUCT_BUNDLE_IDENTIFIER = FindYourFlock.FindYourFlock;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
