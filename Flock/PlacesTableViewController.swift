@@ -195,6 +195,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         searchController.searchBar.barTintColor = UIColor.white
         searchController.searchBar.tintColor = FlockColors.FLOCK_GRAY
         
+        
         searchController.searchBar.placeholder = "Search                                                                                     "
         tableView.tableHeaderView = searchController.searchBar
         //nav bar

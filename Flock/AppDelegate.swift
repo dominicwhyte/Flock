@@ -315,12 +315,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
     }
     
-    
-    func registerForPushNotifications(application: UIApplication) {
-        
-        let notificationSettings = UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil)
-
-        application.registerUserNotificationSettings(notificationSettings)
+    func registerForRemoteNotification() {
+        if #available(iOS 10.0, *) {
+            let center  = UNUserNotificationCenter.current()
+            center.delegate = self
+            center.requestAuthorization(options: [.sound, .alert, .badge]) { (granted, error) in
+                if error == nil{
+                    UIApplication.shared.registerForRemoteNotifications()
+                }
+            }
+        }
+        else {
+            UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.sound, .alert, .badge], categories: nil))
+            UIApplication.shared.registerForRemoteNotifications()
+        }
     }
     
     //Temporary function
@@ -335,6 +343,72 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             }
         } else {
             // Fallback on earlier versions
+        }
+    }
+    
+    func registerForPushNotifications(application: UIApplication) {
+        
+        // 1. Create the actions **************************************************
+        
+        // increment Action
+        let incrementAction = UIMutableUserNotificationAction()
+        incrementAction.identifier = "INCREMENT_ACTION"
+        incrementAction.title = "Add +1"
+        incrementAction.activationMode = UIUserNotificationActivationMode.background
+        incrementAction.isAuthenticationRequired = true
+        incrementAction.isDestructive = false
+        
+        // decrement Action
+        let decrementAction = UIMutableUserNotificationAction()
+        decrementAction.identifier = "DECREMENT_ACTION"
+        decrementAction.title = "Sub -1"
+        decrementAction.activationMode = UIUserNotificationActivationMode.background
+        decrementAction.isAuthenticationRequired = true
+        decrementAction.isDestructive = false
+        
+        // reset Action
+        let resetAction = UIMutableUserNotificationAction()
+        resetAction.identifier = "RESET_ACTION"
+        resetAction.title = "Reset"
+        resetAction.activationMode = UIUserNotificationActivationMode.foreground
+        // NOT USED resetAction.authenticationRequired = true
+        resetAction.isDestructive = true
+        
+        
+        // 2. Create the category ***********************************************
+        
+//        // Category
+//        let counterCategory = UIUser()
+//        counterCategory.identifier = "COUNTER_CATEGORY"
+//        
+//        // A. Set actions for the default context
+//        counterCategory.setActions([incrementAction, decrementAction, resetAction],
+//                                   for: UIUserNotificationActionContext.default)
+//        
+//        // B. Set actions for the minimal context
+//        counterCategory.setActions([incrementAction, decrementAction],
+//                                   for: UIUserNotificationActionContext.minimal)
+//        let settings = UIUserNotificationSettings(types: [.badge, .alert, .sound], categories: counterCategory)
+//        
+//        
+        // iOS 10 support
+        if #available(iOS 10, *) {
+            UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ (granted, error) in }
+            application.registerForRemoteNotifications()
+        }
+            // iOS 9 support
+        else if #available(iOS 9, *) {
+            UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil))
+            UIApplication.shared.registerForRemoteNotifications()
+        }
+            // iOS 8 support
+        else if #available(iOS 8, *) {
+            UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil))
+            UIApplication.shared.registerForRemoteNotifications()
+        }
+            // iOS 7 support
+        else {  
+            application.registerForRemoteNotifications(matching: [.badge, .sound, .alert])
         }
     }
     
@@ -490,21 +564,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         return nil
     }
     
-    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
-        if notificationSettings.types != .none {
-            application.registerForRemoteNotifications()
-        }
+//    //Called when a notification is delivered to a foreground app.
+//    @available(iOS 10.0, *)
+//    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+//        print("User Info = ",notification.request.content.userInfo)
+//        completionHandler([.alert, .badge, .sound])
+//    }
+//    
+//    //Called to let your app know which action was selected by the user for a given notification.
+//    @available(iOS 10.0, *)
+//    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+//        print("User Info = ",response.notification.request.content.userInfo)
+//        completionHandler()
+//    }
+//    
+//    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
+//        if notificationSettings.types != .none {
+//            application.registerForRemoteNotifications()
+//        }
+//    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification data: [AnyHashable : Any]) {
+        // Print notification payload data
+        print("Push notification received: \(data)")
     }
     
+    // Called when APNs has assigned the device a unique token
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        // Convert token to string
+        let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
         
-        let token = String(data: deviceToken, encoding: .utf8)
+        // Print it to console
+        print("APNs device token: \(deviceTokenString)")
         
-        print("Device Token: \(token)")
+        // Persist it in your backend in case it's new
     }
     
+    // Called when APNs failed to register the device for push notifications
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        print("Failed to register:", error)
+        // Print the error to console (you should alert the user that registration failed)
+        print("APNs registration failed: \(error)")
     }
 
     
@@ -516,9 +615,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         FIRApp.configure()
         self.setupLocationServices()
-        self.requestNotificationPermission(application: application)
-        registerForPushNotifications(application: application)
-
+        //self.requestNotificationPermission(application: application)
+        //registerForRemoteNotification()
+        self.registerForPushNotifications(application: application)
         return true
     }
     

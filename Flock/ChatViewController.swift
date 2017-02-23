@@ -170,7 +170,7 @@ class ChatViewController: JSQMessagesViewController {
         }
         let sendDate = sendDates[indexPath.item]
         
-        if(sendDate != "") {
+        if(sendDate != "" && (indexPath.item % 2 == 0)) {
             cell.cellTopLabel.text = sendDate
         }
 

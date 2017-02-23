@@ -26,6 +26,9 @@ class ChatsTableViewController: UITableViewController {
             let conversation = Conversation(channelID: channelID, participant: friend, imageURL : friend.PictureURL, lastMessage: nil )
             
             self.conversations.append(conversation)
+            self.conversations.sort(by: { (conversation1, conversation2) -> Bool in
+                conversation1.participant.Name < conversation2.participant.Name
+            })
             Utilities.printDebugMessage("getting conversation for \(friend.Name)")
         }
         self.retrieveUserImageWithoutSetting(imageURL: self.user!.PictureURL)

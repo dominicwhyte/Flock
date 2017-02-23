@@ -100,7 +100,6 @@ class ProfileViewController: UIViewController, ProfileDelegate {
             DispatchQueue.main.async {
                 self.profilePic.image = image
                 self.profilePic.formatProfilePicture()
-                Utilities.printDebugMessage("this aint doing shit")
             }
         }
     }
@@ -149,6 +148,7 @@ class ProfileViewController: UIViewController, ProfileDelegate {
             self.tableView = tableViewController.tableView
             self.tableViewController = tableViewController
             tableViewController.delegate = self
+            tableViewController.user = self.user
         }
         else {
             Utilities.printDebugMessage("Error: could not get table vc")
