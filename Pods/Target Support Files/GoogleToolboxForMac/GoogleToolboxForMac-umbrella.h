@@ -1,9 +1,12 @@
+#ifdef __OBJC__
 #import <UIKit/UIKit.h>
+#endif
 
 #import "GTMDebugSelectorValidation.h"
 #import "GTMDebugThreadValidation.h"
 #import "GTMMethodCheck.h"
 #import "GTMDefines.h"
+#import "GTMLogger.h"
 #import "GTMNSData+zlib.h"
 #import "GTMNSDictionary+URLArguments.h"
 #import "GTMNSString+URLArguments.h"

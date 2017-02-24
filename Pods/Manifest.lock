@@ -36,6 +36,9 @@ PODS:
   - Firebase/Database (3.9.0):
     - Firebase/Core
     - FirebaseDatabase (= 3.1.0)
+  - Firebase/Messaging (3.9.0):
+    - Firebase/Core
+    - FirebaseMessaging (= 1.2.1)
   - Firebase/Storage (3.9.0):
     - Firebase/Core
     - FirebaseStorage (= 1.0.4)
@@ -55,6 +58,12 @@ PODS:
   - FirebaseDatabase (3.1.0):
     - FirebaseAnalytics (~> 3.4)
   - FirebaseInstanceID (1.0.8)
+  - FirebaseMessaging (1.2.1):
+    - FirebaseAnalytics (~> 3.4)
+    - FirebaseInstanceID (~> 1.0)
+    - GoogleInterchangeUtilities (~> 1.2)
+    - GoogleSymbolUtilities (~> 1.1)
+    - GoogleToolboxForMac/Logger (~> 2.1)
   - FirebaseStorage (1.0.4):
     - FirebaseAnalytics (~> 3.4)
     - GTMSessionFetcher/Core (~> 1.1)
@@ -64,6 +73,8 @@ PODS:
   - GoogleToolboxForMac/DebugUtils (2.1.0):
     - GoogleToolboxForMac/Defines (= 2.1.0)
   - GoogleToolboxForMac/Defines (2.1.0)
+  - GoogleToolboxForMac/Logger (2.1.0):
+    - GoogleToolboxForMac/Defines (= 2.1.0)
   - GoogleToolboxForMac/NSData+zlib (2.1.0):
     - GoogleToolboxForMac/Defines (= 2.1.0)
   - GoogleToolboxForMac/NSDictionary+URLArguments (2.1.0):
@@ -96,6 +107,7 @@ DEPENDENCIES:
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
+  - Firebase/Messaging
   - Firebase/Storage
   - JSQMessagesViewController
   - LFTwitterProfile
@@ -124,6 +136,7 @@ SPEC CHECKSUMS:
   FirebaseCore: d0ed25f27b6f9158eccc439f1be6f92e81207e28
   FirebaseDatabase: 3ebb2edb6007c3f0f87b248f3fa212bde56a1468
   FirebaseInstanceID: ba1e640935235e5fac39dfa816fe7660e72e1a8a
+  FirebaseMessaging: acf66347e43c5637c697060c3001d25c809a4131
   FirebaseStorage: c50aa353bf484072704e73b4aff1bd47adb735c4
   GoogleInterchangeUtilities: d5bc4d88d5b661ab72f9d70c58d02ca8c27ad1f7
   GoogleSymbolUtilities: 631ee17048aa5e9ab133470d768ea997a5ef9b96
@@ -141,6 +154,6 @@ SPEC CHECKSUMS:
   SimpleTab: 4e490e339a19d0d1d26c0fa3c862188eaad73ecb
   SnapKit: 2e456761aa92d4d4067a7a5594c18769d451a8ad
 
-PODFILE CHECKSUM: 1e387250b70b2e413bb2d1559dd5440b3291012e
+PODFILE CHECKSUM: f9df4bcd435ae71369cef2706652323a519c451b
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.1.1
