@@ -7,9 +7,9 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>358139281828-gdc224586mmo8jjrp9vnnj5ubvdhgl84.apps.googleusercontent.com</string>
+	<string>358139281828-dbj4jig7mqgfdu7emolcmf5g8dc2vrfh.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.358139281828-gdc224586mmo8jjrp9vnnj5ubvdhgl84</string>
+	<string>com.googleusercontent.apps.358139281828-dbj4jig7mqgfdu7emolcmf5g8dc2vrfh</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCJcEmuHschqe1Vzx9BlD8wWD3jhKi7StY</string>
 	<key>GCM_SENDER_ID</key>
@@ -17,7 +17,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>Flock.Flock</string>
+	<string>FindYourFlock.FindYourFlock</string>
 	<key>PROJECT_ID</key>
 	<string>flock-43b66</string>
 	<key>STORAGE_BUCKET</key>
@@ -33,7 +33,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:358139281828:ios:576f04e933982de9</string>
+	<string>1:358139281828:ios:1aa5341cf9cc30e3</string>
 	<key>DATABASE_URL</key>
 	<string>https://flock-43b66.firebaseio.com</string>
 </dict>

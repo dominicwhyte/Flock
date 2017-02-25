@@ -19,8 +19,6 @@ import FirebaseMessaging
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate, UNUserNotificationCenterDelegate, FIRMessagingDelegate {
 
-
-
     struct Constants {
         static let CRITICAL_RADIUS : Double = 60.0 // meters
     }
@@ -55,6 +53,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                         Utilities.printDebugMessage("Failure fetching venue images")
                     }
                     completion(venueImageSuccess)
+                    Utilities.printDebugMessage("TEST")
+
+                    
+                    //Must connect to 
+                    self.connectToFcm()
+                    if let refreshedToken = FIRInstanceID.instanceID().token() {
+                        Utilities.printDebugMessage("InstanceID token: \(refreshedToken)")
+                    }
+                    Utilities.printDebugMessage("TESTEND")
                 })
             }
         }
@@ -319,84 +326,53 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
     }
     
-    func registerForRemoteNotification() {
-        if #available(iOS 10.0, *) {
-            let center  = UNUserNotificationCenter.current()
-            center.delegate = self
-            center.requestAuthorization(options: [.sound, .alert, .badge]) { (granted, error) in
-                if error == nil{
-                    UIApplication.shared.registerForRemoteNotifications()
-                }
-            }
-        }
-        else {
-            UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.sound, .alert, .badge], categories: nil))
-            UIApplication.shared.registerForRemoteNotifications()
-        }
-    }
+//    func registerForRemoteNotification() {
+//        if #available(iOS 10.0, *) {
+//            let center  = UNUserNotificationCenter.current()
+//            center.delegate = self
+//            center.requestAuthorization(options: [.sound, .alert, .badge]) { (granted, error) in
+//                if error == nil{
+//                    UIApplication.shared.registerForRemoteNotifications()
+//                }
+//            }
+//        }
+//        else {
+//            UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.sound, .alert, .badge], categories: nil))
+//            UIApplication.shared.registerForRemoteNotifications()
+//        }
+//    }
     
-    //Temporary function
-    func requestNotificationPermission(application : UIApplication) {
-        if #available(iOS 10.0, *) {
-            UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]) { (granted, error) in
-                
-                if granted {
-                    UIApplication.shared.registerForRemoteNotifications()
-                }
-                
-            }
-        } else {
-            // Fallback on earlier versions
-        }
-    }
+//    //Temporary function
+//    func requestNotificationPermission(application : UIApplication) {
+//        if #available(iOS 10.0, *) {
+//            UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]) { (granted, error) in
+//                
+//                if granted {
+//                    UIApplication.shared.registerForRemoteNotifications()
+//                }
+//                
+//            }
+//        } else {
+//            // Fallback on earlier versions
+//        }
+//    }
     
-    func registerForPushNotifications(application: UIApplication) {
-        if #available(iOS 10.0, *) {
-            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-            UNUserNotificationCenter.current().requestAuthorization(
-                options: authOptions,
-                completionHandler: {_, _ in })
-            
-            // For iOS 10 display notification (sent via APNS)
-            UNUserNotificationCenter.current().delegate = self
-            // For iOS 10 data message (sent via FCM)
-            FIRMessaging.messaging().remoteMessageDelegate = self
-            
-        } else {
-            let settings: UIUserNotificationSettings =
-                UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
-            application.registerUserNotificationSettings(settings)
-        }
-        
-        application.registerForRemoteNotifications()
-    }
+ 
     
-    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
-        if notificationSettings.types != .none {
-            self.registerForPushNotifications(application: application)
-        }
-    }
+//    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
+//        if notificationSettings.types != .none {
+//            self.registerForPushNotifications(application: application)
+//        }
+//    }
     
-    /// The callback to handle data message received via FCM for devices running iOS 10 or above.
-    public func applicationReceivedRemoteMessage(_ remoteMessage: FIRMessagingRemoteMessage) {
-        
-    }
+//
+//    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+//        
+//        //Tricky line
+//        FIRInstanceID.instanceID().setAPNSToken(deviceToken as Data, type: FIRInstanceIDAPNSTokenType.unknown)
+//        print(deviceToken)
+//    }
     
-    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-        
-        //Tricky line
-        FIRInstanceID.instanceID().setAPNSToken(deviceToken as Data, type: FIRInstanceIDAPNSTokenType.unknown)
-        print(deviceToken)
-    }
-    
-    func tokenRefreshNotification(_ notification: Notification) {
-        if let refreshedToken = FIRInstanceID.instanceID().token() {
-            print("InstanceID token: \(refreshedToken)")
-        }
-        
-        // Connect to FCM since connection may have failed when attempted before having a token.
-        connectToFcm()
-    }
     
     
     func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
@@ -551,6 +527,148 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         return nil
     }
     
+//    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
+//        // If you are receiving a notification message while your app is in the background,
+//        // this callback will not be fired till the user taps on the notification launching the application.
+//        // TODO: Handle data of notification
+//        
+//        // Print message ID.
+//        if let messageID = userInfo[gcmMessageIDKey] {
+//            print("Message ID: \(messageID)")
+//        }
+//        
+//        // Print full message.
+//        print(userInfo)
+//    }
+//    
+//    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+//                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+//        // If you are receiving a notification message while your app is in the background,
+//        // this callback will not be fired till the user taps on the notification launching the application.
+//        // TODO: Handle data of notification
+//        
+//        // Print message ID.
+//        if let messageID = userInfo[gcmMessageIDKey] {
+//            print("Message ID: \(messageID)")
+//        }
+//        
+//        // Print full message.
+//        print(userInfo)
+//        
+//        completionHandler(UIBackgroundFetchResult.newData)
+//    }
+
+//    // [START connect_to_fcm]
+//    func connectToFcm() {
+//        // Won't connect since there is no token
+//        guard FIRInstanceID.instanceID().token() != nil else {
+//            return;
+//        }
+//        
+//        // Disconnect previous FCM connection if it exists.
+//        FIRMessaging.messaging().disconnect()
+//        
+//        FIRMessaging.messaging().connect { (error) in
+//            if error != nil {
+//                print("Unable to connect with FCM. \(error)")
+//            } else {
+//                print("Connected to FCM.")
+//            }
+//        }
+//    }
+
+    
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+        return FBSDKApplicationDelegate.sharedInstance().application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    //=================================================================================================================//
+    //Start Notifications
+    
+    func application(_ application: UIApplication,
+                     didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        FIRInstanceID.instanceID().setAPNSToken(deviceToken as Data, type:  FIRInstanceIDAPNSTokenType.sandbox)
+    }
+    
+    /// The callback to handle data message received via FCM for devices running iOS 10 or above.
+    public func applicationReceivedRemoteMessage(_ remoteMessage: FIRMessagingRemoteMessage) {
+
+    }
+
+    
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
+        FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+        FIRApp.configure()
+        self.setupLocationServices()
+        self.registerForPushNotifications(application: application)
+        return true
+    }
+    
+    func registerForPushNotifications(application: UIApplication) {
+        if #available(iOS 10.0, *) {
+            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+            UNUserNotificationCenter.current().requestAuthorization(
+                options: authOptions,
+                completionHandler: {_, _ in })
+            
+            // For iOS 10 display notification (sent via APNS)
+            UNUserNotificationCenter.current().delegate = self
+            // For iOS 10 data message (sent via FCM)
+            FIRMessaging.messaging().remoteMessageDelegate = self
+            
+        } else {
+            let settings: UIUserNotificationSettings =
+                UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+            application.registerUserNotificationSettings(settings)
+        }
+        
+        application.registerForRemoteNotifications()
+        
+    }
+    
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        FIRMessaging.messaging().disconnect()
+        print("Disconnected from FCM.")
+    }
+    
+    func connectToFcm() {
+        // Won't connect since there is no token
+        guard FIRInstanceID.instanceID().token() != nil else {
+            return;
+        }
+        
+        // Disconnect previous FCM connection if it exists.
+        FIRMessaging.messaging().disconnect()
+        
+        FIRMessaging.messaging().connect { (error) in
+            if error != nil {
+                print("Unable to connect with FCM. \(error)")
+            } else {
+                print("Connected to FCM.")
+            }
+        }
+    }
+    
+    func tokenRefreshNotification(_ notification: Notification) {
+        if let refreshedToken = FIRInstanceID.instanceID().token() {
+            print("InstanceID token: \(refreshedToken)")
+        }
+        
+        // Connect to FCM since connection may have failed when attempted before having a token.
+        connectToFcm()
+    }
+  
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
         // If you are receiving a notification message while your app is in the background,
         // this callback will not be fired till the user taps on the notification launching the application.
@@ -581,51 +699,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         completionHandler(UIBackgroundFetchResult.newData)
     }
-
-    // [START connect_to_fcm]
-    func connectToFcm() {
-        // Won't connect since there is no token
-        guard FIRInstanceID.instanceID().token() != nil else {
-            return;
-        }
-        
-        // Disconnect previous FCM connection if it exists.
-        FIRMessaging.messaging().disconnect()
-        
-        FIRMessaging.messaging().connect { (error) in
-            if error != nil {
-                print("Unable to connect with FCM. \(error)")
-            } else {
-                print("Connected to FCM.")
-            }
-        }
-    }
-
     
-    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-        return FBSDKApplicationDelegate.sharedInstance().application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
-    }
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
-        FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
-        FIRApp.configure()
-        self.setupLocationServices()
-        self.registerForPushNotifications(application: application)
-        
-        return true
-    }
     
-
-
+    
+    //End Notifications
+    //=================================================================================================================//
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
     }
 
-    func applicationDidEnterBackground(_ application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-    }
+    
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.

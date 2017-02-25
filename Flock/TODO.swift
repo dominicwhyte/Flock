@@ -24,7 +24,6 @@ import Foundation
  Empty tableviews: https://github.com/dzenbot/DZNEmptyDataSet
  
  make people unlive
- 
  updated places page when attending
  popup when attending somwewhere
  update profile after attending
@@ -41,6 +40,7 @@ import Foundation
  
  UI:
  Profile
+ upgrade firebase account
  venue page
  icons for popup
  app logo

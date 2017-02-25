@@ -28,7 +28,6 @@
 		5F5D37C31E440CE6008E13E4 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D37C21E440CE6008E13E4 /* LoginViewController.swift */; };
 		5F5D37C51E440F4F008E13E4 /* Venue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D37C41E440F4F008E13E4 /* Venue.swift */; };
 		5F5D37C71E4411B3008E13E4 /* FIrebaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D37C61E4411B3008E13E4 /* FIrebaseClient.swift */; };
-		5F5D37CD1E4423CF008E13E4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5F5D37CC1E4423CF008E13E4 /* GoogleService-Info.plist */; };
 		5F5D37D11E44BE44008E13E4 /* TestingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D37D01E44BE44008E13E4 /* TestingViewController.swift */; };
 		5F5D37F21E45168D008E13E4 /* PeopleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D37F11E45168D008E13E4 /* PeopleTableViewController.swift */; };
 		5F5D37F41E4536D7008E13E4 /* FriendRequestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D37F31E4536D7008E13E4 /* FriendRequestTableViewCell.swift */; };
@@ -64,6 +63,7 @@
 		5FA3CABF1E565D2200247CC4 /* ChatClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA3CABE1E565D2200247CC4 /* ChatClient.swift */; };
 		5FC8C5641E52A8B80076F388 /* PermissionUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC8C5631E52A8B80076F388 /* PermissionUtilities.swift */; };
 		5FE16B771E5D332500904FC2 /* ProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE16B761E5D332500904FC2 /* ProfileTableViewController.swift */; };
+		5FE16B791E6124AF00904FC2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5FE16B781E6124AF00904FC2 /* GoogleService-Info.plist */; };
 		BA5666F7848A6A4A2AB82D7A /* Pods_FlockTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2763749107C5FA0E17CDA9A /* Pods_FlockTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -104,7 +104,6 @@
 		5F5D37C21E440CE6008E13E4 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		5F5D37C41E440F4F008E13E4 /* Venue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Venue.swift; sourceTree = "<group>"; };
 		5F5D37C61E4411B3008E13E4 /* FIrebaseClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FIrebaseClient.swift; sourceTree = "<group>"; };
-		5F5D37CC1E4423CF008E13E4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5F5D37D01E44BE44008E13E4 /* TestingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestingViewController.swift; sourceTree = "<group>"; };
 		5F5D37F11E45168D008E13E4 /* PeopleTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleTableViewController.swift; sourceTree = "<group>"; };
 		5F5D37F31E4536D7008E13E4 /* FriendRequestTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendRequestTableViewCell.swift; sourceTree = "<group>"; };
@@ -135,6 +134,7 @@
 		5FA3CABE1E565D2200247CC4 /* ChatClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatClient.swift; sourceTree = "<group>"; };
 		5FC8C5631E52A8B80076F388 /* PermissionUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PermissionUtilities.swift; sourceTree = "<group>"; };
 		5FE16B761E5D332500904FC2 /* ProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTableViewController.swift; sourceTree = "<group>"; };
+		5FE16B781E6124AF00904FC2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		745D6E35D61A42A5579F5B57 /* Pods-FlockTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlockTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FlockTests/Pods-FlockTests.release.xcconfig"; sourceTree = "<group>"; };
 		9311B80AF2DA5ADDCEA6C5AF /* Pods_Flock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE43BF5ECD8A2F8930ECE437 /* Pods-Flock.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flock.release.xcconfig"; path = "Pods/Target Support Files/Pods-Flock/Pods-Flock.release.xcconfig"; sourceTree = "<group>"; };
@@ -248,7 +248,7 @@
 				5F5D37A11E43FFCE008E13E4 /* Assets.xcassets */,
 				5F5D37A31E43FFCE008E13E4 /* LaunchScreen.storyboard */,
 				5F5D37A61E43FFCE008E13E4 /* Info.plist */,
-				5F5D37CC1E4423CF008E13E4 /* GoogleService-Info.plist */,
+				5FE16B781E6124AF00904FC2 /* GoogleService-Info.plist */,
 				5F5D379E1E43FFCE008E13E4 /* Flock.xcdatamodeld */,
 				5F61AF5B1E4993D900BD6A0C /* OpenSans-Light.ttf */,
 				5F61AF5C1E4993D900BD6A0C /* OpenSans-Regular.ttf */,
@@ -410,6 +410,12 @@
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Keychain = {
+								enabled = 0;
+							};
 							com.apple.Push = {
 								enabled = 1;
 							};
@@ -452,11 +458,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				5F61AF681E4994A400BD6A0C /* Oswald-Regular.ttf in Resources */,
-				5F5D37CD1E4423CF008E13E4 /* GoogleService-Info.plist in Resources */,
 				5F61AF671E4994A000BD6A0C /* Oswald-Light.ttf in Resources */,
 				5F61AF561E48230C00BD6A0C /* VenueFriendTableViewCell.xib in Resources */,
 				5F61AF601E49949400BD6A0C /* OpenSans-Light.ttf in Resources */,
 				5F61AF641E49949B00BD6A0C /* OpenSans-Semibold.ttf in Resources */,
+				5FE16B791E6124AF00904FC2 /* GoogleService-Info.plist in Resources */,
 				5F5D37A51E43FFCE008E13E4 /* LaunchScreen.storyboard in Resources */,
 				5F5D37A21E43FFCE008E13E4 /* Assets.xcassets in Resources */,
 				5F5D379D1E43FFCE008E13E4 /* Main.storyboard in Resources */,
@@ -754,6 +760,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Flock/Flock.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = 23Q5KM3Q2Z;
 				INFOPLIST_FILE = Flock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9;
@@ -770,6 +777,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Flock/Flock.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 23Q5KM3Q2Z;
 				INFOPLIST_FILE = Flock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9;
