@@ -37,8 +37,9 @@ import Foundation
 
 /*
  Remaining to be done:
- 
+ SET EVERYTHING TO PRODUCTION
  UI:
+ when you drag down the venues harvard appears
  Profile
  upgrade firebase account
  venue page

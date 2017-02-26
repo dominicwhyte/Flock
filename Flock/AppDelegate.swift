@@ -48,20 +48,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                     imageURLArray.append(venue.ImageURL)
                     imageURLArray.append(venue.LogoURL)
                 }
+                Utilities.printDebugMessage("TEST")
+                
+                
+                //Must connect to
+                self.connectToFcm()
+                if let refreshedToken = FIRInstanceID.instanceID().token() {
+                    Utilities.printDebugMessage("InstanceID token: \(refreshedToken)")
+                }
+                Utilities.printDebugMessage("TESTEND")
+                
                 self.setAllVenueImages(venueImageURLs: imageURLArray, completion: { (venueImageSuccess) in
                     if (!venueImageSuccess) {
                         Utilities.printDebugMessage("Failure fetching venue images")
                     }
                     completion(venueImageSuccess)
-                    Utilities.printDebugMessage("TEST")
-
                     
-                    //Must connect to 
-                    self.connectToFcm()
-                    if let refreshedToken = FIRInstanceID.instanceID().token() {
-                        Utilities.printDebugMessage("InstanceID token: \(refreshedToken)")
-                    }
-                    Utilities.printDebugMessage("TESTEND")
                 })
             }
         }
