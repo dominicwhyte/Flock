@@ -37,6 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var isArriving = true
     var venueStatistics : Statistics?
     let gcmMessageIDKey = "gcm.message_id"
+    var friendCountPlanningToAttendVenueThisWeek = [String:Int]()
     
     func masterLogin(completion: @escaping (_ status: Bool) -> ()) {
         updateAllData { (success) in
@@ -49,7 +50,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                     imageURLArray.append(venue.LogoURL)
                 }
                 Utilities.printDebugMessage("TEST")
-                
                 
                 //Must connect to
                 self.connectToFcm()
@@ -218,6 +218,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         var venueLoyaltyCounts = [String:Int]()
         var venuePlanCountsForDatesForVenues = [String: [Date:Int]]()
         
+        //For use in venues page
+        var friendCountPlanningToAttendVenueThisWeek = [String:Int]()
+        
         for (_, user) in self.users {
             // LOYALTY
             // 1: Determine the loyalty counts for each club
@@ -239,6 +242,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                     }
                 } else {
                     venuePlanCountsForDatesForVenues[plan.venueID] = [plan.date : 1]
+                }
+                //is a friend
+                if (self.user!.Friends[user.FBID] != nil || self.user!.FBID == user.FBID) {
+                    if (DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))) {
+                        if (friendCountPlanningToAttendVenueThisWeek[plan.venueID] != nil) {
+                            friendCountPlanningToAttendVenueThisWeek[plan.venueID] = friendCountPlanningToAttendVenueThisWeek[plan.venueID]! + 1
+                        }
+                        else {
+                            friendCountPlanningToAttendVenueThisWeek[plan.venueID] = 1
+                        }
+                    }
                 }
             }
             
@@ -301,6 +315,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             popularity[venueID] = rank
             rank += 1
         }
+        self.friendCountPlanningToAttendVenueThisWeek = friendCountPlanningToAttendVenueThisWeek
+
         return Statistics(maxPlansInOneNight: maxPlansInOneNight, loyalty: loyalty, popularity: popularity, lifetimeLive: lifetimeLive)
     }
     
@@ -671,56 +687,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         return nil
     }
     
-//    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
-//        // If you are receiving a notification message while your app is in the background,
-//        // this callback will not be fired till the user taps on the notification launching the application.
-//        // TODO: Handle data of notification
-//        
-//        // Print message ID.
-//        if let messageID = userInfo[gcmMessageIDKey] {
-//            print("Message ID: \(messageID)")
-//        }
-//        
-//        // Print full message.
-//        print(userInfo)
-//    }
-//    
-//    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
-//                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-//        // If you are receiving a notification message while your app is in the background,
-//        // this callback will not be fired till the user taps on the notification launching the application.
-//        // TODO: Handle data of notification
-//        
-//        // Print message ID.
-//        if let messageID = userInfo[gcmMessageIDKey] {
-//            print("Message ID: \(messageID)")
-//        }
-//        
-//        // Print full message.
-//        print(userInfo)
-//        
-//        completionHandler(UIBackgroundFetchResult.newData)
-//    }
 
-//    // [START connect_to_fcm]
-//    func connectToFcm() {
-//        // Won't connect since there is no token
-//        guard FIRInstanceID.instanceID().token() != nil else {
-//            return;
-//        }
-//        
-//        // Disconnect previous FCM connection if it exists.
-//        FIRMessaging.messaging().disconnect()
-//        
-//        FIRMessaging.messaging().connect { (error) in
-//            if error != nil {
-//                print("Unable to connect with FCM. \(error)")
-//            } else {
-//                print("Connected to FCM.")
-//            }
-//        }
-//    }
-
+    
+    
     
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         return FBSDKApplicationDelegate.sharedInstance().application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
@@ -823,6 +792,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             print("Message ID: \(messageID)")
         }
         
+        self.showNotification(body: "test")
         // Print full message.
         print(userInfo)
     }
@@ -841,6 +811,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // Print full message.
         print(userInfo)
         
+        self.showNotification(body: "test")
         completionHandler(UIBackgroundFetchResult.newData)
     }
     
@@ -849,12 +820,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     //End Notifications
     //=================================================================================================================//
-    
-    
-    
-    
-    
-    
     
     
     

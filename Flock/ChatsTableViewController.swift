@@ -35,6 +35,7 @@ class ChatsTableViewController: UITableViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.tableView.reloadData()
         Utilities.printDebugMessage("HERE")
     }
     
@@ -42,7 +43,7 @@ class ChatsTableViewController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     
     //Retrieve image with caching
     func retrieveImage(imageURL : String, imageView : UIImageView) {
@@ -66,12 +67,13 @@ class ChatsTableViewController: UITableViewController {
                 self.imageCache[imageURL] = image
             }
         }
-
+        
     }
     
     var conversations = [Conversation]()
     var user : User?
     var imageCache = [String : UIImage]()
+    var unreadCount = 0
     
     // MARK: - Table view data source
     
@@ -96,7 +98,7 @@ class ChatsTableViewController: UITableViewController {
         cell.chatTitle.text = conversation.participant.Name
         cell.chatSubtitle.text = ""
         cell.unreadMessagesLabel.isHidden = true
-        var unreadCount = 0
+        //var unreadCount = 0
         if(conversation.lastMessage == nil) {
             let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
             
@@ -105,6 +107,7 @@ class ChatsTableViewController: UITableViewController {
             let messageRef = channelRef.child("messages")
             // 1.
             let messageQuery = messageRef.queryLimited(toLast:10)
+            
             let _ = messageQuery.observe(.childAdded, with: { (snapshot) -> Void in
                 // 3
                 let messageData = snapshot.value as! Dictionary<String, String>
@@ -114,13 +117,15 @@ class ChatsTableViewController: UITableViewController {
                     conversation.lastMessage = text
                     conversation.lastSenderId = id
                     
-                    if let hasBeenRead = (messageData["hasBeenRead"] != nil) as Bool!{
-                        if(!hasBeenRead && (id != self.user!.FBID)) {
-                            unreadCount += 1
+                    if (messageData["hasBeenRead"] != nil){
+                        Utilities.printDebugMessage("Inside First Loops")
+                        let hasBeenRead = messageData["hasBeenRead"]!
+                        Utilities.printDebugMessage("HBR: \(hasBeenRead == "false"), and \(id != self.user!.FBID)")
+                        if((hasBeenRead == "false") && (id != self.user!.FBID)) {
+                            self.unreadCount += 1
                         }
-                        Utilities.printDebugMessage(messageData["hasBeenRead"]! as String)
                     }
-                    Utilities.printDebugMessage("\(unreadCount)")
+                    Utilities.printDebugMessage("\(self.unreadCount)")
                     
                 } else {
                     print("Error! Could not decode message data")
@@ -140,16 +145,36 @@ class ChatsTableViewController: UITableViewController {
                     }
                     
                     // Unread messages
-                    if(unreadCount > 0 && unreadCount < 5) {
+                    if(self.unreadCount > 0 && self.unreadCount < 5) {
+                        // Cell label
                         cell.unreadMessagesLabel.isHidden = false
-                        cell.unreadMessagesLabel.text = "\(unreadCount)"
+                        cell.unreadMessagesLabel.text = "\(self.unreadCount)"
                         cell.unreadMessagesLabel.layer.cornerRadius = cell.unreadMessagesLabel.frame.size.width/2
                         cell.unreadMessagesLabel.clipsToBounds = true
-                    } else if(unreadCount > 5) {
+                        
+                        // TabBar Badge
+                        
+                        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                        if let stb = appDelegate.simpleTBC {
+                            stb.addBadge(index: 3, value: self.unreadCount, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
+                        }
+                    } else if(self.unreadCount > 5) {
                         cell.unreadMessagesLabel.isHidden = false
                         cell.unreadMessagesLabel.text = "5+"
                         cell.unreadMessagesLabel.layer.cornerRadius = cell.unreadMessagesLabel.frame.size.width/2
                         cell.unreadMessagesLabel.clipsToBounds = true
+                        
+                        // TabBar Badge
+                        
+                        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                        if let stb = appDelegate.simpleTBC {
+                            stb.addBadge(index: 3, value: self.unreadCount, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
+                        }
+                    } else {
+                        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                        if let stb = appDelegate.simpleTBC {
+                            stb.removeAllBadges()
+                        }
                     }
                 }
             })
@@ -158,7 +183,7 @@ class ChatsTableViewController: UITableViewController {
             cell.chatSubtitle.text = conversation.lastMessage
         }
         
-
+        
         self.retrieveImage(imageURL: conversation.imageURL!, imageView: cell.chatImage)
         cell.chatImage.makeViewCircle()
         //        cell.liveLabel.text = "\(venue.CurrentAttendees.count) live"
@@ -168,7 +193,7 @@ class ChatsTableViewController: UITableViewController {
         return cell
         
     }
-
+    
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let conversation = conversations[indexPath.row]
@@ -222,4 +247,85 @@ class Conversation {
         self.lastMessage = lastMessage
     }
 }
+
+extension UITabBarController {
+    
+    func setBadges(badgeValues: [Int]) {
+        
+        for view in self.tabBar.subviews {
+            if view is CustomTabBadge {
+                view.removeFromSuperview()
+            }
+        }
+        
+        for index in 0...badgeValues.count-1 {
+            if badgeValues[index] != 0 {
+                addBadge(index: index, value: badgeValues[index], color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
+            }
+        }
+    }
+    
+    func addBadge(index: Int, value: Int, color: UIColor, font: UIFont) {
+        let badgeView = CustomTabBadge()
+        
+        badgeView.clipsToBounds = true
+        badgeView.textColor = UIColor.white
+        badgeView.textAlignment = .center
+        badgeView.font = font
+        badgeView.text = String(value)
+        badgeView.backgroundColor = color
+        badgeView.tag = index
+        tabBar.addSubview(badgeView)
+        
+        self.positionBadges()
+    }
+    
+    func removeAllBadges() {
+        for view in self.tabBar.subviews {
+            if view is CustomTabBadge {
+                view.removeFromSuperview()
+            }
+        }
+    }
+    
+    override open func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        self.tabBar.setNeedsLayout()
+        self.tabBar.layoutIfNeeded()
+        self.positionBadges()
+    }
+    
+    // Positioning
+    func positionBadges() {
+        
+        var tabbarButtons = self.tabBar.subviews.filter { (view: UIView) -> Bool in
+            return view.isUserInteractionEnabled // only UITabBarButton are userInteractionEnabled
+        }
+        
+        tabbarButtons = tabbarButtons.sorted(by: { $0.frame.origin.x < $1.frame.origin.x })
+        
+        for view in self.tabBar.subviews {
+            if view is CustomTabBadge {
+                let badgeView = view as! CustomTabBadge
+                self.positionBadge(badgeView: badgeView, items:tabbarButtons, index: badgeView.tag)
+            }
+        }
+    }
+    
+    func positionBadge(badgeView: UIView, items: [UIView], index: Int) {
+        
+        let itemView = items[index]
+        let center = itemView.center
+        
+        let xOffset: CGFloat = 20
+        let yOffset: CGFloat = -15
+        badgeView.frame.size = CGSize(width: 17, height: 17)
+        badgeView.center = CGPoint(x: center.x + xOffset,y: center.y + yOffset)
+        badgeView.layer.cornerRadius = badgeView.bounds.width/2
+        tabBar.bringSubview(toFront: badgeView)
+    }
+}
+
+class CustomTabBadge: UILabel {}
+
 

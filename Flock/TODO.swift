@@ -38,6 +38,7 @@ import Foundation
 /*
  Remaining to be done:
  SET EVERYTHING TO PRODUCTION
+ Upgrade Firebase to next level
  UI:
  when you drag down the venues harvard appears
  Profile
@@ -48,7 +49,11 @@ import Foundation
  app tab bar icons/UI
  search page UI
  
- 
+ check location when open app
+ walkthrough
+attachment button crashes
+ remove people from live
+ fix deleting plans bug not working
  
  Backend:
  Profile

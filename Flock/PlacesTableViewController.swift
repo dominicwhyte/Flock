@@ -42,8 +42,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             DispatchQueue.main.async {
                 if (success) {
                     Utilities.printDebugMessage("Successfully reloaded data and tableview")
-                    self.venues = Array(appDelegate.venues.values)
-                    //self.venues = self.filterVenuePlannedAttendees(venues: Array(appDelegate.venues.values))
+                    self.getVenuesAndSort()
 
                     self.filteredVenues = []
                     if self.searchController.isActive && self.searchController.searchBar.text != "" {
@@ -81,6 +80,9 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             }
             venuesToReturn.append(venue)
         }
+        
+        
+        
         return venuesToReturn
     }
     
@@ -134,12 +136,17 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             else {
                 cell.leftStatLabel.text = "0\nBiggest Night"
             }
-            cell.placesNameLabel.text = venue.VenueName
+            cell.placesNameLabel.text = venue.VenueNickName
             self.retrieveImage(imageURL: venue.ImageURL, imageView: cell.backgroundImage)
             //        cell.liveLabel.text = "\(venue.CurrentAttendees.count) live"
             //        cell.plannedLabel.text = "\(venue.PlannedAttendees.count) planned"
-            
-            cell.subtitleLabel.text = "Illustrious af"
+
+            if let plannedFriends = appDelegate.friendCountPlanningToAttendVenueThisWeek[venue.VenueID] {
+                cell.subtitleLabel.text = "\(plannedFriends) planned \(Utilities.setPlurality(string: "friend", count: plannedFriends))"
+            }
+            else {
+                cell.subtitleLabel.text = "Be first to plan!"
+            }
             
         }
         return cell
@@ -150,7 +157,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     let l : CGFloat = 12
     let r : CGFloat = 12
     let t : CGFloat = 12
-    let b : CGFloat  = 70
+    let b : CGFloat  = 60
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let cellHeight = inverseGoldenRatio * (CGFloat(self.view.frame.width) - l - r) + b + t
@@ -183,6 +190,28 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         
     }
     
+    func getVenuesAndSort() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        self.venues = Array(appDelegate.venues.values)
+        if let stats = appDelegate.venueStatistics {
+            let lifetimelive = stats.lifetimeLive
+            self.venues = self.venues.sorted { (venue1, venue2) -> Bool in
+                var venue1Live = 0
+                var venue2Live = 0
+                if (lifetimelive[venue1.VenueID] != nil) {
+                    venue1Live = lifetimelive[venue1.VenueID]!
+                }
+                if (lifetimelive[venue2.VenueID] != nil) {
+                    venue2Live = lifetimelive[venue2.VenueID]!
+                }
+                return venue1Live > venue2Live
+            }
+        }
+        else {
+            Utilities.printDebugMessage("No stats")
+        }
+    }
+    
     
     override func viewDidLoad() {
         
@@ -209,6 +238,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         
         menuView.didSelectItemAtIndexHandler = {[weak self] (indexPath: Int) -> () in
             self?.currentTab = self!.items[indexPath]
+            self?.setupEmptyBackgroundView()
             self?.tableView?.reloadData()
         }
         
@@ -218,9 +248,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         
         super.viewDidLoad()
         
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        self.venues = Array(appDelegate.venues.values)
-        //self.venues = filterVenuePlannedAttendees(venues: Array(appDelegate.venues.values))
+        getVenuesAndSort()
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -263,6 +291,8 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         let imageView = UIImageView(frame: CGRect(x: emptyBackgroundView.center.x - xOffset, y: emptyBackgroundView.center.y - yOffset, width: width, height: height))
 
         switch self.currentTab {
+        case items[0]:
+            imageView.image = UIImage()
         case items[1]:
             imageView.image = #imageLiteral(resourceName: "Harvard")
         case items[2]:
@@ -290,6 +320,9 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         //label.center = CGPointMake(160, 284)
         label.textAlignment = NSTextAlignment.center
         label.text = "Coming Soon!"
+        if (self.currentTab == items[0]) {
+            label.text = ""
+        }
         label.textColor = UIColor.white
         emptyBackgroundView.addSubview(label)
         

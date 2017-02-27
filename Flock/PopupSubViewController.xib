@@ -61,7 +61,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fe7-aa-iik">
                             <rect key="frame" x="0.0" y="164" width="292" height="77"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Dancing Party-50" translatesAutoresizingMaskIntoConstraints="NO" id="1uZ-a9-Iy8">
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Acrobatics-50" translatesAutoresizingMaskIntoConstraints="NO" id="1uZ-a9-Iy8">
                                     <rect key="frame" x="21.5" y="8" width="30" height="30"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="30" id="5h5-FI-WCa"/>
@@ -183,7 +183,7 @@ Friends</string>
         </label>
     </objects>
     <resources>
-        <image name="Dancing Party-50" width="50" height="50"/>
+        <image name="Acrobatics-50" width="50" height="50"/>
         <image name="Dancing-50" width="50" height="50"/>
         <image name="Queue-50" width="50" height="50"/>
         <image name="User Group Man Man-50" width="50" height="50"/>
