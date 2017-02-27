@@ -80,11 +80,77 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 self.getAllFriends()
                 //Move to master login if slow
                 self.computeAllStats()
+                //Update CoreData
+                if #available(iOS 10.0, *) {
+                    self.updateCoreDataWithVenuesIfNecessary(venues: Array(venues.values))
+                } else {
+                    // Fallback on earlier versions
+                }
                 completion(true)
             }
             else {
                 Utilities.printDebugMessage("Error updating all data")
                 completion(false)
+            }
+        }
+    }
+    
+    @available(iOS 10.0, *)
+    func getPartialVenueDataFromStorage() -> [String:CoreDataVenue] {
+        let managedContext = self.persistentContainer.viewContext
+        var venues = [String:CoreDataVenue]()
+        
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+        let entityDescription = NSEntityDescription.entity(forEntityName: "StoredVenue", in: managedContext)
+        fetchRequest.entity = entityDescription
+        do {
+            let storedVenuesArray = try managedContext.fetch(fetchRequest) as! [StoredVenue]
+            for storedVenue in storedVenuesArray {
+                let newVenue = CoreDataVenue(name: storedVenue.name!, venueID: storedVenue.venueID!, latitude: storedVenue.latitude, longitude: storedVenue.longitude)
+                venues[storedVenue.venueID!] = newVenue
+
+            }
+            print(storedVenuesArray)
+            
+        } catch {
+            let fetchError = error as NSError
+            print(fetchError)
+        }
+        return venues
+    }
+    
+    @available(iOS 10.0, *)
+    func storePartialVenueDataInStorage(name: String, venueID: String, latitude: Double?, longitude: Double?) {
+        let managedContext = self.persistentContainer.viewContext
+        let entityDescription = NSEntityDescription.entity(forEntityName: "StoredVenue", in: managedContext)
+        let newVenue = NSManagedObject(entity: entityDescription!, insertInto: managedContext)
+        newVenue.setValue(name, forKey: "name")
+        newVenue.setValue(venueID, forKey: "venueID")
+        if(latitude != nil && longitude != nil) {
+            newVenue.setValue(latitude, forKey: "latitude")
+            newVenue.setValue(longitude, forKey: "longitude")
+        }
+        
+        do {
+            try newVenue.managedObjectContext?.save()
+        } catch {
+            print(error)
+        }
+    }
+    
+    @available(iOS 10.0, *)
+    func updateCoreDataWithVenuesIfNecessary(venues: [Venue]) {
+        let partialListOfVenues = self.getPartialVenueDataFromStorage()
+        for venue in venues {
+            if(partialListOfVenues[venue.VenueID] == nil) {
+                var latitude : Double? = nil
+                var longitude : Double? = nil
+                if(venue.VenueLocation != nil) {
+                    latitude = venue.VenueLocation!.coordinate.latitude
+                    longitude = venue.VenueLocation!.coordinate.longitude
+                }
+                self.storePartialVenueDataInStorage(name: venue.VenueName, venueID: venue.VenueID, latitude: latitude, longitude: longitude)
             }
         }
     }
@@ -379,52 +445,74 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
         
+        // Determine visit location and properties
         let visitLocation = CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
         let isArriving = (visit.departureDate.compare(NSDate.distantFuture).rawValue == 0)
         self.isArriving = isArriving
-        manager.desiredAccuracy = kCLLocationAccuracyBest
-        manager.requestLocation()
-        var body = ""
-        let ascendingVenues = distanceToClubsAscending(visitLocation: visitLocation)
-        for venue in ascendingVenues {
-            body += "\(venue.venueName) is \(venue.distAway) m away.\n"
-        }
-        showNotification(body: body)
         
+        // Get state of the application: Active, Background, or Inactive
+        let state: UIApplicationState = UIApplication.shared.applicationState
         
-        if let venueID = self.whichClubIsUserIn(visitLocation: visitLocation) {
-            // Check if user was previously live somewhere else
-            var previousLiveID : String?
-            if(self.user!.LiveClubID != nil) {
-                previousLiveID  = self.user!.LiveClubID
-            } else {
-                previousLiveID = nil
+        switch state {
+            
+        // Present local "pretty" popup for user
+        case .active:
+            if(self.user != nil) {
+                manager.desiredAccuracy = kCLLocationAccuracyBest
+                manager.requestLocation()
+            }
+        // Present local notification with GPS accuracy
+        case .background:
+            if(self.user != nil) {
+                manager.desiredAccuracy = kCLLocationAccuracyBest
+                manager.requestLocation()
             }
             
-            FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: venueID, previousLiveID: previousLiveID, userID: self.user!.FBID, add: isArriving, completion: { (success) in
-                let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                if (isArriving) {
-                    self.showNotification(body: "VENUE CHOSEN Arriving at \(appDelegate.venues[venueID]!.VenueName)")
+        // Present local notification without GPS accuracy
+        case .inactive:
+            var body = ""
+            let ascendingVenues = distanceToClubsAscendingWhileInactive(visitLocation: visitLocation)
+            for venue in ascendingVenues {
+                body += "\(venue.venueName) is \(venue.distAway) m away.\n"
+            }
+            showNotification(body: body)
+            
+            
+            if let venueID = self.whichClubIsUserIn(visitLocation: visitLocation) {
+                // Check if user was previously live somewhere else
+                var previousLiveID : String?
+                if(self.user!.LiveClubID != nil) {
+                    previousLiveID  = self.user!.LiveClubID
+                } else {
+                    previousLiveID = nil
                 }
-                else {
-                    self.showNotification(body: "VENUE CHOSEN Departing \(appDelegate.venues[venueID]!.VenueName)")
-                }
-                if(success) {
-                    Utilities.printDebugMessage("Successfully uploaded visit to database")
-                }
-            })
-        } else {
-            if let venueID = self.user!.LiveClubID {
-                FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: venueID, previousLiveID: nil, userID: self.user!.FBID, add: false, completion: { (success) in
+                
+                FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: venueID, previousLiveID: previousLiveID, userID: self.user!.FBID, add: isArriving, completion: { (success) in
                     let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                    self.showNotification(body: "DEPARTING VENUE: \(appDelegate.venues[venueID]!.VenueName)")
-                    
+                    if (isArriving) {
+                        self.showNotification(body: "VENUE CHOSEN Arriving at \(appDelegate.venues[venueID]!.VenueName)")
+                    }
+                    else {
+                        self.showNotification(body: "VENUE CHOSEN Departing \(appDelegate.venues[venueID]!.VenueName)")
+                    }
                     if(success) {
                         Utilities.printDebugMessage("Successfully uploaded visit to database")
                     }
                 })
+            } else {
+                if let venueID = self.user!.LiveClubID {
+                    FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: venueID, previousLiveID: nil, userID: self.user!.FBID, add: false, completion: { (success) in
+                        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                        self.showNotification(body: "DEPARTING VENUE: \(appDelegate.venues[venueID]!.VenueName)")
+                        
+                        if(success) {
+                            Utilities.printDebugMessage("Successfully uploaded visit to database")
+                        }
+                    })
+                }
             }
         }
+        
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -470,6 +558,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         let notification = UILocalNotification()
         notification.alertAction = nil
         notification.alertBody = body
+        
+        let category = UIMutableUserNotificationCategory()
+        let acceptClub = UIMutableUserNotificationAction()
+        acceptClub.identifier = "accept"
+        acceptClub.isDestructive = false
+        acceptClub.title = "Accept"
+        acceptClub.activationMode = .background
+        acceptClub.isAuthenticationRequired = false
+        
+        let switchClub = UIMutableUserNotificationAction()
+        switchClub.identifier = "switch"
+        switchClub.isDestructive = false
+        switchClub.title = "Switch"
+        switchClub.activationMode = .foreground
+        switchClub.isAuthenticationRequired = false
+        
+        let cancelClub = UIMutableUserNotificationAction()
+        cancelClub.identifier = "cancel"
+        cancelClub.isDestructive = true
+        cancelClub.title = "Cancel"
+        cancelClub.activationMode = .background
+        cancelClub.isAuthenticationRequired = false
+        
+        let categoryIdentifier = "category.identifier"
+        category.identifier = categoryIdentifier
+        category.setActions([acceptClub, switchClub, cancelClub], for: .default)
+        
+        let categories = Set(arrayLiteral: category)
+        let settings = UIUserNotificationSettings(types: [.sound, .alert, .badge], categories: categories)
+        UIApplication.shared.registerUserNotificationSettings(settings)
+        notification.category = categoryIdentifier
+        
         UIApplication.shared.presentLocalNotificationNow(notification)
     }
     
@@ -501,6 +621,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     //testing function
     func distanceToClubsAscending(visitLocation : CLLocation) -> [VisitLocation] {
+        
         var visitLocations = [VisitLocation]()
         
         for venue in Array(self.venues.values) {
@@ -513,6 +634,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             vl1.distAway < vl2.distAway
         }
         return visitLocations
+    }
+    
+    func distanceToClubsAscendingWhileInactive(visitLocation: CLLocation) -> [VisitLocation] {
+        var visitLocations = [VisitLocation]()
+        if #available(iOS 10.0, *) {
+            let storedVenues = self.getPartialVenueDataFromStorage()
+            
+            
+            for venue in Array(storedVenues.values) {
+                let venueLocation = CLLocation(latitude: Double(venue.latitude), longitude: Double(venue.longitude))
+                let distanceInMeters = visitLocation.distance(from: venueLocation)
+                visitLocations.append(VisitLocation(distAway: distanceInMeters, venueName: venue.name))
+            }
+            visitLocations.sort { (vl1, vl2) -> Bool in
+                vl1.distAway < vl2.distAway
+            }
+        } else {
+            // Fallback on earlier versions
+        }
+        return visitLocations
+        
     }
     
     // Determines if user is in club and returns venueID of appropriate club
@@ -743,11 +885,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
-        //self.saveContext()
+        self.saveContext()
     }
 
     // MARK: - Core Data stack
-/*
+
+    @available(iOS 10.0, *)
     lazy var persistentContainer: NSPersistentContainer = {
         /*
          The persistent container for the application. This implementation
@@ -778,19 +921,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     // MARK: - Core Data Saving support
 
     func saveContext () {
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+        if #available(iOS 10.0, *) {
+            let context = persistentContainer.viewContext
+            if context.hasChanges {
+                do {
+                    try context.save()
+                } catch {
+                    // Replace this implementation with code to handle the error appropriately.
+                    // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                    let nserror = error as NSError
+                    fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+                }
             }
+        } else {
+            // Fallback on earlier versions
         }
     }
-*/
+
     
 
 
@@ -825,5 +972,20 @@ class Statistics: NSObject
         self.lifetimeLive = lifetimeLive
     }
     
+}
+
+class CoreDataVenue: NSObject
+{
+    var name: String
+    var venueID: String
+    var latitude: Double
+    var longitude: Double
+    
+    init(name: String, venueID: String, latitude: Double, longitude: Double) {
+        self.name = name
+        self.venueID = venueID
+        self.latitude = latitude
+        self.longitude = longitude
+    }
 }
 
