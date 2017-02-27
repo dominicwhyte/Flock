@@ -10,6 +10,7 @@ import UIKit
 import PopupDialog
 import BTNavigationDropdownMenu
 import SCLAlertView
+import SAConfettiView
 
 
 
@@ -316,10 +317,11 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
 //        emptyBackgroundView.addConstraints([vertConstraint, horizConstraint, widthConstraint, heightConstraint])
         
         // Add label(s)
-        let label = UILabel(frame: CGRect(x: emptyBackgroundView.center.x - CGFloat(65),y: emptyBackgroundView.center.y - height,width: 130,height: 50))
+        let label = UILabel(frame: CGRect(x: emptyBackgroundView.center.x - CGFloat(150),y: emptyBackgroundView.center.y - height,width: 300,height: 50))
         //label.center = CGPointMake(160, 284)
         label.textAlignment = NSTextAlignment.center
         label.text = "Coming Soon!"
+        label.font = UIFont(name: "OpenSans-Semibold", size: 25)
         if (self.currentTab == items[0]) {
             label.text = ""
         }
@@ -459,7 +461,6 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             }
         }
         return true
-        
     }
     
     func displayAttendedPopup(venueName : String, attendFullDate : String) {
@@ -467,7 +468,12 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         let alert = SCLAlertView()
         //_ = alert.addButton("First Button", target:self, selector:#selector(PlacesTableViewController.shareWithFlock))
         print("Second button tapped")
+        
         _ = alert.showSuccess(Utilities.generateRandomCongratulatoryPhrase(), subTitle: "You're going to \(venueName) on \(displayDate)")
+        
+//        let confettiView = SAConfettiView(frame: self.view.bounds)
+//        self.view.addSubview(confettiView)
+//        confettiView.startConfetti()
     }
     
     func shareWithFlock() {

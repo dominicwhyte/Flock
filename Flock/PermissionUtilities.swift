@@ -22,6 +22,11 @@ class PermissionUtilities {
         checkNotificationsPermissions(permissionScope: permissionScope, checkIfDenied: true)
     }
     
+    static func getPermissions(permissionScope : PermissionScope) {
+        showPermissionsPopup(permissionScope: permissionScope)
+    }
+
+    
 //    static func checkContactsPermissions(permissionScope : PermissionScope, checkIfDenied : Bool) {
 //        switch PermissionScope().statusContacts() {
 //        case .unknown:

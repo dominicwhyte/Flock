@@ -20,9 +20,10 @@ class ProfileViewController: UIViewController, ProfileDelegate {
     var user: User?
     var didComeFromFriendsPage: Bool = false
     var plans: [Plan] = [Plan]()
-    let multiPscope = PermissionScope()
+    
  
     
+    @IBOutlet weak var settingsButton: UIBarButtonItem!
     @IBOutlet weak var flockSizeLabel: UILabel!
     @IBOutlet weak var favoriteClubLabel: UILabel!
     @IBOutlet weak var profileName: UILabel!
@@ -30,8 +31,18 @@ class ProfileViewController: UIViewController, ProfileDelegate {
     var tableView: UITableView?
     var tableViewController : ProfileTableViewController?
     
+    @IBAction func settingsButtonPressed(_ sender: Any) {
+        let multiPscope = PermissionScope()
+        PermissionUtilities.setupPermissionScope(permissionScope: multiPscope)
+        multiPscope.show({ (one, two) in
+            print("hi")
+        }) { (three) in
+            print("ho")
+        }
+    }
+    
+    
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         self.setupUser()
         
@@ -70,6 +81,7 @@ class ProfileViewController: UIViewController, ProfileDelegate {
                 self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
             }
         } else {
+            self.navigationItem.rightBarButtonItem = nil
             user = self.user!
         }
         

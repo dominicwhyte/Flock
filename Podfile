@@ -24,6 +24,7 @@ target 'Flock' do
    pod 'BTNavigationDropdownMenu'
    pod 'PureLayout', '~> 3.0.1'
    pod 'LFTwitterProfile'
+   pod 'SAConfettiView'
    pod 'PermissionScope'
    pod 'BWWalkthrough'
 

@@ -451,62 +451,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func setupLocationServices() {
         locationManager.delegate = self
-        //if (CLLocationManager.authorizationStatus() == .notDetermined) {
-        //    locationManager.requestAlwaysAuthorization()
-        //}
-            
+        if (CLLocationManager.authorizationStatus() == .notDetermined) {
+            locationManager.requestAlwaysAuthorization()
+        }
+        
         if (CLLocationManager.authorizationStatus() == .authorizedAlways){
             self.startMonitoringVisits()
         }
         
     }
-    
-//    func registerForRemoteNotification() {
-//        if #available(iOS 10.0, *) {
-//            let center  = UNUserNotificationCenter.current()
-//            center.delegate = self
-//            center.requestAuthorization(options: [.sound, .alert, .badge]) { (granted, error) in
-//                if error == nil{
-//                    UIApplication.shared.registerForRemoteNotifications()
-//                }
-//            }
-//        }
-//        else {
-//            UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.sound, .alert, .badge], categories: nil))
-//            UIApplication.shared.registerForRemoteNotifications()
-//        }
-//    }
-    
-//    //Temporary function
-//    func requestNotificationPermission(application : UIApplication) {
-//        if #available(iOS 10.0, *) {
-//            UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]) { (granted, error) in
-//                
-//                if granted {
-//                    UIApplication.shared.registerForRemoteNotifications()
-//                }
-//                
-//            }
-//        } else {
-//            // Fallback on earlier versions
-//        }
-//    }
-    
- 
-    
-//    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
-//        if notificationSettings.types != .none {
-//            self.registerForPushNotifications(application: application)
-//        }
-//    }
-    
-//
-//    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-//        
-//        //Tricky line
-//        FIRInstanceID.instanceID().setAPNSToken(deviceToken as Data, type: FIRInstanceIDAPNSTokenType.unknown)
-//        print(deviceToken)
-//    }
     
     
     
@@ -776,6 +729,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         FIRApp.configure()
         self.setupLocationServices()
         self.registerForPushNotifications(application: application)
+        //remove notification tags
+        UIApplication.shared.applicationIconBadgeNumber = 0
         return true
     }
     

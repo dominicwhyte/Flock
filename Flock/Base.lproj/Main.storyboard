@@ -173,7 +173,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="HCQ-Cv-p1y">
-                                            <rect key="frame" x="20" y="255" width="62.5" height="33"/>
+                                            <rect key="frame" x="20" y="255" width="63" height="33"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="24"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -191,13 +191,13 @@
                                                 <constraint firstAttribute="width" secondItem="EOW-bJ-soS" secondAttribute="height" multiplier="1:1" id="e8h-Qy-9mN"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Biggest Night" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="Ngc-cf-f4M">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Biggest Night" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="13" translatesAutoresizingMaskIntoConstraints="NO" id="Ngc-cf-f4M">
                                             <rect key="frame" x="179" y="285" width="101" height="24"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lifetime" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="QLf-Nl-V1P">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lifetime" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="13" translatesAutoresizingMaskIntoConstraints="NO" id="QLf-Nl-V1P">
                                             <rect key="frame" x="295" y="285" width="61" height="24"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="24" id="fYq-Yi-RzI"/>
@@ -206,7 +206,7 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="r8l-wk-QUp">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="13" translatesAutoresizingMaskIntoConstraints="NO" id="r8l-wk-QUp">
                                             <rect key="frame" x="20" y="285" width="42" height="24"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -342,6 +342,7 @@ Frist</string>
                                     <constraint firstItem="wl5-NO-2uT" firstAttribute="top" secondItem="DOV-Gp-22q" secondAttribute="bottom" constant="6.5" id="X6T-Z4-5gF"/>
                                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="NaT-IL-fLW" secondAttribute="bottom" constant="5" id="fOi-a5-ngi"/>
                                     <constraint firstItem="wl5-NO-2uT" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="NaT-IL-fLW" secondAttribute="trailing" constant="10" id="kMa-kr-uAb"/>
+                                    <constraint firstItem="NaT-IL-fLW" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="m3T-Qq-WNr" secondAttribute="trailing" constant="10" id="kyl-bP-n50"/>
                                     <constraint firstItem="NaT-IL-fLW" firstAttribute="centerY" secondItem="wl5-NO-2uT" secondAttribute="centerY" id="pJg-nR-Qf1"/>
                                     <constraint firstItem="wl5-NO-2uT" firstAttribute="centerX" secondItem="DOV-Gp-22q" secondAttribute="centerX" id="sJg-Yj-tlt"/>
                                     <constraint firstItem="NaT-IL-fLW" firstAttribute="centerX" secondItem="vP1-Q7-VGC" secondAttribute="centerX" id="uu5-gW-0Zt"/>
@@ -382,13 +383,18 @@ Frist</string>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="NCb-KM-e5j">
-                        <barButtonItem key="rightBarButtonItem" image="Settings-22" id="tIa-gh-9FS"/>
+                        <barButtonItem key="rightBarButtonItem" image="Settings-22" id="tIa-gh-9FS">
+                            <connections>
+                                <action selector="settingsButtonPressed:" destination="jcX-Jh-PWr" id="EwA-be-cnI"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="favoriteClubLabel" destination="NaT-IL-fLW" id="WQZ-Sx-3VN"/>
                         <outlet property="flockSizeLabel" destination="wl5-NO-2uT" id="FCj-iJ-ant"/>
                         <outlet property="profileName" destination="m3T-Qq-WNr" id="WFu-sZ-jKy"/>
                         <outlet property="profilePic" destination="cuv-wa-5hs" id="Ghh-Aw-V9d"/>
+                        <outlet property="settingsButton" destination="tIa-gh-9FS" id="ptd-bp-EV4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uxc-dH-Ckz" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -550,13 +556,13 @@ Frist</string>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qZq-eX-T9b">
-                                            <rect key="frame" x="88" y="14.5" width="52.5" height="27.5"/>
+                                            <rect key="frame" x="88" y="14" width="53" height="28"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yie-D7-dVa">
-                                            <rect key="frame" x="88" y="40" width="37" height="20.5"/>
+                                            <rect key="frame" x="88" y="40" width="37" height="21"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -651,13 +657,13 @@ Frist</string>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jqD-ur-HwF">
-                                            <rect key="frame" x="70" y="12.5" width="52.5" height="27.5"/>
+                                            <rect key="frame" x="70" y="12" width="53" height="28"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flock Request" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7T8-S6-gZw">
-                                            <rect key="frame" x="70" y="38" width="93.5" height="20.5"/>
+                                            <rect key="frame" x="70" y="38" width="94" height="21"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -723,13 +729,13 @@ Frist</string>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NnP-CV-DXo">
-                                            <rect key="frame" x="70" y="12.5" width="52.5" height="27.5"/>
+                                            <rect key="frame" x="70" y="12" width="53" height="28"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GR1-Fe-AYz">
-                                            <rect key="frame" x="70" y="38" width="37" height="20.5"/>
+                                            <rect key="frame" x="70" y="38" width="37" height="21"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -781,13 +787,13 @@ Frist</string>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y8d-lu-XWQ">
-                                            <rect key="frame" x="70" y="12.5" width="52.5" height="27.5"/>
+                                            <rect key="frame" x="70" y="12" width="53" height="28"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mXs-Ka-riF">
-                                            <rect key="frame" x="70" y="38" width="37" height="20.5"/>
+                                            <rect key="frame" x="70" y="38" width="37" height="21"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -839,13 +845,13 @@ Frist</string>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="22X-fU-DME">
-                                            <rect key="frame" x="70" y="12.5" width="52.5" height="27.5"/>
+                                            <rect key="frame" x="70" y="12" width="53" height="28"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kds-ef-jo8">
-                                            <rect key="frame" x="70" y="38" width="37" height="20.5"/>
+                                            <rect key="frame" x="70" y="38" width="37" height="21"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>

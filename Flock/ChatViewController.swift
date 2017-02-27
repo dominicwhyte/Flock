@@ -10,6 +10,7 @@ import UIKit
 import JSQMessagesViewController
 import Firebase
 import Photos
+import SCLAlertView
 
 class ChatViewController: JSQMessagesViewController {
     
@@ -105,6 +106,8 @@ class ChatViewController: JSQMessagesViewController {
     }
     
     override func didPressAccessoryButton(_ sender: UIButton) {
+        _ = SCLAlertView(appearance: SCLAlertView.SCLAppearance.init()).showNotice("Coming soon", subTitle: "Image uploads will be available in Version 2.0")
+        /*
         let picker = UIImagePickerController()
         picker.delegate = self
         if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)) {
@@ -113,7 +116,8 @@ class ChatViewController: JSQMessagesViewController {
             picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
         }
         
-        present(picker, animated: true, completion:nil)
+        present(picker, animated: true, completion:nil)*/
+        
     }
     
     override func textViewDidChange(_ textView: UITextView) {

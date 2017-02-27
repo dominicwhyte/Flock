@@ -166,6 +166,7 @@ open class SimpleTabBarController: UITabBarController {
             fromView?.removeFromSuperview()
             self.selectedIndex = toIndex
             self.view.isUserInteractionEnabled = true
+            self.tabBar.selectedIndex = toIndex
             completion(toVC)
         })
     }
