@@ -31,11 +31,26 @@ class ChatsTableViewController: UITableViewController {
             })
             Utilities.printDebugMessage("getting conversation for \(friend.Name)")
         }
+        
+        var totalUnread = 0
+        for (_, count) in appDelegate.unreadMessageCount {
+            totalUnread += count
+        }
+        if let stb = appDelegate.simpleTBC {
+            if totalUnread > 0 {
+                stb.addBadge(index: 3, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
+            } else {
+                stb.removeAllBadges()
+            }
+        }
+        
         self.retrieveUserImageWithoutSetting(imageURL: self.user!.PictureURL)
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tableView.reloadData()
+        self.tableView.setNeedsDisplay()
+        self.tableView.setNeedsLayout()
         Utilities.printDebugMessage("HERE")
     }
     
@@ -73,7 +88,6 @@ class ChatsTableViewController: UITableViewController {
     var conversations = [Conversation]()
     var user : User?
     var imageCache = [String : UIImage]()
-    var unreadCount = 0
     
     // MARK: - Table view data source
     
@@ -106,7 +120,7 @@ class ChatsTableViewController: UITableViewController {
             
             let messageRef = channelRef.child("messages")
             // 1.
-            let messageQuery = messageRef.queryLimited(toLast:10)
+            let messageQuery = messageRef.queryLimited(toLast:5)
             
             let _ = messageQuery.observe(.childAdded, with: { (snapshot) -> Void in
                 // 3
@@ -117,15 +131,13 @@ class ChatsTableViewController: UITableViewController {
                     conversation.lastMessage = text
                     conversation.lastSenderId = id
                     
-                    if (messageData["hasBeenRead"] != nil){
-                        Utilities.printDebugMessage("Inside First Loops")
-                        let hasBeenRead = messageData["hasBeenRead"]!
-                        Utilities.printDebugMessage("HBR: \(hasBeenRead == "false"), and \(id != self.user!.FBID)")
-                        if((hasBeenRead == "false") && (id != self.user!.FBID)) {
-                            self.unreadCount += 1
-                        }
-                    }
-                    Utilities.printDebugMessage("\(self.unreadCount)")
+//                    if (messageData["hasBeenRead"] != nil){
+//                        let hasBeenRead = messageData["hasBeenRead"]!
+//                        if((hasBeenRead == "false") && (id != self.user!.FBID)) {
+//                            self.unreadCount += 1
+//                        }
+//                    }
+//                    Utilities.printDebugMessage("\(unreadCount)")
                     
                 } else {
                     print("Error! Could not decode message data")
@@ -143,39 +155,6 @@ class ChatsTableViewController: UITableViewController {
                     } else {
                         cell.chatSubtitle.text = ""
                     }
-                    
-                    // Unread messages
-                    if(self.unreadCount > 0 && self.unreadCount < 5) {
-                        // Cell label
-                        cell.unreadMessagesLabel.isHidden = false
-                        cell.unreadMessagesLabel.text = "\(self.unreadCount)"
-                        cell.unreadMessagesLabel.layer.cornerRadius = cell.unreadMessagesLabel.frame.size.width/2
-                        cell.unreadMessagesLabel.clipsToBounds = true
-                        
-                        // TabBar Badge
-                        
-                        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                        if let stb = appDelegate.simpleTBC {
-                            stb.addBadge(index: 3, value: self.unreadCount, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
-                        }
-                    } else if(self.unreadCount > 5) {
-                        cell.unreadMessagesLabel.isHidden = false
-                        cell.unreadMessagesLabel.text = "5+"
-                        cell.unreadMessagesLabel.layer.cornerRadius = cell.unreadMessagesLabel.frame.size.width/2
-                        cell.unreadMessagesLabel.clipsToBounds = true
-                        
-                        // TabBar Badge
-                        
-                        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                        if let stb = appDelegate.simpleTBC {
-                            stb.addBadge(index: 3, value: self.unreadCount, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
-                        }
-                    } else {
-                        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                        if let stb = appDelegate.simpleTBC {
-                            stb.removeAllBadges()
-                        }
-                    }
                 }
             })
             Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
@@ -190,6 +169,40 @@ class ChatsTableViewController: UITableViewController {
         //        cell.plannedLabel.text = "\(venue.PlannedAttendees.count) planned"
         //cell.subtitleLabel.text = "\(venue.CurrentAttendees.count) live   \(venue.PlannedAttendees.count) planned"
         Utilities.printDebugMessage("Setting up cell")
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        var unreadCount = 0
+        if appDelegate.unreadMessageCount[conversation.channelID] != nil {
+            unreadCount = appDelegate.unreadMessageCount[conversation.channelID]!
+        }
+        var totalUnread = 0
+        for count in Array(appDelegate.unreadMessageCount.values) {
+            totalUnread += count
+        }
+        Utilities.printDebugMessage("\(unreadCount)")
+        Utilities.printDebugMessage("\(totalUnread)")
+        
+        if let stb = appDelegate.simpleTBC {
+            if totalUnread > 0 {
+                stb.addBadge(index: 3, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
+            } else {
+                stb.removeAllBadges()
+            }
+        }
+        // Unread messages
+        if(unreadCount > 0 && unreadCount < 5) {
+            // Cell label
+            cell.unreadMessagesLabel.isHidden = false
+            cell.unreadMessagesLabel.text = "\(unreadCount)"
+            cell.unreadMessagesLabel.layer.cornerRadius = cell.unreadMessagesLabel.frame.size.width/2
+            cell.unreadMessagesLabel.clipsToBounds = true
+            
+        } else if(unreadCount > 5) {
+            cell.unreadMessagesLabel.isHidden = false
+            cell.unreadMessagesLabel.text = "5+"
+            cell.unreadMessagesLabel.layer.cornerRadius = cell.unreadMessagesLabel.frame.size.width/2
+            cell.unreadMessagesLabel.clipsToBounds = true
+        }
+
         return cell
         
     }
@@ -217,6 +230,7 @@ class ChatsTableViewController: UITableViewController {
                     }
                     chatViewController.channelRef = FIRDatabase.database().reference().child("channels").child(channelID)
                     chatViewController.friendUser = friendUser
+                    chatViewController.channelID = channelID
                 }
             }
         }
@@ -313,12 +327,22 @@ extension UITabBarController {
     }
     
     func positionBadge(badgeView: UIView, items: [UIView], index: Int) {
-        
         let itemView = items[index]
         let center = itemView.center
         
-        let xOffset: CGFloat = 20
-        let yOffset: CGFloat = -15
+        // Get whether or not we're on the ChatVC
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let stb = appDelegate.simpleTBC!
+        let selectedIndex = stb.selectedIndex
+        var xOffset: CGFloat = 20
+        var yOffset: CGFloat = -15
+        // ChatTabIndex
+        if(selectedIndex == 2) {
+            xOffset = 20
+            yOffset = -37
+        }
+        
+        
         badgeView.frame.size = CGSize(width: 17, height: 17)
         badgeView.center = CGPoint(x: center.x + xOffset,y: center.y + yOffset)
         badgeView.layer.cornerRadius = badgeView.bounds.width/2

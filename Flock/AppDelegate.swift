@@ -38,6 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var venueStatistics : Statistics?
     let gcmMessageIDKey = "gcm.message_id"
     var friendCountPlanningToAttendVenueThisWeek = [String:Int]()
+    var unreadMessageCount = [String:Int]() // maps from a ChannelID to unread message count
     
     func masterLogin(completion: @escaping (_ status: Bool) -> ()) {
         updateAllData { (success) in
@@ -86,6 +87,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 } else {
                     // Fallback on earlier versions
                 }
+                
+                //Get unreadMessage count
+                self.getUnreadMessageCount(user: self.user!)
+                
                 completion(true)
             }
             else {
@@ -393,6 +398,52 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         self.friends = friendDict
     }
     
+    func getUnreadMessageCount(user: User) {
+        for channelID in Array(user.ChannelIDs.values) {
+            let channelRef = FIRDatabase.database().reference().child("channels").child(channelID)
+            
+            let messageRef = channelRef.child("messages")
+            // 1.
+            let messageQuery = messageRef.queryLimited(toLast:5)
+            let _ = messageQuery.observe(.childAdded, with: { (snapshot) -> Void in
+                // 3
+                let messageData = snapshot.value as! Dictionary<String, String>
+                if let id = messageData["senderId"] as String!, let _ = messageData["senderName"] as String!, let text = messageData["text"] as String!, text.characters.count > 0 {
+                    // 4
+                    //self.addMessage(withId: id, name: name, text: text)
+                    if (messageData["hasBeenRead"] != nil){
+                        Utilities.printDebugMessage("Inside First Loops")
+                        let hasBeenRead = messageData["hasBeenRead"]!
+                        Utilities.printDebugMessage("HBR: \(hasBeenRead == "false"), and \(id != self.user!.FBID)")
+                        if((hasBeenRead == "false") && (id != self.user!.FBID)) {
+                            if let _ = self.unreadMessageCount[channelID] {
+                                self.unreadMessageCount[channelID]! += 1
+                            } else {
+                                self.unreadMessageCount[channelID] = 1
+                            }
+                        }
+                    }
+                    Utilities.printDebugMessage("UMC: \(self.unreadMessageCount[channelID])")
+                    
+                } else {
+                    print("Error! Could not decode message data")
+                }
+                
+                var totalUnread = 0
+                for (_, count) in self.unreadMessageCount {
+                    totalUnread += count
+                }
+                if let stb = self.simpleTBC {
+                    if totalUnread > 0 {
+                        stb.addBadge(index: 3, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
+                    } else {
+                        stb.removeAllBadges()
+                    }
+                }
+                
+            })
+        }
+    }
     
     // CoreLocation CLVisit Code
     func startMonitoringVisits() { self.locationManager.startMonitoringVisits() }

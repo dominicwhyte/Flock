@@ -368,6 +368,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
                     }
                     chatViewController.channelRef = FIRDatabase.database().reference().child("channels").child(channelID)
                     chatViewController.friendUser = friendUser
+                    chatViewController.channelID = channelID
                 }
             }
         } else if let profileController = segue.destination as? ProfileViewController {

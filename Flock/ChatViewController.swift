@@ -18,6 +18,7 @@ class ChatViewController: JSQMessagesViewController {
     var friendUser: User?
     var friendImage: UIImage?
     var userImage: UIImage?
+    var channelID: String?
     
     
     private lazy var messageRef: FIRDatabaseReference = self.channelRef!.child("messages")
@@ -120,6 +121,23 @@ class ChatViewController: JSQMessagesViewController {
         
         // Observe messages
         observeMessages()
+        
+        // Update appDelegate's messages handler to know how many unread there are
+        if let channelID = self.channelID {
+            appDelegate.unreadMessageCount[channelID] = 0
+        }
+        // Setup Badges
+        var totalUnread = 0
+        for (_, count) in appDelegate.unreadMessageCount {
+            totalUnread += count
+        }
+        if let stb = appDelegate.simpleTBC {
+            if totalUnread > 0 {
+                stb.addBadge(index: 3, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
+            } else {
+                stb.removeAllBadges()
+            }
+        }
     }
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageDataForItemAt indexPath: IndexPath!) -> JSQMessageData! {

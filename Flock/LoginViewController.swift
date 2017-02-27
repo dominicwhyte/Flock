@@ -228,6 +228,19 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, BWWalkthr
         if let tabVC = segue.destination as? SimpleTabBarController {
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             appDelegate.simpleTBC = tabVC
+            
+            // Setup Badges
+            var totalUnread = 0
+            for (_, count) in appDelegate.unreadMessageCount {
+                totalUnread += count
+            }
+            if let stb = appDelegate.simpleTBC {
+                if totalUnread > 0 {
+                    stb.addBadge(index: 3, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
+                } else {
+                    stb.removeAllBadges()
+                }
+            }
         }
     }
     

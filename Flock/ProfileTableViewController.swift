@@ -109,7 +109,12 @@ class ProfileTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        return self.user == appDelegate.user
+        if let currentUser = self.user {
+            Utilities.printDebugMessage("CanEdit, Current User: \(currentUser.FBID)  App User: \(appDelegate.user!.FBID)")
+            return currentUser.FBID == appDelegate.user!.FBID
+        } else {
+            return true
+        }
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
@@ -155,53 +160,57 @@ class ProfileTableViewController: UITableViewController {
         let venue = appDelegate.venues[plan.venueID]!
         let date = DateUtilities.getStringFromDate(date: plan.date)
         
-        if(self.user == appDelegate.user) {
-            let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
-                // delete item at indexPath
-                let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
-                FirebaseClient.addUserToVenuePlansForDate(date: date, venueID: venue.VenueID, userID: appDelegate.user!.FBID, add: false, completion: { (success) in
-                    if (success) {
-                        Utilities.printDebugMessage("Successfully removed plan to attend venue")
-                        self.updateDataAndTableView({ (success) in
-                            Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
-                            if (success) {
-                                DispatchQueue.main.async {
-                                    if let delegate = self.delegate  {
-                                        delegate.displayUnAttendedPopup(venueName: venue.VenueNickName, attendFullDate: date)
-                                    }
-                                    else {
-                                        Utilities.printDebugMessage("Error with delegate in profile")
-                                    }
+        if let currentUser = self.user {
+            Utilities.printDebugMessage("EditActions, Current User: \(currentUser.FBID)  App User: \(appDelegate.user!.FBID)")
+            if(currentUser.FBID != appDelegate.user?.FBID) {
+                return nil
+            }
+        }
+        
+        let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
+            // delete item at indexPath
+            let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
+            FirebaseClient.addUserToVenuePlansForDate(date: date, venueID: venue.VenueID, userID: appDelegate.user!.FBID, add: false, completion: { (success) in
+                if (success) {
+                    Utilities.printDebugMessage("Successfully removed plan to attend venue")
+                    self.updateDataAndTableView({ (success) in
+                        Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+                        if (success) {
+                            DispatchQueue.main.async {
+                                if let delegate = self.delegate  {
+                                    delegate.displayUnAttendedPopup(venueName: venue.VenueNickName, attendFullDate: date)
+                                }
+                                else {
+                                    Utilities.printDebugMessage("Error with delegate in profile")
                                 }
                             }
-                            else {
-                                Utilities.printDebugMessage("Error reloading tableview in venues")
-                            }
-                        })
-                    }
-                    else {
-                        Utilities.printDebugMessage("Error adding user to venue plans for date")
-                        Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
-                    }
-                })
-            }
-            
-            /* V2.0
-             let share = UITableViewRowAction(style: .normal, title: "Share") { (action, indexPath) in
-             // share item at indexPath
-             }
-             */
-            
-            //share.backgroundColor = FlockColors.FLOCK_BLUE
-            delete.backgroundColor = FlockColors.FLOCK_GRAY
-            
-            //return [delete, share]
-            return [delete]
-        } else {
-            return nil
+                        }
+                        else {
+                            Utilities.printDebugMessage("Error reloading tableview in venues")
+                        }
+                    })
+                }
+                else {
+                    Utilities.printDebugMessage("Error adding user to venue plans for date")
+                    Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+                }
+            })
         }
+        
+        /* V2.0
+         let share = UITableViewRowAction(style: .normal, title: "Share") { (action, indexPath) in
+         // share item at indexPath
+         }
+         */
+        
+        //share.backgroundColor = FlockColors.FLOCK_BLUE
+        delete.backgroundColor = FlockColors.FLOCK_GRAY
+        
+        //return [delete, share]
+        return [delete]
+        
     }
-
+    
 }
 
 protocol ProfileDelegate: class {
