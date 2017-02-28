@@ -14,14 +14,14 @@ import FacebookShare
 import FBSDKShareKit
 
 class ProfileViewController: UIViewController, ProfileDelegate {
-   
+    
     
     // Variables other ViewControllers might be concerned with
     var user: User?
     var didComeFromFriendsPage: Bool = false
     var plans: [Plan] = [Plan]()
     
- 
+    
     
     @IBOutlet weak var settingsButton: UIBarButtonItem!
     @IBOutlet weak var flockSizeLabel: UILabel!
@@ -32,17 +32,13 @@ class ProfileViewController: UIViewController, ProfileDelegate {
     var tableViewController : ProfileTableViewController?
     
     @IBAction func settingsButtonPressed(_ sender: Any) {
-        let permissionScope = PermissionScope()
-        permissionScope.addPermission(NotificationsPermission(notificationCategories: nil),
-                                      message: "Get notified when you're\r\nFlock is out")
-        permissionScope.addPermission(LocationAlwaysPermission(),
-                                      message: "Let your Flock know\r\nwhen you're out")
+        let permissionScope = PermissionScope()/*
+         permissionScope.addPermission(NotificationsPermission(notificationCategories: nil),
+         message: "Get notified when you're\r\nFlock is out")
+         permissionScope.addPermission(LocationAlwaysPermission(),
+         message: "Let your Flock know\r\nwhen you're out")*/
         PermissionUtilities.setupPermissionScope(permissionScope: permissionScope)
-        permissionScope.show({ (one, two) in
-            print("hi")
-        }) { (three) in
-            print("ho")
-        }
+        PermissionUtilities.getPermissionsIfDenied(permissionScope: permissionScope)
     }
     
     
@@ -51,10 +47,10 @@ class ProfileViewController: UIViewController, ProfileDelegate {
         self.setupUser()
         
         
-
+        
         // Do any additional setup after loading the view.
     }
-
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -85,6 +81,15 @@ class ProfileViewController: UIViewController, ProfileDelegate {
                 self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(logoutButtonPressed))
                 self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
             }
+            
+            // Check to see if settings button should be visible
+            let permissionScope = PermissionScope()
+            let notificationStatus = permissionScope.statusNotifications()
+            let locationStatus = permissionScope.statusLocationAlways()
+            if(notificationStatus == .authorized && locationStatus == .authorized) {
+                self.navigationItem.rightBarButtonItem = nil
+            }
+            
         } else {
             self.navigationItem.rightBarButtonItem = nil
             user = self.user!
@@ -99,7 +104,7 @@ class ProfileViewController: UIViewController, ProfileDelegate {
                 return DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))
                 
             })
-
+            
         }
         else {
             Utilities.printDebugMessage("Error 3: reloading tableVC from parent")
@@ -144,8 +149,8 @@ class ProfileViewController: UIViewController, ProfileDelegate {
         // 5
         self.present(optionMenu, animated: true, completion: nil)
     }
-
-
+    
+    
     // END OF TABLEVIEW FUNCTIONS
     
     
@@ -159,7 +164,7 @@ class ProfileViewController: UIViewController, ProfileDelegate {
     }
     
     
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let tableViewController = segue.destination as? ProfileTableViewController {
             self.tableView = tableViewController.tableView

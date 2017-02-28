@@ -57,13 +57,13 @@ class FirebaseClient: NSObject
                 if ((snapshot.childSnapshot(forPath: toID).hasChild("Friends") && snapshot.childSnapshot(forPath: toID).childSnapshot(forPath: "Friends").hasChild(fromID)) || (snapshot.childSnapshot(forPath: fromID).hasChild("Friends") && snapshot.childSnapshot(forPath: fromID).childSnapshot(forPath: "Friends").hasChild(toID))) {
                     completion(false)
                 }
-                //If fromID already has a request from toID, then confirm friends
+                    //If fromID already has a request from toID, then confirm friends
                 else if (snapshot.childSnapshot(forPath: fromID).hasChild("FriendRequests") && snapshot.childSnapshot(forPath: fromID).childSnapshot(forPath: "FriendRequests").hasChild(toID)) {
                     confirmFriendRequest(toID, toID: fromID, completion: { (success) in
                         completion(success)
                     })
                 }
-                //Cases for actually adding friend request
+                    //Cases for actually adding friend request
                 else if (snapshot.childSnapshot(forPath: toID).hasChild("FriendRequests"))
                 {
                     let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]
@@ -99,10 +99,10 @@ class FirebaseClient: NSObject
             //Confirm send friend request conditions
             if (snapshot.hasChild(toID) && snapshot.childSnapshot(forPath: toID).hasChild("FriendRequests") && toID != fromID) {
                 //Cases for actually adding friend request
-
+                
                 let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]
                 let toUserDict = dictionary[toID] as! [String: AnyObject]
-                    
+                
                 var friendRequests = toUserDict["FriendRequests"] as! [String : AnyObject]
                 if (friendRequests[fromID] != nil) {
                     friendRequests[fromID] = nil as AnyObject?
@@ -120,7 +120,7 @@ class FirebaseClient: NSObject
             }
         })
     }
-
+    
     
     class func confirmFriendRequest(_ fromID : String, toID : String, completion: @escaping (Bool) -> Void) {
         
@@ -205,7 +205,7 @@ class FirebaseClient: NSObject
                 channelDict[fromID] = channelID
                 let updates = ["ChannelIDs": channelDict]
                 dataRef.child("Users").child(toID).updateChildValues(updates)
-
+                
             }
             //fromID has no channelIDs
             if (!snapshot.childSnapshot(forPath: "Users").childSnapshot(forPath: fromID).hasChild("ChannelIDs")) {
@@ -354,7 +354,7 @@ class FirebaseClient: NSObject
                             plannedAttendees[userID] = userID as AnyObject?
                         }
                     }
-                    // If removing from plans
+                        // If removing from plans
                     else {
                         let userDictionary :[String:AnyObject] = snapshot.childSnapshot(forPath: "Users").value as! [String : AnyObject]
                         let userDict = userDictionary[userID] as! [String: AnyObject]
@@ -379,7 +379,7 @@ class FirebaseClient: NSObject
                     completion(true)
                     
                 }
-                 //Planned attendees dict not present
+                    //Planned attendees dict not present
                 else
                 {
                     if(add) {
@@ -394,7 +394,7 @@ class FirebaseClient: NSObject
                 completion(false)
             }
         })
-
+        
     }
     
     static func addPlanToUserForDate(date: String, venueID : String, userID : String, add: Bool, completion: @escaping (Bool) -> Void) {
@@ -416,7 +416,7 @@ class FirebaseClient: NSObject
                             Utilities.printDebugMessage("Error: unique IDs are not unique")
                         }
                     }
-                    // Removing plan from user 
+                        // Removing plan from user
                     else {
                         for (uniqueVisitID, plan) in plansDict {
                             if((plan["Date"] as! String) == date && (plan["VenueID"] as! String) == venueID) {
@@ -426,7 +426,7 @@ class FirebaseClient: NSObject
                             }
                         }
                     }
-
+                    
                     let updates = ["Plans": plansDict]
                     dataRef.child("Users").child(userID).updateChildValues(updates)
                     completion(true)
@@ -474,7 +474,22 @@ class FirebaseClient: NSObject
             if (snapshot.hasChild(venueID)) {
                 if (snapshot.childSnapshot(forPath: venueID).hasChild("CurrentAttendees") ) {
                     if (snapshot.childSnapshot(forPath: venueID).childSnapshot(forPath: "CurrentAttendees").hasChild(userID)) {
-                        completion(false)
+                        if(add) {
+                            completion(true)
+                        } else {
+                            // Get things from Firebase
+                            let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]
+                            let venueDict = dictionary[previousLiveID!] as! [String: AnyObject]
+                            var currentAttendees = venueDict["CurrentAttendees"] as! [String : AnyObject]
+                            
+                            // Remove user from current attendees
+                            currentAttendees[userID] = nil
+                            
+                            // Update dat ish
+                            let updates = ["CurrentAttendees": currentAttendees]
+                            dataRef.child("Venues").child(previousLiveID!).updateChildValues(updates)
+                            completion(true)
+                        }
                     }
                     else {
                         let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]
@@ -484,14 +499,16 @@ class FirebaseClient: NSObject
                         if(add) {
                             if (currentAttendees[userID] == nil) {
                                 currentAttendees[userID] = userID as AnyObject?
+                                let updates = ["CurrentAttendees": currentAttendees]
+                                dataRef.child("Venues").child(venueID).updateChildValues(updates)
                             }
                         } else {
                             currentAttendees[userID] = nil
                         }
                         
                         let updates = ["CurrentAttendees": currentAttendees]
-                        dataRef.child("Venues").child(venueID).updateChildValues(updates)
-
+                        dataRef.child("Venues").child(previousLiveID!).updateChildValues(updates)
+                        
                     }
                 }
                     //Planned attendees dict not present
@@ -505,7 +522,7 @@ class FirebaseClient: NSObject
                 
                 if(previousLiveID != nil && previousLiveID != venueID) {
                     let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]
-                    let venueDict = dictionary[venueID] as! [String: AnyObject]
+                    let venueDict = dictionary[previousLiveID!] as! [String: AnyObject]
                     var currentAttendees = venueDict["CurrentAttendees"] as! [String : AnyObject]
                     currentAttendees[userID] = nil
                     
@@ -550,7 +567,7 @@ class FirebaseClient: NSObject
                         let updates = ["Executions": executionsDict]
                         dataRef.child("Users").child(userID).updateChildValues(updates)
                     }
-                    //Executions dict
+                        //Executions dict
                     else
                     {
                         let uniqueVisitID = UUID().uuidString
@@ -579,13 +596,13 @@ class FirebaseClient: NSObject
                             }
                             let updates = ["Loyalties": loyaltiesDict]
                             dataRef.child("Users").child(userID).updateChildValues(updates)
-
+                            
                         } else {
                             var loyaltiesDict : [String : Int] = [:]
                             loyaltiesDict[venueID] = 1
                             let updates = ["Loyalties": loyaltiesDict]
                             dataRef.child("Users").child(userID).updateChildValues(updates)
-
+                            
                         }
                     }
                     
@@ -666,7 +683,7 @@ class FirebaseClient: NSObject
             completion([])
         }
     }
-
+    
     
 }
 
