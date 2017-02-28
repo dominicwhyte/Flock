@@ -323,8 +323,11 @@ class ChatViewController: JSQMessagesViewController {
                         ]
                     self.messageRef.child(snapshot.key).updateChildValues(updates)
                 }
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                if let channelID = self.channelID {
+                    appDelegate.unreadMessageCount[channelID] = 0
+                }
                 self.finishReceivingMessage()
-                
             }
             else if let id = messageData["senderId"] as String!,
                 let photoURL = messageData["photoURL"] as String! { // 1

@@ -39,6 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     let gcmMessageIDKey = "gcm.message_id"
     var friendCountPlanningToAttendVenueThisWeek = [String:Int]()
     var unreadMessageCount = [String:Int]() // maps from a ChannelID to unread message count
+    var appIsWakingUpFromVisit : Bool?
     
     func masterLogin(completion: @escaping (_ status: Bool) -> ()) {
         updateAllData { (success) in
@@ -631,7 +632,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         let categoryIdentifier = "category.identifier"
         category.identifier = categoryIdentifier
-        category.setActions([acceptClub, switchClub, cancelClub], for: .default)
+        category.setActions([acceptClub, switchClub], for: .minimal)
+        //category.setActions([acceptClub, switchClub, cancelClub], for: .default)
         
         let categories = Set(arrayLiteral: category)
         let settings = UIUserNotificationSettings(types: [.sound, .alert, .badge], categories: categories)
@@ -639,6 +641,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         notification.category = categoryIdentifier
         
         UIApplication.shared.presentLocalNotificationNow(notification)
+    }
+    
+    func application(_ application: UIApplication, handleActionWithIdentifier identifier: String?, for notification: UILocalNotification, completionHandler: @escaping () -> Void) {
+        if(identifier != nil) {
+            switch identifier! {
+            case "accept":
+                break
+            case "switch":
+                break
+            default:
+                break
+            }
+        }
     }
     
     //When permissions changed
@@ -744,6 +759,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         self.registerForPushNotifications(application: application)
         //remove notification tags
         UIApplication.shared.applicationIconBadgeNumber = 0
+        
+        // Check for wakeup from inactive app
+        if(launchOptions != nil) {
+            if let _ = launchOptions![UIApplicationLaunchOptionsKey.location] {
+                let manager = CLLocationManager()
+                self.appIsWakingUpFromVisit = true
+                manager.desiredAccuracy = kCLLocationAccuracyBest
+                manager.requestLocation()
+            }
+        } else {
+            self.appIsWakingUpFromVisit = false
+        }
+        
         return true
     }
     
