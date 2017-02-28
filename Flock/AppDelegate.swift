@@ -445,6 +445,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
+    
+    
+    
+    
+    
+    
+    
+    
+    //=================================================================================================================//
+    //Start Live
+    
     // CoreLocation CLVisit Code
     func startMonitoringVisits() { self.locationManager.startMonitoringVisits() }
     func stopMonitoringVisits() { self.locationManager.stopMonitoringVisits() }
@@ -462,7 +473,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     
-    
+    //Didvisit fired
     func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
         
         // Determine visit location and properties
@@ -490,51 +501,55 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             
         // Present local notification without GPS accuracy
         case .inactive:
-            var body = ""
-            let ascendingVenues = distanceToClubsAscendingWhileInactive(visitLocation: visitLocation)
-            for venue in ascendingVenues {
-                body += "\(venue.venueName) is \(venue.distAway) m away.\n"
-            }
-            showNotification(body: body)
+            //KEY: remove people from Live if they left
             
-            
-            if let venueID = self.whichClubIsUserIn(visitLocation: visitLocation) {
-                // Check if user was previously live somewhere else
-                var previousLiveID : String?
-                if(self.user!.LiveClubID != nil) {
-                    previousLiveID  = self.user!.LiveClubID
-                } else {
-                    previousLiveID = nil
-                }
-                
-                FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: venueID, previousLiveID: previousLiveID, userID: self.user!.FBID, add: isArriving, completion: { (success) in
-                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                    if (isArriving) {
-                        self.showNotification(body: "VENUE CHOSEN Arriving at \(appDelegate.venues[venueID]!.VenueName)")
-                    }
-                    else {
-                        self.showNotification(body: "VENUE CHOSEN Departing \(appDelegate.venues[venueID]!.VenueName)")
-                    }
-                    if(success) {
-                        Utilities.printDebugMessage("Successfully uploaded visit to database")
-                    }
-                })
-            } else {
-                if let venueID = self.user!.LiveClubID {
-                    FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: venueID, previousLiveID: nil, userID: self.user!.FBID, add: false, completion: { (success) in
-                        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                        self.showNotification(body: "DEPARTING VENUE: \(appDelegate.venues[venueID]!.VenueName)")
-                        
-                        if(success) {
-                            Utilities.printDebugMessage("Successfully uploaded visit to database")
-                        }
-                    })
-                }
-            }
+            showNotification(body: "IT WORKS OFFLINE")
+//            var body = ""
+//            let ascendingVenues = distanceToClubsAscendingWhileInactive(visitLocation: visitLocation)
+//            for venue in ascendingVenues {
+//                body += "\(venue.venueName) is \(venue.distAway) m away.\n"
+//            }
+//            showNotification(body: body)
+//            
+//            
+//            if let (venueID,dist) = self.distanceToNearestClub(visitLocation: visitLocation) {
+//                // Check if user was previously live somewhere else
+//                var previousLiveID : String?
+//                if(self.user!.LiveClubID != nil) {
+//                    previousLiveID  = self.user!.LiveClubID
+//                } else {
+//                    previousLiveID = nil
+//                }
+//                
+//                FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: venueID, previousLiveID: previousLiveID, userID: self.user!.FBID, add: isArriving, completion: { (success) in
+//                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//                    if (isArriving) {
+//                        self.showNotification(body: "VENUE CHOSEN Arriving at \(appDelegate.venues[venueID]!.VenueName)")
+//                    }
+//                    else {
+//                        self.showNotification(body: "VENUE CHOSEN Departing \(appDelegate.venues[venueID]!.VenueName)")
+//                    }
+//                    if(success) {
+//                        Utilities.printDebugMessage("Successfully uploaded visit to database")
+//                    }
+//                })
+//            } else {
+//                if let venueID = self.user!.LiveClubID {
+//                    FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: venueID, previousLiveID: nil, userID: self.user!.FBID, add: false, completion: { (success) in
+//                        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//                        self.showNotification(body: "DEPARTING VENUE: \(appDelegate.venues[venueID]!.VenueName)")
+//                        
+//                        if(success) {
+//                            Utilities.printDebugMessage("Successfully uploaded visit to database")
+//                        }
+//                    })
+//                }
+//            }
         }
         
     }
     
+    //Received new location from GPS
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         // For testing purposes print out all locations in ascending order of distance
         let visitLocation = locations[0]
@@ -543,37 +558,50 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         for venue in ascendingVenues {
             body += "\(venue.venueName) is \(venue.distAway) m away.\n"
         }
-        showNotification(body: body)
+        showNotification(body: body) //shows notification with list of clubs that are closest
+        
+        //KEY: remove people from Live if they left
         
         
-        if let venueID = self.whichClubIsUserIn(visitLocation: visitLocation) {
-            var previousLiveID : String?
-            if(self.user!.LiveClubID != nil) {
-                previousLiveID = self.user!.LiveClubID
-            } else {
-                previousLiveID = nil
-            }
-            FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: venueID, previousLiveID : previousLiveID, userID: self.user!.FBID, add: self.isArriving, completion: { (success) in
-                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        //Send notification if within critical radius
+        if let (venueID,dist) = self.distanceToNearestClub(visitLocation: visitLocation) {
+//            var previousLiveID : String?
+//            if(self.user!.LiveClubID != nil) {
+//                previousLiveID = self.user!.LiveClubID
+//            } else {
+//                previousLiveID = nil
+//            }
+            if (dist < Constants.CRITICAL_RADIUS) {
                 if (self.isArriving) {
-                    self.showNotification(body: "VENUE CHOSEN Arriving at \(appDelegate.venues[venueID]!.VenueName)")
+                    self.showNotification(body: "Having fun at \(self.venues[venueID]!.VenueName)? Swipe left to view and check in!")
                 }
                 else {
-                    self.showNotification(body: "VENUE CHOSEN Departing \(appDelegate.venues[venueID]!.VenueName)")
+                    self.showNotification(body: "VENUE CHOSEN Departing \(self.venues[venueID]!.VenueName)")
                 }
-                if(success) {
-                    Utilities.printDebugMessage("Successfully uploaded visit to database")
-                }
-            })
+
+            }
+//            FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: venueID, previousLiveID : previousLiveID, userID: self.user!.FBID, add: self.isArriving, completion: { (success) in
+//                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//                if (self.isArriving) {
+//                    self.showNotification(body: "VENUE CHOSEN Arriving at \(appDelegate.venues[venueID]!.VenueName)")
+//                }
+//                else {
+//                    self.showNotification(body: "VENUE CHOSEN Departing \(appDelegate.venues[venueID]!.VenueName)")
+//                }
+//                if(success) {
+//                    Utilities.printDebugMessage("Successfully uploaded visit to database")
+//                }
+//            })
         }
         
     }
     
+    //Did fail
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error)
     }
     
-    // Notification function for local testing/debugging
+    // Send a local notification to the user
     func showNotification(body: String) {
         let notification = UILocalNotification()
         notification.alertAction = nil
@@ -613,27 +641,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         UIApplication.shared.presentLocalNotificationNow(notification)
     }
     
+    //When permissions changed
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if (CLLocationManager.authorizationStatus() == .authorizedAlways){
             self.startMonitoringVisits()
         }
     }
     
+    
     func distanceToNearestClub(visitLocation : CLLocation) -> (String, Double)? {
         var minDistance = Double.infinity
-        var closestVenueName : String?
+        var closestVenueID : String?
         
         for venue in Array(self.venues.values) {
             if let venueLocation = venue.VenueLocation {
                 let distanceInMeters = visitLocation.distance(from: venueLocation)
                 if distanceInMeters < minDistance {
                     minDistance = distanceInMeters
-                    closestVenueName = venue.VenueName
+                    closestVenueID = venue.VenueID
                 }
             }
         }
-        if(closestVenueName != nil) {
-            return (closestVenueName!, minDistance)
+        if(closestVenueID != nil) {
+            return (closestVenueID!, minDistance)
         } else {
             return nil
         }
@@ -656,6 +686,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         return visitLocations
     }
     
+    //Uses core data
     func distanceToClubsAscendingWhileInactive(visitLocation: CLLocation) -> [VisitLocation] {
         var visitLocations = [VisitLocation]()
         if #available(iOS 10.0, *) {
@@ -677,27 +708,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
     }
     
-    // Determines if user is in club and returns venueID of appropriate club
-    func whichClubIsUserIn(visitLocation : CLLocation) -> String? {
-        
-        for venue in Array(self.venues.values) {
-            if let venueLocation = venue.VenueLocation {
-                let distanceInMeters = visitLocation.distance(from: venueLocation)
-                if(distanceInMeters < Constants.CRITICAL_RADIUS) {
-                    return venue.VenueID
-                }
-            }
-        }
-        return nil
-    }
+//=================================================================================================================//
     
 
-    
-    
-    
-    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-        return FBSDKApplicationDelegate.sharedInstance().application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
-    }
     
     
     
@@ -833,6 +846,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     
     
+    
+    
+    
+    
+    
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+        return FBSDKApplicationDelegate.sharedInstance().application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
+    }
     
     
     

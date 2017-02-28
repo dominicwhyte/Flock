@@ -32,9 +32,13 @@ class ProfileViewController: UIViewController, ProfileDelegate {
     var tableViewController : ProfileTableViewController?
     
     @IBAction func settingsButtonPressed(_ sender: Any) {
-        let multiPscope = PermissionScope()
-        PermissionUtilities.setupPermissionScope(permissionScope: multiPscope)
-        multiPscope.show({ (one, two) in
+        let permissionScope = PermissionScope()
+        permissionScope.addPermission(NotificationsPermission(notificationCategories: nil),
+                                      message: "Get notified when you're\r\nFlock is out")
+        permissionScope.addPermission(LocationAlwaysPermission(),
+                                      message: "Let your Flock know\r\nwhen you're out")
+        PermissionUtilities.setupPermissionScope(permissionScope: permissionScope)
+        permissionScope.show({ (one, two) in
             print("hi")
         }) { (three) in
             print("ho")
