@@ -155,6 +155,41 @@ class ChatsTableViewController: UITableViewController {
                     } else {
                         cell.chatSubtitle.text = ""
                     }
+                    
+                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                    var unreadCount = 0
+                    if appDelegate.unreadMessageCount[conversation.channelID] != nil {
+                        unreadCount = appDelegate.unreadMessageCount[conversation.channelID]!
+                    }
+                    var totalUnread = 0
+                    for count in Array(appDelegate.unreadMessageCount.values) {
+                        totalUnread += count
+                    }
+                    Utilities.printDebugMessage("\(unreadCount)")
+                    Utilities.printDebugMessage("\(totalUnread)")
+                    
+                    if let stb = appDelegate.simpleTBC {
+                        if totalUnread > 0 {
+                            stb.addBadge(index: 3, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
+                        } else {
+                            stb.removeAllBadges()
+                        }
+                    }
+                    // Unread messages
+                    if(unreadCount > 0 && unreadCount < 5) {
+                        // Cell label
+                        cell.unreadMessagesLabel.isHidden = false
+                        cell.unreadMessagesLabel.text = "\(unreadCount)"
+                        cell.unreadMessagesLabel.layer.cornerRadius = cell.unreadMessagesLabel.frame.size.width/2
+                        cell.unreadMessagesLabel.clipsToBounds = true
+                        
+                    } else if(unreadCount > 5) {
+                        cell.unreadMessagesLabel.isHidden = false
+                        cell.unreadMessagesLabel.text = "5+"
+                        cell.unreadMessagesLabel.layer.cornerRadius = cell.unreadMessagesLabel.frame.size.width/2
+                        cell.unreadMessagesLabel.clipsToBounds = true
+                    }
+                    
                 }
             })
             Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
