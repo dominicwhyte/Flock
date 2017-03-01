@@ -642,11 +642,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             
             
         }
-        
-        
-        
-        
-        
     }
     
     //Did fail
@@ -660,7 +655,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         notification.alertAction = nil
         notification.alertBody = body
         
-        let category = UIMutableUserNotificationCategory()
         let acceptClub = UIMutableUserNotificationAction()
         acceptClub.identifier = "accept"
         acceptClub.isDestructive = false
@@ -682,10 +676,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         cancelClub.activationMode = .background
         cancelClub.isAuthenticationRequired = false
         
+        
+        let category = UIMutableUserNotificationCategory()
         let categoryIdentifier = "category.identifier"
         category.identifier = categoryIdentifier
         category.setActions([acceptClub, switchClub], for: .minimal)
-        //category.setActions([acceptClub, switchClub, cancelClub], for: .default)
+        category.setActions([acceptClub, switchClub, cancelClub], for: .default)
         
         let categories = Set(arrayLiteral: category)
         let settings = UIUserNotificationSettings(types: [.sound, .alert, .badge], categories: categories)
@@ -823,6 +819,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 self.appIsWakingUpFromVisit = true
                 manager.desiredAccuracy = kCLLocationAccuracyBest
                 manager.requestLocation()
+                self.showNotification(body: "This is opening due to a trigger of core location")
             }
         } else {
             self.appIsWakingUpFromVisit = false

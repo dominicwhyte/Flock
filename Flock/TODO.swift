@@ -17,6 +17,8 @@ import Foundation
 
 /*
  Remaining to be done:
+ MAKE SURE TO REMOVE NOTIFICATION FROM DIDFINISHLAUNCHINGWITHOPTIONS
+ Make sure to rename/reword the alwaysUsageDescription key in the info.plist
  make people unlive
  timeout for laoding time
  SET EVERYTHING TO PRODUCTION
