@@ -41,6 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var friendCountPlanningToAttendVenueThisWeek = [String:Int]()
     var unreadMessageCount = [String:Int]() // maps from a ChannelID to unread message count
     var appIsWakingUpFromVisit : Bool = false
+
     
     func masterLogin(completion: @escaping (_ status: Bool) -> ()) {
         updateAllData { (success) in
@@ -77,6 +78,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         self.profileNeedsToUpdate = true
         LoginClient.retrieveData { (data) in
             if let (user, venues, users) = data {
+                //Check user location
+                self.locationManager.requestLocation()
                 self.user = user
                 self.venues = venues
                 self.users = users
@@ -458,6 +461,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     //=================================================================================================================//
     //Start Live
     
+    
+/*
+   An explanation of how this all works:
+     
+    When a visit is registered fired (in app or off app), we call the location manager which evenutally calls the manager didUpdateLocations
+    When you update the app, we call the location manager which evenutally calls the manager didUpdateLocations
+    
+    That is, didUpdateLocations should be ready for anything.
+     
+    
+    In didUpdateLocations:
+    If your location is NOT registered to be within any critical radius, we remove you from your live club (if you had one)
+    
+    If your location is registered to be within any critical radius, we call showPopupIfActiveOrNotificationIfNot:
+     1. If the app is open
+        a) If we just registered you to be within the critical radius of the venue you are already live at, we do nothing
+        b) If you were either not live anywhere before or you are within the critical radius of a new club, displayPrompt() is called.
+           You will be prompted to go live at a club, or go live at different clubs. Going live at any club will result in goLive()
+           getting called.
+     2. If the app is not open
+        a) showPopupIfActiveOrNotificationIfNot() will also have been called, and now shownotification() will be called. The user will be given the option to go live or switch. Upon app reopening, handleActionWithIdentifier() is called and the user will goLive() immediately if they selected to go live at that club, or they will receive the displayPrompt() as above.
+     
+     When goLive() is called, the user is first removed from another previous live clubs, and then added to the new club.
+    
+    
+ */
     // CoreLocation CLVisit Code
     func startMonitoringVisits() { self.locationManager.startMonitoringVisits() }
     func stopMonitoringVisits() { self.locationManager.stopMonitoringVisits() }
@@ -467,6 +496,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func setupLocationServices() {
         locationManager.delegate = self
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
         if (CLLocationManager.authorizationStatus() == .notDetermined) {
             locationManager.requestAlwaysAuthorization()
         }
@@ -485,7 +515,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             
         // Present local "pretty" popup for user
         case .active:
-            displayPrompt()
+            if let chosenVenue = chosenVenueIDGoLiveAt {
+                if let currentVenue = user!.LiveClubID {
+                    if (chosenVenue == currentVenue) {
+                        displayTempNotification(text: "Temp notification: already live at a club \(currentVenue)")
+                    }
+                    else {
+                        //User receives option to go live
+                        displayPrompt()
+                    }
+                }
+                else {
+                    //User receives option to go live
+                    displayPrompt()
+                }
+            }
+            else {
+                Utilities.printDebugMessage("Fatal error: should have set chosenvenueID")
+            }
         // Present local notification with GPS accuracy
         case .background:
             self.showNotification(body: "Having fun at \(venueName)? Swipe left to view and check in!")
@@ -493,6 +540,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         case .inactive:
             self.showNotification(body: "Having fun at \(venueName)? Swipe left to view and check in!")
             Utilities.printDebugMessage("Weird behaviour error")
+        }
+    }
+    
+    //TEMP FUNCTION
+    func displayTempNotification(text : String) {
+        DispatchQueue.main.async {
+            self.showNotification(body: text)
+            let alert = SCLAlertView()
+            _ = alert.showInfo(text, subTitle: "Temp notification")
         }
     }
     
@@ -541,24 +597,48 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     var chosenVenueIDGoLiveAt : String?
     
+    //Call this to go live, but first set chosenVenueIDGoLiveAT
     func goLive() {
-        if let chosenVenueIDGoLiveAt = self.chosenVenueIDGoLiveAt {
-            FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: chosenVenueIDGoLiveAt, previousLiveID : user!.LiveClubID, userID: self.user!.FBID, add: self.isArriving, completion: { (success) in
-                let alert = SCLAlertView()
-                _ = alert.showSuccess(Utilities.generateRandomCongratulatoryPhrase(), subTitle: "You're live!")
+        //Remove user from previous live venue
+        if let liveClubID = user!.LiveClubID {
+            FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: liveClubID, previousLiveID: liveClubID, userID: self.user!.FBID, add: false, completion: { (success) in
+                //testing func
+                self.showNotification(body: "REMOVING FROM LIVE:  \(self.venues[liveClubID]!.VenueName)")
+                
+                //go live
+                if let chosenVenueIDGoLiveAt = self.chosenVenueIDGoLiveAt {
+                    self.goLiveAt(chosenVenueID: chosenVenueIDGoLiveAt)
+                }
+                else {
+                    Utilities.printDebugMessage("Error: chosen venueID is NIL")
+                }
+                
             })
         }
         else {
-            Utilities.printDebugMessage("Error: chosen venueID is NIL")
+            if let chosenVenueIDGoLiveAt = self.chosenVenueIDGoLiveAt {
+                goLiveAt(chosenVenueID: chosenVenueIDGoLiveAt)
+            }
+            else {
+                Utilities.printDebugMessage("Error: chosen venueID is NIL")
+            }
         }
-        
+    }
+    
+    func goLiveAt(chosenVenueID : String) {
+        FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: chosenVenueID, previousLiveID : user!.LiveClubID, userID: self.user!.FBID, add: true, completion: { (success) in
+            DispatchQueue.main.async {
+                let alert = SCLAlertView()
+                _ = alert.showSuccess(Utilities.generateRandomCongratulatoryPhrase(), subTitle: "You're live!")
+            }
+        })
     }
     
     //Didvisit fired
     func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
         
         // Determine visit location and properties
-        let visitLocation = CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
+        //let visitLocation = CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
         let isArriving = (visit.departureDate.compare(NSDate.distantFuture).rawValue == 0)
         self.isArriving = isArriving
         
@@ -587,7 +667,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
     }
     
-    //Received new location from GPS
+    //Received new location from GPS. KEY: this function should be able to be called at any time,
+    //whether the app is on or in background. If called when it's on, it should handle displaying
+    //a notification telling you that your're live, or making you unlive, or if you just arrived
+    //somewhere then suggesting you go live.
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         // For testing purposes print out all locations in ascending order of distance
         liveVenueIDOptions = []
@@ -635,8 +718,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             if let liveClubID = user!.LiveClubID {
                 FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: liveClubID, previousLiveID: liveClubID, userID: self.user!.FBID, add: false, completion: { (success) in
                     //testing func
-                    self.showNotification(body: "REMOVING FROM LIVE:  \(self.venues[liveClubID]!.VenueName)")
-                    
+                    self.showNotification(body: "TEMP NOTIFICATION. REMOVING FROM LIVE:  \(self.venues[liveClubID]!.VenueName)")
                 })
             }
             
@@ -735,7 +817,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
-    //testing function
+    //returns all clubs in ascending order that are in critical radius
     func distanceToClubsAscending(visitLocation : CLLocation) -> [VisitLocation] {
         
         var visitLocations = [VisitLocation]()
@@ -743,7 +825,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         for venue in Array(self.venues.values) {
             if let venueLocation = venue.VenueLocation {
                 let distanceInMeters = visitLocation.distance(from: venueLocation)
-                visitLocations.append(VisitLocation(distAway: distanceInMeters, venue: venue))
+                if (distanceInMeters < Constants.CRITICAL_RADIUS) {
+                    visitLocations.append(VisitLocation(distAway: distanceInMeters, venue: venue))
+                }
             }
         }
         visitLocations.sort { (vl1, vl2) -> Bool in
@@ -763,7 +847,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 let venueLocation = CLLocation(latitude: Double(cdvenue.latitude), longitude: Double(cdvenue.longitude))
                 let distanceInMeters = visitLocation.distance(from: venueLocation)
                 let venue = venues[cdvenue.venueID]!
-                visitLocations.append(VisitLocation(distAway: distanceInMeters, venue: venue))
+                if (distanceInMeters < Constants.CRITICAL_RADIUS) {
+                    visitLocations.append(VisitLocation(distAway: distanceInMeters, venue: venue))
+                }
+                
             }
             visitLocations.sort { (vl1, vl2) -> Bool in
                 vl1.distAway < vl2.distAway
@@ -815,10 +902,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // Check for wakeup from inactive app
         if(launchOptions != nil) {
             if let _ = launchOptions![UIApplicationLaunchOptionsKey.location] {
-                let manager = CLLocationManager()
                 self.appIsWakingUpFromVisit = true
-                manager.desiredAccuracy = kCLLocationAccuracyBest
-                manager.requestLocation()
+                locationManager.requestLocation()
                 self.showNotification(body: "This is opening due to a trigger of core location")
             }
         } else {

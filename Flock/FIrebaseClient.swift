@@ -476,7 +476,9 @@ class FirebaseClient: NSObject
                     if (snapshot.childSnapshot(forPath: venueID).childSnapshot(forPath: "CurrentAttendees").hasChild(userID)) {
                         if(add) {
                             completion(true)
-                        } else {
+                        }
+                        //remove the user from currentAttendees
+                        else {
                             // Get things from Firebase
                             let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]
                             let venueDict = dictionary[previousLiveID!] as! [String: AnyObject]
