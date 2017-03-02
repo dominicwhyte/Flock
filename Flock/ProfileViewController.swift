@@ -58,7 +58,7 @@ class ProfileViewController: UIViewController, ProfileDelegate {
         if(appDelegate.profileNeedsToUpdate) {
             Utilities.printDebugMessage("Updating profile page")
             self.setupUser()
-            appDelegate.profileNeedsToUpdate = true
+            appDelegate.profileNeedsToUpdate = false
             self.view.setNeedsLayout()
             self.view.setNeedsDisplay()
             if let tableView = self.tableView {
@@ -104,6 +104,7 @@ class ProfileViewController: UIViewController, ProfileDelegate {
                 return DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))
                 
             })
+            tableVC.user = user!
             
         }
         else {
@@ -163,6 +164,12 @@ class ProfileViewController: UIViewController, ProfileDelegate {
         _ = alert.showSuccess("Confirmed", subTitle: "You've removed your plan to go to \(venueName) on \(displayDate)")
     }
     
+    func displayUnLived(venueName : String) {
+        let alert = SCLAlertView()
+        //_ = alert.addButton("First Button", target:self, selector:#selector(PlacesTableViewController.shareWithFlock))
+        print("Second button tapped")
+        _ = alert.showSuccess("Confirmed", subTitle: "You've removed your live status for \(venueName)")
+    }
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

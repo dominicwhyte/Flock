@@ -103,6 +103,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
+    //Function to update data, use for refreshing
+    func updateAllDataWithoutUpdatingLocation(completion: @escaping (_ status: Bool) -> ()) {
+        self.profileNeedsToUpdate = true
+        LoginClient.retrieveData { (data) in
+            if let (user, venues, users) = data {
+                //Check user location
+                self.user = user
+                self.venues = venues
+                self.users = users
+                self.getAllFriends()
+                //Move to master login if slow
+                self.computeAllStats()
+                //Update CoreData
+                //                if #available(iOS 10.0, *) {
+                //                    self.updateCoreDataWithVenuesIfNecessary(venues: Array(venues.values))
+                //                } else {
+                //                    // Fallback on earlier versions
+                //                }
+                
+                //Get unreadMessage count
+                self.getUnreadMessageCount(user: self.user!)
+                completion(true)
+            }
+            else {
+                Utilities.printDebugMessage("Error updating all data")
+                completion(false)
+            }
+        }
+    }
+
+    
+    
+    
 //    @available(iOS 10.0, *)
 //    func getPartialVenueDataFromStorage() -> [String:CoreDataVenue] {
 //        let managedContext = self.persistentContainer.viewContext
@@ -626,10 +659,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func goLiveAt(chosenVenueID : String) {
         FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: chosenVenueID, userID: self.user!.FBID, add: true, completion: { (success) in
-            DispatchQueue.main.async {
-                let alert = SCLAlertView()
-                _ = alert.showSuccess(Utilities.generateRandomCongratulatoryPhrase(), subTitle: "You're live!")
-            }
+            self.updateAllDataWithoutUpdatingLocation(completion: { (success) in
+                if (success) {
+                    DispatchQueue.main.async {
+                        let alert = SCLAlertView()
+                        _ = alert.showSuccess(Utilities.generateRandomCongratulatoryPhrase(), subTitle: "You're live!")
+                    }
+                }
+                else {
+                    Utilities.printDebugMessage("Error updating app")
+                }
+            })
         })
     }
     

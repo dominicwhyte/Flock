@@ -37,6 +37,7 @@ class LiveTableViewCell: MGSwipeTableCell, MGSwipeTableCellDelegate {
     
     func setupCell(venue : Venue) {
         self.venue = venue
+        subtitleLabel.text = venue.VenueNickName
         var leftButtonsArray = [MGSwipeButton]()
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate

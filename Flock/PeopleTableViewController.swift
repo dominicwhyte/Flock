@@ -160,7 +160,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
                 if(friend.LiveClubID != nil) {
                     friendArrayArray[Constants.LIVE_FRIENDS_INDEX].append(friend)
                 }
-                if(friend.Plans.count > 0) {
+                else if(friend.Plans.count > 0) {
                     
                     for (visitID, plan) in friend.Plans {
                         if(!DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))) {

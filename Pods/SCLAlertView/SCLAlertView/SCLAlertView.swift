@@ -40,11 +40,11 @@ public enum SCLAlertViewStyle {
         case .error:
             return 0xC1272D
         case .notice:
-            return 0x727375
+            return 0x4CB5F5
         case .warning:
             return 0xFFD110
         case .info:
-            return 0x2866BF
+            return 0x4CB5F5
         case .edit:
             return 0xA429FF
         case .wait:

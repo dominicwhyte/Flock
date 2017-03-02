@@ -459,6 +459,8 @@ class FirebaseClient: NSObject
             if (venueSuccess) {
                 addLiveToUserForDate(date: date, venueID: venueID, userID: userID, add: add, completion: { (userSuccess) in
                     completion(userSuccess)
+                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                    appDelegate.profileNeedsToUpdate = true
                 })
             }
             else {

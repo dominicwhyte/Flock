@@ -11,9 +11,13 @@ import UIKit
 class ProfileTableViewController: UITableViewController {
     
     struct Constants {
-        static let SECTION_TITLES = ["Plans"]
         static let CELL_HEIGHT = 75
+        static let SECTION_TITLES = ["Live", "Planned"]
+        static let LIVE_SECTION_ROW = 0
+        static let PLANNED_SECTION_ROW = 1
+        static let SECTIONS_COUNT = 2
     }
+    
     
     var user : User?
     var delegate : ProfileDelegate?
@@ -57,26 +61,54 @@ class ProfileTableViewController: UITableViewController {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return Constants.SECTION_TITLES.count
+        return Constants.SECTIONS_COUNT
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.plans.count
+        if (section == Constants.LIVE_SECTION_ROW) {
+            if (user!.LiveClubID != nil) {
+                return 1
+            }
+            else {
+                return 0
+            }
+        }
+        else {
+            return plans.count
+        }
     }
     
+    
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let plan = plans[indexPath.row]
-        Utilities.animateToPlacesTabWithVenueIDandDate(venueID: plan.venueID, date: plan.date)
+        if (indexPath.section == Constants.LIVE_SECTION_ROW) {
+            Utilities.animateToPlacesTabWithVenueIDandDate(venueID: user!.LiveClubID!, date: Date())
+        }
+        else {
+            let plan = plans[indexPath.row]
+            Utilities.animateToPlacesTabWithVenueIDandDate(venueID: plan.venueID, date: plan.date)
+        }
+        
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let plan = self.plans[indexPath.row]
-        let venue = appDelegate.venues[plan.venueID]!
+        var venue : Venue
+        if (indexPath.section == Constants.LIVE_SECTION_ROW) {
+            venue = appDelegate.venues[user!.LiveClubID!]!
+        }
+        else {
+            venue = appDelegate.venues[self.plans[indexPath.row].venueID]!
+        }
         let cell = tableView.dequeueReusableCell(withIdentifier: "VENUE_FRIEND", for: indexPath) as! VenueFriendTableViewCell
         cell.nameLabel.text = venue.VenueName
-        cell.subtitleLabel.text = DateUtilities.convertDateToStringByFormat(date: plan.date, dateFormat: "MMMM d")
+        if (indexPath.section == Constants.LIVE_SECTION_ROW) {
+            cell.subtitleLabel.text = DateUtilities.convertDateToStringByFormat(date: Date(), dateFormat: "MMMM d")
+        } else {
+            cell.subtitleLabel.text = DateUtilities.convertDateToStringByFormat(date: self.plans[indexPath.row].date, dateFormat: "MMMM d")
+        }
+        
         if let venueImage = appDelegate.venueImages[venue.ImageURL] {
             cell.profilePic.image = venueImage
             cell.profilePic.clipsToBounds = true
@@ -102,7 +134,9 @@ class ProfileTableViewController: UITableViewController {
         }
         cell.selectionStyle = .none
         return cell
+        
     }
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return CGFloat(Constants.CELL_HEIGHT)
     }
@@ -110,7 +144,6 @@ class ProfileTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if let currentUser = self.user {
-            Utilities.printDebugMessage("CanEdit, Current User: \(currentUser.FBID)  App User: \(appDelegate.user!.FBID)")
             return currentUser.FBID == appDelegate.user!.FBID
         } else {
             return true
@@ -156,21 +189,63 @@ class ProfileTableViewController: UITableViewController {
         
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let plan = self.plans[indexPath.row]
-        let venue = appDelegate.venues[plan.venueID]!
-        let date = DateUtilities.getStringFromDate(date: plan.date)
+
+        var venue : Venue
+        if (indexPath.section == Constants.LIVE_SECTION_ROW) {
+            venue = appDelegate.venues[user!.LiveClubID!]!
+        }
+        else {
+            let plan = self.plans[indexPath.row]
+            venue = appDelegate.venues[plan.venueID]!
+            
+        }
+
         
         if let currentUser = self.user {
-            Utilities.printDebugMessage("EditActions, Current User: \(currentUser.FBID)  App User: \(appDelegate.user!.FBID)")
             if(currentUser.FBID != appDelegate.user?.FBID) {
                 return nil
             }
         }
+        if (indexPath.section == Constants.LIVE_SECTION_ROW) {
+            let unlive = UITableViewRowAction(style: .destructive, title: "Unlive") { (action, indexPath) in
+                // delete item at indexPath
+                let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
+                FirebaseClient.addUserToVenueLive(date: DateUtilities.getStringFromDate(date: Date()), venueID: self.user!.LiveClubID!, userID: self.user!.FBID, add: false, completion: { (success) in
+                    if (success) {
+                        Utilities.printDebugMessage("Successfully unlived")
+                        self.updateDataAndTableView({ (success) in
+                            Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+                            if (success) {
+                                DispatchQueue.main.async {
+                                    if let delegate = self.delegate  {
+                                        delegate.displayUnLived(venueName: venue.VenueNickName)
+                                    }
+                                    else {
+                                        Utilities.printDebugMessage("Error with delegate in profile")
+                                    }
+                                }
+                            }
+                            else {
+                                Utilities.printDebugMessage("Error reloading tableview in venues")
+                            }
+                        })
+                    }
+                    else {
+                        Utilities.printDebugMessage("Error adding user to venue plans for date")
+                        Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+                    }
+
+                })
+            }
+            unlive.backgroundColor = FlockColors.FLOCK_GRAY
+            return [unlive]
+        }
         
         let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
             // delete item at indexPath
+            let planDate = DateUtilities.getStringFromDate(date: self.plans[indexPath.row].date)
             let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
-            FirebaseClient.addUserToVenuePlansForDate(date: date, venueID: venue.VenueID, userID: appDelegate.user!.FBID, add: false, completion: { (success) in
+            FirebaseClient.addUserToVenuePlansForDate(date: DateUtilities.getStringFromDate(date: self.plans[indexPath.row].date), venueID: venue.VenueID, userID: appDelegate.user!.FBID, add: false, completion: { (success) in
                 if (success) {
                     Utilities.printDebugMessage("Successfully removed plan to attend venue")
                     self.updateDataAndTableView({ (success) in
@@ -178,7 +253,7 @@ class ProfileTableViewController: UITableViewController {
                         if (success) {
                             DispatchQueue.main.async {
                                 if let delegate = self.delegate  {
-                                    delegate.displayUnAttendedPopup(venueName: venue.VenueNickName, attendFullDate: date)
+                                    delegate.displayUnAttendedPopup(venueName: venue.VenueNickName, attendFullDate: planDate)
                                 }
                                 else {
                                     Utilities.printDebugMessage("Error with delegate in profile")
@@ -215,5 +290,6 @@ class ProfileTableViewController: UITableViewController {
 
 protocol ProfileDelegate: class {
     func displayUnAttendedPopup(venueName : String, attendFullDate : String)
+    func displayUnLived(venueName : String)
     func setupUser()
 }
