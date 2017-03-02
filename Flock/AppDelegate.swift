@@ -35,7 +35,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var friendRequestUsers = [String : User]()
     var facebookFriendsFBIDs : [String : String] = [:]
     var profileNeedsToUpdate = true
-    var isArriving = true
     var venueStatistics : Statistics?
     let gcmMessageIDKey = "gcm.message_id"
     var friendCountPlanningToAttendVenueThisWeek = [String:Int]()
@@ -79,7 +78,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         LoginClient.retrieveData { (data) in
             if let (user, venues, users) = data {
                 //Check user location
-                self.locationManager.requestLocation()
                 self.user = user
                 self.venues = venues
                 self.users = users
@@ -95,7 +93,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 
                 //Get unreadMessage count
                 self.getUnreadMessageCount(user: self.user!)
-                
+                self.locationManager.requestLocation()
                 completion(true)
             }
             else {
@@ -417,9 +415,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                     // 4
                     //self.addMessage(withId: id, name: name, text: text)
                     if (messageData["hasBeenRead"] != nil){
-                        Utilities.printDebugMessage("Inside First Loops")
                         let hasBeenRead = messageData["hasBeenRead"]!
-                        Utilities.printDebugMessage("HBR: \(hasBeenRead == "false"), and \(id != self.user!.FBID)")
                         if((hasBeenRead == "false") && (id != self.user!.FBID)) {
                             if let _ = self.unreadMessageCount[channelID] {
                                 self.unreadMessageCount[channelID]! += 1
@@ -428,7 +424,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                             }
                         }
                     }
-                    Utilities.printDebugMessage("UMC: \(self.unreadMessageCount[channelID])")
                     
                 } else {
                     print("Error! Could not decode message data")
@@ -508,7 +503,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     //The prompt for going Live
-    func showPopupIfActiveOrNotificationIfNot(venueName: String) {
+    func showPopupIfActiveOrNotificationIfNot() {
         let state: UIApplicationState = UIApplication.shared.applicationState
         
         switch state {
@@ -516,6 +511,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // Present local "pretty" popup for user
         case .active:
             if let chosenVenue = chosenVenueIDGoLiveAt {
+                Utilities.printDebugMessage("currentVenue:\(user!.LiveClubID)")
+                Utilities.printDebugMessage("chosenVenue: \(chosenVenue)")
                 if let currentVenue = user!.LiveClubID {
                     if (chosenVenue == currentVenue) {
                         displayTempNotification(text: "Temp notification: already live at a club \(currentVenue)")
@@ -535,9 +532,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             }
         // Present local notification with GPS accuracy
         case .background:
+            let venueName = liveVenueIDOptions[0].venue.VenueName
             self.showNotification(body: "Having fun at \(venueName)? Swipe left to view and check in!")
         // Present local notification without GPS accuracy
         case .inactive:
+            let venueName = liveVenueIDOptions[0].venue.VenueName
             self.showNotification(body: "Having fun at \(venueName)? Swipe left to view and check in!")
             Utilities.printDebugMessage("Weird behaviour error")
         }
@@ -571,14 +570,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                     self.chosenVenueIDGoLiveAt = self.liveVenueIDOptions[0].venue.VenueID
                     self.goLive()
                 }
-                if (self.liveVenueIDOptions.count != 1) {
+                if (self.liveVenueIDOptions.count >= 2) {
                     _ = secondaryAlert.addButton("\(self.liveVenueIDOptions[1].venue.VenueNickName)") {
                         self.chosenVenueIDGoLiveAt = self.liveVenueIDOptions[1].venue.VenueID
                         self.goLive()
                     }
                     
                 }
-                if (self.liveVenueIDOptions.count != 2) {
+                if (self.liveVenueIDOptions.count >= 3) {
                     _ = secondaryAlert.addButton("\(self.liveVenueIDOptions[2].venue.VenueNickName)") {
                         self.chosenVenueIDGoLiveAt = self.liveVenueIDOptions[2].venue.VenueID
                         self.goLive()
@@ -601,9 +600,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func goLive() {
         //Remove user from previous live venue
         if let liveClubID = user!.LiveClubID {
-            FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: liveClubID, previousLiveID: liveClubID, userID: self.user!.FBID, add: false, completion: { (success) in
+            FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: liveClubID, userID: self.user!.FBID, add: false, completion: { (success) in
                 //testing func
-                self.showNotification(body: "REMOVING FROM LIVE:  \(self.venues[liveClubID]!.VenueName)")
+                self.displayTempNotification(text: "REMOVING FROM LIVE:  \(self.venues[liveClubID]!.VenueName)")
                 
                 //go live
                 if let chosenVenueIDGoLiveAt = self.chosenVenueIDGoLiveAt {
@@ -626,7 +625,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     func goLiveAt(chosenVenueID : String) {
-        FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: chosenVenueID, previousLiveID : user!.LiveClubID, userID: self.user!.FBID, add: true, completion: { (success) in
+        FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: chosenVenueID, userID: self.user!.FBID, add: true, completion: { (success) in
             DispatchQueue.main.async {
                 let alert = SCLAlertView()
                 _ = alert.showSuccess(Utilities.generateRandomCongratulatoryPhrase(), subTitle: "You're live!")
@@ -639,8 +638,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         // Determine visit location and properties
         //let visitLocation = CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
-        let isArriving = (visit.departureDate.compare(NSDate.distantFuture).rawValue == 0)
-        self.isArriving = isArriving
+//        let isArriving = (visit.departureDate.compare(NSDate.distantFuture).rawValue == 0)
+//        self.isArriving = isArriving
         
         // Get state of the application: Active, Background, or Inactive
         let state: UIApplicationState = UIApplication.shared.applicationState
@@ -650,19 +649,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // Present local "pretty" popup for user
         case .active:
             if(self.user != nil) {
-                manager.desiredAccuracy = kCLLocationAccuracyBest
                 manager.requestLocation()
             }
         // Present local notification with GPS accuracy
         case .background:
             if(self.user != nil) {
-                manager.desiredAccuracy = kCLLocationAccuracyBest
                 manager.requestLocation()
             }
             
         // Present local notification without GPS accuracy
         case .inactive:
-            showNotification(body: "IT WORKS OFFLINE - WUUTTT")
+            break
         }
         
     }
@@ -675,48 +672,42 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // For testing purposes print out all locations in ascending order of distance
         liveVenueIDOptions = []
         let visitLocation = locations[0]
-        let ascendingVenues = distanceToClubsAscending(visitLocation: visitLocation)
-        var body : String = "GPS ACCURACY:\n"
-        for visitLocation in ascendingVenues {
-            body += "\(visitLocation.venue.VenueName) is \(visitLocation.distAway) m away.\n"
-        }
-        //testing
-        showNotification(body: body) //shows notification with list of clubs that are closest
+       
         
         //KEY: remove people from Live if they left
         
         //Send notification if within critical radius
         let clubsAscending = distanceToClubsAscending(visitLocation: visitLocation)
         
-        if(self.appIsWakingUpFromVisit) {
-            if(clubsAscending.count != 0) {
-                if(self.user!.LiveClubID != nil) {
-                    if(clubsAscending[0].distAway < Constants.CRITICAL_RADIUS) {
-                        self.isArriving = true
-                    } else {
-                        self.isArriving = false
-                    }
-                } else if(clubsAscending[0].distAway < Constants.CRITICAL_RADIUS) {
-                    self.isArriving = true
-                } else {
-                    self.isArriving = false
-                }
-            }
-            else {
-                self.isArriving = false
-            }
-        }
+//        if(self.appIsWakingUpFromVisit) {
+//            if(clubsAscending.count != 0) {
+//                if(self.user!.LiveClubID != nil) {
+//                    if(clubsAscending[0].distAway < Constants.CRITICAL_RADIUS) {
+//                        self.isArriving = true
+//                    } else {
+//                        self.isArriving = false
+//                    }
+//                } else if(clubsAscending[0].distAway < Constants.CRITICAL_RADIUS) {
+//                    self.isArriving = true
+//                } else {
+//                    self.isArriving = false
+//                }
+//            }
+//            else {
+//                self.isArriving = false
+//            }
+//        }
         
         
-        if (clubsAscending.count != 0 && clubsAscending[0].distAway < Constants.CRITICAL_RADIUS && self.isArriving) {
+        if (clubsAscending.count != 0) {
             liveVenueIDOptions = clubsAscending
             chosenVenueIDGoLiveAt = clubsAscending[0].venue.VenueID
-            showPopupIfActiveOrNotificationIfNot(venueName : clubsAscending[0].venue.VenueName)
+            showPopupIfActiveOrNotificationIfNot()
         }
             //Remove the user from the club
         else {
             if let liveClubID = user!.LiveClubID {
-                FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: liveClubID, previousLiveID: liveClubID, userID: self.user!.FBID, add: false, completion: { (success) in
+                FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: liveClubID, userID: self.user!.FBID, add: false, completion: { (success) in
                     //testing func
                     self.showNotification(body: "TEMP NOTIFICATION. REMOVING FROM LIVE:  \(self.venues[liveClubID]!.VenueName)")
                 })
@@ -837,30 +828,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     //Uses core data
-    func distanceToClubsAscendingWhileInactive(visitLocation: CLLocation) -> [VisitLocation] {
-        var visitLocations = [VisitLocation]()
-        if #available(iOS 10.0, *) {
-            let storedVenues = self.getPartialVenueDataFromStorage()
-            
-            
-            for cdvenue in Array(storedVenues.values) {
-                let venueLocation = CLLocation(latitude: Double(cdvenue.latitude), longitude: Double(cdvenue.longitude))
-                let distanceInMeters = visitLocation.distance(from: venueLocation)
-                let venue = venues[cdvenue.venueID]!
-                if (distanceInMeters < Constants.CRITICAL_RADIUS) {
-                    visitLocations.append(VisitLocation(distAway: distanceInMeters, venue: venue))
-                }
-                
-            }
-            visitLocations.sort { (vl1, vl2) -> Bool in
-                vl1.distAway < vl2.distAway
-            }
-        } else {
-            // Fallback on earlier versions
-        }
-        return visitLocations
-        
-    }
+//    func distanceToClubsAscendingWhileInactive(visitLocation: CLLocation) -> [VisitLocation] {
+//        var visitLocations = [VisitLocation]()
+//        if #available(iOS 10.0, *) {
+//            let storedVenues = self.getPartialVenueDataFromStorage()
+//            
+//            
+//            for cdvenue in Array(storedVenues.values) {
+//                let venueLocation = CLLocation(latitude: Double(cdvenue.latitude), longitude: Double(cdvenue.longitude))
+//                let distanceInMeters = visitLocation.distance(from: venueLocation)
+//                let venue = venues[cdvenue.venueID]!
+//                if (distanceInMeters < Constants.CRITICAL_RADIUS) {
+//                    visitLocations.append(VisitLocation(distAway: distanceInMeters, venue: venue))
+//                }
+//                
+//            }
+//            visitLocations.sort { (vl1, vl2) -> Bool in
+//                vl1.distAway < vl2.distAway
+//            }
+//        } else {
+//            // Fallback on earlier versions
+//        }
+//        return visitLocations
+//        
+//    }
     
     //=================================================================================================================//
     

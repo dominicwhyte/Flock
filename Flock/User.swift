@@ -19,7 +19,7 @@ class User: NSObject
     {
         self.FBID = dict["FBID"] as! String
         self.Name = dict["Name"] as! String
-        self.LiveClubID = dict["CurrentClub"] as! String?
+        self.LiveClubID = dict["LiveClubID"] as! String?
         if(dict["FriendRequests"] != nil) {
             self.FriendRequests = dict["FriendRequests"] as! [String:String]
         } else {

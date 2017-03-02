@@ -454,20 +454,20 @@ class FirebaseClient: NSObject
     
     
     //Add plan to user plans and add user to planned attendees in venue
-    class func addUserToVenueLive(date: String, venueID : String, previousLiveID: String?, userID : String, add : Bool,  completion: @escaping (Bool) -> Void) {
-        addUserToVenueCurrentAttendees(venueID: venueID, previousLiveID: previousLiveID, userID: userID, add: add) { (venueSuccess) in
+    class func addUserToVenueLive(date: String, venueID : String, userID : String, add : Bool,  completion: @escaping (Bool) -> Void) {
+        addUserToVenueCurrentAttendees(venueID: venueID, userID: userID, add: add) { (venueSuccess) in
             if (venueSuccess) {
                 addLiveToUserForDate(date: date, venueID: venueID, userID: userID, add: add, completion: { (userSuccess) in
                     completion(userSuccess)
                 })
             }
             else {
-                
+                Utilities.printDebugMessage("Error adding user to venue")
             }
         }
     }
     
-    static func addUserToVenueCurrentAttendees(venueID : String, previousLiveID: String?, userID : String, add: Bool, completion: @escaping (Bool) -> Void) {
+    static func addUserToVenueCurrentAttendees(venueID : String, userID : String, add: Bool, completion: @escaping (Bool) -> Void) {
         
         dataRef.child("Venues").observeSingleEvent(of: .value, with: { (snapshot) in
             //Confirm send friend request conditions
@@ -476,12 +476,13 @@ class FirebaseClient: NSObject
                     if (snapshot.childSnapshot(forPath: venueID).childSnapshot(forPath: "CurrentAttendees").hasChild(userID)) {
                         if(add) {
                             completion(true)
+                            return
                         }
                         //remove the user from currentAttendees
                         else {
                             // Get things from Firebase
                             let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]
-                            let venueDict = dictionary[previousLiveID!] as! [String: AnyObject]
+                            let venueDict = dictionary[venueID] as! [String: AnyObject]
                             var currentAttendees = venueDict["CurrentAttendees"] as! [String : AnyObject]
                             
                             // Remove user from current attendees
@@ -489,8 +490,9 @@ class FirebaseClient: NSObject
                             
                             // Update dat ish
                             let updates = ["CurrentAttendees": currentAttendees]
-                            dataRef.child("Venues").child(previousLiveID!).updateChildValues(updates)
+                            dataRef.child("Venues").child(venueID).updateChildValues(updates)
                             completion(true)
+                            return
                         }
                     }
                     else {
@@ -504,13 +506,9 @@ class FirebaseClient: NSObject
                                 let updates = ["CurrentAttendees": currentAttendees]
                                 dataRef.child("Venues").child(venueID).updateChildValues(updates)
                             }
-                        } else {
-                            currentAttendees[userID] = nil
                         }
-                        
-                        let updates = ["CurrentAttendees": currentAttendees]
-                        dataRef.child("Venues").child(previousLiveID!).updateChildValues(updates)
-                        
+                        completion(true)
+                        return
                     }
                 }
                     //Planned attendees dict not present
@@ -519,19 +517,10 @@ class FirebaseClient: NSObject
                     if(add) {
                         let updates = ["CurrentAttendees": [userID : userID]]
                         dataRef.child("Venues").child(venueID).updateChildValues(updates)
+                        completion(true)
+                        return
                     }
                 }
-                
-                if(previousLiveID != nil && previousLiveID != venueID) {
-                    let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]
-                    let venueDict = dictionary[previousLiveID!] as! [String: AnyObject]
-                    var currentAttendees = venueDict["CurrentAttendees"] as! [String : AnyObject]
-                    currentAttendees[userID] = nil
-                    
-                    let updates = ["CurrentAttendees": currentAttendees]
-                    dataRef.child("Venues").child(previousLiveID!).updateChildValues(updates)
-                }
-                completion(true)
             }
             else {
                 completion(false)
