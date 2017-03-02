@@ -87,11 +87,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 //Move to master login if slow
                 self.computeAllStats()
                 //Update CoreData
-                if #available(iOS 10.0, *) {
-                    self.updateCoreDataWithVenuesIfNecessary(venues: Array(venues.values))
-                } else {
-                    // Fallback on earlier versions
-                }
+//                if #available(iOS 10.0, *) {
+//                    self.updateCoreDataWithVenuesIfNecessary(venues: Array(venues.values))
+//                } else {
+//                    // Fallback on earlier versions
+//                }
                 
                 //Get unreadMessage count
                 self.getUnreadMessageCount(user: self.user!)
@@ -105,65 +105,65 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
-    @available(iOS 10.0, *)
-    func getPartialVenueDataFromStorage() -> [String:CoreDataVenue] {
-        let managedContext = self.persistentContainer.viewContext
-        var venues = [String:CoreDataVenue]()
-        
-        
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
-        let entityDescription = NSEntityDescription.entity(forEntityName: "StoredVenue", in: managedContext)
-        fetchRequest.entity = entityDescription
-        do {
-            let storedVenuesArray = try managedContext.fetch(fetchRequest) as! [StoredVenue]
-            for storedVenue in storedVenuesArray {
-                let newVenue = CoreDataVenue(name: storedVenue.name!, venueID: storedVenue.venueID!, latitude: storedVenue.latitude, longitude: storedVenue.longitude)
-                venues[storedVenue.venueID!] = newVenue
-                
-            }
-            print(storedVenuesArray)
-            
-        } catch {
-            let fetchError = error as NSError
-            print(fetchError)
-        }
-        return venues
-    }
+//    @available(iOS 10.0, *)
+//    func getPartialVenueDataFromStorage() -> [String:CoreDataVenue] {
+//        let managedContext = self.persistentContainer.viewContext
+//        var venues = [String:CoreDataVenue]()
+//        
+//        
+//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+//        let entityDescription = NSEntityDescription.entity(forEntityName: "StoredVenue", in: managedContext)
+//        fetchRequest.entity = entityDescription
+//        do {
+//            let storedVenuesArray = try managedContext.fetch(fetchRequest) as! [StoredVenue]
+//            for storedVenue in storedVenuesArray {
+//                let newVenue = CoreDataVenue(name: storedVenue.name!, venueID: storedVenue.venueID!, latitude: storedVenue.latitude, longitude: storedVenue.longitude)
+//                venues[storedVenue.venueID!] = newVenue
+//                
+//            }
+//            print(storedVenuesArray)
+//            
+//        } catch {
+//            let fetchError = error as NSError
+//            print(fetchError)
+//        }
+//        return venues
+//    }
     
-    @available(iOS 10.0, *)
-    func storePartialVenueDataInStorage(name: String, venueID: String, latitude: Double?, longitude: Double?) {
-        let managedContext = self.persistentContainer.viewContext
-        let entityDescription = NSEntityDescription.entity(forEntityName: "StoredVenue", in: managedContext)
-        let newVenue = NSManagedObject(entity: entityDescription!, insertInto: managedContext)
-        newVenue.setValue(name, forKey: "name")
-        newVenue.setValue(venueID, forKey: "venueID")
-        if(latitude != nil && longitude != nil) {
-            newVenue.setValue(latitude, forKey: "latitude")
-            newVenue.setValue(longitude, forKey: "longitude")
-        }
-        
-        do {
-            try newVenue.managedObjectContext?.save()
-        } catch {
-            print(error)
-        }
-    }
+//    @available(iOS 10.0, *)
+//    func storePartialVenueDataInStorage(name: String, venueID: String, latitude: Double?, longitude: Double?) {
+//        let managedContext = self.persistentContainer.viewContext
+//        let entityDescription = NSEntityDescription.entity(forEntityName: "StoredVenue", in: managedContext)
+//        let newVenue = NSManagedObject(entity: entityDescription!, insertInto: managedContext)
+//        newVenue.setValue(name, forKey: "name")
+//        newVenue.setValue(venueID, forKey: "venueID")
+//        if(latitude != nil && longitude != nil) {
+//            newVenue.setValue(latitude, forKey: "latitude")
+//            newVenue.setValue(longitude, forKey: "longitude")
+//        }
+//        
+//        do {
+//            try newVenue.managedObjectContext?.save()
+//        } catch {
+//            print(error)
+//        }
+//    }
     
-    @available(iOS 10.0, *)
-    func updateCoreDataWithVenuesIfNecessary(venues: [Venue]) {
-        let partialListOfVenues = self.getPartialVenueDataFromStorage()
-        for venue in venues {
-            if(partialListOfVenues[venue.VenueID] == nil) {
-                var latitude : Double? = nil
-                var longitude : Double? = nil
-                if(venue.VenueLocation != nil) {
-                    latitude = venue.VenueLocation!.coordinate.latitude
-                    longitude = venue.VenueLocation!.coordinate.longitude
-                }
-                self.storePartialVenueDataInStorage(name: venue.VenueName, venueID: venue.VenueID, latitude: latitude, longitude: longitude)
-            }
-        }
-    }
+//    @available(iOS 10.0, *)
+//    func updateCoreDataWithVenuesIfNecessary(venues: [Venue]) {
+//        let partialListOfVenues = self.getPartialVenueDataFromStorage()
+//        for venue in venues {
+//            if(partialListOfVenues[venue.VenueID] == nil) {
+//                var latitude : Double? = nil
+//                var longitude : Double? = nil
+//                if(venue.VenueLocation != nil) {
+//                    latitude = venue.VenueLocation!.coordinate.latitude
+//                    longitude = venue.VenueLocation!.coordinate.longitude
+//                }
+//                self.storePartialVenueDataInStorage(name: venue.VenueName, venueID: venue.VenueID, latitude: latitude, longitude: longitude)
+//            }
+//        }
+//    }
     
     //Call only upon app launch
     func setAllVenueImages(venueImageURLs : [String], completion: @escaping (_ status: Bool) -> ()) {
@@ -1043,59 +1043,59 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
-        self.saveContext()
+        //self.saveContext()
     }
     
     // MARK: - Core Data stack
-    
-    @available(iOS 10.0, *)
-    lazy var persistentContainer: NSPersistentContainer = {
-        /*
-         The persistent container for the application. This implementation
-         creates and returns a container, having loaded the store for the
-         application to it. This property is optional since there are legitimate
-         error conditions that could cause the creation of the store to fail.
-         */
-        let container = NSPersistentContainer(name: "Flock")
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-            if let error = error as NSError? {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                
-                /*
-                 Typical reasons for an error here include:
-                 * The parent directory does not exist, cannot be created, or disallows writing.
-                 * The persistent store is not accessible, due to permissions or data protection when the device is locked.
-                 * The device is out of space.
-                 * The store could not be migrated to the current model version.
-                 Check the error message to determine what the actual problem was.
-                 */
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        })
-        return container
-    }()
-    
-    // MARK: - Core Data Saving support
-    
-    func saveContext () {
-        if #available(iOS 10.0, *) {
-            let context = persistentContainer.viewContext
-            if context.hasChanges {
-                do {
-                    try context.save()
-                } catch {
-                    // Replace this implementation with code to handle the error appropriately.
-                    // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                    let nserror = error as NSError
-                    fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-                }
-            }
-        } else {
-            // Fallback on earlier versions
-        }
-    }
-    
+//    
+//    @available(iOS 10.0, *)
+//    lazy var persistentContainer: NSPersistentContainer = {
+//        /*
+//         The persistent container for the application. This implementation
+//         creates and returns a container, having loaded the store for the
+//         application to it. This property is optional since there are legitimate
+//         error conditions that could cause the creation of the store to fail.
+//         */
+//        let container = NSPersistentContainer(name: "Flock")
+//        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+//            if let error = error as NSError? {
+//                // Replace this implementation with code to handle the error appropriately.
+//                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+//                
+//                /*
+//                 Typical reasons for an error here include:
+//                 * The parent directory does not exist, cannot be created, or disallows writing.
+//                 * The persistent store is not accessible, due to permissions or data protection when the device is locked.
+//                 * The device is out of space.
+//                 * The store could not be migrated to the current model version.
+//                 Check the error message to determine what the actual problem was.
+//                 */
+//                fatalError("Unresolved error \(error), \(error.userInfo)")
+//            }
+//        })
+//        return container
+//    }()
+//    
+//    // MARK: - Core Data Saving support
+//    
+//    func saveContext () {
+//        if #available(iOS 10.0, *) {
+//            let context = persistentContainer.viewContext
+//            if context.hasChanges {
+//                do {
+//                    try context.save()
+//                } catch {
+//                    // Replace this implementation with code to handle the error appropriately.
+//                    // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+//                    let nserror = error as NSError
+//                    fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+//                }
+//            }
+//        } else {
+//            // Fallback on earlier versions
+//        }
+//    }
+//    
     
     
     
