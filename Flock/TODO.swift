@@ -17,20 +17,15 @@ import Foundation
 
 /*
  Remaining to be done:
- MAKE SURE TO REMOVE NOTIFICATION FROM DIDFINISHLAUNCHINGWITHOPTIONS
  Make sure to rename/reword the alwaysUsageDescription key in the info.plist
- make people unlive
  timeout for laoding time
  SET EVERYTHING TO PRODUCTION
  check UI stuff iphone 5
+ Stop people from rotating to landscape
  upgrade firebase account
  change critifcal rad
- on logon check if live and add to live etc.
  app tab bar icons/UI
  search page UI
- switching tabs
- fix badge
- remove departing notification
  check location when open app
  walkthrough
  attachment button crashes handle

@@ -20,7 +20,6 @@ class ChatsTableViewController: UITableViewController {
         self.tableView.separatorColor = FlockColors.FLOCK_BLUE
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         self.user = appDelegate.user!
-        Utilities.printDebugMessage("1")
         for(FBID, channelID) in self.user!.ChannelIDs {
             let friend = appDelegate.users[FBID]!
             let conversation = Conversation(channelID: channelID, participant: friend, imageURL : friend.PictureURL, lastMessage: nil )
@@ -31,6 +30,8 @@ class ChatsTableViewController: UITableViewController {
             })
             Utilities.printDebugMessage("getting conversation for \(friend.Name)")
         }
+        
+        // Remove appDelegate observer as soon as we start observing:
         
         var totalUnread = 0
         for (_, count) in appDelegate.unreadMessageCount {
@@ -107,7 +108,7 @@ class ChatsTableViewController: UITableViewController {
         //cell.selectionStyle = .none
         //Setup Cell
         let conversation : Conversation = self.conversations[indexPath.row]
-        
+        var labelsHaveBeenUpdated = false
         
         cell.chatTitle.text = conversation.participant.Name
         cell.chatSubtitle.text = ""
@@ -131,17 +132,59 @@ class ChatsTableViewController: UITableViewController {
                     conversation.lastMessage = text
                     conversation.lastSenderId = id
                     
-//                    if (messageData["hasBeenRead"] != nil){
-//                        let hasBeenRead = messageData["hasBeenRead"]!
-//                        if((hasBeenRead == "false") && (id != self.user!.FBID)) {
-//                            self.unreadCount += 1
-//                        }
-//                    }
-//                    Utilities.printDebugMessage("\(unreadCount)")
-                    
+                    if (messageData["hasBeenRead"] != nil){
+                        let hasBeenRead = messageData["hasBeenRead"]!
+                        if((hasBeenRead == "false") && (id != self.user!.FBID)) {
+                            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                            if let count = appDelegate.unreadMessageCount[conversation.channelID] {
+                                //appDelegate.unreadMessageCount[conversation.channelID]! += 1
+                            } else {
+                                //appDelegate.unreadMessageCount[conversation.channelID] = 1
+                            }
+                            labelsHaveBeenUpdated = false
+                        }
+                    }
                 } else {
                     print("Error! Could not decode message data")
                 }
+                
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                var unreadCount = 0
+                if appDelegate.unreadMessageCount[conversation.channelID] != nil {
+                    unreadCount = appDelegate.unreadMessageCount[conversation.channelID]!
+                }
+                
+                var totalUnread = 0
+                for count in Array(appDelegate.unreadMessageCount.values) {
+                    totalUnread += count
+                }
+                
+                if let stb = appDelegate.simpleTBC {
+                    if totalUnread > 0 {
+                        stb.addBadge(index: 3, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
+                    } else {
+                        stb.removeAllBadges()
+                    }
+                }
+                if(unreadCount > 0 && !labelsHaveBeenUpdated) {
+                    // Unread messages
+                    if(unreadCount > 0 && unreadCount <= 5) {
+                        // Cell label
+                        cell.unreadMessagesLabel.isHidden = false
+                        cell.unreadMessagesLabel.text = "\(unreadCount)"
+                        cell.unreadMessagesLabel.layer.cornerRadius = cell.unreadMessagesLabel.frame.size.width/2
+                        cell.unreadMessagesLabel.clipsToBounds = true
+                        labelsHaveBeenUpdated = true
+                        
+                    } else if(unreadCount > 5) {
+                        cell.unreadMessagesLabel.isHidden = false
+                        cell.unreadMessagesLabel.text = "5+"
+                        cell.unreadMessagesLabel.layer.cornerRadius = cell.unreadMessagesLabel.frame.size.width/2
+                        cell.unreadMessagesLabel.clipsToBounds = true
+                        labelsHaveBeenUpdated = true
+                    }
+                }
+
                 
                 DispatchQueue.main.async {
                     if(conversation.lastMessage != nil) {
@@ -156,65 +199,34 @@ class ChatsTableViewController: UITableViewController {
                         cell.chatSubtitle.text = ""
                     }
                     
-                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                    var unreadCount = 0
-                    if appDelegate.unreadMessageCount[conversation.channelID] != nil {
-                        unreadCount = appDelegate.unreadMessageCount[conversation.channelID]!
-                    }
-                    var totalUnread = 0
-                    for count in Array(appDelegate.unreadMessageCount.values) {
-                        totalUnread += count
-                    }
-                    Utilities.printDebugMessage("\(unreadCount)")
-                    Utilities.printDebugMessage("\(totalUnread)")
-                    
-                    if let stb = appDelegate.simpleTBC {
-                        if totalUnread > 0 {
-                            stb.addBadge(index: 3, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
-                        } else {
-                            stb.removeAllBadges()
-                        }
-                    }
-                    // Unread messages
-                    if(unreadCount > 0 && unreadCount < 5) {
-                        // Cell label
-                        cell.unreadMessagesLabel.isHidden = false
-                        cell.unreadMessagesLabel.text = "\(unreadCount)"
-                        cell.unreadMessagesLabel.layer.cornerRadius = cell.unreadMessagesLabel.frame.size.width/2
-                        cell.unreadMessagesLabel.clipsToBounds = true
-                        
-                    } else if(unreadCount > 5) {
-                        cell.unreadMessagesLabel.isHidden = false
-                        cell.unreadMessagesLabel.text = "5+"
-                        cell.unreadMessagesLabel.layer.cornerRadius = cell.unreadMessagesLabel.frame.size.width/2
-                        cell.unreadMessagesLabel.clipsToBounds = true
-                    }
-                    
                 }
             })
             Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
         } else {
-            cell.chatSubtitle.text = conversation.lastMessage
+            if(conversation.lastMessage != nil) {
+                if(conversation.lastSenderId == self.user!.FBID) {
+                    cell.chatSubtitle.text = "Me: \(conversation.lastMessage!)"
+                } else {
+                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                    let friendName = appDelegate.users[conversation.lastSenderId!]!.Name
+                    cell.chatSubtitle.text = "\(friendName): \(conversation.lastMessage!)"
+                }
+            } else {
+                cell.chatSubtitle.text = ""
+            }
         }
         
         
-        self.retrieveImage(imageURL: conversation.imageURL!, imageView: cell.chatImage)
-        cell.chatImage.makeViewCircle()
-        //        cell.liveLabel.text = "\(venue.CurrentAttendees.count) live"
-        //        cell.plannedLabel.text = "\(venue.PlannedAttendees.count) planned"
-        //cell.subtitleLabel.text = "\(venue.CurrentAttendees.count) live   \(venue.PlannedAttendees.count) planned"
-        Utilities.printDebugMessage("Setting up cell")
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         var unreadCount = 0
         if appDelegate.unreadMessageCount[conversation.channelID] != nil {
             unreadCount = appDelegate.unreadMessageCount[conversation.channelID]!
         }
+        
         var totalUnread = 0
         for count in Array(appDelegate.unreadMessageCount.values) {
             totalUnread += count
         }
-        Utilities.printDebugMessage("\(unreadCount)")
-        Utilities.printDebugMessage("\(totalUnread)")
         
         if let stb = appDelegate.simpleTBC {
             if totalUnread > 0 {
@@ -223,20 +235,30 @@ class ChatsTableViewController: UITableViewController {
                 stb.removeAllBadges()
             }
         }
-        // Unread messages
-        if(unreadCount > 0 && unreadCount < 5) {
-            // Cell label
-            cell.unreadMessagesLabel.isHidden = false
-            cell.unreadMessagesLabel.text = "\(unreadCount)"
-            cell.unreadMessagesLabel.layer.cornerRadius = cell.unreadMessagesLabel.frame.size.width/2
-            cell.unreadMessagesLabel.clipsToBounds = true
-            
-        } else if(unreadCount > 5) {
-            cell.unreadMessagesLabel.isHidden = false
-            cell.unreadMessagesLabel.text = "5+"
-            cell.unreadMessagesLabel.layer.cornerRadius = cell.unreadMessagesLabel.frame.size.width/2
-            cell.unreadMessagesLabel.clipsToBounds = true
+        if(unreadCount > 0 && !labelsHaveBeenUpdated) {
+            // Unread messages
+            if(unreadCount > 0 && unreadCount <= 5) {
+                // Cell label
+                cell.unreadMessagesLabel.isHidden = false
+                cell.unreadMessagesLabel.text = "\(unreadCount)"
+                cell.unreadMessagesLabel.layer.cornerRadius = cell.unreadMessagesLabel.frame.size.width/2
+                cell.unreadMessagesLabel.clipsToBounds = true
+                
+            } else if(unreadCount > 5) {
+                cell.unreadMessagesLabel.isHidden = false
+                cell.unreadMessagesLabel.text = "5+"
+                cell.unreadMessagesLabel.layer.cornerRadius = cell.unreadMessagesLabel.frame.size.width/2
+                cell.unreadMessagesLabel.clipsToBounds = true
+            }
         }
+        
+        self.retrieveImage(imageURL: conversation.imageURL!, imageView: cell.chatImage)
+        cell.chatImage.makeViewCircle()
+        //        cell.liveLabel.text = "\(venue.CurrentAttendees.count) live"
+        //        cell.plannedLabel.text = "\(venue.PlannedAttendees.count) planned"
+        //cell.subtitleLabel.text = "\(venue.CurrentAttendees.count) live   \(venue.PlannedAttendees.count) planned"
+        Utilities.printDebugMessage("Setting up cell")
+
 
         return cell
         

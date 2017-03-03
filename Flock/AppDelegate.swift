@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import Firebase
 import FBSDKCoreKit
+import FirebaseDatabase
 import FirebaseAuth
 import SimpleTab
 import CoreLocation
@@ -39,6 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     let gcmMessageIDKey = "gcm.message_id"
     var friendCountPlanningToAttendVenueThisWeek = [String:Int]()
     var unreadMessageCount = [String:Int]() // maps from a ChannelID to unread message count
+    var messagesForChatsTableViewController = [String:[Conversation]]()
     var appIsWakingUpFromVisit : Bool = false
 
     
@@ -52,7 +54,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                     imageURLArray.append(venue.ImageURL)
                     imageURLArray.append(venue.LogoURL)
                 }
+                
+                //Get unreadMessage count
+                self.getUnreadMessageCount(user: self.user!)
+                
                 Utilities.printDebugMessage("TEST")
+                
                 
                 //Must connect to
                 self.connectToFcm()
@@ -91,8 +98,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
 //                    // Fallback on earlier versions
 //                }
                 
-                //Get unreadMessage count
-                self.getUnreadMessageCount(user: self.user!)
                 self.locationManager.requestLocation()
                 completion(true)
             }
@@ -435,12 +440,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     func getUnreadMessageCount(user: User) {
+        let dataRef = FIRDatabase.database().reference().child("channels")
         for channelID in Array(user.ChannelIDs.values) {
-            let channelRef = FIRDatabase.database().reference().child("channels").child(channelID)
+            let channelRef = dataRef.child(channelID)
             
             let messageRef = channelRef.child("messages")
             // 1.
             let messageQuery = messageRef.queryLimited(toLast:5)
+            
+            
             let _ = messageQuery.observe(.childAdded, with: { (snapshot) -> Void in
                 // 3
                 let messageData = snapshot.value as! Dictionary<String, String>
@@ -455,6 +463,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                             } else {
                                 self.unreadMessageCount[channelID] = 1
                             }
+                        }
+                        
+                        
+                        if(self.unreadMessageCount[channelID] != nil) {
+                            Utilities.printDebugMessage("Channel: \(channelID), unread: \(self.unreadMessageCount[channelID])")
+                        } else {
+                            Utilities.printDebugMessage("Channel: \(channelID), unread: 0")
                         }
                     }
                     
@@ -635,7 +650,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         if let liveClubID = user!.LiveClubID {
             FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: liveClubID, userID: self.user!.FBID, add: false, completion: { (success) in
                 //testing func
-                self.displayTempNotification(text: "REMOVING FROM LIVE:  \(self.venues[liveClubID]!.VenueName)")
+                //self.displayTempNotification(text: "REMOVING FROM LIVE:  \(self.venues[liveClubID]!.VenueName)")
                 
                 //go live
                 if let chosenVenueIDGoLiveAt = self.chosenVenueIDGoLiveAt {
@@ -719,26 +734,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         //Send notification if within critical radius
         let clubsAscending = distanceToClubsAscending(visitLocation: visitLocation)
         
-//        if(self.appIsWakingUpFromVisit) {
-//            if(clubsAscending.count != 0) {
-//                if(self.user!.LiveClubID != nil) {
-//                    if(clubsAscending[0].distAway < Constants.CRITICAL_RADIUS) {
-//                        self.isArriving = true
-//                    } else {
-//                        self.isArriving = false
-//                    }
-//                } else if(clubsAscending[0].distAway < Constants.CRITICAL_RADIUS) {
-//                    self.isArriving = true
-//                } else {
-//                    self.isArriving = false
-//                }
-//            }
-//            else {
-//                self.isArriving = false
-//            }
-//        }
-        
-        
         if (clubsAscending.count != 0) {
             liveVenueIDOptions = clubsAscending
             chosenVenueIDGoLiveAt = clubsAscending[0].venue.VenueID
@@ -749,7 +744,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             if let liveClubID = user!.LiveClubID {
                 FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: liveClubID, userID: self.user!.FBID, add: false, completion: { (success) in
                     //testing func
-                    self.showNotification(body: "TEMP NOTIFICATION. REMOVING FROM LIVE:  \(self.venues[liveClubID]!.VenueName)")
+                    //self.showNotification(body: "TEMP NOTIFICATION. REMOVING FROM LIVE:  \(self.venues[liveClubID]!.VenueName)")
                 })
             }
             
@@ -812,7 +807,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 goLive()
                 break
             case "switch":
-                displayPrompt()
+                //displayPrompt()
                 break
             default:
                 break
@@ -935,7 +930,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             if let _ = launchOptions![UIApplicationLaunchOptionsKey.location] {
                 self.appIsWakingUpFromVisit = true
                 locationManager.requestLocation()
-                self.showNotification(body: "This is opening due to a trigger of core location")
             }
         } else {
             self.appIsWakingUpFromVisit = false
@@ -1064,6 +1058,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        if let user = self.user {
+            locationManager.requestLocation()
+        }
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
