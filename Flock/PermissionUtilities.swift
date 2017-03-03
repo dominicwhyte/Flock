@@ -43,7 +43,7 @@ class PermissionUtilities {
     
     static func setupPermissionScope(permissionScope : PermissionScope) {
         permissionScope.addPermission(NotificationsPermission(notificationCategories: nil),
-                                  message: "Get notified when you're\r\nFlock is out")
+                                  message: "Get notified when you're\r\nat a venue")
         permissionScope.addPermission(LocationAlwaysPermission(),
                                   message: "Let your Flock know\r\nwhen you're out")
     }

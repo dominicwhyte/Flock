@@ -20,17 +20,15 @@ import Foundation
  Make sure to rename/reword the alwaysUsageDescription key in the info.plist
  timeout for laoding time
  SET EVERYTHING TO PRODUCTION
- check UI stuff iphone 5
- Stop people from rotating to landscape
+ check UI stuff on all iphones
  upgrade firebase account
- change critifcal rad
- app tab bar icons/UI
- search page UI
- check location when open app
  walkthrough
- attachment button crashes handle
+ update venues location
  live
+ fix chat bug profile
  time based thing only live
+ relink settings button
+ 
  V2:
  social media cocoa pods
  Rating: https://github.com/nicklockwood/iRate

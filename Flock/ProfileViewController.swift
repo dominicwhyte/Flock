@@ -32,11 +32,7 @@ class ProfileViewController: UIViewController, ProfileDelegate {
     var tableViewController : ProfileTableViewController?
     
     @IBAction func settingsButtonPressed(_ sender: Any) {
-        let permissionScope = PermissionScope()/*
-         permissionScope.addPermission(NotificationsPermission(notificationCategories: nil),
-         message: "Get notified when you're\r\nFlock is out")
-         permissionScope.addPermission(LocationAlwaysPermission(),
-         message: "Let your Flock know\r\nwhen you're out")*/
+        let permissionScope = PermissionScope()
         PermissionUtilities.setupPermissionScope(permissionScope: permissionScope)
         PermissionUtilities.getPermissionsIfDenied(permissionScope: permissionScope)
     }
@@ -114,9 +110,9 @@ class ProfileViewController: UIViewController, ProfileDelegate {
         self.flockSizeLabel.text = "Flock Size:\n\(user!.Friends.count)"
         if let favoriteClubID = appDelegate.computeFavoriteClubForUser(user: user!) {
             let clubName = appDelegate.venues[favoriteClubID]!.VenueNickName
-            self.favoriteClubLabel.text = "Favorite Club:\n\(clubName)"
+            self.favoriteClubLabel.text = "Favorite Place:\n\(clubName)"
         } else {
-            self.favoriteClubLabel.text = "Favorite Club:\n None Yet!"
+            self.favoriteClubLabel.text = "Favorite Place:\n None Yet!"
         }
         
         FirebaseClient.getImageFromURL(user!.PictureURL) { (image) in

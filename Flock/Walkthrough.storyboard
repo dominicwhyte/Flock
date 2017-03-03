@@ -22,9 +22,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="JJV-op-rSU">
-                                <rect key="frame" x="168" y="263" width="39" height="37"/>
-                            </pageControl>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4oX-Xj-2Xl">
                                 <rect key="frame" x="314" y="30" width="45" height="29"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -58,7 +55,6 @@
                         </subviews>
                         <color key="backgroundColor" red="0.02493136487170013" green="0.38575753828192622" blue="0.71137152777777779" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="centerX" secondItem="JJV-op-rSU" secondAttribute="centerX" id="3FQ-Yc-qXy"/>
                             <constraint firstAttribute="trailingMargin" secondItem="4oX-Xj-2Xl" secondAttribute="trailing" id="7EC-fw-pg2"/>
                             <constraint firstAttribute="centerX" secondItem="4oX-Xj-2Xl" secondAttribute="centerX" id="8eJ-k9-7sZ"/>
                             <constraint firstItem="4oX-Xj-2Xl" firstAttribute="top" secondItem="N4y-CV-VgM" secondAttribute="bottom" constant="10" id="TAd-YH-JAB"/>
@@ -67,7 +63,6 @@
                             <constraint firstItem="3Ad-hv-8C6" firstAttribute="leading" secondItem="Xnf-dR-UXp" secondAttribute="leadingMargin" constant="-16" id="js7-xG-bvC"/>
                             <constraint firstItem="VXm-Ru-t4o" firstAttribute="top" secondItem="3Ad-hv-8C6" secondAttribute="bottom" constant="20" id="mv9-pb-u4d"/>
                             <constraint firstItem="VXm-Ru-t4o" firstAttribute="top" secondItem="4oX-Xj-2Xl" secondAttribute="bottom" constant="20" id="o36-qL-A9g"/>
-                            <constraint firstItem="N4y-CV-VgM" firstAttribute="top" secondItem="JJV-op-rSU" secondAttribute="bottom" constant="-280" id="vnH-wR-sp4"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -79,7 +74,6 @@
                     <connections>
                         <outlet property="closeButton" destination="4oX-Xj-2Xl" id="jDn-px-6iW"/>
                         <outlet property="nextButton" destination="IEr-zB-euS" id="Ljx-P3-TQb"/>
-                        <outlet property="pageControl" destination="JJV-op-rSU" id="gia-X7-j9f"/>
                         <outlet property="prevButton" destination="3Ad-hv-8C6" id="G3h-V1-1Nj"/>
                     </connections>
                 </viewController>

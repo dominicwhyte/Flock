@@ -14,7 +14,7 @@ import PermissionScope
 
 class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, BWWalkthroughViewControllerDelegate {
     let multiPscope = PermissionScope()
-    @IBOutlet weak var termsAndConditionsLabel: UIButton!
+
     @IBOutlet weak var loginButton: FBSDKLoginButton!
     var loadingSquare : AASquaresLoading?
     
@@ -48,10 +48,9 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, BWWalkthr
         self.view!.addSubview(loginButton)
         loginButton.alpha = 0
         walkThroughButton.alpha = 0
-        termsAndConditionsLabel.alpha = 0
         
         // Do any additional setup after loading the view.
-        Utilities.setUnderlinedTextAttribute(text: "Terms and Conditions", button: termsAndConditionsLabel)
+        //Utilities.setUnderlinedTextAttribute(text: "Terms and Conditions", button: termsAndConditionsLabel)
         
         
         setGradientBackground()
@@ -80,6 +79,10 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, BWWalkthr
                 }
                 else {
                     Utilities.printDebugMessage("Error with auto login")
+                    LoginClient.logoutBackend()
+                    DispatchQueue.main.async {
+                        self.resetUIForCancelledLogin()
+                    }
                 }
             })
         }
@@ -119,9 +122,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, BWWalkthr
     }
     
     
-    @IBAction func termsAndConditionsWasPressed(_ sender: Any) {
-        Utilities.printDebugMessage("Show terms and conditions!")
-    }
     
     func setGradientBackground() {
         let colorTop =  UIColor.white.cgColor
@@ -164,7 +164,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, BWWalkthr
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        termsAndConditionsLabel.fadeIn()
         loginButton.fadeIn()
         flockLogo.fadeIn()
         walkThroughButton.fadeIn()
@@ -200,9 +199,12 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, BWWalkthr
                         }
                         else {
                             Utilities.printDebugMessage("Unsucessful login")
+                            LoginClient.logoutBackend()
+                            
                         }
-                        
-                        self.resetUIForCancelledLogin()
+                        DispatchQueue.main.async {
+                            self.resetUIForCancelledLogin()
+                        }
                     })
                 }
                 else {

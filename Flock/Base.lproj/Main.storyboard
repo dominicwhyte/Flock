@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="31f-4a-ta2">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="31f-4a-ta2">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -49,15 +49,6 @@
                                     <constraint firstAttribute="height" constant="128" id="w2L-U3-Q5R"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1LT-xg-8r0">
-                                <rect key="frame" x="165" y="629" width="46" height="30"/>
-                                <state key="normal" title="Button">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="termsAndConditionsWasPressed:" destination="31f-4a-ta2" eventType="touchUpInside" id="fCN-aF-d0w"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ykM-Kw-V6m">
                                 <rect key="frame" x="78" y="574" width="220" height="47"/>
                                 <state key="normal" title="Walkthrough">
@@ -76,7 +67,6 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="KnB-YB-cuC" firstAttribute="top" secondItem="1LT-xg-8r0" secondAttribute="bottom" constant="8" symbolic="YES" id="2Gu-Fw-gLi"/>
                             <constraint firstItem="oqP-mu-MaY" firstAttribute="leading" secondItem="Brv-Zu-HOH" secondAttribute="leading" id="7o7-Dt-Blv"/>
                             <constraint firstItem="ykM-Kw-V6m" firstAttribute="height" secondItem="Hqd-cV-IcI" secondAttribute="height" id="AeC-gm-qT6"/>
                             <constraint firstAttribute="trailing" secondItem="JZL-JZ-nmw" secondAttribute="trailing" id="Ifk-qf-O1I"/>
@@ -84,12 +74,11 @@
                             <constraint firstItem="ykM-Kw-V6m" firstAttribute="top" secondItem="Hqd-cV-IcI" secondAttribute="bottom" constant="8" id="KZR-od-Df7"/>
                             <constraint firstItem="JZL-JZ-nmw" firstAttribute="top" secondItem="Brv-Zu-HOH" secondAttribute="top" id="MOv-fl-ATU"/>
                             <constraint firstItem="oqP-mu-MaY" firstAttribute="top" secondItem="Jmn-pN-DLN" secondAttribute="bottom" constant="20" id="PjG-EV-zNp"/>
-                            <constraint firstItem="1LT-xg-8r0" firstAttribute="top" secondItem="ykM-Kw-V6m" secondAttribute="bottom" constant="8" id="UKd-vR-4OQ"/>
                             <constraint firstItem="LeP-7A-COl" firstAttribute="centerX" secondItem="ykM-Kw-V6m" secondAttribute="centerX" id="YDc-3r-0H7"/>
                             <constraint firstAttribute="trailing" secondItem="oqP-mu-MaY" secondAttribute="trailing" id="b5T-7v-RvO"/>
                             <constraint firstItem="KnB-YB-cuC" firstAttribute="top" secondItem="JZL-JZ-nmw" secondAttribute="bottom" id="cNK-pL-YVg"/>
                             <constraint firstItem="Hqd-cV-IcI" firstAttribute="centerX" secondItem="JZL-JZ-nmw" secondAttribute="centerX" id="dpk-ff-iXy"/>
-                            <constraint firstItem="1LT-xg-8r0" firstAttribute="centerX" secondItem="JZL-JZ-nmw" secondAttribute="centerX" id="l6p-99-7Go"/>
+                            <constraint firstItem="KnB-YB-cuC" firstAttribute="top" secondItem="ykM-Kw-V6m" secondAttribute="bottom" constant="46" id="ftg-md-vv1"/>
                             <constraint firstItem="ykM-Kw-V6m" firstAttribute="centerX" secondItem="Hqd-cV-IcI" secondAttribute="centerX" id="oHe-cn-Rgn"/>
                             <constraint firstItem="JZL-JZ-nmw" firstAttribute="leading" secondItem="Brv-Zu-HOH" secondAttribute="leading" id="qkx-zS-yj8"/>
                             <constraint firstItem="LeP-7A-COl" firstAttribute="centerY" secondItem="ykM-Kw-V6m" secondAttribute="centerY" id="qzA-eV-tcA"/>
@@ -100,7 +89,6 @@
                         <outlet property="flockLogo" destination="oqP-mu-MaY" id="dVo-G5-YAS"/>
                         <outlet property="loadingSquareScreenView" destination="LeP-7A-COl" id="nrB-Or-wWd"/>
                         <outlet property="loginButton" destination="Hqd-cV-IcI" id="UmZ-Pf-X6j"/>
-                        <outlet property="termsAndConditionsLabel" destination="1LT-xg-8r0" id="gbX-9t-ut2"/>
                         <outlet property="walkThroughButton" destination="ykM-Kw-V6m" id="F3x-dF-j8E"/>
                         <segue destination="fVv-UV-qqV" kind="show" identifier="LOGIN_IDENTIFIER" id="czf-0v-4t8"/>
                     </connections>
@@ -299,7 +287,7 @@
                                 <rect key="frame" x="0.0" y="164" width="375" height="94"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="m3T-Qq-WNr">
-                                        <rect key="frame" x="17" y="53" width="50.5" height="22.5"/>
+                                        <rect key="frame" x="17" y="53" width="56" height="26"/>
                                         <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="19"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -315,7 +303,7 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="NaT-IL-fLW">
-                                        <rect key="frame" x="194.5" y="52" width="81.5" height="30.5"/>
+                                        <rect key="frame" x="195" y="52" width="80" height="36"/>
                                         <string key="text">Favorite Club:
 Frist</string>
                                         <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="13"/>
@@ -323,7 +311,7 @@ Frist</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="wl5-NO-2uT">
-                                        <rect key="frame" x="296.5" y="52" width="63.5" height="30.5"/>
+                                        <rect key="frame" x="298" y="52" width="60" height="36"/>
                                         <string key="text">Flock Size:
 7</string>
                                         <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="13"/>
@@ -385,7 +373,7 @@ Frist</string>
                     <navigationItem key="navigationItem" id="NCb-KM-e5j">
                         <barButtonItem key="rightBarButtonItem" image="Settings-22" id="tIa-gh-9FS">
                             <connections>
-                                <action selector="settingsButtonPressed:" destination="jcX-Jh-PWr" id="EwA-be-cnI"/>
+                                <segue destination="tMC-0R-nPf" kind="show" id="nNX-NH-7fj"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -427,7 +415,7 @@ Frist</string>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AF2-s6-22w" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2428" y="1422"/>
+            <point key="canvasLocation" x="2393" y="1552"/>
         </scene>
         <!--Testing View Controller-->
         <scene sceneID="0Om-fW-uOp">
@@ -442,35 +430,35 @@ Frist</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Zq-4j-jKx">
-                                <rect key="frame" x="141" y="28" width="93" height="30"/>
+                                <rect key="frame" x="141" y="72" width="93" height="30"/>
                                 <state key="normal" title="Create Venue"/>
                                 <connections>
                                     <action selector="createViewButtonPressed:" destination="tMC-0R-nPf" eventType="touchUpInside" id="kEP-Tj-gzo"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uek-gr-Nbt">
-                                <rect key="frame" x="146" y="66" width="82" height="30"/>
+                                <rect key="frame" x="146" y="110" width="82" height="30"/>
                                 <state key="normal" title="Create User"/>
                                 <connections>
                                     <action selector="createUser:" destination="tMC-0R-nPf" eventType="touchUpInside" id="c7S-AR-ovy"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SOn-Qg-9Hx">
-                                <rect key="frame" x="146" y="104" width="82" height="30"/>
+                                <rect key="frame" x="146" y="148" width="82" height="30"/>
                                 <state key="normal" title="Update App"/>
                                 <connections>
                                     <action selector="updateAppPressed:" destination="tMC-0R-nPf" eventType="touchUpInside" id="QOp-ZB-X3D"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kPh-u6-Whc">
-                                <rect key="frame" x="116" y="142" width="143" height="30"/>
+                                <rect key="frame" x="116" y="186" width="143" height="30"/>
                                 <state key="normal" title="Send Friend Request"/>
                                 <connections>
                                     <action selector="sendFriendRequestPressed:" destination="tMC-0R-nPf" eventType="touchUpInside" id="s3B-LE-7e3"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cBQ-d3-2pB">
-                                <rect key="frame" x="116" y="180" width="163" height="30"/>
+                                <rect key="frame" x="116" y="224" width="163" height="30"/>
                                 <state key="normal" title="Confirm Friend Request"/>
                                 <connections>
                                     <action selector="confirmFriendRequestPressed:" destination="tMC-0R-nPf" eventType="touchUpInside" id="HZI-Qy-NDY"/>
@@ -494,7 +482,7 @@ Frist</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qAb-8e-JwW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3708" y="1354"/>
+            <point key="canvasLocation" x="3330" y="1317"/>
         </scene>
         <!--Profile-->
         <scene sceneID="dFX-9e-9D8">
@@ -502,7 +490,7 @@ Frist</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QnL-CR-aJK" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Profile" image="User-32" id="xz8-Sd-fgM" customClass="SimpleTabBarItem" customModule="SimpleTab"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="CgO-oq-jlc">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="CgO-oq-jlc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -657,13 +645,13 @@ Frist</string>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jqD-ur-HwF">
-                                            <rect key="frame" x="70" y="12.5" width="52.5" height="27.5"/>
+                                            <rect key="frame" x="70" y="12" width="53" height="28"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flock Request" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7T8-S6-gZw">
-                                            <rect key="frame" x="70" y="38" width="93.5" height="20.5"/>
+                                            <rect key="frame" x="70" y="38" width="94" height="21"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -729,7 +717,7 @@ Frist</string>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NnP-CV-DXo">
-                                            <rect key="frame" x="70" y="12.5" width="52.5" height="27.5"/>
+                                            <rect key="frame" x="70" y="12" width="53" height="28"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -787,13 +775,13 @@ Frist</string>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y8d-lu-XWQ">
-                                            <rect key="frame" x="70" y="12.5" width="52.5" height="27.5"/>
+                                            <rect key="frame" x="70" y="12" width="53" height="28"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mXs-Ka-riF">
-                                            <rect key="frame" x="70" y="38" width="37" height="20.5"/>
+                                            <rect key="frame" x="70" y="38" width="37" height="21"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -845,13 +833,13 @@ Frist</string>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="22X-fU-DME">
-                                            <rect key="frame" x="70" y="12.5" width="52.5" height="27.5"/>
+                                            <rect key="frame" x="70" y="12" width="53" height="28"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kds-ef-jo8">
-                                            <rect key="frame" x="70" y="38" width="37" height="20.5"/>
+                                            <rect key="frame" x="70" y="38" width="37" height="21"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -940,13 +928,13 @@ Frist</string>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AnO-09-XGE">
-                                            <rect key="frame" x="70" y="14.5" width="49" height="23.5"/>
+                                            <rect key="frame" x="70" y="12" width="53" height="28"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pending" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E7Z-R2-c0C">
-                                            <rect key="frame" x="70" y="36" width="55" height="17.5"/>
+                                            <rect key="frame" x="70" y="38" width="55" height="21"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>

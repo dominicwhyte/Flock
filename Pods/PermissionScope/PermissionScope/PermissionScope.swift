@@ -187,7 +187,7 @@ typealias resultsForConfigClosure     = ([PermissionResult]) -> Void
         bodyLabel.font = UIFont.boldSystemFont(ofSize: 16)
         bodyLabel.textColor = UIColor.black
         bodyLabel.textAlignment = NSTextAlignment.center
-        bodyLabel.text = "We need a couple things\r\nbefore you get started.".localized
+        bodyLabel.text = "We need a couple things to\r\ngive you the best experience.".localized
         bodyLabel.numberOfLines = 2
         bodyLabel.accessibilityIdentifier = "permissionscope.bodylabel"
 

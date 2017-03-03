@@ -118,10 +118,10 @@ class SearchTableViewCell: MGSwipeTableCell, MGSwipeTableCellDelegate {
         switch self.userState! {
         case .alreadyFriends:
             self.rejectButton.isHidden = true
-            self.acceptButton.isHidden = false
+            self.acceptButton.isHidden = true
             self.statusLabel.text = "In Flock"
             //setup swipe
-            self.rightButtons = [MGSwipeButton(title: "Unflock", backgroundColor: UIColor.red)]
+            self.rightButtons = [MGSwipeButton(title: "Unflock", backgroundColor: FlockColors.FLOCK_GRAY)]
             self.rightSwipeSettings.transition = MGSwipeTransition.border
             self.acceptButton.setBackgroundImage(UIImage(named: "whiteCancelIcon"), for: .normal)
             self.acceptButton.backgroundColor = FlockColors.FLOCK_GRAY

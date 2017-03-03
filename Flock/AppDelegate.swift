@@ -22,7 +22,7 @@ import FirebaseMessaging
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate, UNUserNotificationCenterDelegate, FIRMessagingDelegate {
     
     struct Constants {
-        static let CRITICAL_RADIUS : Double = 60.0 // meters
+        static let CRITICAL_RADIUS : Double = 50.0 // meters
     }
     
     var window: UIWindow?
@@ -75,6 +75,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                     completion(venueImageSuccess)
                     
                 })
+            }
+            else {
+                completion(false)
             }
         }
     }
@@ -222,6 +225,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                     }
                 }
             })
+        }
+        if (venueImageURLs.count == 0) {
+            //Get facebook friends, to populate this. Do in here since only done on app launch
+            FirebaseClient.getFriends { (friends) in
+                for friend in friends {
+                    self.facebookFriendsFBIDs[friend] = friend
+                }
+                completion(true)
+            }
+
         }
     }
     
@@ -908,7 +921,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func application(_ application: UIApplication,
                      didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        FIRInstanceID.instanceID().setAPNSToken(deviceToken as Data, type:  FIRInstanceIDAPNSTokenType.sandbox)
+        FIRInstanceID.instanceID().setAPNSToken(deviceToken as Data, type:  FIRInstanceIDAPNSTokenType.prod)
     }
     
     /// The callback to handle data message received via FCM for devices running iOS 10 or above.
