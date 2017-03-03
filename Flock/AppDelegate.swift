@@ -1002,7 +1002,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             print("Message ID: \(messageID)")
         }
         
-        self.showNotification(body: "test")
+        //self.showNotification(body: "test")
         // Print full message.
         print(userInfo)
     }
@@ -1021,7 +1021,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // Print full message.
         print(userInfo)
         
-        self.showNotification(body: "test")
+        //self.showNotification(body: "test")
         completionHandler(UIBackgroundFetchResult.newData)
     }
     
@@ -1058,7 +1058,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-        if let user = self.user {
+        if let _ = self.user {
             locationManager.requestLocation()
         }
     }
