@@ -160,7 +160,7 @@ class ProfileTableViewController: UITableViewController {
     func updateDataAndTableView(_ completion: @escaping (Bool) -> Void) {
         let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        appDelegate.updateAllData { (success) in
+        appDelegate.updateAllDataWithoutUpdatingLocation { (success) in
             DispatchQueue.main.async {
                 Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
                 if (success) {

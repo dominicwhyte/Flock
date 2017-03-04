@@ -42,7 +42,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var unreadMessageCount = [String:Int]() // maps from a ChannelID to unread message count
     var messagesForChatsTableViewController = [String:[Conversation]]()
     var appIsWakingUpFromVisit : Bool = false
-
+    var startGoingOutTime : Double = DateUtilities.Constants.START_NIGHT_OUT_TIME
+    var endGoingOutTime : Double = DateUtilities.Constants.END_NIGHT_OUT_TIME
+    
     
     func masterLogin(completion: @escaping (_ status: Bool) -> ()) {
         updateAllData { (success) in
@@ -85,7 +87,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     //Function to update data, use for refreshing
     func updateAllData(completion: @escaping (_ status: Bool) -> ()) {
         self.profileNeedsToUpdate = true
-        LoginClient.retrieveData { (data) in
+        LoginClient.retrieveData { (data, startTime, endTime) in
+            self.startGoingOutTime = startTime
+            self.endGoingOutTime = endTime
             if let (user, venues, users) = data {
                 //Check user location
                 self.user = user
@@ -95,11 +99,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 //Move to master login if slow
                 self.computeAllStats()
                 //Update CoreData
-//                if #available(iOS 10.0, *) {
-//                    self.updateCoreDataWithVenuesIfNecessary(venues: Array(venues.values))
-//                } else {
-//                    // Fallback on earlier versions
-//                }
+                //                if #available(iOS 10.0, *) {
+                //                    self.updateCoreDataWithVenuesIfNecessary(venues: Array(venues.values))
+                //                } else {
+                //                    // Fallback on earlier versions
+                //                }
                 
                 self.locationManager.requestLocation()
                 completion(true)
@@ -114,7 +118,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     //Function to update data, use for refreshing
     func updateAllDataWithoutUpdatingLocation(completion: @escaping (_ status: Bool) -> ()) {
         self.profileNeedsToUpdate = true
-        LoginClient.retrieveData { (data) in
+        LoginClient.retrieveData { (data, startTime, endTime) in
+            self.startGoingOutTime = startTime
+            self.endGoingOutTime = endTime
             if let (user, venues, users) = data {
                 //Check user location
                 self.user = user
@@ -140,69 +146,69 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             }
         }
     }
-
     
     
     
-//    @available(iOS 10.0, *)
-//    func getPartialVenueDataFromStorage() -> [String:CoreDataVenue] {
-//        let managedContext = self.persistentContainer.viewContext
-//        var venues = [String:CoreDataVenue]()
-//        
-//        
-//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
-//        let entityDescription = NSEntityDescription.entity(forEntityName: "StoredVenue", in: managedContext)
-//        fetchRequest.entity = entityDescription
-//        do {
-//            let storedVenuesArray = try managedContext.fetch(fetchRequest) as! [StoredVenue]
-//            for storedVenue in storedVenuesArray {
-//                let newVenue = CoreDataVenue(name: storedVenue.name!, venueID: storedVenue.venueID!, latitude: storedVenue.latitude, longitude: storedVenue.longitude)
-//                venues[storedVenue.venueID!] = newVenue
-//                
-//            }
-//            print(storedVenuesArray)
-//            
-//        } catch {
-//            let fetchError = error as NSError
-//            print(fetchError)
-//        }
-//        return venues
-//    }
     
-//    @available(iOS 10.0, *)
-//    func storePartialVenueDataInStorage(name: String, venueID: String, latitude: Double?, longitude: Double?) {
-//        let managedContext = self.persistentContainer.viewContext
-//        let entityDescription = NSEntityDescription.entity(forEntityName: "StoredVenue", in: managedContext)
-//        let newVenue = NSManagedObject(entity: entityDescription!, insertInto: managedContext)
-//        newVenue.setValue(name, forKey: "name")
-//        newVenue.setValue(venueID, forKey: "venueID")
-//        if(latitude != nil && longitude != nil) {
-//            newVenue.setValue(latitude, forKey: "latitude")
-//            newVenue.setValue(longitude, forKey: "longitude")
-//        }
-//        
-//        do {
-//            try newVenue.managedObjectContext?.save()
-//        } catch {
-//            print(error)
-//        }
-//    }
+    //    @available(iOS 10.0, *)
+    //    func getPartialVenueDataFromStorage() -> [String:CoreDataVenue] {
+    //        let managedContext = self.persistentContainer.viewContext
+    //        var venues = [String:CoreDataVenue]()
+    //
+    //
+    //        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+    //        let entityDescription = NSEntityDescription.entity(forEntityName: "StoredVenue", in: managedContext)
+    //        fetchRequest.entity = entityDescription
+    //        do {
+    //            let storedVenuesArray = try managedContext.fetch(fetchRequest) as! [StoredVenue]
+    //            for storedVenue in storedVenuesArray {
+    //                let newVenue = CoreDataVenue(name: storedVenue.name!, venueID: storedVenue.venueID!, latitude: storedVenue.latitude, longitude: storedVenue.longitude)
+    //                venues[storedVenue.venueID!] = newVenue
+    //
+    //            }
+    //            print(storedVenuesArray)
+    //
+    //        } catch {
+    //            let fetchError = error as NSError
+    //            print(fetchError)
+    //        }
+    //        return venues
+    //    }
     
-//    @available(iOS 10.0, *)
-//    func updateCoreDataWithVenuesIfNecessary(venues: [Venue]) {
-//        let partialListOfVenues = self.getPartialVenueDataFromStorage()
-//        for venue in venues {
-//            if(partialListOfVenues[venue.VenueID] == nil) {
-//                var latitude : Double? = nil
-//                var longitude : Double? = nil
-//                if(venue.VenueLocation != nil) {
-//                    latitude = venue.VenueLocation!.coordinate.latitude
-//                    longitude = venue.VenueLocation!.coordinate.longitude
-//                }
-//                self.storePartialVenueDataInStorage(name: venue.VenueName, venueID: venue.VenueID, latitude: latitude, longitude: longitude)
-//            }
-//        }
-//    }
+    //    @available(iOS 10.0, *)
+    //    func storePartialVenueDataInStorage(name: String, venueID: String, latitude: Double?, longitude: Double?) {
+    //        let managedContext = self.persistentContainer.viewContext
+    //        let entityDescription = NSEntityDescription.entity(forEntityName: "StoredVenue", in: managedContext)
+    //        let newVenue = NSManagedObject(entity: entityDescription!, insertInto: managedContext)
+    //        newVenue.setValue(name, forKey: "name")
+    //        newVenue.setValue(venueID, forKey: "venueID")
+    //        if(latitude != nil && longitude != nil) {
+    //            newVenue.setValue(latitude, forKey: "latitude")
+    //            newVenue.setValue(longitude, forKey: "longitude")
+    //        }
+    //
+    //        do {
+    //            try newVenue.managedObjectContext?.save()
+    //        } catch {
+    //            print(error)
+    //        }
+    //    }
+    
+    //    @available(iOS 10.0, *)
+    //    func updateCoreDataWithVenuesIfNecessary(venues: [Venue]) {
+    //        let partialListOfVenues = self.getPartialVenueDataFromStorage()
+    //        for venue in venues {
+    //            if(partialListOfVenues[venue.VenueID] == nil) {
+    //                var latitude : Double? = nil
+    //                var longitude : Double? = nil
+    //                if(venue.VenueLocation != nil) {
+    //                    latitude = venue.VenueLocation!.coordinate.latitude
+    //                    longitude = venue.VenueLocation!.coordinate.longitude
+    //                }
+    //                self.storePartialVenueDataInStorage(name: venue.VenueName, venueID: venue.VenueID, latitude: latitude, longitude: longitude)
+    //            }
+    //        }
+    //    }
     
     //Call only upon app launch
     func setAllVenueImages(venueImageURLs : [String], completion: @escaping (_ status: Bool) -> ()) {
@@ -234,7 +240,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 }
                 completion(true)
             }
-
+            
         }
     }
     
@@ -495,9 +501,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                     totalUnread += count
                 }
                 if let stb = self.simpleTBC {
-                    if totalUnread > 0 {
-                        stb.addBadge(index: 3, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
-                    } else {
+                    if (totalUnread > 0 && totalUnread < 6) {
+                        if(stb.selectedIndex == 3) {
+                            stb.addBadge(index: 2, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
+                        } else {
+                            stb.addBadge(index: 3, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
+                        }
+                    } else if (totalUnread >= 6) {
+                        if(stb.selectedIndex == 3) {
+                            stb.addBadge(index: 2, value: -1, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
+                        } else {
+                            stb.addBadge(index: 3, value: -1, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
+                        }
+                    }
+                        
+                    else {
                         stb.removeAllBadges()
                     }
                 }
@@ -518,31 +536,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     //Start Live
     
     
-/*
-   An explanation of how this all works:
+    /*
+     An explanation of how this all works:
      
-    When a visit is registered fired (in app or off app), we call the location manager which evenutally calls the manager didUpdateLocations
-    When you update the app, we call the location manager which evenutally calls the manager didUpdateLocations
-    
-    That is, didUpdateLocations should be ready for anything.
+     When a visit is registered fired (in app or off app), we call the location manager which evenutally calls the manager didUpdateLocations
+     When you update the app, we call the location manager which evenutally calls the manager didUpdateLocations
      
-    
-    In didUpdateLocations:
-    If your location is NOT registered to be within any critical radius, we remove you from your live club (if you had one)
-    
-    If your location is registered to be within any critical radius, we call showPopupIfActiveOrNotificationIfNot:
+     That is, didUpdateLocations should be ready for anything.
+     
+     
+     In didUpdateLocations:
+     If your location is NOT registered to be within any critical radius, we remove you from your live club (if you had one)
+     
+     If your location is registered to be within any critical radius, we call showPopupIfActiveOrNotificationIfNot:
      1. If the app is open
-        a) If we just registered you to be within the critical radius of the venue you are already live at, we do nothing
-        b) If you were either not live anywhere before or you are within the critical radius of a new club, displayPrompt() is called.
-           You will be prompted to go live at a club, or go live at different clubs. Going live at any club will result in goLive()
-           getting called.
+     a) If we just registered you to be within the critical radius of the venue you are already live at, we do nothing
+     b) If you were either not live anywhere before or you are within the critical radius of a new club, displayPrompt() is called.
+     You will be prompted to go live at a club, or go live at different clubs. Going live at any club will result in goLive()
+     getting called.
      2. If the app is not open
-        a) showPopupIfActiveOrNotificationIfNot() will also have been called, and now shownotification() will be called. The user will be given the option to go live or switch. Upon app reopening, handleActionWithIdentifier() is called and the user will goLive() immediately if they selected to go live at that club, or they will receive the displayPrompt() as above.
+     a) showPopupIfActiveOrNotificationIfNot() will also have been called, and now shownotification() will be called. The user will be given the option to go live or switch. Upon app reopening, handleActionWithIdentifier() is called and the user will goLive() immediately if they selected to go live at that club, or they will receive the displayPrompt() as above.
      
      When goLive() is called, the user is first removed from another previous live clubs, and then added to the new club.
-    
-    
- */
+     
+     
+     */
     // CoreLocation CLVisit Code
     func startMonitoringVisits() { self.locationManager.startMonitoringVisits() }
     func stopMonitoringVisits() { self.locationManager.stopMonitoringVisits() }
@@ -576,7 +594,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 Utilities.printDebugMessage("chosenVenue: \(chosenVenue)")
                 if let currentVenue = user!.LiveClubID {
                     if (chosenVenue == currentVenue) {
-                        displayTempNotification(text: "Temp notification: already live at a club \(currentVenue)")
+                        //displayTempNotification(text: "Temp notification: already live at a club \(currentVenue)")
                     }
                     else {
                         //User receives option to go live
@@ -603,14 +621,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
-    //TEMP FUNCTION
-    func displayTempNotification(text : String) {
-        DispatchQueue.main.async {
-            self.showNotification(body: text)
-            let alert = SCLAlertView()
-            _ = alert.showInfo(text, subTitle: "Temp notification")
-        }
-    }
+    //    //TEMP FUNCTION
+    //    func displayTempNotification(text : String) {
+    //        DispatchQueue.main.async {
+    //            self.showNotification(body: text)
+    //            let alert = SCLAlertView()
+    //            _ = alert.showInfo(text, subTitle: "Temp notification")
+    //        }
+    //    }
     
     func displayPrompt() {
         if liveVenueIDOptions.count != 0 {
@@ -706,8 +724,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         // Determine visit location and properties
         //let visitLocation = CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
-//        let isArriving = (visit.departureDate.compare(NSDate.distantFuture).rawValue == 0)
-//        self.isArriving = isArriving
+        //        let isArriving = (visit.departureDate.compare(NSDate.distantFuture).rawValue == 0)
+        //        self.isArriving = isArriving
         
         // Get state of the application: Active, Background, or Inactive
         let state: UIApplicationState = UIApplication.shared.applicationState
@@ -737,31 +755,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     //a notification telling you that your're live, or making you unlive, or if you just arrived
     //somewhere then suggesting you go live.
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        // For testing purposes print out all locations in ascending order of distance
-        liveVenueIDOptions = []
-        let visitLocation = locations[0]
-       
-        
-        //KEY: remove people from Live if they left
-        
-        //Send notification if within critical radius
-        let clubsAscending = distanceToClubsAscending(visitLocation: visitLocation)
-        
-        if (clubsAscending.count != 0) {
-            liveVenueIDOptions = clubsAscending
-            chosenVenueIDGoLiveAt = clubsAscending[0].venue.VenueID
-            showPopupIfActiveOrNotificationIfNot()
-        }
-            //Remove the user from the club
-        else {
-            if let liveClubID = user!.LiveClubID {
-                FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: liveClubID, userID: self.user!.FBID, add: false, completion: { (success) in
-                    //testing func
-                    //self.showNotification(body: "TEMP NOTIFICATION. REMOVING FROM LIVE:  \(self.venues[liveClubID]!.VenueName)")
-                })
+        if DateUtilities.isValidNightOutTime(startTime: self.startGoingOutTime, endTime: self.endGoingOutTime) {
+            // For testing purposes print out all locations in ascending order of distance
+            liveVenueIDOptions = []
+            let visitLocation = locations[0]
+            
+            
+            //KEY: remove people from Live if they left
+            
+            //Send notification if within critical radius
+            let clubsAscending = distanceToClubsAscending(visitLocation: visitLocation)
+            
+            if (clubsAscending.count != 0) {
+                liveVenueIDOptions = clubsAscending
+                chosenVenueIDGoLiveAt = clubsAscending[0].venue.VenueID
+                showPopupIfActiveOrNotificationIfNot()
             }
-            
-            
+                //Remove the user from the club
+            else {
+                if let liveClubID = user!.LiveClubID {
+                    FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: liveClubID, userID: self.user!.FBID, add: false, completion: { (success) in
+                        //testing func
+                        //self.showNotification(body: "TEMP NOTIFICATION. REMOVING FROM LIVE:  \(self.venues[liveClubID]!.VenueName)")
+                    })
+                }
+            }
         }
     }
     
@@ -876,30 +894,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     //Uses core data
-//    func distanceToClubsAscendingWhileInactive(visitLocation: CLLocation) -> [VisitLocation] {
-//        var visitLocations = [VisitLocation]()
-//        if #available(iOS 10.0, *) {
-//            let storedVenues = self.getPartialVenueDataFromStorage()
-//            
-//            
-//            for cdvenue in Array(storedVenues.values) {
-//                let venueLocation = CLLocation(latitude: Double(cdvenue.latitude), longitude: Double(cdvenue.longitude))
-//                let distanceInMeters = visitLocation.distance(from: venueLocation)
-//                let venue = venues[cdvenue.venueID]!
-//                if (distanceInMeters < Constants.CRITICAL_RADIUS) {
-//                    visitLocations.append(VisitLocation(distAway: distanceInMeters, venue: venue))
-//                }
-//                
-//            }
-//            visitLocations.sort { (vl1, vl2) -> Bool in
-//                vl1.distAway < vl2.distAway
-//            }
-//        } else {
-//            // Fallback on earlier versions
-//        }
-//        return visitLocations
-//        
-//    }
+    //    func distanceToClubsAscendingWhileInactive(visitLocation: CLLocation) -> [VisitLocation] {
+    //        var visitLocations = [VisitLocation]()
+    //        if #available(iOS 10.0, *) {
+    //            let storedVenues = self.getPartialVenueDataFromStorage()
+    //
+    //
+    //            for cdvenue in Array(storedVenues.values) {
+    //                let venueLocation = CLLocation(latitude: Double(cdvenue.latitude), longitude: Double(cdvenue.longitude))
+    //                let distanceInMeters = visitLocation.distance(from: venueLocation)
+    //                let venue = venues[cdvenue.venueID]!
+    //                if (distanceInMeters < Constants.CRITICAL_RADIUS) {
+    //                    visitLocations.append(VisitLocation(distAway: distanceInMeters, venue: venue))
+    //                }
+    //
+    //            }
+    //            visitLocations.sort { (vl1, vl2) -> Bool in
+    //                vl1.distAway < vl2.distAway
+    //            }
+    //        } else {
+    //            // Fallback on earlier versions
+    //        }
+    //        return visitLocations
+    //
+    //    }
     
     //=================================================================================================================//
     
@@ -1088,55 +1106,55 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     // MARK: - Core Data stack
-//    
-//    @available(iOS 10.0, *)
-//    lazy var persistentContainer: NSPersistentContainer = {
-//        /*
-//         The persistent container for the application. This implementation
-//         creates and returns a container, having loaded the store for the
-//         application to it. This property is optional since there are legitimate
-//         error conditions that could cause the creation of the store to fail.
-//         */
-//        let container = NSPersistentContainer(name: "Flock")
-//        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-//            if let error = error as NSError? {
-//                // Replace this implementation with code to handle the error appropriately.
-//                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-//                
-//                /*
-//                 Typical reasons for an error here include:
-//                 * The parent directory does not exist, cannot be created, or disallows writing.
-//                 * The persistent store is not accessible, due to permissions or data protection when the device is locked.
-//                 * The device is out of space.
-//                 * The store could not be migrated to the current model version.
-//                 Check the error message to determine what the actual problem was.
-//                 */
-//                fatalError("Unresolved error \(error), \(error.userInfo)")
-//            }
-//        })
-//        return container
-//    }()
-//    
-//    // MARK: - Core Data Saving support
-//    
-//    func saveContext () {
-//        if #available(iOS 10.0, *) {
-//            let context = persistentContainer.viewContext
-//            if context.hasChanges {
-//                do {
-//                    try context.save()
-//                } catch {
-//                    // Replace this implementation with code to handle the error appropriately.
-//                    // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-//                    let nserror = error as NSError
-//                    fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-//                }
-//            }
-//        } else {
-//            // Fallback on earlier versions
-//        }
-//    }
-//    
+    //
+    //    @available(iOS 10.0, *)
+    //    lazy var persistentContainer: NSPersistentContainer = {
+    //        /*
+    //         The persistent container for the application. This implementation
+    //         creates and returns a container, having loaded the store for the
+    //         application to it. This property is optional since there are legitimate
+    //         error conditions that could cause the creation of the store to fail.
+    //         */
+    //        let container = NSPersistentContainer(name: "Flock")
+    //        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+    //            if let error = error as NSError? {
+    //                // Replace this implementation with code to handle the error appropriately.
+    //                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+    //
+    //                /*
+    //                 Typical reasons for an error here include:
+    //                 * The parent directory does not exist, cannot be created, or disallows writing.
+    //                 * The persistent store is not accessible, due to permissions or data protection when the device is locked.
+    //                 * The device is out of space.
+    //                 * The store could not be migrated to the current model version.
+    //                 Check the error message to determine what the actual problem was.
+    //                 */
+    //                fatalError("Unresolved error \(error), \(error.userInfo)")
+    //            }
+    //        })
+    //        return container
+    //    }()
+    //
+    //    // MARK: - Core Data Saving support
+    //
+    //    func saveContext () {
+    //        if #available(iOS 10.0, *) {
+    //            let context = persistentContainer.viewContext
+    //            if context.hasChanges {
+    //                do {
+    //                    try context.save()
+    //                } catch {
+    //                    // Replace this implementation with code to handle the error appropriately.
+    //                    // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+    //                    let nserror = error as NSError
+    //                    fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+    //                }
+    //            }
+    //        } else {
+    //            // Fallback on earlier versions
+    //        }
+    //    }
+    //
     
     
     

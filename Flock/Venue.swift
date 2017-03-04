@@ -11,7 +11,6 @@ class Venue: NSObject
     var CurrentAttendees: [String:String]
     var VenueNickName: String
     
-    
     init(dict: [String: AnyObject])
     {
         self.VenueID = dict["VenueID"] as! String

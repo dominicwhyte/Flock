@@ -2,6 +2,8 @@ import UIKit
 import Social
 import MobileCoreServices
 import AASquaresLoading
+import Foundation
+import SystemConfiguration
 
 struct FlockColors {
     static let FLOCK_BLUE = UIColor(red: 76/255, green: 181/255, blue: 245/255, alpha: 1.0)
@@ -12,6 +14,7 @@ struct FlockColors {
 class Utilities {
     struct Constants {
         static let CONGRATULATORY_WORDS_LIST = ["Awesome!", "Phenomenal!", "Hot dog!", "Terrific!", "Marvelous!", "Wonderful!", "Sensational!", "Superb!", "Sublime!", "Brilliant!", "Peachy!", "Splendiferous!", "Outstanding!", "Legendary!"]
+        static let SMALL_IPHONES = ["iPhone 5", "iPhone 5s", "iPhone 5c"]
     }
     
     static func setUnderlinedTextAttribute(text : String, button : UIButton) {
@@ -138,6 +141,26 @@ class Utilities {
         return string + "s"
     }
     
+    static func isInternetAvailable() -> Bool
+    {
+        var zeroAddress = sockaddr_in()
+        zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
+        zeroAddress.sin_family = sa_family_t(AF_INET)
+        
+        let defaultRouteReachability = withUnsafePointer(to: &zeroAddress) {
+            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {zeroSockAddress in
+                SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
+            }
+        }
+        
+        var flags = SCNetworkReachabilityFlags()
+        if !SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) {
+            return false
+        }
+        let isReachable = (flags.rawValue & UInt32(kSCNetworkFlagsReachable)) != 0
+        let needsConnection = (flags.rawValue & UInt32(kSCNetworkFlagsConnectionRequired)) != 0
+        return (isReachable && !needsConnection)
+    }
     
     static func generateRandomCongratulatoryPhrase() -> String {
         let random = Int(arc4random_uniform(UInt32(Constants.CONGRATULATORY_WORDS_LIST.count)))
@@ -148,7 +171,7 @@ class Utilities {
         // Get view controllers and build the walkthrough
         let stb = UIStoryboard(name: "Walkthrough", bundle: nil)
         let walkthrough = stb.instantiateViewController(withIdentifier: "walk") as! BWWalkthroughViewController
-        let page_zero = stb.instantiateViewController(withIdentifier: "walk0")
+        //let page_zero = stb.instantiateViewController(withIdentifier: "walk0")
         let page_one = stb.instantiateViewController(withIdentifier: "walk1")
         let page_two = stb.instantiateViewController(withIdentifier: "walk2")
         let page_three = stb.instantiateViewController(withIdentifier: "walk3")
@@ -158,7 +181,7 @@ class Utilities {
         walkthrough.add(viewController:page_one)
         walkthrough.add(viewController:page_two)
         walkthrough.add(viewController:page_three)
-        walkthrough.add(viewController:page_zero)
+        //walkthrough.add(viewController:page_zero)
         
         vc.present(walkthrough, animated: true, completion: nil)
 

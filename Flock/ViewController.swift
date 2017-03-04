@@ -36,7 +36,7 @@ class ViewController: UIViewController, BWWalkthroughViewControllerDelegate {
         // Get view controllers and build the walkthrough
         let stb = UIStoryboard(name: "Walkthrough", bundle: nil)
         let walkthrough = stb.instantiateViewController(withIdentifier: "walk") as! BWWalkthroughViewController
-        let page_zero = stb.instantiateViewController(withIdentifier: "walk0")
+        //let page_zero = stb.instantiateViewController(withIdentifier: "walk0")
         let page_one = stb.instantiateViewController(withIdentifier: "walk1")
         let page_two = stb.instantiateViewController(withIdentifier: "walk2")
         let page_three = stb.instantiateViewController(withIdentifier: "walk3")
@@ -46,7 +46,7 @@ class ViewController: UIViewController, BWWalkthroughViewControllerDelegate {
         walkthrough.add(viewController:page_one)
         walkthrough.add(viewController:page_two)
         walkthrough.add(viewController:page_three)
-        walkthrough.add(viewController:page_zero)
+        //walkthrough.add(viewController:page_zero)
         
         self.present(walkthrough, animated: true, completion: nil)
     }

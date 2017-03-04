@@ -17,6 +17,16 @@ class DateUtilities {
         static let fullDateFormat = "yyyy-MM-dd"
         static let uiDisplayFormat = "MMMM d"
         static let NUMBER_OF_DAYS_TO_DISPLAY = 7
+        static let START_NIGHT_OUT_TIME : Double = 22.0
+        static let END_NIGHT_OUT_TIME : Double = 6.0
+    }
+    
+    static func isValidNightOutTime(startTime : Double, endTime : Double) -> Bool {
+        let date = Date()
+        let calendar = Calendar.current
+        
+        let hour = Double(calendar.component(.hour, from: date))
+        return (hour >= startTime || hour < endTime)
     }
     
     static func getDateFromString(date: String) -> Date{

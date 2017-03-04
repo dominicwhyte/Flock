@@ -57,7 +57,7 @@ import UIKit
     weak open var delegate:BWWalkthroughViewControllerDelegate?
     
     // If you need a page control, next or prev buttons, add them via IB and connect with these Outlets
-    @IBOutlet open var pageControl:UIPageControl?
+    //@IBOutlet open var pageControl:UIPageControl?
     @IBOutlet open var nextButton:UIButton?
     @IBOutlet open var prevButton:UIButton?
     @IBOutlet open var closeButton:UIButton?
@@ -109,7 +109,7 @@ import UIKit
         
         // Initialize UI Elements
         
-        pageControl?.addTarget(self, action: #selector(BWWalkthroughViewController.pageControlDidTouch), for: UIControlEvents.touchUpInside)
+        //pageControl?.addTarget(self, action: #selector(BWWalkthroughViewController.pageControlDidTouch), for: UIControlEvents.touchUpInside)
         
         // Scrollview
         
@@ -130,8 +130,8 @@ import UIKit
         
         updateUI()
         
-        pageControl?.numberOfPages = controllers.count
-        pageControl?.currentPage = 0
+        //pageControl?.numberOfPages = controllers.count
+        //pageControl?.currentPage = 0
     }
     
     
@@ -160,9 +160,9 @@ import UIKit
     }
     
     func pageControlDidTouch(){
-        if let pc = pageControl{
+        /*if let pc = pageControl{
             gotoPage(pc.currentPage)
-        }
+        }*/
     }
     
     fileprivate func gotoPage(_ page:Int){
@@ -221,7 +221,7 @@ import UIKit
     /// Update the UI to reflect the current walkthrough status
     fileprivate func updateUI(){
         
-        pageControl?.currentPage = currentPage
+        //pageControl?.currentPage = currentPage
         delegate?.walkthroughPageDidChange?(currentPage)
         
         // Hide/Show navigation buttons

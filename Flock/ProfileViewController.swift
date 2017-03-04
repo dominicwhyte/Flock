@@ -31,20 +31,27 @@ class ProfileViewController: UIViewController, ProfileDelegate {
     var tableView: UITableView?
     var tableViewController : ProfileTableViewController?
     
+    @IBOutlet weak var backgroundImage: UIImageView!
+    
     @IBAction func settingsButtonPressed(_ sender: Any) {
         let permissionScope = PermissionScope()
         PermissionUtilities.setupPermissionScope(permissionScope: permissionScope)
         PermissionUtilities.getPermissionsIfDenied(permissionScope: permissionScope)
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupUser()
-        
-        
+        setRandomSkyImage()
         
         // Do any additional setup after loading the view.
+    }
+    
+    let skyImages = ["sky1", "sky2", "sky3", "sky4", "sky5"]
+    
+    func setRandomSkyImage() {
+        let index = Int(arc4random_uniform(UInt32(skyImages.count)))
+        backgroundImage.image = UIImage(named: skyImages[index])
     }
     
     
@@ -110,9 +117,9 @@ class ProfileViewController: UIViewController, ProfileDelegate {
         self.flockSizeLabel.text = "Flock Size:\n\(user!.Friends.count)"
         if let favoriteClubID = appDelegate.computeFavoriteClubForUser(user: user!) {
             let clubName = appDelegate.venues[favoriteClubID]!.VenueNickName
-            self.favoriteClubLabel.text = "Favorite Place:\n\(clubName)"
+            self.favoriteClubLabel.text = "Top Place:\n\(clubName)"
         } else {
-            self.favoriteClubLabel.text = "Favorite Place:\n None Yet!"
+            self.favoriteClubLabel.text = "Top Place:\n None Yet!"
         }
         
         FirebaseClient.getImageFromURL(user!.PictureURL) { (image) in
@@ -125,7 +132,7 @@ class ProfileViewController: UIViewController, ProfileDelegate {
     
     func logoutButtonPressed() {
         // 1
-        let optionMenu = UIAlertController(title: nil, message: "Are you sure you would like to logout?", preferredStyle: .actionSheet)
+        let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to logout?", preferredStyle: .actionSheet)
         
         // 2
         let deleteAction = UIAlertAction(title: "Logout", style: .destructive, handler: {

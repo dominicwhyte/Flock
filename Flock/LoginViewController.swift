@@ -11,6 +11,8 @@ import FBSDKLoginKit
 import SimpleTab
 import AASquaresLoading
 import PermissionScope
+import Foundation
+import SystemConfiguration
 
 class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, BWWalkthroughViewControllerDelegate {
     let multiPscope = PermissionScope()
@@ -22,7 +24,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, BWWalkthr
     @IBOutlet weak var loadingSquareScreenView: UIView!
     
     @IBOutlet weak var walkThroughButton: UIButton!
-    let SECONDS_UNTIL_ABORT_LOGIN = 1
+    let SECONDS_UNTIL_ABORT_LOGIN = 10
     
     override func viewDidLoad() {
         walkThroughButton.layer.borderWidth = 1
@@ -58,17 +60,18 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, BWWalkthr
         
         if (FBSDKAccessToken.current() != nil) {
             setUIForLogin()
-            //C
+            
+            //Timeout implementation
             var userNotRetrieved = true
             //Flawed implementation - leads to crashes since login thread is not killed
-//            let deadlineTime = DispatchTime.now() + .seconds(SECONDS_UNTIL_ABORT_LOGIN)
-//            DispatchQueue.main.asyncAfter(deadline: deadlineTime, execute: {
-//                if (userNotRetrieved) {
-//                    Utilities.printDebugMessage("Abandon loading")
-//                    LoginClient.logout(vc: self)
-//                    self.resetUIForCancelledLogin()
-//                }
-//            })
+            let deadlineTime = DispatchTime.now() + .seconds(SECONDS_UNTIL_ABORT_LOGIN)
+            DispatchQueue.main.asyncAfter(deadline: deadlineTime, execute: {
+                if (userNotRetrieved && !Utilities.isInternetAvailable()) {
+                    Utilities.printDebugMessage("Abandon loading")
+                    LoginClient.logout(vc: self)
+                    self.resetUIForCancelledLogin()
+                }
+            })
             
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             appDelegate.masterLogin(completion: { (success) in
@@ -188,11 +191,24 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, BWWalkthr
             
         else
         {
+            //Timeout implementation
+            var userNotRetrieved = true
+            //Flawed implementation - leads to crashes since login thread is not killed
+            let deadlineTime = DispatchTime.now() + .seconds(SECONDS_UNTIL_ABORT_LOGIN)
+            DispatchQueue.main.asyncAfter(deadline: deadlineTime, execute: {
+                if (userNotRetrieved && !Utilities.isInternetAvailable()) {
+                    Utilities.printDebugMessage("Abandon loading")
+                    LoginClient.logout(vc: self)
+                    self.resetUIForCancelledLogin()
+                }
+            })
+            
             //Block login until .login returns
             //Calling login will change the state of FIRAuth.auth(), thus initiating the launch sequence from viewdidload
             LoginClient.login({ (status) in
                 if (status) {
                     appDelegate.masterLogin(completion: { (loginStatus) in
+                        userNotRetrieved = false
                         if(loginStatus) {
                             Utilities.printDebugMessage("Successful login")
                             self.performSegue(withIdentifier: "LOGIN_IDENTIFIER", sender: nil)
@@ -267,3 +283,5 @@ extension UIView {
         }, completion: completion)
     }
 }
+
+

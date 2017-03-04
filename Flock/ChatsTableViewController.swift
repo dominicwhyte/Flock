@@ -37,13 +37,13 @@ class ChatsTableViewController: UITableViewController {
         for (_, count) in appDelegate.unreadMessageCount {
             totalUnread += count
         }
-        if let stb = appDelegate.simpleTBC {
-            if totalUnread > 0 {
-                stb.addBadge(index: 3, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
-            } else {
-                stb.removeAllBadges()
-            }
-        }
+//        if let stb = appDelegate.simpleTBC {
+//            if totalUnread > 0 {
+//                stb.addBadge(index: 3, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
+//            } else {
+//                stb.removeAllBadges()
+//            }
+//        }
         
         self.retrieveUserImageWithoutSetting(imageURL: self.user!.PictureURL)
     }
@@ -159,13 +159,13 @@ class ChatsTableViewController: UITableViewController {
                     totalUnread += count
                 }
                 
-                if let stb = appDelegate.simpleTBC {
-                    if totalUnread > 0 {
-                        stb.addBadge(index: 3, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
-                    } else {
-                        stb.removeAllBadges()
-                    }
-                }
+//                if let stb = appDelegate.simpleTBC {
+//                    if totalUnread > 0 {
+//                        stb.addBadge(index: 3, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
+//                    } else {
+//                        stb.removeAllBadges()
+//                    }
+//                }
                 if(unreadCount > 0 && !labelsHaveBeenUpdated) {
                     // Unread messages
                     if(unreadCount > 0 && unreadCount <= 5) {
@@ -228,13 +228,13 @@ class ChatsTableViewController: UITableViewController {
             totalUnread += count
         }
         
-        if let stb = appDelegate.simpleTBC {
-            if totalUnread > 0 {
-                stb.addBadge(index: 3, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
-            } else {
-                stb.removeAllBadges()
-            }
-        }
+//        if let stb = appDelegate.simpleTBC {
+//            if totalUnread > 0 {
+//                stb.addBadge(index: 3, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
+//            } else {
+//                stb.removeAllBadges()
+//            }
+//        }
         if(unreadCount > 0 && !labelsHaveBeenUpdated) {
             // Unread messages
             if(unreadCount > 0 && unreadCount <= 5) {
@@ -343,12 +343,17 @@ extension UITabBarController {
         badgeView.textColor = UIColor.white
         badgeView.textAlignment = .center
         badgeView.font = font
-        badgeView.text = String(value)
+        if(value == -1) {
+            badgeView.text = "5+"
+        } else {
+            badgeView.text = String(value)
+        }
         badgeView.backgroundColor = color
         badgeView.tag = index
-        tabBar.addSubview(badgeView)
-        
-        self.positionBadges()
+        if(index == 3) {
+            tabBar.addSubview(badgeView)
+            self.positionBadges()
+        }
     }
     
     func removeAllBadges() {

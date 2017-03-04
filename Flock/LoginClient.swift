@@ -101,8 +101,10 @@ class LoginClient: NSObject
     }
     
     //Load up the user, that is: fetch all projects and all updates.
-    class func retrieveData(_ completion: @escaping ((User, [String:Venue], [String : User])?) -> Void)
+    class func retrieveData(_ completion: @escaping ((User, [String:Venue], [String : User])?, Double, Double) -> Void)
     {
+        var startTimeDouble : Double = DateUtilities.Constants.START_NIGHT_OUT_TIME
+        var endTimeDouble : Double = DateUtilities.Constants.END_NIGHT_OUT_TIME
         
         if (FBSDKAccessToken.current().userID != nil) {
             
@@ -110,6 +112,28 @@ class LoginClient: NSObject
             
             //Get the overall snapshot
             dataRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                if (snapshot.hasChild("Settings")) {
+                    let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]
+                    let settingsDict = dictionary["Settings"] as! [String: AnyObject]
+                    if (settingsDict["START_NIGHT_OUT_TIME"] != nil && settingsDict["END_NIGHT_OUT_TIME"] != nil) {
+                        if let startTime = settingsDict["START_NIGHT_OUT_TIME"]! as? Double, let endTime = settingsDict["END_NIGHT_OUT_TIME"]! as? Double {
+                            startTimeDouble = startTime
+                            endTimeDouble = endTime
+                            Utilities.printDebugMessage("\(startTime) \(endTime)")
+                        }
+                        else {
+                            Utilities.printDebugMessage("Error: no values for going out time")
+                        }
+                    }
+                    else {
+                        Utilities.printDebugMessage("Error: no values for going out time")
+                    }
+                    
+                }
+                else {
+                    Utilities.printDebugMessage("No settings error")
+                }
                 
                 //USER and USERS
                 if (snapshot.hasChild("Users") && snapshot.childSnapshot(forPath: "Users").hasChild(FBID)) {
@@ -140,17 +164,17 @@ class LoginClient: NSObject
                             venues[venue.VenueID] = venue
                         }
                     }
-                    completion((user,venues, users))
+                    completion((user,venues, users), startTimeDouble, endTimeDouble)
                 }
                 else {
-                    completion(nil)
+                    completion(nil, startTimeDouble, endTimeDouble)
                 }
             })
             
         }
         else {
             Utilities.printDebugMessage("Error retrieving user, userFBID was NIL")
-            completion(nil)
+            completion(nil, startTimeDouble, endTimeDouble)
         }
     }
     

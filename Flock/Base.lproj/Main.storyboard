@@ -32,7 +32,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" alpha="0.40000000000000002" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blueSky" translatesAutoresizingMaskIntoConstraints="NO" id="JZL-JZ-nmw">
+                            <imageView userInteractionEnabled="NO" alpha="0.40000000000000002" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sky1" translatesAutoresizingMaskIntoConstraints="NO" id="JZL-JZ-nmw">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hqd-cV-IcI" customClass="FBSDKLoginButton">
@@ -179,13 +179,13 @@
                                                 <constraint firstAttribute="width" secondItem="EOW-bJ-soS" secondAttribute="height" multiplier="1:1" id="e8h-Qy-9mN"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Biggest Night" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="13" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ngc-cf-f4M">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Biggest Night" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ngc-cf-f4M">
                                             <rect key="frame" x="179" y="285" width="101" height="24"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lifetime" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="13" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QLf-Nl-V1P">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lifetime" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QLf-Nl-V1P">
                                             <rect key="frame" x="295" y="285" width="61" height="24"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="24" id="fYq-Yi-RzI"/>
@@ -194,7 +194,7 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="13" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="r8l-wk-QUp">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r8l-wk-QUp">
                                             <rect key="frame" x="20" y="285" width="42" height="24"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -224,8 +224,8 @@
                                         <constraint firstItem="r8l-wk-QUp" firstAttribute="centerY" secondItem="Ngc-cf-f4M" secondAttribute="centerY" id="UqE-0R-ClC"/>
                                         <constraint firstItem="utK-Nn-Wkp" firstAttribute="width" secondItem="EOW-bJ-soS" secondAttribute="height" multiplier="1:1" id="V2P-3b-rT9"/>
                                         <constraint firstItem="QLf-Nl-V1P" firstAttribute="top" secondItem="EOW-bJ-soS" secondAttribute="bottom" constant="6" id="Xc9-94-CgM"/>
-                                        <constraint firstItem="Ngc-cf-f4M" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="r8l-wk-QUp" secondAttribute="trailing" constant="30" id="cT5-0S-tcB"/>
-                                        <constraint firstItem="Ngc-cf-f4M" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="HCQ-Cv-p1y" secondAttribute="trailing" constant="15" id="dtR-s8-7yx"/>
+                                        <constraint firstItem="Ngc-cf-f4M" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="r8l-wk-QUp" secondAttribute="trailing" constant="15" id="cT5-0S-tcB"/>
+                                        <constraint firstItem="Ngc-cf-f4M" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="HCQ-Cv-p1y" secondAttribute="trailing" constant="5" id="dtR-s8-7yx"/>
                                         <constraint firstItem="r8l-wk-QUp" firstAttribute="top" secondItem="HCQ-Cv-p1y" secondAttribute="bottom" constant="-3" id="fj0-vt-dL8"/>
                                         <constraint firstItem="utK-Nn-Wkp" firstAttribute="centerY" secondItem="EOW-bJ-soS" secondAttribute="centerY" id="g0h-SN-oAq"/>
                                         <constraint firstItem="q3S-a4-j6f" firstAttribute="leading" secondItem="bUL-gN-4PN" secondAttribute="leadingMargin" constant="12" id="h67-Vt-ht3"/>
@@ -277,7 +277,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" alpha="0.65000000000000002" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blueSky" translatesAutoresizingMaskIntoConstraints="NO" id="zGn-0w-Gqi">
+                            <imageView userInteractionEnabled="NO" alpha="0.65000000000000002" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sky1" translatesAutoresizingMaskIntoConstraints="NO" id="zGn-0w-Gqi">
                                 <rect key="frame" x="0.0" y="64" width="375" height="100"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="OrR-Yt-cLF"/>
@@ -286,7 +286,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xzz-zE-cTj">
                                 <rect key="frame" x="0.0" y="164" width="375" height="94"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="m3T-Qq-WNr">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="m3T-Qq-WNr">
                                         <rect key="frame" x="17" y="53" width="56" height="26"/>
                                         <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="19"/>
                                         <nil key="textColor"/>
@@ -302,15 +302,15 @@
                                             <constraint firstAttribute="width" secondItem="DOV-Gp-22q" secondAttribute="height" multiplier="35:36" id="mt5-Ow-Y9Z"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="NaT-IL-fLW">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NaT-IL-fLW">
                                         <rect key="frame" x="195" y="52" width="80" height="36"/>
                                         <string key="text">Favorite Club:
-Frist</string>
+Cap</string>
                                         <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="13"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="wl5-NO-2uT">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wl5-NO-2uT">
                                         <rect key="frame" x="298" y="52" width="60" height="36"/>
                                         <string key="text">Flock Size:
 7</string>
@@ -373,11 +373,12 @@ Frist</string>
                     <navigationItem key="navigationItem" id="NCb-KM-e5j">
                         <barButtonItem key="rightBarButtonItem" image="Settings-22" id="tIa-gh-9FS">
                             <connections>
-                                <segue destination="tMC-0R-nPf" kind="show" id="nNX-NH-7fj"/>
+                                <action selector="settingsButtonPressed:" destination="jcX-Jh-PWr" id="yZ2-e3-Wvr"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="backgroundImage" destination="zGn-0w-Gqi" id="hQm-MC-auo"/>
                         <outlet property="favoriteClubLabel" destination="NaT-IL-fLW" id="WQZ-Sx-3VN"/>
                         <outlet property="flockSizeLabel" destination="wl5-NO-2uT" id="FCj-iJ-ant"/>
                         <outlet property="profileName" destination="m3T-Qq-WNr" id="WFu-sZ-jKy"/>
@@ -430,35 +431,35 @@ Frist</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Zq-4j-jKx">
-                                <rect key="frame" x="141" y="72" width="93" height="30"/>
+                                <rect key="frame" x="141" y="28" width="93" height="30"/>
                                 <state key="normal" title="Create Venue"/>
                                 <connections>
                                     <action selector="createViewButtonPressed:" destination="tMC-0R-nPf" eventType="touchUpInside" id="kEP-Tj-gzo"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uek-gr-Nbt">
-                                <rect key="frame" x="146" y="110" width="82" height="30"/>
+                                <rect key="frame" x="146" y="66" width="82" height="30"/>
                                 <state key="normal" title="Create User"/>
                                 <connections>
                                     <action selector="createUser:" destination="tMC-0R-nPf" eventType="touchUpInside" id="c7S-AR-ovy"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SOn-Qg-9Hx">
-                                <rect key="frame" x="146" y="148" width="82" height="30"/>
+                                <rect key="frame" x="146" y="104" width="82" height="30"/>
                                 <state key="normal" title="Update App"/>
                                 <connections>
                                     <action selector="updateAppPressed:" destination="tMC-0R-nPf" eventType="touchUpInside" id="QOp-ZB-X3D"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kPh-u6-Whc">
-                                <rect key="frame" x="116" y="186" width="143" height="30"/>
+                                <rect key="frame" x="116" y="142" width="143" height="30"/>
                                 <state key="normal" title="Send Friend Request"/>
                                 <connections>
                                     <action selector="sendFriendRequestPressed:" destination="tMC-0R-nPf" eventType="touchUpInside" id="s3B-LE-7e3"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cBQ-d3-2pB">
-                                <rect key="frame" x="116" y="224" width="163" height="30"/>
+                                <rect key="frame" x="116" y="180" width="163" height="30"/>
                                 <state key="normal" title="Confirm Friend Request"/>
                                 <connections>
                                     <action selector="confirmFriendRequestPressed:" destination="tMC-0R-nPf" eventType="touchUpInside" id="HZI-Qy-NDY"/>
@@ -1070,8 +1071,8 @@ Frist</string>
         <image name="Settings-22" width="22" height="22"/>
         <image name="Trampoline Park-50" width="50" height="50"/>
         <image name="User-32" width="32" height="32"/>
-        <image name="blueSky" width="4928" height="3264"/>
         <image name="flatBlueArtboard 2" width="3958" height="3958"/>
+        <image name="sky1" width="4928" height="3264"/>
         <image name="whiteCancelIcon" width="200" height="200"/>
         <image name="whiteCheckmarkIcon" width="384" height="384"/>
     </resources>

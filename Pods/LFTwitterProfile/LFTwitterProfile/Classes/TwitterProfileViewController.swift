@@ -183,7 +183,7 @@ extension TwitterProfileViewController {
       make.edges.equalTo(_stickyHeaderContainer)
     }
     
-    coverImageView.image = UIImage(named: "blueSky")
+    coverImageView.image = UIImage(named: "sky1")
     coverImageView.contentMode = .scaleAspectFill
     coverImageView.clipsToBounds = true
     self.headerCoverView = coverImageView
