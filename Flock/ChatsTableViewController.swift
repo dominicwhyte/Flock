@@ -171,14 +171,14 @@ class ChatsTableViewController: UITableViewController {
                     if(unreadCount > 0 && unreadCount <= 5) {
                         // Cell label
                         cell.unreadMessagesLabel.isHidden = false
-                        cell.unreadMessagesLabel.text = "\(unreadCount)"
+                        cell.unreadMessagesLabel.text = "+"//"\(unreadCount)"
                         cell.unreadMessagesLabel.layer.cornerRadius = cell.unreadMessagesLabel.frame.size.width/2
                         cell.unreadMessagesLabel.clipsToBounds = true
                         labelsHaveBeenUpdated = true
                         
                     } else if(unreadCount > 5) {
                         cell.unreadMessagesLabel.isHidden = false
-                        cell.unreadMessagesLabel.text = "5+"
+                        cell.unreadMessagesLabel.text = "+"//"5+"
                         cell.unreadMessagesLabel.layer.cornerRadius = cell.unreadMessagesLabel.frame.size.width/2
                         cell.unreadMessagesLabel.clipsToBounds = true
                         labelsHaveBeenUpdated = true
@@ -240,13 +240,13 @@ class ChatsTableViewController: UITableViewController {
             if(unreadCount > 0 && unreadCount <= 5) {
                 // Cell label
                 cell.unreadMessagesLabel.isHidden = false
-                cell.unreadMessagesLabel.text = "\(unreadCount)"
+                cell.unreadMessagesLabel.text = "+"//"\(unreadCount)"
                 cell.unreadMessagesLabel.layer.cornerRadius = cell.unreadMessagesLabel.frame.size.width/2
                 cell.unreadMessagesLabel.clipsToBounds = true
                 
             } else if(unreadCount > 5) {
                 cell.unreadMessagesLabel.isHidden = false
-                cell.unreadMessagesLabel.text = "5+"
+                cell.unreadMessagesLabel.text = "+"//"5+"
                 cell.unreadMessagesLabel.layer.cornerRadius = cell.unreadMessagesLabel.frame.size.width/2
                 cell.unreadMessagesLabel.clipsToBounds = true
             }
@@ -344,9 +344,9 @@ extension UITabBarController {
         badgeView.textAlignment = .center
         badgeView.font = font
         if(value == -1) {
-            badgeView.text = "5+"
+            badgeView.text = "+"//"5+"
         } else {
-            badgeView.text = String(value)
+            badgeView.text = "+"//String(value)
         }
         badgeView.backgroundColor = color
         badgeView.tag = index

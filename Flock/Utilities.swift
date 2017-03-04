@@ -11,7 +11,12 @@ struct FlockColors {
     static let FLOCK_LIGHT_BLUE = UIColor(red: 129/255, green: 202/255, blue: 247/255, alpha: 1.0)
 }
 
+
+
 class Utilities {
+    
+    
+    
     struct Constants {
         static let CONGRATULATORY_WORDS_LIST = ["Awesome!", "Phenomenal!", "Hot dog!", "Terrific!", "Marvelous!", "Wonderful!", "Sensational!", "Superb!", "Sublime!", "Brilliant!", "Peachy!", "Splendiferous!", "Outstanding!", "Legendary!"]
         static let SMALL_IPHONES = ["iPhone 5", "iPhone 5s", "iPhone 5c"]

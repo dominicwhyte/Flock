@@ -590,8 +590,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // Present local "pretty" popup for user
         case .active:
             if let chosenVenue = chosenVenueIDGoLiveAt {
-                Utilities.printDebugMessage("currentVenue:\(user!.LiveClubID)")
-                Utilities.printDebugMessage("chosenVenue: \(chosenVenue)")
                 if let currentVenue = user!.LiveClubID {
                     if (chosenVenue == currentVenue) {
                         //displayTempNotification(text: "Temp notification: already live at a club \(currentVenue)")
@@ -634,9 +632,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         if liveVenueIDOptions.count != 0 {
             let currentVenue = liveVenueIDOptions[0].venue
             let alert = SCLAlertView()
-            
+
             //Live at first choice
             _ = alert.addButton("Go live at \(currentVenue.VenueNickName)") {
+                Utilities.printDebugMessage("Go live pressed")
                 self.chosenVenueIDGoLiveAt = currentVenue.VenueID
                 self.goLive()
             }
@@ -673,40 +672,101 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
+    // Returns the most recently presented UIViewController (visible)
+    func getCurrentViewController() -> UIViewController? {
+        
+        // If the root view is a navigation controller, we can just return the visible ViewController
+        if let navigationController = getNavigationController() {
+            
+            return navigationController.visibleViewController
+        }
+        
+        // Otherwise, we must get the root UIViewController and iterate through presented views
+        if let rootController = UIApplication.shared.keyWindow?.rootViewController {
+            
+            var currentController: UIViewController! = rootController
+            
+            // Each ViewController keeps track of the view it has presented, so we
+            // can move from the head to the tail, which will always be the current view
+            while( currentController.presentedViewController != nil ) {
+                
+                currentController = currentController.presentedViewController
+            }
+            return currentController
+        }
+        return nil
+    }
+    
+    // Returns the navigation controller if it exists
+    func getNavigationController() -> UINavigationController? {
+        
+        if let navigationController = UIApplication.shared.keyWindow?.rootViewController  {
+            
+            return navigationController as? UINavigationController
+        }
+        return nil
+    }
+    
     var chosenVenueIDGoLiveAt : String?
     
     //Call this to go live, but first set chosenVenueIDGoLiveAT
     func goLive() {
+        var loadingScreen : Utilities.LoadingScreenObject?
+        var loadingScreenView : UIView?
+        if let currentVC = getCurrentViewController() {
+            loadingScreenView = currentVC.view
+            loadingScreen = Utilities.presentLoadingScreen(vcView: currentVC.view)
+        }
+
+        Utilities.printDebugMessage("go live attempt 2")
         //Remove user from previous live venue
         if let liveClubID = user!.LiveClubID {
+            Utilities.printDebugMessage("go live attempt 4")
             FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: liveClubID, userID: self.user!.FBID, add: false, completion: { (success) in
+                Utilities.printDebugMessage("go live attempt 2 removed user")
                 //testing func
                 //self.displayTempNotification(text: "REMOVING FROM LIVE:  \(self.venues[liveClubID]!.VenueName)")
                 
                 //go live
                 if let chosenVenueIDGoLiveAt = self.chosenVenueIDGoLiveAt {
-                    self.goLiveAt(chosenVenueID: chosenVenueIDGoLiveAt)
+                    self.goLiveAt(chosenVenueID: chosenVenueIDGoLiveAt, loadingScreenView: loadingScreenView, loadingScreen: loadingScreen)
                 }
                 else {
+                    self.removeLoadingScreen(loadingScreen: loadingScreen, loadingScreenView: loadingScreenView)
                     Utilities.printDebugMessage("Error: chosen venueID is NIL")
                 }
                 
             })
         }
         else {
+            Utilities.printDebugMessage("go live attempt 3")
             if let chosenVenueIDGoLiveAt = self.chosenVenueIDGoLiveAt {
-                goLiveAt(chosenVenueID: chosenVenueIDGoLiveAt)
+                self.goLiveAt(chosenVenueID: chosenVenueIDGoLiveAt, loadingScreenView: loadingScreenView, loadingScreen: loadingScreen)
             }
             else {
+                self.removeLoadingScreen(loadingScreen: loadingScreen, loadingScreenView: loadingScreenView)
                 Utilities.printDebugMessage("Error: chosen venueID is NIL")
             }
         }
     }
     
-    func goLiveAt(chosenVenueID : String) {
+    func removeLoadingScreen(loadingScreen : Utilities.LoadingScreenObject?, loadingScreenView : UIView?) {
+        if let loadingScreen = loadingScreen, let loadingScreenView = loadingScreenView {
+            Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: loadingScreenView)
+        }
+    }
+    
+    func goLiveAt(chosenVenueID : String, loadingScreenView : UIView?, loadingScreen : Utilities.LoadingScreenObject?) {
+        Utilities.printDebugMessage("goLiveAt \(chosenVenueID)")
         FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: chosenVenueID, userID: self.user!.FBID, add: true, completion: { (success) in
+            Utilities.printDebugMessage("Success")
+            if (!success) {
+                Utilities.printDebugMessage("Error in goLiveAt")
+            }
             self.updateAllDataWithoutUpdatingLocation(completion: { (success) in
+                self.removeLoadingScreen(loadingScreen: loadingScreen, loadingScreenView: loadingScreenView)
                 if (success) {
+                    Utilities.printDebugMessage("Success 2")
                     DispatchQueue.main.async {
                         let alert = SCLAlertView()
                         _ = alert.showSuccess(Utilities.generateRandomCongratulatoryPhrase(), subTitle: "You're live!")

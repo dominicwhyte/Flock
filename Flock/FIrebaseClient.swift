@@ -465,6 +465,7 @@ class FirebaseClient: NSObject
             }
             else {
                 Utilities.printDebugMessage("Error adding user to venue")
+                completion(false)
             }
         }
     }
@@ -522,6 +523,10 @@ class FirebaseClient: NSObject
                         completion(true)
                         return
                     }
+                    else {
+                        completion(true)
+                        return
+                    }
                 }
             }
             else {
@@ -571,14 +576,18 @@ class FirebaseClient: NSObject
                     }
                     
                     // See how loyal dis wonderful user is
-                    let plansDict = userDict["Plans"] as! [String : AnyObject]
                     var visitWasPlanned = false
-                    for (_, plan) in plansDict {
-                        if((plan["Date"] as! String) == date && (plan["VenueID"] as! String) == venueID) {
-                            visitWasPlanned = true
-                            break
+                    if (userDict["Plans"] != nil) {
+                        let plansDict = userDict["Plans"] as! [String : AnyObject]
+                        
+                        for (_, plan) in plansDict {
+                            if((plan["Date"] as! String) == date && (plan["VenueID"] as! String) == venueID) {
+                                visitWasPlanned = true
+                                break
+                            }
                         }
                     }
+                    
                     if(visitWasPlanned) {
                         if(snapshot.childSnapshot(forPath: userID).hasChild("Loyalties")) {
                             var loyaltiesDict = userDict["Loyalties"] as! [String : Int]
