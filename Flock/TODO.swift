@@ -17,7 +17,7 @@ import Foundation
 
 /*
  Remaining to be done:
- 
+ fix live timeframe for unlive
  
  Later:
  upgrade firebase account

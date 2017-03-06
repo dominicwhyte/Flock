@@ -62,6 +62,49 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
+    //Very hacky code: 
+//    var overrideBool = false
+//    var newFrame : CGRect?
+//    
+//    func fixHeightIfNecessary(maxHeight : CGFloat) {
+//        if self.view.frame.height > maxHeight {
+//            self.overrideBool = true
+//            self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: maxHeight - 300)
+//            newFrame =  CGRect(x: 0, y: 0, width: self.view.frame.width, height: maxHeight - 300)
+//            tableView.frame         =   tableViewFrameView.frame
+//            let frame = CGRect(x: tableViewFrameView.frame.minX, y: tableViewFrameView.frame.minY, width: tableViewFrameView.frame.width + 50.0, height: tableViewFrameView.frame.height)
+//            tableView.frame = frame
+//            tableView.delegate      =   self
+//            tableView.dataSource    =   self
+//            
+//            tableView.register(UINib(nibName: "VenueFriendTableViewCell", bundle: nil), forCellReuseIdentifier: "VENUE_FRIEND")
+//            setFriendsForVenueForDate(venue: delegate!.venueToPass!)
+//            setAttendButtonTitle()
+//            setLabelsForGraphic()
+//            self.view.addSubview(tableView)
+//
+//            self.view.setNeedsLayout()
+//            self.view.setNeedsDisplay()
+//            Utilities.printDebugMessage("ERROR: need to fix popup height")
+//            
+//        }
+//    }
+//    
+//    override func viewDidLayoutSubviews() {
+//        
+//        super.viewDidLayoutSubviews()
+//        if (overrideBool) {
+//            if let newFrame = self.newFrame {
+//                self.view.frame = newFrame
+//                tableView.frame         =   tableViewFrameView.frame
+//                let frame = CGRect(x: tableViewFrameView.frame.minX, y: tableViewFrameView.frame.minY, width: tableViewFrameView.frame.width + 50.0, height: tableViewFrameView.frame.height)
+//                tableView.frame = frame
+//                self.view.layoutSubviews()
+//            }
+//        }
+//        
+//    }
+    
     override func viewDidLoad() {
         datePicker.titles = self.determineTitleOrder(dayCount: DateUtilities.Constants.NUMBER_OF_DAYS_TO_DISPLAY)
         datePicker.itemWidth = 100
@@ -91,6 +134,8 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         setLabelsForGraphic()
         self.view.addSubview(tableView)
     }
+    
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let currentDay = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]

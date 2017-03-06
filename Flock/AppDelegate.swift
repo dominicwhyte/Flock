@@ -675,6 +675,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     func displayWrongTimePrompt() {
+        
         let alert = SCLAlertView()
          _ = alert.showInfo("Oops!", subTitle: "Looks like you're trying to go live, but it's not the right time. Try again when you're at a club between \(DateUtilities.getHourFromDouble(hourDouble: self.startGoingOutTime)) and \(DateUtilities.getHourFromDouble(hourDouble: self.endGoingOutTime))!")
     }
@@ -682,6 +683,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func displayWrongPlacePrompt() {
         let alert = SCLAlertView()
         _ = alert.showInfo("Oops!", subTitle: "Looks like you're trying to go live, but you're not quite at a club. Try again when you're a little bit closer to where you want to be!")
+    }
+    
+    func restoreNavItem() {
+        if let navItem = self.navItem, let prevNavBarButtonItem = self.prevBarButtonItem {
+            navItem.rightBarButtonItem = prevNavBarButtonItem
+            //navItem.rightBarButtonItem = UIBarButtonItem(title: "Go Live", style: .plain, target: nil, action: #selector(PlacesTableViewController.goLiveButtonPressed(_:)))
+        }
     }
     
     // Returns the most recently presented UIViewController (visible)
@@ -720,6 +728,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     var chosenVenueIDGoLiveAt : String?
+    var navItem : UINavigationItem?
+    var prevBarButtonItem : UIBarButtonItem?
+    
+    func presentNavBarActivityIndicator(navItem : UINavigationItem) {
+        let uiBusy = UIActivityIndicatorView(activityIndicatorStyle: .white)
+        self.navItem = navItem
+        uiBusy.hidesWhenStopped = true
+        uiBusy.startAnimating()
+        self.prevBarButtonItem = navItem.rightBarButtonItem
+        navItem.rightBarButtonItem = UIBarButtonItem(customView: uiBusy)
+    }
     
     //Call this to go live, but first set chosenVenueIDGoLiveAT
     func goLive() {
@@ -730,12 +749,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             loadingScreen = Utilities.presentLoadingScreen(vcView: currentVC.view)
         }
 
-        Utilities.printDebugMessage("go live attempt 2")
         //Remove user from previous live venue
         if let liveClubID = user!.LiveClubID {
-            Utilities.printDebugMessage("go live attempt 4")
             FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: liveClubID, userID: self.user!.FBID, add: false, completion: { (success) in
-                Utilities.printDebugMessage("go live attempt 2 removed user")
                 //testing func
                 //self.displayTempNotification(text: "REMOVING FROM LIVE:  \(self.venues[liveClubID]!.VenueName)")
                 
@@ -745,7 +761,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 }
                 else {
                     self.removeLoadingScreen(loadingScreen: loadingScreen, loadingScreenView: loadingScreenView)
-                    Utilities.printDebugMessage("Error: chosen venueID is NIL")
                 }
                 
             })
@@ -827,7 +842,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     //a notification telling you that your're live, or making you unlive, or if you just arrived
     //somewhere then suggesting you go live.
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
+        restoreNavItem()
         // For testing purposes print out all locations in ascending order of distance
         liveVenueIDOptions = []
         let visitLocation = locations[0]
@@ -871,6 +886,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     //Did fail
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error)
+        restoreNavItem()
     }
     
     // Send a local notification to the user

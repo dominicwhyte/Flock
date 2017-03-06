@@ -37,13 +37,19 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     @IBAction func goLiveButtonPressed(_ sender: Any) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.goLiveButtonPressed = true
-        
-        if(CLLocationManager.authorizationStatus() == .authorizedAlways) {
+        if (!Utilities.isInternetAvailable()) {
+            let alert = SCLAlertView()
+            _ = alert.showInfo("Oops!", subTitle: "Looks like you don't have internet! Connect to internet so you can go live on Flock")
+        }
+        else if(CLLocationManager.authorizationStatus() == .authorizedAlways) {
             appDelegate.locationManager.requestLocation()
+            appDelegate.presentNavBarActivityIndicator(navItem: self.navigationItem)
+            
         } else {
             let alert = SCLAlertView()
             _ = alert.showInfo("Oops!", subTitle: "Looks like you haven't setup your location services permissions. Hit the settings button in your profile to enable this for a better Flock experience!")
         }
+        
     }
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -441,6 +447,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         
         // Create a custom view controller
         let popupSubView = PopupSubViewController(nibName: "PopupSubViewController", bundle: nil)
+        
         popupSubView.delegate = self
         
         if let date = startDisplayDate {
@@ -494,8 +501,15 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         // Add buttons to dialog
         popup.addButtons([attendButton])
         
+        //Hacky solution, don't show this on ipads
+        if (popupSubView.view.frame.height > self.view.frame.height) {
+            Utilities.printDebugMessage("Height error")
+        }
+        else {
+            present(popup, animated: true, completion: nil)
+        }
         // Present dialog
-        present(popup, animated: true, completion: nil)
+        
     }
     
     func shouldAttendButtonBeEnabledUponInitialPopup(appDelegate : AppDelegate) -> Bool {

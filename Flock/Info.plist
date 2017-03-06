@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>Flock</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.1</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -45,8 +47,20 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Used in testing files but not in actual app.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Used in testing files but not in actual app.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Used in testing files but not in actual app.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Allow Flock to use location services to check if you&apos;re at a venue.</string>
+	<string>Allow Flock to use location services to check if you're at a venue. Flock always gives you the option to select whether you want to share your location with your friends.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Used in testing files but not in actual app.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Used in testing files but not in actual app.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Used in testing files but not in actual app.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>OpenSans-Regular.ttf</string>
@@ -66,18 +80,6 @@
 	<array>
 		<string>armv7</string>
 	</array>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Used in testing files but not in actual app.</string>
-	<key>NSContactsUsageDescription</key>
-	<string>Used in testing files but not in actual app.</string>
-	<key>NSCalendarsUsageDescription</key>
-	<string>Used in testing files but not in actual app.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Used in testing files but not in actual app.</string>
-	<key>NSMotionUsageDescription</key>
-	<string>Used in testing files but not in actual app.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Used in testing files but not in actual app.</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
