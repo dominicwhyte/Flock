@@ -49,9 +49,27 @@ class ChatsTableViewController: UITableViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        self.user = appDelegate.user!
+        var newConversations = [Conversation]()
+        if(self.conversations.count != user?.ChannelIDs.count){
+            for(FBID, channelID) in self.user!.ChannelIDs {
+                let friend = appDelegate.users[FBID]!
+                let conversation = Conversation(channelID: channelID, participant: friend, imageURL : friend.PictureURL, lastMessage: nil )
+                
+                newConversations.append(conversation)
+                newConversations.sort(by: { (conversation1, conversation2) -> Bool in
+                    conversation1.participant.Name < conversation2.participant.Name
+                })
+                Utilities.printDebugMessage("RE getting conversation for \(friend.Name)")
+            }
+            self.conversations = newConversations
+        }
         self.tableView.reloadData()
         self.tableView.setNeedsDisplay()
         self.tableView.setNeedsLayout()
+        
         Utilities.printDebugMessage("HERE")
     }
     

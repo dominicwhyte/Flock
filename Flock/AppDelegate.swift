@@ -36,6 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var friendRequestUsers = [String : User]()
     var facebookFriendsFBIDs : [String : String] = [:]
     var profileNeedsToUpdate = true
+    var chatNeedsToUpdate = true
     var venueStatistics : Statistics?
     let gcmMessageIDKey = "gcm.message_id"
     var friendCountPlanningToAttendVenueThisWeek = [String:Int]()
@@ -44,6 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var appIsWakingUpFromVisit : Bool = false
     var startGoingOutTime : Double = DateUtilities.Constants.START_NIGHT_OUT_TIME
     var endGoingOutTime : Double = DateUtilities.Constants.END_NIGHT_OUT_TIME
+    var goLiveButtonPressed : Bool = false
     
     
     func masterLogin(completion: @escaping (_ status: Bool) -> ()) {
@@ -672,6 +674,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
+    func displayWrongTimePrompt() {
+        let alert = SCLAlertView()
+         _ = alert.showInfo("Oops!", subTitle: "Looks like you're trying to go live, but it's not the right time. Try again when you're at a club between \(DateUtilities.getHourFromDouble(hourDouble: self.startGoingOutTime)) and \(DateUtilities.getHourFromDouble(hourDouble: self.endGoingOutTime))!")
+    }
+    
+    func displayWrongPlacePrompt() {
+        let alert = SCLAlertView()
+        _ = alert.showInfo("Oops!", subTitle: "Looks like you're trying to go live, but you're not quite at a club. Try again when you're a little bit closer to where you want to be!")
+    }
+    
     // Returns the most recently presented UIViewController (visible)
     func getCurrentViewController() -> UIViewController? {
         
@@ -815,21 +827,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     //a notification telling you that your're live, or making you unlive, or if you just arrived
     //somewhere then suggesting you go live.
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if DateUtilities.isValidNightOutTime(startTime: self.startGoingOutTime, endTime: self.endGoingOutTime) {
-            // For testing purposes print out all locations in ascending order of distance
-            liveVenueIDOptions = []
-            let visitLocation = locations[0]
-            
-            
-            //KEY: remove people from Live if they left
-            
-            //Send notification if within critical radius
-            let clubsAscending = distanceToClubsAscending(visitLocation: visitLocation)
-            
+        
+        // For testing purposes print out all locations in ascending order of distance
+        liveVenueIDOptions = []
+        let visitLocation = locations[0]
+        
+        
+        //KEY: remove people from Live if they left
+        
+        //Send notification if within critical radius
+        let clubsAscending = distanceToClubsAscending(visitLocation: visitLocation)
+        let isValidTime = DateUtilities.isValidNightOutTime(startTime: self.startGoingOutTime, endTime: self.endGoingOutTime)
+        
+        // Handle displaying prompts if user's pressed go live and aren't doing so at the right time/place
+        if(self.goLiveButtonPressed && clubsAscending.count == 0) {
+            self.displayWrongPlacePrompt()
+        } else if (self.goLiveButtonPressed && !isValidTime) {
+            self.displayWrongTimePrompt()
+        } else {
+
+            // Handle going live/not going live
             if (clubsAscending.count != 0) {
-                liveVenueIDOptions = clubsAscending
-                chosenVenueIDGoLiveAt = clubsAscending[0].venue.VenueID
-                showPopupIfActiveOrNotificationIfNot()
+                if isValidTime {
+                    liveVenueIDOptions = clubsAscending
+                    chosenVenueIDGoLiveAt = clubsAscending[0].venue.VenueID
+                    showPopupIfActiveOrNotificationIfNot()
+                }
             }
                 //Remove the user from the club
             else {
@@ -841,6 +864,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 }
             }
         }
+        self.goLiveButtonPressed = false
+        
     }
     
     //Did fail

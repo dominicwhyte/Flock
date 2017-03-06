@@ -310,8 +310,16 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         case Constants.REMAINING_FRIENDS_INDEX:
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.REUSE_IDENTIFIERS[indexPath.section], for: indexPath) as! AllTableViewCell
             if let lastLive = friend.LastLive {
+                
+                let executions = Array(friend.Executions.values)
+                var lastLiveClub = ""
+                for execution in executions {
+                    if(execution.date == lastLive) {
+                        lastLiveClub = appDelegate.venues[execution.venueID]!.VenueNickName
+                    }
+                }
                 let negativeDaysSinceLive = DateUtilities.daysUntilPlan(planDate: lastLive)
-                cell.subtitleLabel.text = "Live \(negativeDaysSinceLive * -1) \(Utilities.setPlurality(string: "day", count: negativeDaysSinceLive * -1)) ago"
+                cell.subtitleLabel.text = "Live at \(lastLiveClub) \(negativeDaysSinceLive * -1) \(Utilities.setPlurality(string: "day", count: negativeDaysSinceLive * -1)) ago"
             }
             else {
                 cell.subtitleLabel.text = "Not yet live"

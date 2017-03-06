@@ -44,6 +44,31 @@ class DateUtilities {
         let dateString = dateFormatter.string(from: date)
         return dateString
     }
+    static func getHourFromDouble(hourDouble: Double) -> String {
+        var hourString: String = ""
+        // First figure out the base hour
+        
+        if(Int(hourDouble) == 0 || Int(hourDouble) == 12) {
+            hourString = "12"
+        } else {
+            hourString = String(Int(floor(hourDouble)) % 12)
+        }
+        // Get remaidner
+        if(floor(hourDouble) != hourDouble) {
+            let remainder = hourDouble - floor(hourDouble)
+            hourString += ":"
+            hourString += String(Int(remainder*60))
+        }
+        
+        // determine am/pm
+        if(hourDouble < 12) {
+            hourString += "am"
+        } else {
+            hourString += "pm"
+        }
+        
+        return hourString
+    }
     
     // Gets the current day of the week
     static func getTodayDayOfWeek() -> String {

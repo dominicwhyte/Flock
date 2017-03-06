@@ -11,6 +11,7 @@ import PopupDialog
 import BTNavigationDropdownMenu
 import SCLAlertView
 import SAConfettiView
+import CoreLocation
 
 
 
@@ -31,7 +32,19 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     var imageCache = [String : UIImage]()
     let searchController = UISearchController(searchResultsController: nil)
     
+    @IBOutlet weak var goLiveButton: UIBarButtonItem!
     
+    @IBAction func goLiveButtonPressed(_ sender: Any) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.goLiveButtonPressed = true
+        
+        if(CLLocationManager.authorizationStatus() == .authorizedAlways) {
+            appDelegate.locationManager.requestLocation()
+        } else {
+            let alert = SCLAlertView()
+            _ = alert.showInfo("Oops!", subTitle: "Looks like you haven't setup your location services permissions. Hit the settings button in your profile to enable this for a better Flock experience!")
+        }
+    }
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -192,7 +205,13 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let venue = self.venues[indexPath.row]
+        var venue : Venue
+        if searchController.isActive && searchController.searchBar.text != "" {
+            venue = filteredVenues[indexPath.row]
+        }
+        else {
+            venue = self.venues[indexPath.row]
+        }
         self.venueToPass = venue
         showCustomDialog(venue: venue, startDisplayDate: nil)
     }
@@ -271,8 +290,10 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         
         refreshControl?.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refreshControl?.addTarget(self, action: #selector(PeopleTableViewController.refresh(refreshControl:)), for: UIControlEvents.valueChanged)
-        
-        
+        self.goLiveButton.setTitleTextAttributes([
+            NSFontAttributeName: UIFont(name: "OpenSans-Light", size: 17.0)!,
+            NSForegroundColorAttributeName: UIColor.white],
+                                          for: UIControlState.normal)
         super.viewDidLoad()
         
         getVenuesAndSort()
