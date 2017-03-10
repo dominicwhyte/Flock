@@ -104,9 +104,9 @@ class ProfileTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "VENUE_FRIEND", for: indexPath) as! VenueFriendTableViewCell
         cell.nameLabel.text = venue.VenueName
         if (indexPath.section == Constants.LIVE_SECTION_ROW) {
-            cell.subtitleLabel.text = DateUtilities.convertDateToStringByFormat(date: Date(), dateFormat: "MMMM d")
+            cell.subtitleLabel.text = DateUtilities.convertDateToStringByFormat(date: Date(), dateFormat: DateUtilities.Constants.uiDisplayFormat)
         } else {
-            cell.subtitleLabel.text = DateUtilities.convertDateToStringByFormat(date: self.plans[indexPath.row].date, dateFormat: "MMMM d")
+            cell.subtitleLabel.text = DateUtilities.convertDateToStringByFormat(date: self.plans[indexPath.row].date, dateFormat: DateUtilities.Constants.uiDisplayFormat)
         }
         
         if let venueImage = appDelegate.venueImages[venue.ImageURL] {

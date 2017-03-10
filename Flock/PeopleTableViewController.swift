@@ -27,7 +27,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
     //UpdateTableViewDelegate function
     func updateDataAndTableView(_ completion: @escaping (Bool) -> Void) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        appDelegate.updateAllData { (success) in
+        appDelegate.updateAllDataWithoutUpdatingLocation { (success) in
             DispatchQueue.main.async {
                 if (success) {
                     Utilities.printDebugMessage("Successfully reloaded data and tableview")

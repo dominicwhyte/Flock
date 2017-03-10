@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="31f-4a-ta2">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="31f-4a-ta2">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -161,7 +161,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="HCQ-Cv-p1y">
-                                            <rect key="frame" x="20" y="255" width="63" height="33"/>
+                                            <rect key="frame" x="20" y="255.5" width="62.5" height="33"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="24"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -169,10 +169,7 @@
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="q3S-a4-j6f">
                                             <rect key="frame" x="20" y="20" width="335" height="221"/>
                                         </imageView>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Dancing Party-50" translatesAutoresizingMaskIntoConstraints="NO" id="utK-Nn-Wkp">
-                                            <rect key="frame" x="237" y="249" width="30" height="30"/>
-                                        </imageView>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Trampoline Park-50" translatesAutoresizingMaskIntoConstraints="NO" id="EOW-bJ-soS">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EOW-bJ-soS">
                                             <rect key="frame" x="310" y="249" width="30" height="30"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="30" id="DgJ-MQ-uCZ"/>
@@ -180,13 +177,13 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Planned" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ngc-cf-f4M">
-                                            <rect key="frame" x="216" y="285" width="63" height="24"/>
+                                            <rect key="frame" x="215.5" y="285.5" width="63" height="23.5"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Live" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QLf-Nl-V1P">
-                                            <rect key="frame" x="304" y="285" width="30" height="24"/>
+                                            <rect key="frame" x="303.5" y="285" width="30" height="24"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="24" id="fYq-Yi-RzI"/>
                                             </constraints>
@@ -195,13 +192,13 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r8l-wk-QUp">
-                                            <rect key="frame" x="20" y="285" width="42" height="24"/>
+                                            <rect key="frame" x="20" y="285.5" width="42" height="23.5"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kDI-lS-VlJ">
-                                            <rect key="frame" x="222" y="254" width="10" height="21"/>
+                                            <rect key="frame" x="216.5" y="254" width="10" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -212,24 +209,41 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Jr-gR-GYs">
+                                            <rect key="frame" x="231.5" y="249" width="30" height="30"/>
+                                            <state key="normal" title="Button" image="Dancing Party-50"/>
+                                            <connections>
+                                                <action selector="plannedShouldPopUp:" destination="Wjk-FW-8ht" eventType="touchUpInside" id="zVx-JG-8zE"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z5n-Nl-KKg">
+                                            <rect key="frame" x="310" y="249" width="30" height="30"/>
+                                            <state key="normal" title="Button" image="Trampoline Park-50"/>
+                                            <connections>
+                                                <action selector="liveShouldPopUp:" destination="Wjk-FW-8ht" eventType="touchUpInside" id="H6Q-LV-JIc"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="QLf-Nl-V1P" firstAttribute="leading" secondItem="Ngc-cf-f4M" secondAttribute="trailing" constant="25" id="2Yf-Fx-Wz4"/>
                                         <constraint firstItem="EOW-bJ-soS" firstAttribute="leading" secondItem="bnB-hs-JC7" secondAttribute="trailing" constant="5" id="4ws-CU-U5K"/>
                                         <constraint firstItem="HCQ-Cv-p1y" firstAttribute="leading" secondItem="q3S-a4-j6f" secondAttribute="leading" id="6BD-bf-w6u"/>
+                                        <constraint firstItem="z5n-Nl-KKg" firstAttribute="width" secondItem="EOW-bJ-soS" secondAttribute="width" id="Aa9-l1-jK3"/>
+                                        <constraint firstItem="7Jr-gR-GYs" firstAttribute="width" secondItem="EOW-bJ-soS" secondAttribute="height" multiplier="1:1" id="Bpz-M5-ZM5"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="q3S-a4-j6f" secondAttribute="trailing" constant="12" id="DgQ-c9-VAY"/>
                                         <constraint firstItem="EOW-bJ-soS" firstAttribute="trailing" secondItem="q3S-a4-j6f" secondAttribute="trailing" constant="-15" id="FbT-jc-5HH"/>
-                                        <constraint firstItem="Ngc-cf-f4M" firstAttribute="centerX" secondItem="utK-Nn-Wkp" secondAttribute="centerX" multiplier="0.98" id="IUr-13-Eai"/>
-                                        <constraint firstItem="utK-Nn-Wkp" firstAttribute="leading" secondItem="kDI-lS-VlJ" secondAttribute="trailing" constant="5" id="L0w-j5-ptz"/>
+                                        <constraint firstItem="z5n-Nl-KKg" firstAttribute="centerX" secondItem="EOW-bJ-soS" secondAttribute="centerX" id="Jcj-2B-3aq"/>
+                                        <constraint firstItem="7Jr-gR-GYs" firstAttribute="centerY" secondItem="kDI-lS-VlJ" secondAttribute="centerY" id="LK1-oo-Fof"/>
+                                        <constraint firstItem="7Jr-gR-GYs" firstAttribute="centerX" secondItem="Ngc-cf-f4M" secondAttribute="centerX" id="Tfu-Jg-vEy"/>
                                         <constraint firstItem="r8l-wk-QUp" firstAttribute="centerY" secondItem="Ngc-cf-f4M" secondAttribute="centerY" id="UqE-0R-ClC"/>
-                                        <constraint firstItem="utK-Nn-Wkp" firstAttribute="width" secondItem="EOW-bJ-soS" secondAttribute="height" multiplier="1:1" id="V2P-3b-rT9"/>
                                         <constraint firstItem="QLf-Nl-V1P" firstAttribute="top" secondItem="EOW-bJ-soS" secondAttribute="bottom" constant="6" id="Xc9-94-CgM"/>
+                                        <constraint firstItem="7Jr-gR-GYs" firstAttribute="leading" secondItem="kDI-lS-VlJ" secondAttribute="trailing" constant="5" id="ZU6-ME-ixs"/>
+                                        <constraint firstItem="7Jr-gR-GYs" firstAttribute="centerY" secondItem="EOW-bJ-soS" secondAttribute="centerY" id="c6N-hs-HPv"/>
                                         <constraint firstItem="Ngc-cf-f4M" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="r8l-wk-QUp" secondAttribute="trailing" constant="15" id="cT5-0S-tcB"/>
                                         <constraint firstItem="Ngc-cf-f4M" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="HCQ-Cv-p1y" secondAttribute="trailing" constant="5" id="dtR-s8-7yx"/>
+                                        <constraint firstItem="z5n-Nl-KKg" firstAttribute="height" secondItem="EOW-bJ-soS" secondAttribute="height" id="eXo-6F-hmL"/>
                                         <constraint firstItem="r8l-wk-QUp" firstAttribute="top" secondItem="HCQ-Cv-p1y" secondAttribute="bottom" constant="-3" id="fj0-vt-dL8"/>
-                                        <constraint firstItem="utK-Nn-Wkp" firstAttribute="centerY" secondItem="EOW-bJ-soS" secondAttribute="centerY" id="g0h-SN-oAq"/>
                                         <constraint firstItem="q3S-a4-j6f" firstAttribute="leading" secondItem="bUL-gN-4PN" secondAttribute="leadingMargin" constant="12" id="h67-Vt-ht3"/>
-                                        <constraint firstItem="kDI-lS-VlJ" firstAttribute="centerY" secondItem="utK-Nn-Wkp" secondAttribute="centerY" id="iUa-Z0-tD7"/>
                                         <constraint firstItem="Ngc-cf-f4M" firstAttribute="centerY" secondItem="QLf-Nl-V1P" secondAttribute="centerY" id="nv6-qY-OVV"/>
                                         <constraint firstItem="bnB-hs-JC7" firstAttribute="centerY" secondItem="EOW-bJ-soS" secondAttribute="centerY" id="qdE-QG-TtE"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="QLf-Nl-V1P" secondAttribute="bottom" constant="2" id="sSQ-0n-kA7"/>
@@ -237,7 +251,8 @@
                                         <constraint firstItem="QLf-Nl-V1P" firstAttribute="centerX" secondItem="EOW-bJ-soS" secondAttribute="centerX" multiplier="0.98" id="smT-3W-DqA"/>
                                         <constraint firstItem="r8l-wk-QUp" firstAttribute="leading" secondItem="HCQ-Cv-p1y" secondAttribute="leading" id="tQ5-BV-dE6"/>
                                         <constraint firstItem="EOW-bJ-soS" firstAttribute="top" secondItem="q3S-a4-j6f" secondAttribute="bottom" constant="8" id="tZi-do-OaI"/>
-                                        <constraint firstItem="utK-Nn-Wkp" firstAttribute="height" secondItem="EOW-bJ-soS" secondAttribute="height" id="wDK-Gw-mkl"/>
+                                        <constraint firstItem="z5n-Nl-KKg" firstAttribute="centerY" secondItem="EOW-bJ-soS" secondAttribute="centerY" id="wlt-ro-Qje"/>
+                                        <constraint firstItem="7Jr-gR-GYs" firstAttribute="height" secondItem="EOW-bJ-soS" secondAttribute="height" id="z0j-6P-8vp"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -500,7 +515,7 @@ Cap</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QnL-CR-aJK" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Profile" image="User-32" id="xz8-Sd-fgM" customClass="SimpleTabBarItem" customModule="SimpleTab"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="CgO-oq-jlc">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="CgO-oq-jlc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -518,7 +533,7 @@ Cap</string>
             <objects>
                 <navigationController id="7uX-SL-9kr" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Chat" image="Chat-32" id="EZe-cp-YhZ" customClass="SimpleTabBarItem" customModule="SimpleTab"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lZm-IH-lbX">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="lZm-IH-lbX">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -554,13 +569,13 @@ Cap</string>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qZq-eX-T9b">
-                                            <rect key="frame" x="88" y="14" width="53" height="28"/>
+                                            <rect key="frame" x="88" y="14.5" width="52.5" height="27.5"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yie-D7-dVa">
-                                            <rect key="frame" x="88" y="40" width="37" height="21"/>
+                                            <rect key="frame" x="88" y="40" width="37" height="20.5"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -617,7 +632,7 @@ Cap</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="6Hi-b6-CvB" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Friends" image="Meeting-32" id="RKh-vm-8P9" customClass="SimpleTabBarItem" customModule="SimpleTab"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Wwy-nl-Vhb">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Wwy-nl-Vhb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -655,13 +670,13 @@ Cap</string>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jqD-ur-HwF">
-                                            <rect key="frame" x="70" y="12" width="53" height="28"/>
+                                            <rect key="frame" x="70" y="12.5" width="52.5" height="27.5"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flock Request" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7T8-S6-gZw">
-                                            <rect key="frame" x="70" y="38" width="94" height="21"/>
+                                            <rect key="frame" x="70" y="38" width="93.5" height="20.5"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -727,13 +742,13 @@ Cap</string>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NnP-CV-DXo">
-                                            <rect key="frame" x="70" y="12" width="53" height="28"/>
+                                            <rect key="frame" x="70" y="12.5" width="52.5" height="27.5"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GR1-Fe-AYz">
-                                            <rect key="frame" x="70" y="38" width="37" height="21"/>
+                                            <rect key="frame" x="70" y="38" width="37" height="20.5"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -785,13 +800,13 @@ Cap</string>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y8d-lu-XWQ">
-                                            <rect key="frame" x="70" y="12" width="53" height="28"/>
+                                            <rect key="frame" x="70" y="12.5" width="52.5" height="27.5"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mXs-Ka-riF">
-                                            <rect key="frame" x="70" y="38" width="37" height="21"/>
+                                            <rect key="frame" x="70" y="38" width="37" height="20.5"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -843,13 +858,13 @@ Cap</string>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="22X-fU-DME">
-                                            <rect key="frame" x="70" y="12" width="53" height="28"/>
+                                            <rect key="frame" x="70" y="12.5" width="52.5" height="27.5"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kds-ef-jo8">
-                                            <rect key="frame" x="70" y="38" width="37" height="21"/>
+                                            <rect key="frame" x="70" y="38" width="37" height="20.5"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -938,13 +953,13 @@ Cap</string>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AnO-09-XGE">
-                                            <rect key="frame" x="70" y="12" width="53" height="28"/>
+                                            <rect key="frame" x="70" y="12.5" width="52.5" height="27.5"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pending" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E7Z-R2-c0C">
-                                            <rect key="frame" x="70" y="38" width="55" height="21"/>
+                                            <rect key="frame" x="70" y="38" width="55" height="20.5"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -1018,7 +1033,7 @@ Cap</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ne7-AY-AB1" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="oZK-Uq-8Q0">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="oZK-Uq-8Q0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1037,7 +1052,7 @@ Cap</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="RrJ-Ui-UhR" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Places" image="Marker-32" id="w4B-Je-4D0" customClass="SimpleTabBarItem" customModule="SimpleTab"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Kqy-Xs-3RV">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Kqy-Xs-3RV">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1055,7 +1070,7 @@ Cap</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="KcW-Kd-qrk" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="SMT-26-elT">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="SMT-26-elT">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

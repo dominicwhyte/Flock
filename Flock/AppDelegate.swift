@@ -634,7 +634,9 @@
                     if let currentVenue = user!.LiveClubID {
                         if (chosenVenue == currentVenue) {
                             if let venue = self.venues[chosenVenue] {
-                                displayAlreadyLivePrompt(venueName: venue.VenueNickName)
+                                if(self.goLiveButtonPressed) {
+                                    displayAlreadyLivePrompt(venueName: venue.VenueNickName)
+                                }
                             }
                             else {
                                 Utilities.printDebugMessage("Error getting venue name")
@@ -1106,7 +1108,24 @@
         
         
         func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
-            OneSignal.initWithLaunchOptions(launchOptions, appId: "35032170-d34b-4a41-9504-3ee4b725eafe")
+            OneSignal.initWithLaunchOptions(launchOptions, appId: "35032170-d34b-4a41-9504-3ee4b725eafe", handleNotificationReceived: { (notification) in
+                print("Received Notification - \(notification?.payload.notificationID)")
+            }, handleNotificationAction: { (result) in
+                //                let payload: OSNotificationPayload? = result?.notification.payload
+                //
+                //                var fullMessage: String? = payload?.body
+                //                if payload?.additionalData != nil {
+                //                    var additionalData: [AnyHashable: Any]? = payload?.additionalData
+                //                    if additionalData!["actionSelected"] != nil {
+                //                        fullMessage = fullMessage! + "\nPressed ButtonId:\(additionalData!["actionSelected"])"
+                //                    }
+                //                }
+                //                print(fullMessage)
+                Utilities.printDebugMessage("yay")
+            }, settings: [kOSSettingsKeyAutoPrompt : true, kOSSettingsKeyInFocusDisplayOption : OSNotificationDisplayType.notification.rawValue])
+            
+            
+            
             FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
             FIRApp.configure()
             self.setupLocationServices()

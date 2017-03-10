@@ -26,6 +26,7 @@ class ChatsTableViewController: UITableViewController {
             
             self.conversations.append(conversation)
             self.conversations.sort(by: { (conversation1, conversation2) -> Bool in
+
                 conversation1.participant.Name < conversation2.participant.Name
             })
             Utilities.printDebugMessage("getting conversation for \(friend.Name)")

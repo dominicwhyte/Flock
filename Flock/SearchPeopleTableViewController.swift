@@ -100,7 +100,15 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return Constants.SECTION_TITLES[section]
+        var title: String?
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        if (appDelegate.users.count > 0) {
+            title = "\(Constants.SECTION_TITLES[section]) (\(appDelegate.users.count))"
+        } else {
+            title = Constants.SECTION_TITLES[section]
+        }
+        Utilities.printDebugMessage("\(appDelegate.users.count)")
+        return title
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -121,7 +129,14 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
         
         let label = UILabel(frame: CGRect(x: 10, y: 0, width: view.frame.size.width, height: 25))
         label.textColor = .white
-        label.text = Constants.SECTION_TITLES[section]
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        if (appDelegate.users.count > 0) {
+            label.text = "\(Constants.SECTION_TITLES[section]) (\(appDelegate.users.count))"
+            title = "\(Constants.SECTION_TITLES[section]) (\(appDelegate.users.count))"
+        } else {
+            label.text = Constants.SECTION_TITLES[section]
+        }
+        //label.text = Constants.SECTION_TITLES[section]
         returnedView.addSubview(label)
         
         return returnedView

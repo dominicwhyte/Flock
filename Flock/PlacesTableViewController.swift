@@ -83,6 +83,16 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         }
     }
     
+    @IBAction func plannedShouldPopUp(_ sender: Any) {
+        let alert = SCLAlertView()
+        _ = alert.showInfo("Planned", subTitle: "This is the number of people going ")
+    }
+    
+    @IBAction func liveShouldPopUp(_ sender: Any) {
+        let alert = SCLAlertView()
+        _ = alert.showInfo("Go live!", subTitle: "Select an option:")
+    }
+    
     func filterVenuePlannedAttendees(venues: [Venue]) -> [Venue] {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let users = appDelegate.users
@@ -152,8 +162,11 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             cell.rightStatLabel.text = "\(String(currentLive))"
             var totalPlanned = 0
             if let venueDates = stats.venuePlanCountsForDatesForVenues[venue.VenueID] {
-                for (_, count) in venueDates {
-                    totalPlanned += count
+                for (date, count) in venueDates {
+                    let daysUntil = DateUtilities.daysUntilPlan(planDate: date)
+                    if(DateUtilities.isValidTimeFrame(dayDiff: daysUntil)){
+                        totalPlanned += count
+                    }
                 }
             }
             
