@@ -530,8 +530,12 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         let displayDate = DateUtilities.convertDateToStringByFormat(date: DateUtilities.getDateFromString(date: attendFullDate), dateFormat: DateUtilities.Constants.uiDisplayFormat)
         let alert = SCLAlertView()
         //_ = alert.addButton("First Button", target:self, selector:#selector(PlacesTableViewController.shareWithFlock))
-        print("Second button tapped")
-        
+        alert.addButton("Share with Flock", action: {
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            if let user = appDelegate.user {
+                Utilities.sendPushNotificationToEntireFlock(title: "\(user.Name) is planning to go to \(venueName) on \(displayDate)!")
+            }
+        })
         _ = alert.showSuccess(Utilities.generateRandomCongratulatoryPhrase(), subTitle: "You're going to \(venueName) on \(displayDate)")
         
 //        let confettiView = SAConfettiView(frame: self.view.bounds)

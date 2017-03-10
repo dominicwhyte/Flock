@@ -18,6 +18,7 @@ class Utilities {
     
     
     struct Constants {
+        static let notificationName = Notification.Name("reloadTableView")
         static let CONGRATULATORY_WORDS_LIST = ["Awesome!", "Phenomenal!", "Hot dog!", "Terrific!", "Marvelous!", "Wonderful!", "Sensational!", "Superb!", "Sublime!", "Brilliant!", "Peachy!", "Splendiferous!", "Outstanding!", "Legendary!"]
         static let SMALL_IPHONES = ["iPhone 5", "iPhone 5s", "iPhone 5c"]
     }
@@ -192,14 +193,37 @@ class Utilities {
 
     }
     
-    static func sendPushNotification(text : String, toUserID : String) {
+    static func sendPushNotification(title : String, text : String, toUserFBID : String) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        if (appDelegate.users[toUserID] != nil) {
-            if let toNotificationID = appDelegate.users[toUserID]!.NotificationInfo.notificationUserID {
-                OneSignal.postNotification(["contents": ["title": text], "include_player_ids": [toNotificationID]])
+        if (appDelegate.users[toUserFBID] != nil) {
+            if let toNotificationID = appDelegate.users[toUserFBID]!.NotificationInfo.notificationUserID {
+                OneSignal.postNotification(["contents": ["en": text], "include_player_ids": [toNotificationID], "subtitle": ["en": title]])
             }
         }
-        
+    }
+    
+    static func sendPushNotification(title : String, toUserFBID : String) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        if (appDelegate.users[toUserFBID] != nil) {
+            if let toNotificationID = appDelegate.users[toUserFBID]!.NotificationInfo.notificationUserID {
+                OneSignal.postNotification(["include_player_ids": [toNotificationID], "contents": ["en": title]])
+            }
+        }
+    }
+    
+    static func sendPushNotificationToEntireFlock(title : String) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        var userNotificationIDs = [String]()
+        for (friendFBID,_) in appDelegate.user!.Friends {
+            if (appDelegate.users[friendFBID] != nil) {
+                if let toNotificationID = appDelegate.users[friendFBID]!.NotificationInfo.notificationUserID {
+                    userNotificationIDs.append(toNotificationID)
+                }
+            }
+        }
+        if (userNotificationIDs.count != 0) {
+            OneSignal.postNotification(["include_player_ids": userNotificationIDs, "contents": ["en": title]])
+        }
         
     }
     

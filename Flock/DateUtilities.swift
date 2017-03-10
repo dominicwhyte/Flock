@@ -15,7 +15,7 @@ class DateUtilities {
     struct Constants {
         static let dayOfWeekDateFormat = "EEEE"
         static let fullDateFormat = "yyyy-MM-dd"
-        static let uiDisplayFormat = "MMMM d"
+        static let uiDisplayFormat = "EEEE, MMMM d"
         static let NUMBER_OF_DAYS_TO_DISPLAY = 7
         static let START_NIGHT_OUT_TIME : Double = 22.0
         static let END_NIGHT_OUT_TIME : Double = 6.0

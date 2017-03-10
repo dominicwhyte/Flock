@@ -91,6 +91,9 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         //Refresh control
         refreshControl?.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refreshControl?.addTarget(self, action: #selector(PeopleTableViewController.refresh(refreshControl:)), for: UIControlEvents.valueChanged)
+        
+        //Listener for autoreloading friend requests
+        NotificationCenter.default.addObserver(self, selector: #selector(PeopleTableViewController.reloadTableData(notification:)), name: Utilities.Constants.notificationName, object: nil)
     }
     
     
@@ -179,7 +182,27 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         return friendArrayArray
     }
     
-    
+    func reloadTableData(notification: NSNotification) {
+        
+        if(self.tableView != nil) {
+            
+            self.updateDataAndTableView({ (success) in
+                
+                if(success) {
+                    
+                    Utilities.printDebugMessage("Successfully updated tableview from notification")
+                    
+                } else {
+                    
+                    Utilities.printDebugMessage("Successfully updated tableview from notification")
+                    
+                }
+                
+            })
+            
+        }
+        
+    }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if searchController.isActive && searchController.searchBar.text != "" {

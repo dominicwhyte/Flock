@@ -75,11 +75,27 @@ class FirebaseClient: NSObject
                     }
                     let updates = ["FriendRequests": friendRequests]
                     dataRef.child("Users").child(toID).updateChildValues(updates)
+                    
+                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                    if let user = appDelegate.user {
+                        Utilities.sendPushNotification(title: "\(user.Name) sent you a Flock request", toUserFBID: toID)
+                    }
+                    else {
+                        Utilities.printDebugMessage("Error getting user")
+                    }
+                    
                     completion(true)
                 }
                     
                 else
                 {
+                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                    if let user = appDelegate.user {
+                        Utilities.sendPushNotification(title: "\(user.Name) sent you a Flock request", toUserFBID: toID)
+                    }
+                    else {
+                        Utilities.printDebugMessage("Error getting user")
+                    }
                     let updates = ["FriendRequests": [fromID : fromID]]
                     dataRef.child("Users").child(toID).updateChildValues(updates)
                     completion(true)
@@ -173,7 +189,10 @@ class FirebaseClient: NSObject
                     self.rejectFriendRequest(toID, toID: fromID, completion: { (failure) in
                         
                         addChannelForTwoFriends(fromID: fromID, toID: toID, usersDictionary: dictionary, snapshot: snapshot, completion: { (channelSuccess) in
-                            
+                            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                            if let user = appDelegate.user {
+                                Utilities.sendPushNotification(title: "\(user.Name) accepted your Flock request", toUserFBID: fromID)
+                            }
                             completion(!failure && success && channelSuccess)
                         })
                     })

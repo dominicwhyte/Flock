@@ -62,6 +62,7 @@
                     
                     //Get unreadMessage count
                     self.getUnreadMessageCount(user: self.user!)
+                    self.getUnseenFriendRequests(user: self.user!)
                     
                     Utilities.printDebugMessage("TEST")
                     
@@ -152,6 +153,7 @@
                     
                     //Get unreadMessage count
                     self.getUnreadMessageCount(user: self.user!)
+                    self.getUnseenFriendRequests(user: self.user!)
                     completion(true)
                 }
                 else {
@@ -542,7 +544,29 @@
         }
         
         
-        
+        func getUnseenFriendRequests(user: User) {
+            let dataRef = FIRDatabase.database().reference().child("Users").child(user.FBID).child("FriendRequests")
+            
+            let friendQuery = dataRef.queryLimited(toLast:5)
+            
+            
+            let _ = friendQuery.observe(.childAdded, with: { (snapshot) -> Void in
+                // 3
+                if(snapshot.value != nil) {
+                    let friendData = snapshot.value as! String
+                    
+                    // Define identifier
+                    
+                    
+                    // Register to receive notification
+                    
+                    // Post notification
+                    NotificationCenter.default.post(name: Utilities.Constants.notificationName, object: nil)
+                }
+            })
+            
+        }
+
         
         
         
@@ -609,7 +633,12 @@
                 if let chosenVenue = chosenVenueIDGoLiveAt {
                     if let currentVenue = user!.LiveClubID {
                         if (chosenVenue == currentVenue) {
-                            //displayTempNotification(text: "Temp notification: already live at a club \(currentVenue)")
+                            if let venue = self.venues[chosenVenue] {
+                                displayAlreadyLivePrompt(venueName: venue.VenueNickName)
+                            }
+                            else {
+                                Utilities.printDebugMessage("Error getting venue name")
+                            }
                         }
                         else {
                             //User receives option to go live
@@ -693,6 +722,11 @@
             
             let alert = SCLAlertView()
             _ = alert.showInfo("Oops!", subTitle: "Looks like you're trying to go live, but it's not the right time. Try again when you're at a club between \(DateUtilities.getHourFromDouble(hourDouble: self.startGoingOutTime)) and \(DateUtilities.getHourFromDouble(hourDouble: self.endGoingOutTime))!")
+        }
+        
+        func displayAlreadyLivePrompt(venueName : String) {
+            let alert = SCLAlertView()
+            _ = alert.showInfo("Hey there", subTitle: "Looks like you're already live at \(venueName)!")
         }
         
         func displayWrongPlacePrompt() {
@@ -811,6 +845,12 @@
                         Utilities.printDebugMessage("Success 2")
                         DispatchQueue.main.async {
                             let alert = SCLAlertView()
+                            alert.addButton("Share with Flock", action: {
+                                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                                if let user = appDelegate.user, let venueName = appDelegate.venues[chosenVenueID]?.VenueNickName {
+                                    Utilities.sendPushNotificationToEntireFlock(title: "\(user.Name) is live at \(venueName)!")
+                                }
+                            })
                             _ = alert.showSuccess(Utilities.generateRandomCongratulatoryPhrase(), subTitle: "You're live!")
                         }
                     }
@@ -874,7 +914,8 @@
                 self.displayWrongPlacePrompt()
             } else if (self.goLiveButtonPressed && !isValidTime) {
                 self.displayWrongTimePrompt()
-            } else {
+            }
+            else {
                 
                 // Handle going live/not going live
                 if (clubsAscending.count != 0) {

@@ -259,8 +259,15 @@ class ChatViewController: JSQMessagesViewController {
     }
     
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let itemRef = messageRef.childByAutoId() // 1
-        testNotificationFunc(text: text!, toUserID : senderId)
+        if let friendUser = self.friendUser, let senderUser = appDelegate.user {
+            Utilities.sendPushNotification(title: "Message from \(senderUser.Name)", text: text, toUserFBID: friendUser.FBID)
+        }
+        else {
+            Utilities.printDebugMessage("Error: no friend to send notification to")
+        }
+        
         let messageItem = [ // 2
             "senderId": senderId!,
             "senderName": senderDisplayName!,
