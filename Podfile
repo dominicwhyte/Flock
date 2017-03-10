@@ -27,6 +27,7 @@ target 'Flock' do
    pod 'SAConfettiView'
    pod 'PermissionScope'
    pod 'BWWalkthrough'
+   pod 'OneSignal', '~> 2.0'
 
   target 'FlockTests' do
     inherit! :search_paths

@@ -4,13 +4,13 @@ import MobileCoreServices
 import AASquaresLoading
 import Foundation
 import SystemConfiguration
+import OneSignal
 
 struct FlockColors {
     static let FLOCK_BLUE = UIColor(red: 76/255, green: 181/255, blue: 245/255, alpha: 1.0)
     static let FLOCK_GRAY = UIColor(red: 183/255, green: 184/255, blue: 182/255, alpha: 1.0)
     static let FLOCK_LIGHT_BLUE = UIColor(red: 129/255, green: 202/255, blue: 247/255, alpha: 1.0)
 }
-
 
 
 class Utilities {
@@ -190,6 +190,17 @@ class Utilities {
         
         vc.present(walkthrough, animated: true, completion: nil)
 
+    }
+    
+    static func sendPushNotification(text : String, toUserID : String) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        if (appDelegate.users[toUserID] != nil) {
+            if let toNotificationID = appDelegate.users[toUserID]!.NotificationInfo.notificationUserID {
+                OneSignal.postNotification(["contents": ["title": text], "include_player_ids": [toNotificationID]])
+            }
+        }
+        
+        
     }
     
 }

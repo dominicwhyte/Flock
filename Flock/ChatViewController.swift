@@ -260,6 +260,7 @@ class ChatViewController: JSQMessagesViewController {
     
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
         let itemRef = messageRef.childByAutoId() // 1
+        testNotificationFunc(text: text!, toUserID : senderId)
         let messageItem = [ // 2
             "senderId": senderId!,
             "senderName": senderDisplayName!,

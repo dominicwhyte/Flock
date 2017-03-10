@@ -14,6 +14,7 @@ class User: NSObject
     var LiveClubID: String?
     var LastLive: Date?
     var ChannelIDs: [String:String]
+    var NotificationInfo : NotificationInfoClass
     
     init(dict: [String: AnyObject])
     {
@@ -60,7 +61,7 @@ class User: NSObject
         } else {
             self.Loyalties = [:]
         }
-
+        
         if (dict["LastLive"] != nil) {
             let dateString = dict["LastLive"] as! String
             self.LastLive = DateUtilities.getDateFromString(date: dateString)
@@ -70,8 +71,14 @@ class User: NSObject
         } else {
             self.ChannelIDs = [:]
         }
+        
+        let notificationUserID = dict["NotificationUserID"] as? String
+        
+        let notificationPushToken = dict["NotificationPushToken"] as? String
+        
+        self.NotificationInfo = NotificationInfoClass(notificationUserID : notificationUserID, notificationPushToken : notificationPushToken)
     }
-
+    
 }
 
 class Plan: NSObject
@@ -83,6 +90,18 @@ class Plan: NSObject
     {
         self.date = DateUtilities.getDateFromString(date: date)
         self.venueID =  venueID
+    }
+}
+
+class NotificationInfoClass : NSObject
+{
+    var notificationUserID: String?
+    var notificationPushToken: String?
+    
+    init(notificationUserID : String?, notificationPushToken : String?)
+    {
+        self.notificationUserID = notificationUserID
+        self.notificationPushToken = notificationPushToken
     }
 }
 

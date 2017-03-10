@@ -90,6 +90,7 @@ PODS:
     - SnapKit (~> 3.0)
   - MGSwipeTableCell (1.5.6)
   - MVHorizontalPicker (0.0.2)
+  - OneSignal (2.2.2)
   - PermissionScope (1.1.1)
   - PopupDialog (0.5.0)
   - PureLayout (3.0.2)
@@ -114,6 +115,7 @@ DEPENDENCIES:
   - LFTwitterProfile
   - MGSwipeTableCell
   - MVHorizontalPicker
+  - OneSignal (~> 2.0)
   - PermissionScope
   - PopupDialog (~> 0.5)
   - PureLayout (~> 3.0.1)
@@ -149,6 +151,7 @@ SPEC CHECKSUMS:
   LFTwitterProfile: 57cc1c1602e3b4cf297b3d80b85dff16b5257ad4
   MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
   MVHorizontalPicker: d0d821ef2fa0c2dd9b11c907e650f5551c2f501c
+  OneSignal: e0b347d6eb671903e0cec630f1b4c1cc446bd874
   PermissionScope: a30c16e015779ba27c97c124e7539e27b5829de2
   PopupDialog: 9890441b81105b9076757af2afe2b037be682f3e
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
@@ -157,6 +160,6 @@ SPEC CHECKSUMS:
   SimpleTab: 4e490e339a19d0d1d26c0fa3c862188eaad73ecb
   SnapKit: 2e456761aa92d4d4067a7a5594c18769d451a8ad
 
-PODFILE CHECKSUM: ea1006dbacf1e527ee55e8a2f237e6d182b8bcd4
+PODFILE CHECKSUM: 3c927324a1c608c3f4e8707b6d9838a74a4401f8
 
 COCOAPODS: 1.0.1

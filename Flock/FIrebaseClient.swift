@@ -185,6 +185,29 @@ class FirebaseClient: NSObject
             }
         })
     }
+    
+    class func updateUserNotificationInfo(notificationUserId : String?, notificationPushToken : String?, completion: @escaping (Bool) -> Void) {
+        if let FBID = FBSDKAccessToken.current().userID {
+            dataRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                if (snapshot.childSnapshot(forPath: "Users").hasChild(FBID)) {
+                    if let notificationUserId = notificationUserId {
+                        let updates = ["NotificationUserID": notificationUserId]
+                        dataRef.child("Users").child(FBID).updateChildValues(updates)
+                    }
+                    if let notificationPushToken = notificationPushToken {
+                        let updates = ["NotificationPushToken": notificationPushToken]
+                        dataRef.child("Users").child(FBID).updateChildValues(updates)
+                    }
+                }
+                completion(true)
+            })
+        }
+        else {
+            completion(false)
+        }
+        
+    }
+    
     //Creates a channel for two friends, and adds the channel to both the users' ChannelIDs Dicts
     class func addChannelForTwoFriends(fromID : String, toID : String, usersDictionary : [String: AnyObject], snapshot : FIRDataSnapshot, completion: @escaping (Bool) -> Void)
     {

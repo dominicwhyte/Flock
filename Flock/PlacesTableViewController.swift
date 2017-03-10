@@ -143,20 +143,22 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             else {
                 venue = self.venues[indexPath.row]
             }
-            if let lifetime = stats.lifetimeLive[venue.VenueID] {
-                cell.rightStatLabel.text = "\(String(lifetime))"
-                
-            }
-            else {
-                cell.rightStatLabel.text = "0\nLifetime"
-            }
-            if let biggestNight = stats.maxPlansInOneNight[venue.VenueID] {
-                cell.leftStatLabel.text = "\(String(biggestNight))"
-            }
-            else {
-                cell.leftStatLabel.text = "0\nBiggest Night"
+            //for showing total lifetimevisits
+//            if let lifetime = stats.lifetimeLive[venue.VenueID] {
+//                cell.rightStatLabel.text = "\(String(lifetime))"
+//                
+//            }
+            let currentLive = venue.CurrentAttendees.count
+            cell.rightStatLabel.text = "\(String(currentLive))"
+            var totalPlanned = 0
+            if let venueDates = stats.venuePlanCountsForDatesForVenues[venue.VenueID] {
+                for (_, count) in venueDates {
+                    totalPlanned += count
+                }
             }
             
+            cell.leftStatLabel.text = "\(String(totalPlanned))"
+                
             
 //            //TEMP
 //            let A: UInt32 = 0 // UInt32 = 32-bit positive integers (unsigned)
