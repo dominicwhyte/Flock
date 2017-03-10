@@ -147,6 +147,14 @@ class Utilities {
         return string + "s"
     }
     
+    static func setPluralityForPeople(string :String, count : Int) -> String {
+        if (count == 1) {
+            return "person"
+        } else {
+            return "people"
+        }
+    }
+    
     static func isInternetAvailable() -> Bool
     {
         var zeroAddress = sockaddr_in()

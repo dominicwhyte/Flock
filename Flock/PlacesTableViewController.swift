@@ -85,12 +85,62 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     
     @IBAction func plannedShouldPopUp(_ sender: Any) {
         let alert = SCLAlertView()
-        _ = alert.showInfo("Planned", subTitle: "This is the number of people going ")
+        var indexPath: IndexPath?
+        var countText: String?
+        if let button = sender as? UIButton {
+            if let superview = button.superview {
+                if let cell = superview.superview as? PlacesTableViewCell {
+                    if (self.tableView.indexPath(for: cell) != nil) {
+                        indexPath = self.tableView.indexPath(for: cell)
+                        countText = cell.leftStatLabel.text
+                        Utilities.printDebugMessage("In the index path \(indexPath!.row)")
+                    }
+                }
+            }
+        }
+        if let indexPath = indexPath, let countText = countText {
+            var venue : Venue
+            if searchController.isActive && searchController.searchBar.text != "" {
+                venue = self.filteredVenues[indexPath.row]
+            } else {
+                venue = self.venues[indexPath.row]
+            }
+            var peopleText = "people are"
+            if Int(countText) == 1 {
+                peopleText = "person is"
+            }
+            _ = alert.showInfo("Planned", subTitle: "\(countText) \(peopleText) planning to go to \(venue.VenueNickName)")
+        }
     }
     
     @IBAction func liveShouldPopUp(_ sender: Any) {
         let alert = SCLAlertView()
-        _ = alert.showInfo("Go live!", subTitle: "Select an option:")
+        var indexPath: IndexPath?
+        var countText: String?
+        if let button = sender as? UIButton {
+            if let superview = button.superview {
+                if let cell = superview.superview as? PlacesTableViewCell {
+                    if (self.tableView.indexPath(for: cell) != nil) {
+                        indexPath = self.tableView.indexPath(for: cell)
+                        countText = cell.rightStatLabel.text
+                        Utilities.printDebugMessage("In the index path \(indexPath!.row)")
+                    }
+                }
+            }
+        }
+        if let indexPath = indexPath, let countText = countText {
+            var venue : Venue
+            if searchController.isActive && searchController.searchBar.text != "" {
+                venue = self.filteredVenues[indexPath.row]
+            } else {
+                venue = self.venues[indexPath.row]
+            }
+            var peopleText = "people are"
+            if Int(countText) == 1 {
+                peopleText = "person is"
+            }
+            _ = alert.showInfo("Live", subTitle: "\(countText) \(peopleText) live at \(venue.VenueNickName)")
+        }
     }
     
     func filterVenuePlannedAttendees(venues: [Venue]) -> [Venue] {
@@ -547,6 +597,8 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             if let user = appDelegate.user {
                 Utilities.sendPushNotificationToEntireFlock(title: "\(user.Name) is planning to go to \(venueName) on \(displayDate)!")
+                //let newAlert = SCLAlertView()
+                //_ = alert.showSuccess("Shared", subTitle: "Your friends have been notified!")
             }
         })
         _ = alert.showSuccess(Utilities.generateRandomCongratulatoryPhrase(), subTitle: "You're going to \(venueName) on \(displayDate)")
