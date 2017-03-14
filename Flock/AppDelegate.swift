@@ -152,8 +152,8 @@
                     //                }
                     
                     //Get unreadMessage count
-                    self.getUnreadMessageCount(user: self.user!)
-                    self.getUnseenFriendRequests(user: self.user!)
+                    //self.getUnreadMessageCount(user: self.user!)
+                    //self.getUnseenFriendRequests(user: self.user!)
                     completion(true)
                 }
                 else {
@@ -548,7 +548,7 @@
             let dataRef = FIRDatabase.database().reference().child("Users").child(user.FBID).child("FriendRequests")
             
             let friendQuery = dataRef.queryLimited(toLast:5)
-            
+            Utilities.printDebugMessage("Prefatal")
             
             let _ = friendQuery.observe(.childAdded, with: { (snapshot) -> Void in
                 // 3
@@ -557,7 +557,7 @@
                     
                     // Define identifier
                     
-                    
+                    Utilities.printDebugMessage("FATAL")
                     // Register to receive notification
                     
                     // Post notification

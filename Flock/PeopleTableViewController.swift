@@ -183,7 +183,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
     }
     
     func reloadTableData(notification: NSNotification) {
-        
+        Utilities.printDebugMessage("Getting called on, only once!")
         if(self.tableView != nil) {
             
             self.updateDataAndTableView({ (success) in
