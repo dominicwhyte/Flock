@@ -150,11 +150,17 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
             Utilities.printDebugMessage("HI I SHOULD GO RIGHT NOW PLEASE!!")
             if(datePicker.selectedItemIndex < datePicker.titles.count - 1) {
                 datePicker.setSelectedItemIndex(datePicker.selectedItemIndex + 1, animated: true)
+                setAttendButtonTitle()
+                setLabelsForGraphic()
+                self.tableView.reloadData()
             }
         } else if (sender.location(in: datePicker).x < (datePicker.frame.width - datePicker.itemWidth)/2) {
             Utilities.printDebugMessage("HI I SHOULD GO LEFT NOW PLEASE!!")
             if(datePicker.selectedItemIndex > 0) {
                 datePicker.setSelectedItemIndex(datePicker.selectedItemIndex - 1, animated: true)
+                setAttendButtonTitle()
+                setLabelsForGraphic()
+                self.tableView.reloadData()
             }
         }
     }

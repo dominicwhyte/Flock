@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -277,7 +277,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="D2148F8E-6456-47B1-8296-E8C61B6C6356" translatesAutoresizingMaskIntoConstraints="NO" id="8s8-AO-qEP">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="DD7DBAEC-56D7-4FF1-939B-23A4457EB2E4" translatesAutoresizingMaskIntoConstraints="NO" id="8s8-AO-qEP">
                                 <rect key="frame" x="0.0" y="0.0" width="618" height="600"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -308,7 +308,7 @@
                                     <constraint firstAttribute="height" constant="193" id="jWg-Gh-kbY"/>
                                 </constraints>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="8260AD9D-BFDE-4DC7-87D7-71344440E5D8" translatesAutoresizingMaskIntoConstraints="NO" id="FET-cd-a8b">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="595B6E87-5D4E-4946-8994-B4D8C6E1DCD3" translatesAutoresizingMaskIntoConstraints="NO" id="FET-cd-a8b">
                                 <rect key="frame" x="164" y="454" width="47" height="47"/>
                             </imageView>
                         </subviews>
@@ -330,7 +330,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="8260AD9D-BFDE-4DC7-87D7-71344440E5D8" width="47" height="47">
+        <image name="595B6E87-5D4E-4946-8994-B4D8C6E1DCD3" width="47" height="47">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -528,7 +528,7 @@ AKsArQCyALUAtwC5ALsAvQDCANkA2wDdLAMsCCwTLBwsLywzLD4sRyxMLFQsVyxcLGssbyx2LH4siyyQ
 LJIslCyZLKEspCypLLEstCzGLMkszgAAAAAAAAIBAAAAAAAAAEEAAAAAAAAAAAAAAAAAACzQA
 </mutableData>
         </image>
-        <image name="D2148F8E-6456-47B1-8296-E8C61B6C6356" width="486" height="685">
+        <image name="DD7DBAEC-56D7-4FF1-939B-23A4457EB2E4" width="486" height="685">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
