@@ -182,6 +182,7 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+
         return CGFloat(Constants.CELL_HEIGHT)
     }
     

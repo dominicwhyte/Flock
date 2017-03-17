@@ -161,7 +161,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="HCQ-Cv-p1y">
-                                            <rect key="frame" x="20" y="255.5" width="62.5" height="33"/>
+                                            <rect key="frame" x="20" y="256" width="62.5" height="33"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="24"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -177,7 +177,7 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Planned" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ngc-cf-f4M">
-                                            <rect key="frame" x="216" y="285.5" width="63" height="23.5"/>
+                                            <rect key="frame" x="216" y="286" width="63" height="23.5"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -192,7 +192,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r8l-wk-QUp">
-                                            <rect key="frame" x="20" y="285.5" width="42" height="23.5"/>
+                                            <rect key="frame" x="20" y="286" width="42" height="23.5"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -654,8 +654,70 @@ Cap</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FLOCK_SUGGESTIONS" rowHeight="133" id="SBu-22-HoJ" customClass="FlockSuggestionTableViewCell" customModule="Flock" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="133"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SBu-22-HoJ" id="Sqo-90-LEi">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="132"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="SOL-jb-Khs">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="132.5"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="BxL-6S-Uw0">
+                                                <size key="itemSize" width="92" height="124"/>
+                                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                                <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                            </collectionViewFlowLayout>
+                                            <cells>
+                                                <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="FLOCK_SUGGESTION_COLLECTION_CELL" reuseIdentifier="FLOCK_SUGGESTION_COLLECTION_CELL" id="O2d-DP-Bi1">
+                                                    <rect key="frame" x="0.0" y="4" width="92" height="124"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                                        <rect key="frame" x="0.0" y="0.0" width="92" height="124"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
+                                                        <subviews>
+                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hY2-BD-MYT">
+                                                                <rect key="frame" x="8" y="8" width="76" height="76"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" secondItem="hY2-BD-MYT" secondAttribute="height" multiplier="1:1" id="jgu-W4-hE3"/>
+                                                                </constraints>
+                                                            </imageView>
+                                                            <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="72E-BJ-RW5">
+                                                                <rect key="frame" x="8" y="89" width="76" height="27"/>
+                                                                <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="17"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                    </view>
+                                                    <constraints>
+                                                        <constraint firstItem="72E-BJ-RW5" firstAttribute="leading" secondItem="O2d-DP-Bi1" secondAttribute="leadingMargin" id="89z-xI-VYC"/>
+                                                        <constraint firstItem="hY2-BD-MYT" firstAttribute="top" secondItem="O2d-DP-Bi1" secondAttribute="topMargin" id="I2b-8C-ecr"/>
+                                                        <constraint firstItem="hY2-BD-MYT" firstAttribute="leading" secondItem="O2d-DP-Bi1" secondAttribute="leadingMargin" id="OI8-8q-s10"/>
+                                                        <constraint firstItem="72E-BJ-RW5" firstAttribute="bottom" secondItem="O2d-DP-Bi1" secondAttribute="bottomMargin" id="gjn-lv-vry"/>
+                                                        <constraint firstItem="hY2-BD-MYT" firstAttribute="trailing" secondItem="O2d-DP-Bi1" secondAttribute="trailingMargin" id="v6e-E2-6Im"/>
+                                                        <constraint firstItem="72E-BJ-RW5" firstAttribute="trailing" secondItem="O2d-DP-Bi1" secondAttribute="trailingMargin" id="vZU-VY-bq3"/>
+                                                        <constraint firstItem="72E-BJ-RW5" firstAttribute="top" secondItem="hY2-BD-MYT" secondAttribute="bottom" constant="5" id="ypq-Xb-BDJ"/>
+                                                    </constraints>
+                                                </collectionViewCell>
+                                            </cells>
+                                        </collectionView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="SOL-jb-Khs" secondAttribute="bottom" id="2cH-sy-QXU"/>
+                                        <constraint firstItem="SOL-jb-Khs" firstAttribute="leading" secondItem="Sqo-90-LEi" secondAttribute="leading" id="3KQ-ma-Px3"/>
+                                        <constraint firstAttribute="trailing" secondItem="SOL-jb-Khs" secondAttribute="trailing" id="mdT-gY-YNc"/>
+                                        <constraint firstItem="SOL-jb-Khs" firstAttribute="top" secondItem="Sqo-90-LEi" secondAttribute="top" id="pyg-ii-6Qd"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="collectionView" destination="SOL-jb-Khs" id="poJ-EY-VQQ"/>
+                                </connections>
+                            </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FRIEND_REQUEST" rowHeight="75" id="fda-YG-1In" customClass="FriendRequestTableViewCell" customModule="Flock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="75"/>
+                                <rect key="frame" x="0.0" y="161" width="375" height="75"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fda-YG-1In" id="466-XT-bWT">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="74"/>
@@ -670,13 +732,13 @@ Cap</string>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jqD-ur-HwF">
-                                            <rect key="frame" x="70" y="12" width="53" height="28"/>
+                                            <rect key="frame" x="70" y="12.5" width="52.5" height="27.5"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flock Request" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7T8-S6-gZw">
-                                            <rect key="frame" x="70" y="38" width="94" height="21"/>
+                                            <rect key="frame" x="70" y="38" width="93.5" height="20.5"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -727,7 +789,7 @@ Cap</string>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LIVE" rowHeight="75" id="hZ9-uE-4dK" customClass="LiveTableViewCell" customModule="Flock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="103" width="375" height="75"/>
+                                <rect key="frame" x="0.0" y="236" width="375" height="75"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hZ9-uE-4dK" id="kJa-pc-JEd">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="74"/>
@@ -742,13 +804,13 @@ Cap</string>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NnP-CV-DXo">
-                                            <rect key="frame" x="70" y="12" width="53" height="28"/>
+                                            <rect key="frame" x="70" y="12.5" width="52.5" height="27.5"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GR1-Fe-AYz">
-                                            <rect key="frame" x="70" y="38" width="37" height="21"/>
+                                            <rect key="frame" x="70" y="38" width="37" height="20.5"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -785,7 +847,7 @@ Cap</string>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PLANNED" rowHeight="75" id="0MJ-rN-crY" customClass="PlannedTableViewCell" customModule="Flock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="178" width="375" height="75"/>
+                                <rect key="frame" x="0.0" y="311" width="375" height="75"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0MJ-rN-crY" id="Lbd-XL-jWx">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="74"/>
@@ -800,13 +862,13 @@ Cap</string>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y8d-lu-XWQ">
-                                            <rect key="frame" x="70" y="12" width="53" height="28"/>
+                                            <rect key="frame" x="70" y="12.5" width="52.5" height="27.5"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mXs-Ka-riF">
-                                            <rect key="frame" x="70" y="38" width="37" height="21"/>
+                                            <rect key="frame" x="70" y="38" width="37" height="20.5"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -843,7 +905,7 @@ Cap</string>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ALL" rowHeight="75" id="Dio-vA-lqJ" customClass="AllTableViewCell" customModule="Flock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="253" width="375" height="75"/>
+                                <rect key="frame" x="0.0" y="386" width="375" height="75"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Dio-vA-lqJ" id="gN4-g0-GAL">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="74"/>
@@ -858,13 +920,13 @@ Cap</string>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="22X-fU-DME">
-                                            <rect key="frame" x="70" y="12" width="53" height="28"/>
+                                            <rect key="frame" x="70" y="12.5" width="52.5" height="27.5"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kds-ef-jo8">
-                                            <rect key="frame" x="70" y="38" width="37" height="21"/>
+                                            <rect key="frame" x="70" y="38" width="37" height="20.5"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -926,7 +988,7 @@ Cap</string>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sJe-UR-PIj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3036" y="-564"/>
+            <point key="canvasLocation" x="3036" y="-564.46776611694156"/>
         </scene>
         <!--Search People Table View Controller-->
         <scene sceneID="pYR-s7-D8W">

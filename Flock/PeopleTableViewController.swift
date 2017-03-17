@@ -14,14 +14,39 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
     
     internal var parentView: UIView?
     
+    var facebookFriendFuggestions = [User]()
     
     struct Constants {
-        static let FRIEND_REQUEST_INDEX = 0
-        static let LIVE_FRIENDS_INDEX = 1
-        static let PLANNED_FRIENDS_INDEX = 2
-        static let REMAINING_FRIENDS_INDEX = 3
-        static let SECTION_TITLES = ["Flock Requests", "Live", "Planned", "All"]
-        static let REUSE_IDENTIFIERS = ["FRIEND_REQUEST", "LIVE", "PLANNED", "ALL"]
+        static let FLOCK_SUGGESTIONS_INDEX = 0
+        static let FRIEND_REQUEST_INDEX = 1
+        static let LIVE_FRIENDS_INDEX = 2
+        static let PLANNED_FRIENDS_INDEX = 3
+        static let REMAINING_FRIENDS_INDEX = 4
+        static let SECTION_TITLES = ["Flock Suggestions", "Flock Requests", "Live", "Planned", "All"]
+        static let REUSE_IDENTIFIERS = ["FLOCK_SUGGESTIONS","FRIEND_REQUEST", "LIVE", "PLANNED", "ALL"]
+        static let FLOCK_SUGGESTIONS_CELL_SIZE = 133
+        static let STANDARD_CELL_SIZE = 75
+    }
+    
+    func getFacebookFriendsNotInFlock(number : Int) -> [User] {
+        var selectedUsers = [User]()
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        for (friendFBID,_) in appDelegate.facebookFriendsFBIDs {
+            if (appDelegate.friends[friendFBID] == nil) {
+                if (selectedUsers.count < number) {
+                    if let newUser = appDelegate.users[friendFBID] {
+                        selectedUsers.append(newUser)
+                    }
+                    else {
+                        Utilities.printDebugMessage("Error: FBID not found")
+                    }
+                }
+                else {
+                    break
+                }
+            }
+        }
+        return selectedUsers
     }
     
     //UpdateTableViewDelegate function
@@ -68,6 +93,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
     var userToPass : User?
     
     override func viewDidLoad() {
+        self.facebookFriendFuggestions = getFacebookFriendsNotInFlock(number: 5)
         //searchController = configureSearchController()
         //set view for protocol
         self.parentView = self.view
@@ -205,6 +231,9 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if (section == Constants.FLOCK_SUGGESTIONS_INDEX) {
+            return 1
+        }
         if searchController.isActive && searchController.searchBar.text != "" {
             if (filteredFriends.count == 0) {
                 return 0
@@ -271,8 +300,24 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         
     }
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if (indexPath.section == Constants.FLOCK_SUGGESTIONS_INDEX) {
+            if (facebookFriendFuggestions.count == 0) {
+                return 0
+            }
+            return CGFloat(Constants.FLOCK_SUGGESTIONS_CELL_SIZE)
+        }
+        return CGFloat(Constants.STANDARD_CELL_SIZE)
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+        //setup friend suggestions
+        if (indexPath.section == Constants.FLOCK_SUGGESTIONS_INDEX) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.REUSE_IDENTIFIERS[indexPath.section], for: indexPath) as! FlockSuggestionTableViewCell
+            cell.setCollectionViewDataSourceDelegate(self)
+            return cell
+        }
         
         let friend: User
         if searchController.isActive && searchController.searchBar.text != "" {
@@ -283,7 +328,6 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
         switch indexPath.section {
-            
         case Constants.FRIEND_REQUEST_INDEX:
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.REUSE_IDENTIFIERS[indexPath.section], for: indexPath) as! FriendRequestTableViewCell
             cell.setIDs(fromID: friend.FBID, toID: appDelegate.user!.FBID)
@@ -448,5 +492,24 @@ protocol UpdateTableViewDelegate: class {
 
 protocol ChatDelegate: class {
     func callSegueFromCell(fbid: String)
+}
+
+extension PeopleTableViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return facebookFriendFuggestions.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FLOCK_SUGGESTION_COLLECTION_CELL", for: indexPath)
+        let userImage = cell.viewWithTag(0) as! UIImageView
+        let nameLabel = cell.viewWithTag(1) as! UILabel
+        nameLabel.text = facebookFriendFuggestions[indexPath.row].Name
+        Utilities.printDebugMessage("test: \(facebookFriendFuggestions[indexPath.row])")
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
+    }
 }
 
