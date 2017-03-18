@@ -83,6 +83,7 @@ PODS:
     - GoogleToolboxForMac/NSString+URLArguments (= 2.1.0)
   - GoogleToolboxForMac/NSString+URLArguments (2.1.0)
   - GTMSessionFetcher/Core (1.1.7)
+  - Instabug (6.0.3)
   - JSQMessagesViewController (7.3.4):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
@@ -111,6 +112,7 @@ DEPENDENCIES:
   - Firebase/Database
   - Firebase/Messaging
   - Firebase/Storage
+  - Instabug
   - JSQMessagesViewController
   - LFTwitterProfile
   - MGSwipeTableCell
@@ -146,6 +148,7 @@ SPEC CHECKSUMS:
   GoogleSymbolUtilities: 631ee17048aa5e9ab133470d768ea997a5ef9b96
   GoogleToolboxForMac: 2b2596cbb7186865e98cadf2b1e262d851c2b168
   GTMSessionFetcher: a1f8ed39e4fe21c68957daed472c7afbcdf29166
+  Instabug: 4daae5fd154e8a83654f8d974ba008ce87b9a104
   JSQMessagesViewController: 39fed975e3c9f8eba7292071e29eeb541d105e66
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   LFTwitterProfile: 57cc1c1602e3b4cf297b3d80b85dff16b5257ad4
@@ -160,6 +163,6 @@ SPEC CHECKSUMS:
   SimpleTab: 4e490e339a19d0d1d26c0fa3c862188eaad73ecb
   SnapKit: 2e456761aa92d4d4067a7a5594c18769d451a8ad
 
-PODFILE CHECKSUM: 3c927324a1c608c3f4e8707b6d9838a74a4401f8
+PODFILE CHECKSUM: a7d4fd96f0dc35d5c548a94707cafaf6130a9fc0
 
 COCOAPODS: 1.0.1

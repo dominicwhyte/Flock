@@ -12,6 +12,7 @@ import PermissionScope
 import SCLAlertView
 import FacebookShare
 import FBSDKShareKit
+import Instabug
 
 class ProfileViewController: UIViewController, ProfileDelegate {
     
@@ -34,16 +35,16 @@ class ProfileViewController: UIViewController, ProfileDelegate {
     @IBOutlet weak var backgroundImage: UIImageView!
     
     @IBAction func settingsButtonPressed(_ sender: Any) {
-        let permissionScope = PermissionScope()
+        Instabug.invoke(with: .newBug)
+        /*let permissionScope = PermissionScope()
         PermissionUtilities.setupPermissionScope(permissionScope: permissionScope)
-        PermissionUtilities.getPermissionsIfDenied(permissionScope: permissionScope)
+        PermissionUtilities.getPermissionsIfDenied(permissionScope: permissionScope)*/
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupUser()
         setRandomSkyImage()
-        
         // Do any additional setup after loading the view.
     }
     
@@ -89,9 +90,9 @@ class ProfileViewController: UIViewController, ProfileDelegate {
             let permissionScope = PermissionScope()
             let notificationStatus = permissionScope.statusNotifications()
             let locationStatus = permissionScope.statusLocationAlways()
-            if(notificationStatus == .authorized && locationStatus == .authorized) {
+            /*if(notificationStatus == .authorized && locationStatus == .authorized) {
                 self.navigationItem.rightBarButtonItem = nil
-            }
+            }*/
             
         } else {
             self.navigationItem.rightBarButtonItem = nil

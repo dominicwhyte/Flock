@@ -28,6 +28,7 @@ target 'Flock' do
    pod 'PermissionScope'
    pod 'BWWalkthrough'
    pod 'OneSignal', '~> 2.0'
+   pod 'Instabug'
 
   target 'FlockTests' do
     inherit! :search_paths

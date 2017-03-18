@@ -54,13 +54,13 @@
 	<key>NSContactsUsageDescription</key>
 	<string>Used in testing files but not in actual app.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Allow Flock to use location services to check if you're at a venue. Flock always gives you the option to select whether you want to share your location with your friends.</string>
+	<string>Allow Flock to use location services to check if you&apos;re at a venue. Flock always gives you the option to select whether you want to share your location with your friends.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Used in testing files but not in actual app.</string>
+	<string>Flock needs access to the microphone to be able to attach voice notes.</string>
 	<key>NSMotionUsageDescription</key>
 	<string>Used in testing files but not in actual app.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Used in testing files but not in actual app.</string>
+	<string>Flock needs access to your photo library for you to be able to attach images.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>OpenSans-Regular.ttf</string>
