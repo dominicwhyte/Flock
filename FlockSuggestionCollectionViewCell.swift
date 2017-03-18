@@ -17,6 +17,7 @@ class FlockSuggestionCollectionViewCell: UICollectionViewCell {
     var userToFriendFBID : String?
     var isPressed = false
     var isPerformed = false
+    var delegate : FlockRecommenderDelegate?
     
     
     override func awakeFromNib() {
@@ -38,6 +39,7 @@ class FlockSuggestionCollectionViewCell: UICollectionViewCell {
                 self.isUserInteractionEnabled = false
                 if let userToFriendFBID = userToFriendFBID {
                     self.isPerformed = true
+                    delegate?.updateFBIDFlocked(fbid: userToFriendFBID)
                     FirebaseClient.sendFriendRequest(appDelegate.user!.FBID, toID: userToFriendFBID, completion: { (success) in
                         self.isUserInteractionEnabled = true
                         Utilities.printDebugMessage("Flocked status: \(success)")
@@ -63,6 +65,14 @@ class FlockSuggestionCollectionViewCell: UICollectionViewCell {
         userImageView.alpha = 1
         isPerformed = false
         plusIconImageView.image = UIImage(named: "whiteAddIcon")
+    }
+    
+    func setPerformedUI() {
+        isPressed = true
+        plusIconImageView.isHidden = false
+        userImageView.alpha = 0.4
+        isPerformed = true
+        self.plusIconImageView.image = UIImage(named: "whiteCheckmarkIcon")
     }
     
     func setPressedUI() {

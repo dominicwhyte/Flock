@@ -10,7 +10,7 @@ import UIKit
 import MGSwipeTableCell
 import Firebase
 
-class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate, CustomSearchControllerDelegate, ChatDelegate {
+class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate, CustomSearchControllerDelegate, ChatDelegate, FlockRecommenderDelegate {
     
     internal var parentView: UIView?
     
@@ -57,6 +57,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         appDelegate.updateAllDataWithoutUpdatingLocation { (success) in
             DispatchQueue.main.async {
                 if (success) {
+                    self.flockedFBIDs = [] //reset which FBIDs have been flocked in the recommender
                     Utilities.printDebugMessage("Successfully reloaded data and tableview")
                     self.setupFacebookFlockRecommender()
                     self.friends = self.parseFriends()
@@ -327,6 +328,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         //setup friend suggestions
         if (indexPath.section == Constants.FLOCK_SUGGESTIONS_INDEX) {
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.REUSE_IDENTIFIERS[indexPath.section], for: indexPath) as! FlockSuggestionTableViewCell
+            
             cell.setCollectionViewDataSourceDelegate(self)
             flockRecommenderCollectionView = cell.collectionView
             return cell
@@ -442,6 +444,15 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         }
     }
     
+    var flockedFBIDs = [String]()
+    func updateFBIDFlocked(fbid : String) {
+        flockedFBIDs.append(fbid)
+    }
+    
+    func FBIDWasFlocked(fbid: String) -> Bool {
+        return flockedFBIDs.contains(fbid)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let navController = segue.destination as? UINavigationController {
             if let searchPeopleTableViewController = navController.topViewController as? SearchPeopleTableViewController {
@@ -514,7 +525,7 @@ extension PeopleTableViewController: UICollectionViewDelegate, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FLOCK_SUGGESTION_COLLECTION_CELL", for: indexPath) as! FlockSuggestionCollectionViewCell
-        cell.resetUINewCell()
+        cell.delegate = self
         let suggestedUser = facebookFriendFuggestions[indexPath.row]
         let userImage = cell.viewWithTag(2) as! UIImageView
         let nameLabel = cell.viewWithTag(1) as! UILabel
@@ -522,6 +533,18 @@ extension PeopleTableViewController: UICollectionViewDelegate, UICollectionViewD
         nameLabel.text = suggestedUser.Name
         userImage.makeViewCircle()
         self.retrieveImage(imageURL: suggestedUser.PictureURL, imageView: userImage)
+        if let delegate = cell.delegate {
+            if delegate.FBIDWasFlocked(fbid: suggestedUser.FBID) {
+                cell.setPerformedUI()
+            }
+            else {
+                cell.resetUINewCell()
+            }
+        }
+        else {
+            
+            cell.resetUINewCell()
+        }
         return cell
     }
     
@@ -530,3 +553,7 @@ extension PeopleTableViewController: UICollectionViewDelegate, UICollectionViewD
     }
 }
 
+protocol FlockRecommenderDelegate: class {
+    func updateFBIDFlocked(fbid : String)
+    func FBIDWasFlocked(fbid: String) -> Bool
+}
