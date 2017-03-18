@@ -11,6 +11,7 @@ import UIKit
 class FlockSuggestionCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var userImageView: UIImageView!
+    @IBOutlet weak var plusIconImageView: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()

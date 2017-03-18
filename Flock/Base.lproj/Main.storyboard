@@ -690,18 +690,28 @@ Cap</string>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
+                                                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="whiteAddIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Dar-QN-8GW">
+                                                                <rect key="frame" x="27" y="23" width="38" height="38"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" secondItem="Dar-QN-8GW" secondAttribute="height" multiplier="1:1" id="Psc-hp-V5S"/>
+                                                                </constraints>
+                                                            </imageView>
                                                         </subviews>
                                                     </view>
                                                     <constraints>
                                                         <constraint firstItem="72E-BJ-RW5" firstAttribute="leading" secondItem="O2d-DP-Bi1" secondAttribute="leadingMargin" id="89z-xI-VYC"/>
+                                                        <constraint firstItem="Dar-QN-8GW" firstAttribute="width" secondItem="hY2-BD-MYT" secondAttribute="width" multiplier="0.5" id="CEn-M2-Ty1"/>
                                                         <constraint firstItem="hY2-BD-MYT" firstAttribute="top" secondItem="O2d-DP-Bi1" secondAttribute="topMargin" constant="-4" id="I2b-8C-ecr"/>
                                                         <constraint firstItem="hY2-BD-MYT" firstAttribute="leading" secondItem="O2d-DP-Bi1" secondAttribute="leadingMargin" id="OI8-8q-s10"/>
                                                         <constraint firstItem="72E-BJ-RW5" firstAttribute="bottom" secondItem="O2d-DP-Bi1" secondAttribute="bottomMargin" constant="5" id="gjn-lv-vry"/>
+                                                        <constraint firstItem="Dar-QN-8GW" firstAttribute="centerX" secondItem="hY2-BD-MYT" secondAttribute="centerX" id="mLN-2K-nMN"/>
                                                         <constraint firstItem="hY2-BD-MYT" firstAttribute="trailing" secondItem="O2d-DP-Bi1" secondAttribute="trailingMargin" id="v6e-E2-6Im"/>
                                                         <constraint firstItem="72E-BJ-RW5" firstAttribute="trailing" secondItem="O2d-DP-Bi1" secondAttribute="trailingMargin" id="vZU-VY-bq3"/>
+                                                        <constraint firstItem="Dar-QN-8GW" firstAttribute="centerY" secondItem="hY2-BD-MYT" secondAttribute="centerY" id="wsk-kU-pmp"/>
                                                         <constraint firstItem="72E-BJ-RW5" firstAttribute="top" secondItem="hY2-BD-MYT" secondAttribute="bottom" constant="2" id="ypq-Xb-BDJ"/>
                                                     </constraints>
                                                     <connections>
+                                                        <outlet property="plusIconImageView" destination="Dar-QN-8GW" id="HaN-K7-FNn"/>
                                                         <outlet property="userImageView" destination="hY2-BD-MYT" id="tXo-SL-7cS"/>
                                                     </connections>
                                                 </collectionViewCell>
@@ -1163,6 +1173,7 @@ Cap</string>
         <image name="User-32" width="32" height="32"/>
         <image name="flatWhiteArtboard 2" width="3958" height="3958"/>
         <image name="sky1" width="4928" height="3264"/>
+        <image name="whiteAddIcon" width="283" height="283"/>
         <image name="whiteCancelIcon" width="200" height="200"/>
         <image name="whiteCheckmarkIcon" width="384" height="384"/>
     </resources>
