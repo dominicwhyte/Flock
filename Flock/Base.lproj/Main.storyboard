@@ -654,15 +654,15 @@ Cap</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FLOCK_SUGGESTIONS" rowHeight="133" id="SBu-22-HoJ" customClass="FlockSuggestionTableViewCell" customModule="Flock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="133"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FLOCK_SUGGESTIONS" rowHeight="129" id="SBu-22-HoJ" customClass="FlockSuggestionTableViewCell" customModule="Flock" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="129"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SBu-22-HoJ" id="Sqo-90-LEi">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="132"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="128"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="SOL-jb-Khs">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="132.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="128.5"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="BxL-6S-Uw0">
                                                 <size key="itemSize" width="92" height="124"/>
@@ -671,21 +671,21 @@ Cap</string>
                                                 <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                             </collectionViewFlowLayout>
                                             <cells>
-                                                <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="FLOCK_SUGGESTION_COLLECTION_CELL" reuseIdentifier="FLOCK_SUGGESTION_COLLECTION_CELL" id="O2d-DP-Bi1">
-                                                    <rect key="frame" x="0.0" y="4" width="92" height="124"/>
+                                                <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="FLOCK_SUGGESTION_COLLECTION_CELL" reuseIdentifier="FLOCK_SUGGESTION_COLLECTION_CELL" id="O2d-DP-Bi1" customClass="FlockSuggestionCollectionViewCell" customModule="Flock" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="2" width="92" height="124"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                                         <rect key="frame" x="0.0" y="0.0" width="92" height="124"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <subviews>
-                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hY2-BD-MYT">
-                                                                <rect key="frame" x="8" y="8" width="76" height="76"/>
+                                                            <imageView userInteractionEnabled="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hY2-BD-MYT">
+                                                                <rect key="frame" x="8" y="4" width="76" height="76"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" secondItem="hY2-BD-MYT" secondAttribute="height" multiplier="1:1" id="jgu-W4-hE3"/>
                                                                 </constraints>
                                                             </imageView>
-                                                            <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="72E-BJ-RW5">
-                                                                <rect key="frame" x="8" y="89" width="76" height="27"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="72E-BJ-RW5">
+                                                                <rect key="frame" x="8" y="82" width="76" height="39"/>
                                                                 <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="17"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -694,13 +694,16 @@ Cap</string>
                                                     </view>
                                                     <constraints>
                                                         <constraint firstItem="72E-BJ-RW5" firstAttribute="leading" secondItem="O2d-DP-Bi1" secondAttribute="leadingMargin" id="89z-xI-VYC"/>
-                                                        <constraint firstItem="hY2-BD-MYT" firstAttribute="top" secondItem="O2d-DP-Bi1" secondAttribute="topMargin" id="I2b-8C-ecr"/>
+                                                        <constraint firstItem="hY2-BD-MYT" firstAttribute="top" secondItem="O2d-DP-Bi1" secondAttribute="topMargin" constant="-4" id="I2b-8C-ecr"/>
                                                         <constraint firstItem="hY2-BD-MYT" firstAttribute="leading" secondItem="O2d-DP-Bi1" secondAttribute="leadingMargin" id="OI8-8q-s10"/>
-                                                        <constraint firstItem="72E-BJ-RW5" firstAttribute="bottom" secondItem="O2d-DP-Bi1" secondAttribute="bottomMargin" id="gjn-lv-vry"/>
+                                                        <constraint firstItem="72E-BJ-RW5" firstAttribute="bottom" secondItem="O2d-DP-Bi1" secondAttribute="bottomMargin" constant="5" id="gjn-lv-vry"/>
                                                         <constraint firstItem="hY2-BD-MYT" firstAttribute="trailing" secondItem="O2d-DP-Bi1" secondAttribute="trailingMargin" id="v6e-E2-6Im"/>
                                                         <constraint firstItem="72E-BJ-RW5" firstAttribute="trailing" secondItem="O2d-DP-Bi1" secondAttribute="trailingMargin" id="vZU-VY-bq3"/>
-                                                        <constraint firstItem="72E-BJ-RW5" firstAttribute="top" secondItem="hY2-BD-MYT" secondAttribute="bottom" constant="5" id="ypq-Xb-BDJ"/>
+                                                        <constraint firstItem="72E-BJ-RW5" firstAttribute="top" secondItem="hY2-BD-MYT" secondAttribute="bottom" constant="2" id="ypq-Xb-BDJ"/>
                                                     </constraints>
+                                                    <connections>
+                                                        <outlet property="userImageView" destination="hY2-BD-MYT" id="tXo-SL-7cS"/>
+                                                    </connections>
                                                 </collectionViewCell>
                                             </cells>
                                         </collectionView>
@@ -717,7 +720,7 @@ Cap</string>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FRIEND_REQUEST" rowHeight="75" id="fda-YG-1In" customClass="FriendRequestTableViewCell" customModule="Flock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="161" width="375" height="75"/>
+                                <rect key="frame" x="0.0" y="157" width="375" height="75"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fda-YG-1In" id="466-XT-bWT">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="74"/>
@@ -789,7 +792,7 @@ Cap</string>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LIVE" rowHeight="75" id="hZ9-uE-4dK" customClass="LiveTableViewCell" customModule="Flock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="236" width="375" height="75"/>
+                                <rect key="frame" x="0.0" y="232" width="375" height="75"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hZ9-uE-4dK" id="kJa-pc-JEd">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="74"/>
@@ -847,7 +850,7 @@ Cap</string>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PLANNED" rowHeight="75" id="0MJ-rN-crY" customClass="PlannedTableViewCell" customModule="Flock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="311" width="375" height="75"/>
+                                <rect key="frame" x="0.0" y="307" width="375" height="75"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0MJ-rN-crY" id="Lbd-XL-jWx">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="74"/>
@@ -905,7 +908,7 @@ Cap</string>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ALL" rowHeight="75" id="Dio-vA-lqJ" customClass="AllTableViewCell" customModule="Flock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="386" width="375" height="75"/>
+                                <rect key="frame" x="0.0" y="382" width="375" height="75"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Dio-vA-lqJ" id="gN4-g0-GAL">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="74"/>

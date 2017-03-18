@@ -24,7 +24,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         static let REMAINING_FRIENDS_INDEX = 4
         static let SECTION_TITLES = ["Flock Suggestions", "Flock Requests", "Live", "Planned", "All"]
         static let REUSE_IDENTIFIERS = ["FLOCK_SUGGESTIONS","FRIEND_REQUEST", "LIVE", "PLANNED", "ALL"]
-        static let FLOCK_SUGGESTIONS_CELL_SIZE = 133
+        static let FLOCK_SUGGESTIONS_CELL_SIZE = 129
         static let STANDARD_CELL_SIZE = 75
     }
     
@@ -46,6 +46,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
                 }
             }
         }
+        Utilities.printDebugMessage("found \(selectedUsers)")
         return selectedUsers
     }
     
@@ -501,9 +502,12 @@ extension PeopleTableViewController: UICollectionViewDelegate, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FLOCK_SUGGESTION_COLLECTION_CELL", for: indexPath)
-        let userImage = cell.viewWithTag(0) as! UIImageView
+        let suggestedUser = facebookFriendFuggestions[indexPath.row]
+        let userImage = cell.viewWithTag(2) as! UIImageView
         let nameLabel = cell.viewWithTag(1) as! UILabel
-        nameLabel.text = facebookFriendFuggestions[indexPath.row].Name
+        nameLabel.text = suggestedUser.Name
+        userImage.makeViewCircle()
+        self.retrieveImage(imageURL: suggestedUser.PictureURL, imageView: userImage)
         Utilities.printDebugMessage("test: \(facebookFriendFuggestions[indexPath.row])")
         return cell
     }

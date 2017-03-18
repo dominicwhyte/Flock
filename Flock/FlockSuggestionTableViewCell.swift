@@ -13,6 +13,9 @@ class FlockSuggestionTableViewCell: UITableViewCell {
     @IBOutlet weak var collectionView: UICollectionView!
     
     
+    
+   
+    
 }
 
 extension FlockSuggestionTableViewCell {
