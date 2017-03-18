@@ -706,14 +706,17 @@ class FirebaseClient: NSObject
                             return
                         }
                         
-                        
                         let user:[String:AnyObject] = result as! [String : AnyObject]
+                        
                         var friendsList : [String] = []
                         
                         if let friends = user["data"] as? NSArray {
                             for friend in friends {
                                 if let fr = friend as? NSDictionary {
                                     friendsList.append(fr["id"]! as! String)
+                                }
+                                else {
+                                    Utilities.printDebugMessage("Error parsing friend in FB graph request")
                                 }
                             }
                         }

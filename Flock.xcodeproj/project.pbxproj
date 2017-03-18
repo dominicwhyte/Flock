@@ -91,7 +91,7 @@
 		58F1F4A31E5A20E40065DA38 /* ChatsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatsTableViewController.swift; sourceTree = "<group>"; };
 		58F1F4A81E5A340F0065DA38 /* ChatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
 		5F4E94051E7C6D8800143931 /* FlockSuggestionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlockSuggestionTableViewCell.swift; sourceTree = "<group>"; };
-		5F4E94071E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlockSuggestionCollectionViewCell.swift; sourceTree = "<group>"; };
+		5F4E94071E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlockSuggestionCollectionViewCell.swift; sourceTree = SOURCE_ROOT; };
 		5F5D37941E43FFCE008E13E4 /* Flock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F5D37971E43FFCE008E13E4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5F5D379C1E43FFCE008E13E4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -213,7 +213,6 @@
 		5F5D378B1E43FFCE008E13E4 = {
 			isa = PBXGroup;
 			children = (
-				5F4E94071E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift */,
 				5F5D37961E43FFCE008E13E4 /* Flock */,
 				5F5D37AE1E43FFCE008E13E4 /* FlockTests */,
 				5F5D37951E43FFCE008E13E4 /* Products */,
@@ -295,6 +294,7 @@
 			isa = PBXGroup;
 			children = (
 				5F4E94051E7C6D8800143931 /* FlockSuggestionTableViewCell.swift */,
+				5F4E94071E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift */,
 				5F5D37F31E4536D7008E13E4 /* FriendRequestTableViewCell.swift */,
 				5F5D37F51E4536E8008E13E4 /* LiveTableViewCell.swift */,
 				5F5D37F71E4536F1008E13E4 /* PlannedTableViewCell.swift */,

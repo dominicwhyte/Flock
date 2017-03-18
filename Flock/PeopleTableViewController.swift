@@ -28,25 +28,26 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         static let STANDARD_CELL_SIZE = 75
     }
     
-    func getFacebookFriendsNotInFlock(number : Int) -> [User] {
+    var flockRecommenderCollectionView : UICollectionView?
+    
+    func getFacebookFriendsNotInFlock() -> [User] {
         var selectedUsers = [User]()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
         for (friendFBID,_) in appDelegate.facebookFriendsFBIDs {
             if (appDelegate.friends[friendFBID] == nil) {
-                if (selectedUsers.count < number) {
                     if let newUser = appDelegate.users[friendFBID] {
-                        selectedUsers.append(newUser)
+                        Utilities.printDebugMessage("test: \(newUser.Name)")
+                        if (newUser.FriendRequests[appDelegate.user!.FBID] == nil && appDelegate.user!.FriendRequests[newUser.FBID] == nil) {
+                            selectedUsers.append(newUser)
+                        }
                     }
                     else {
                         Utilities.printDebugMessage("Error: FBID not found")
                     }
-                }
-                else {
-                    break
-                }
+                
             }
         }
-        Utilities.printDebugMessage("found \(selectedUsers)")
         return selectedUsers
     }
     
@@ -57,6 +58,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
             DispatchQueue.main.async {
                 if (success) {
                     Utilities.printDebugMessage("Successfully reloaded data and tableview")
+                    self.setupFacebookFlockRecommender()
                     self.friends = self.parseFriends()
                     self.filteredFriends = self.prepareArrays()
                     if self.searchController.isActive && self.searchController.searchBar.text != "" {
@@ -94,7 +96,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
     var userToPass : User?
     
     override func viewDidLoad() {
-        self.facebookFriendFuggestions = getFacebookFriendsNotInFlock(number: 5)
+        setupFacebookFlockRecommender()
         //searchController = configureSearchController()
         //set view for protocol
         self.parentView = self.view
@@ -121,6 +123,13 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         
         //Listener for autoreloading friend requests
         NotificationCenter.default.addObserver(self, selector: #selector(PeopleTableViewController.reloadTableData(notification:)), name: Utilities.Constants.notificationName, object: nil)
+    }
+    
+    func setupFacebookFlockRecommender() {
+        self.facebookFriendFuggestions = getFacebookFriendsNotInFlock()
+        if let collectionView = flockRecommenderCollectionView {
+            collectionView.reloadData()
+        }
     }
     
     
@@ -273,7 +282,9 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         var userToView : User
-        
+        if (indexPath.section == Constants.FLOCK_SUGGESTIONS_INDEX || indexPath.section == Constants.FRIEND_REQUEST_INDEX) {
+            return
+        }
         
         if searchController.isActive && searchController.searchBar.text != "" {
             userToView = filteredFriends[indexPath.section][indexPath.row]
@@ -317,6 +328,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         if (indexPath.section == Constants.FLOCK_SUGGESTIONS_INDEX) {
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.REUSE_IDENTIFIERS[indexPath.section], for: indexPath) as! FlockSuggestionTableViewCell
             cell.setCollectionViewDataSourceDelegate(self)
+            flockRecommenderCollectionView = cell.collectionView
             return cell
         }
         
@@ -501,14 +513,15 @@ extension PeopleTableViewController: UICollectionViewDelegate, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FLOCK_SUGGESTION_COLLECTION_CELL", for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FLOCK_SUGGESTION_COLLECTION_CELL", for: indexPath) as! FlockSuggestionCollectionViewCell
+        cell.resetUINewCell()
         let suggestedUser = facebookFriendFuggestions[indexPath.row]
         let userImage = cell.viewWithTag(2) as! UIImageView
         let nameLabel = cell.viewWithTag(1) as! UILabel
+        cell.userToFriendFBID = suggestedUser.FBID
         nameLabel.text = suggestedUser.Name
         userImage.makeViewCircle()
         self.retrieveImage(imageURL: suggestedUser.PictureURL, imageView: userImage)
-        Utilities.printDebugMessage("test: \(facebookFriendFuggestions[indexPath.row])")
         return cell
     }
     
