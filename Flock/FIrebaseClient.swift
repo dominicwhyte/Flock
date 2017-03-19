@@ -693,10 +693,11 @@ class FirebaseClient: NSObject
                     
                 else
                 {
-                    let parameters = ["fields": "uid"]
+                    let parameters = ["fields": "uid", "limit": "5000"]
                     
                     // FB get current user
                     let request = FBSDKGraphRequest(graphPath: "/\(FBID)/friends", parameters: parameters, tokenString: FBSDKAccessToken.current().tokenString, version: nil, httpMethod: "GET")
+
                     
                     // POST current user to Firebase
                     request!.start(completionHandler: { (connection, result, requestError) -> Void in

@@ -80,6 +80,8 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Allow Flock to use location services in-app to check if you&apos;re at a venue. Flock will give you the option to select whether you want to share your location with your friends.</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

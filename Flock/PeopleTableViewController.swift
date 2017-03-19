@@ -36,15 +36,15 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         
         for (friendFBID,_) in appDelegate.facebookFriendsFBIDs {
             if (appDelegate.friends[friendFBID] == nil) {
-                    if let newUser = appDelegate.users[friendFBID] {
-                        Utilities.printDebugMessage("test: \(newUser.Name)")
-                        if (newUser.FriendRequests[appDelegate.user!.FBID] == nil && appDelegate.user!.FriendRequests[newUser.FBID] == nil) {
-                            selectedUsers.append(newUser)
-                        }
+                if let newUser = appDelegate.users[friendFBID] {
+                    Utilities.printDebugMessage("test: \(newUser.Name)")
+                    if (newUser.FriendRequests[appDelegate.user!.FBID] == nil && appDelegate.user!.FriendRequests[newUser.FBID] == nil) {
+                        selectedUsers.append(newUser)
                     }
-                    else {
-                        Utilities.printDebugMessage("Error: FBID not found")
-                    }
+                }
+                else {
+                    Utilities.printDebugMessage("Error: FBID not found")
+                }
                 
             }
         }
@@ -95,6 +95,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
     var searchController : UISearchController = UISearchController(searchResultsController: nil)
     var imageCache = [String : UIImage]()
     var userToPass : User?
+    var flockSuggestionsAreHidden : Bool = false
     
     override func viewDidLoad() {
         setupFacebookFlockRecommender()
@@ -117,6 +118,9 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         
         self.friends = parseFriends()
         self.filteredFriends = prepareArrays()
+        
+        self.flockSuggestionsAreHidden = false
+        
         
         //Refresh control
         refreshControl?.attributedTitle = NSAttributedString(string: "Pull to refresh")
@@ -164,7 +168,34 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         label.text = Constants.SECTION_TITLES[section]
         returnedView.addSubview(label)
         
+        if(section == Constants.FLOCK_SUGGESTIONS_INDEX) {
+            // Add button to flock suggestions to hide
+            let button = UIButton(frame: CGRect(x: -10, y: 0, width: view.frame.size.width, height: 25))
+            button.titleLabel?.font = UIFont(name: "OpenSans-Light", size: 15)
+            button.addTarget(self, action: #selector(toggleSuggestedFriendsHeader(_:)), for: .touchUpInside)
+            if self.flockSuggestionsAreHidden {
+                button.setTitle("Unhide", for: .normal)
+            } else {
+                button.setTitle("Hide", for: .normal)
+            }
+            button.contentHorizontalAlignment = .right
+            button.contentVerticalAlignment = .center
+            button.setTitleColor(UIColor.white, for: .normal)
+            
+            returnedView.addSubview(button)
+        }
         return returnedView
+    }
+    
+    func toggleSuggestedFriendsHeader(_ button: UIButton) {
+        if self.flockSuggestionsAreHidden {
+            self.flockSuggestionsAreHidden = false
+        } else {
+            self.flockSuggestionsAreHidden = true
+        }
+        self.tableView.setNeedsLayout()
+        self.tableView.setNeedsDisplay()
+        self.tableView.reloadData()
     }
     
     func prepareArrays() -> [[User]] {
@@ -315,7 +346,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if (indexPath.section == Constants.FLOCK_SUGGESTIONS_INDEX) {
-            if (facebookFriendFuggestions.count == 0) {
+            if (facebookFriendFuggestions.count == 0 || self.flockSuggestionsAreHidden) {
                 return 0
             }
             return CGFloat(Constants.FLOCK_SUGGESTIONS_CELL_SIZE)
@@ -348,7 +379,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
             cell.setIDs(fromID: friend.FBID, toID: appDelegate.user!.FBID)
             cell.friendName.text = friend.Name
             self.retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic!)
-        
+            
             //Set the delegate for tableview reloaddata updates
             cell.delegate = self
             cell.profilePic.makeViewCircle()
@@ -439,7 +470,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if let user = appDelegate.user, let friendUser = appDelegate.users[fbid] {
             if let channelID = user.ChannelIDs[fbid] {
-                 performSegue(withIdentifier: "CHAT_IDENTIFIER", sender: (channelID, friendUser))
+                performSegue(withIdentifier: "CHAT_IDENTIFIER", sender: (channelID, friendUser))
             }
         }
     }

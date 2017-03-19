@@ -615,6 +615,7 @@
             self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
             if (CLLocationManager.authorizationStatus() == .notDetermined) {
                 locationManager.requestAlwaysAuthorization()
+                locationManager.requestWhenInUseAuthorization()
             }
             
             if (CLLocationManager.authorizationStatus() == .authorizedAlways){
@@ -622,6 +623,7 @@
             }
             
         }
+        
         
         //The prompt for going Live
         func showPopupIfActiveOrNotificationIfNot() {
