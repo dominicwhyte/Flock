@@ -1110,7 +1110,7 @@
         
         func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
             //instabug
-            Instabug.start(withToken: "292d20cd4a1c0d57de798ca15d91561d", invocationEvent: .shake)
+            Instabug.start(withToken: "292d20cd4a1c0d57de798ca15d91561d", invocationEvent: .none)
             
             
             OneSignal.initWithLaunchOptions(launchOptions, appId: "35032170-d34b-4a41-9504-3ee4b725eafe", handleNotificationReceived: { (notification) in
