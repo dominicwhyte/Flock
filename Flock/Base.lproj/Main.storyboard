@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="31f-4a-ta2">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="31f-4a-ta2">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -120,7 +120,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bBU-Kf-A40" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5823.1999999999998" y="676.91154422788611"/>
+            <point key="canvasLocation" x="4623" y="1337"/>
         </scene>
         <!--Simple Tab Bar Controller-->
         <scene sceneID="QJu-si-53K">
@@ -284,11 +284,104 @@
                     </refreshControl>
                     <connections>
                         <outlet property="goLiveButton" destination="bN4-g7-8sD" id="u5i-1G-BWY"/>
+                        <segue destination="poD-Ws-0OS" kind="presentation" identifier="SELECTOR_IDENTIFIER" id="OAc-BJ-I4b"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kV2-Rf-b2O" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3784.8000000000002" y="555.47226386806597"/>
+            <point key="canvasLocation" x="4567" y="584"/>
+        </scene>
+        <!--People Selector Table View Controller-->
+        <scene sceneID="p8R-yI-Hfa">
+            <objects>
+                <tableViewController id="uxZ-vH-pfc" customClass="PeopleSelectorTableViewController" customModule="Flock" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsMultipleSelection="YES" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="sBG-Ts-ZN8">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SELECTOR" rowHeight="75" id="c7j-da-RAK" customClass="PeopleSelectorTableViewCell" customModule="Flock" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="75"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="c7j-da-RAK" id="nI7-f3-IDw">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="74"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GWG-bh-Drl">
+                                            <rect key="frame" x="8" y="10" width="54" height="54"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="54" id="LEd-uy-fMS"/>
+                                                <constraint firstAttribute="height" constant="54" id="QAr-qX-eGb"/>
+                                                <constraint firstAttribute="width" secondItem="GWG-bh-Drl" secondAttribute="height" multiplier="1:1" id="VbD-UF-o6y"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1bs-gV-S0S">
+                                            <rect key="frame" x="70" y="12" width="53" height="28"/>
+                                            <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Something" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xk4-jh-XF0">
+                                            <rect key="frame" x="70" y="38" width="73" height="21"/>
+                                            <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MGH-7D-b3G">
+                                            <rect key="frame" x="329" y="22" width="30" height="30"/>
+                                            <color key="backgroundColor" red="0.29803921570000003" green="0.70980392160000005" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="30" id="e88-ba-wqm"/>
+                                                <constraint firstAttribute="width" secondItem="MGH-7D-b3G" secondAttribute="height" multiplier="1:1" id="qc4-cH-Oww"/>
+                                            </constraints>
+                                            <connections>
+                                                <action selector="selectorButtonPressed:" destination="c7j-da-RAK" eventType="touchUpInside" id="YaP-dI-eRq"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Xk4-jh-XF0" firstAttribute="top" secondItem="1bs-gV-S0S" secondAttribute="bottom" constant="-2" id="30q-j3-qLM"/>
+                                        <constraint firstItem="1bs-gV-S0S" firstAttribute="leading" secondItem="GWG-bh-Drl" secondAttribute="trailing" constant="8" symbolic="YES" id="LuF-ZI-39H"/>
+                                        <constraint firstItem="1bs-gV-S0S" firstAttribute="centerY" secondItem="nI7-f3-IDw" secondAttribute="centerY" multiplier="0.7" id="R9B-Ug-VDr"/>
+                                        <constraint firstItem="Xk4-jh-XF0" firstAttribute="leading" secondItem="1bs-gV-S0S" secondAttribute="leading" id="TKl-3H-7AK"/>
+                                        <constraint firstItem="GWG-bh-Drl" firstAttribute="leading" secondItem="nI7-f3-IDw" secondAttribute="leadingMargin" id="VLs-Mv-Xg9"/>
+                                        <constraint firstItem="MGH-7D-b3G" firstAttribute="centerY" secondItem="nI7-f3-IDw" secondAttribute="centerY" id="dZf-5l-1gT"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="MGH-7D-b3G" secondAttribute="trailing" constant="8" id="flp-Df-UCw"/>
+                                        <constraint firstItem="GWG-bh-Drl" firstAttribute="centerY" secondItem="nI7-f3-IDw" secondAttribute="centerY" id="lb9-kg-9JL"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="name" destination="1bs-gV-S0S" id="cre-CR-I0W"/>
+                                    <outlet property="profilePic" destination="GWG-bh-Drl" id="Ry6-3g-Pqa"/>
+                                    <outlet property="selectorButton" destination="MGH-7D-b3G" id="GZF-Nb-www"/>
+                                    <outlet property="subtitle" destination="Xk4-jh-XF0" id="nYM-Y5-GCf"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="uxZ-vH-pfc" id="gGL-Xi-nC4"/>
+                            <outlet property="delegate" destination="uxZ-vH-pfc" id="MoG-Mu-3z5"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="WiD-x9-4hk">
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="EnI-om-dCb">
+                            <connections>
+                                <action selector="cancelButtonPressed:" destination="uxZ-vH-pfc" id="E2A-fZ-dAH"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Item" id="7HU-zP-nSS">
+                            <connections>
+                                <action selector="inviteButtonPressed:" destination="uxZ-vH-pfc" id="fLu-2k-Cfu"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="inviteButton" destination="7HU-zP-nSS" id="se9-BY-Cl6"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ian-Jp-gaK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6783" y="582"/>
         </scene>
         <!--Profile View Controller-->
         <scene sceneID="Iyo-7F-iDM">
@@ -853,7 +946,7 @@ Cap</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qAb-8e-JwW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5207.1999999999998" y="1316.4917541229386"/>
+            <point key="canvasLocation" x="5514" y="2023"/>
         </scene>
         <!--Events View Controller-->
         <scene sceneID="96U-61-efb">
@@ -933,7 +1026,7 @@ Cap</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QnL-CR-aJK" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Profile" image="User-32" id="xz8-Sd-fgM" customClass="SimpleTabBarItem" customModule="SimpleTab"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="CgO-oq-jlc">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="CgO-oq-jlc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -951,7 +1044,7 @@ Cap</string>
             <objects>
                 <navigationController id="7uX-SL-9kr" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Chat" image="Chat-32" id="EZe-cp-YhZ" customClass="SimpleTabBarItem" customModule="SimpleTab"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lZm-IH-lbX">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="lZm-IH-lbX">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1050,7 +1143,7 @@ Cap</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="6Hi-b6-CvB" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Friends" image="Meeting-32" id="RKh-vm-8P9" customClass="SimpleTabBarItem" customModule="SimpleTab"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Wwy-nl-Vhb">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Wwy-nl-Vhb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1535,7 +1628,7 @@ Cap</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ne7-AY-AB1" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="oZK-Uq-8Q0">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="oZK-Uq-8Q0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1554,7 +1647,7 @@ Cap</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="RrJ-Ui-UhR" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Places" image="Marker-32" id="w4B-Je-4D0" customClass="SimpleTabBarItem" customModule="SimpleTab"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Kqy-Xs-3RV">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Kqy-Xs-3RV">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1572,7 +1665,7 @@ Cap</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="KcW-Kd-qrk" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="SMT-26-elT">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="SMT-26-elT">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1591,7 +1684,7 @@ Cap</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="5jg-Hg-fKd" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Events" id="TAF-cx-ZaK" customClass="SimpleTabBarItem" customModule="SimpleTab"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Pac-hl-rnx">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Pac-hl-rnx">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1603,6 +1696,24 @@ Cap</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qib-bz-ee2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-124" y="1080.8095952023989"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="ARJ-oN-OQp">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="poD-Ws-0OS" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="rwL-1L-Xpx">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="uxZ-vH-pfc" kind="relationship" relationship="rootViewController" id="9nf-VP-NXx"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RRN-ZH-jia" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5854" y="582"/>
         </scene>
     </scenes>
     <resources>

@@ -592,7 +592,12 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     func displayAttendedPopup(venueName : String, attendFullDate : String) {
         let displayDate = DateUtilities.convertDateToStringByFormat(date: DateUtilities.getDateFromString(date: attendFullDate), dateFormat: DateUtilities.Constants.uiDisplayFormat)
         let alert = SCLAlertView()
-        //_ = alert.addButton("First Button", target:self, selector:#selector(PlacesTableViewController.shareWithFlock))
+        alert.addButton("Invite Flock", action: {
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            if let user = appDelegate.user {
+                self.selectFlockersToInvite(userName: user.Name, venueName : venueName, displayDate : displayDate)
+            }
+        })
         alert.addButton("Share with Flock", action: {
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             if let user = appDelegate.user {
@@ -608,8 +613,21 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
 //        confettiView.startConfetti()
     }
     
-    func shareWithFlock() {
+    func selectFlockersToInvite(userName : String, venueName : String, displayDate : String) {
         print("First button tapped")
+        performSegue(withIdentifier: "SELECTOR_IDENTIFIER", sender: (userName, venueName, displayDate))
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let navController = segue.destination as? UINavigationController {
+            if let peopleSelectorTableViewController = navController.topViewController as? PeopleSelectorTableViewController {
+                if let (userName, venueName, displayDate) = sender as? (String, String, String) {
+                    print(userName)
+                    print(venueName)
+                    print(displayDate)
+                }
+            }
+        }
     }
 }
 
