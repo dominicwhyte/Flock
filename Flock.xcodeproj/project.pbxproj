@@ -19,6 +19,8 @@
 		5F4E94061E7C6D8800143931 /* FlockSuggestionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E94051E7C6D8800143931 /* FlockSuggestionTableViewCell.swift */; };
 		5F4E94081E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E94071E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift */; };
 		5F4E940A1E7D9C9B00143931 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E94091E7D9C9B00143931 /* SettingsTableViewController.swift */; };
+		5F585CB51E7ED3CB009B135F /* EventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F585CB41E7ED3CB009B135F /* EventsViewController.swift */; };
+		5F585CB71E7EF81F009B135F /* EventCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F585CB61E7EF81F009B135F /* EventCollectionViewCell.swift */; };
 		5F5D37981E43FFCE008E13E4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D37971E43FFCE008E13E4 /* AppDelegate.swift */; };
 		5F5D379D1E43FFCE008E13E4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F5D379B1E43FFCE008E13E4 /* Main.storyboard */; };
 		5F5D37A01E43FFCE008E13E4 /* Flock.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D379E1E43FFCE008E13E4 /* Flock.xcdatamodeld */; };
@@ -94,6 +96,8 @@
 		5F4E94051E7C6D8800143931 /* FlockSuggestionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlockSuggestionTableViewCell.swift; sourceTree = "<group>"; };
 		5F4E94071E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlockSuggestionCollectionViewCell.swift; sourceTree = SOURCE_ROOT; };
 		5F4E94091E7D9C9B00143931 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
+		5F585CB41E7ED3CB009B135F /* EventsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsViewController.swift; sourceTree = "<group>"; };
+		5F585CB61E7EF81F009B135F /* EventCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventCollectionViewCell.swift; sourceTree = "<group>"; };
 		5F5D37941E43FFCE008E13E4 /* Flock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F5D37971E43FFCE008E13E4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5F5D379C1E43FFCE008E13E4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -243,6 +247,8 @@
 				5F61AF591E48373500BD6A0C /* DateUtilities.swift */,
 				58F1F4A01E595A220065DA38 /* Walkthrough */,
 				5F5D379B1E43FFCE008E13E4 /* Main.storyboard */,
+				5F585CB61E7EF81F009B135F /* EventCollectionViewCell.swift */,
+				5F585CB41E7ED3CB009B135F /* EventsViewController.swift */,
 				58F1F4A51E5A328D0065DA38 /* Chats */,
 				5F61AF781E4C0BEB00BD6A0C /* Profile */,
 				5F5D38091E46C87F008E13E4 /* Places */,
@@ -604,6 +610,7 @@
 				5F61AF6D1E4A857E00BD6A0C /* CustomSearchController.swift in Sources */,
 				5F61AF541E47D06800BD6A0C /* PopupSubViewController.swift in Sources */,
 				5FE16B771E5D332500904FC2 /* ProfileTableViewController.swift in Sources */,
+				5F585CB51E7ED3CB009B135F /* EventsViewController.swift in Sources */,
 				5F61AF731E4BCBE500BD6A0C /* PlacesTableViewController.swift in Sources */,
 				5FA3CABB1E565ADA00247CC4 /* ChatViewController.swift in Sources */,
 				58F1F49B1E5959C10065DA38 /* BWWalkthroughViewController.swift in Sources */,
@@ -613,6 +620,7 @@
 				5F5D37D11E44BE44008E13E4 /* TestingViewController.swift in Sources */,
 				5F5D37FD1E465172008E13E4 /* TODO.swift in Sources */,
 				5F61AF751E4BCC6300BD6A0C /* PlacesTableViewCell.swift in Sources */,
+				5F585CB71E7EF81F009B135F /* EventCollectionViewCell.swift in Sources */,
 				5F5D37F21E45168D008E13E4 /* PeopleTableViewController.swift in Sources */,
 				5FA3CABD1E565BA300247CC4 /* Channel.swift in Sources */,
 				58F1F4A91E5A340F0065DA38 /* ChatTableViewCell.swift in Sources */,

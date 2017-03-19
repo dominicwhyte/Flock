@@ -120,7 +120,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bBU-Kf-A40" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4884" y="677"/>
+            <point key="canvasLocation" x="5823.1999999999998" y="676.91154422788611"/>
         </scene>
         <!--Simple Tab Bar Controller-->
         <scene sceneID="QJu-si-53K">
@@ -138,6 +138,7 @@
                         <segue destination="6Hi-b6-CvB" kind="relationship" relationship="viewControllers" id="Fbs-VX-5V2"/>
                         <segue destination="7uX-SL-9kr" kind="relationship" relationship="viewControllers" id="xjm-Tl-lke"/>
                         <segue destination="QnL-CR-aJK" kind="relationship" relationship="viewControllers" id="PQY-G6-8nX"/>
+                        <segue destination="5jg-Hg-fKd" kind="relationship" relationship="viewControllers" id="cNT-u6-27N"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fqd-Wz-96c" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -287,7 +288,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kV2-Rf-b2O" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2845.5999999999999" y="555.47226386806597"/>
+            <point key="canvasLocation" x="3784.8000000000002" y="555.47226386806597"/>
         </scene>
         <!--Profile View Controller-->
         <scene sceneID="Iyo-7F-iDM">
@@ -413,7 +414,7 @@ Cap</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uxc-dH-Ckz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1634" y="1254"/>
+            <point key="canvasLocation" x="2572" y="1253.5232383808097"/>
         </scene>
         <!--Profile Table View Controller-->
         <scene sceneID="H2V-gQ-YMt">
@@ -441,7 +442,7 @@ Cap</string>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AF2-s6-22w" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2702" y="1115"/>
+            <point key="canvasLocation" x="3640.8000000000002" y="1114.5427286356824"/>
         </scene>
         <!--Settings-->
         <scene sceneID="X8o-mc-JQD">
@@ -785,7 +786,7 @@ Cap</string>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mzW-8X-dcn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2616.8000000000002" y="1682.608695652174"/>
+            <point key="canvasLocation" x="3556" y="1682.608695652174"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="0Om-fW-uOp">
@@ -852,7 +853,79 @@ Cap</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qAb-8e-JwW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4268" y="1316.4917541229386"/>
+            <point key="canvasLocation" x="5207.1999999999998" y="1316.4917541229386"/>
+        </scene>
+        <!--Events View Controller-->
+        <scene sceneID="96U-61-efb">
+            <objects>
+                <viewController id="9dD-sz-65b" customClass="EventsViewController" customModule="Flock" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="F07-vS-lvB"/>
+                        <viewControllerLayoutGuide type="bottom" id="m2L-MA-Dyn"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="g3j-JA-RH4">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="czp-4s-Ia3">
+                                <rect key="frame" x="0.0" y="64" width="375" height="354"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="2SW-Jv-bN4" customClass="UPCarouselFlowLayout" customModule="UPCarouselFlowLayout">
+                                    <size key="itemSize" width="305" height="301"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="sideItemScale">
+                                            <real key="value" value="0.59999999999999998"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="sideItemAlpha">
+                                            <real key="value" value="0.40000000000000002"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="EVENT_CELL" id="W6j-gr-yZr" customClass="EventCollectionViewCell" customModule="Flock" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="-30" width="305" height="301"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="305" height="301"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </view>
+                                    </collectionViewCell>
+                                </cells>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="sideItemScale">
+                                        <real key="value" value="0.59999999999999998"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </collectionView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VPk-n4-BfT">
+                                <rect key="frame" x="0.0" y="418" width="375" height="200"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="VPk-n4-BfT" firstAttribute="width" secondItem="g3j-JA-RH4" secondAttribute="width" id="IpW-cy-CTX"/>
+                            <constraint firstItem="czp-4s-Ia3" firstAttribute="leading" secondItem="g3j-JA-RH4" secondAttribute="leading" id="KcV-oV-dye"/>
+                            <constraint firstItem="VPk-n4-BfT" firstAttribute="top" secondItem="czp-4s-Ia3" secondAttribute="bottom" id="MLY-1p-mo5"/>
+                            <constraint firstItem="VPk-n4-BfT" firstAttribute="height" secondItem="g3j-JA-RH4" secondAttribute="height" multiplier="0.3" id="Xio-Un-PcH"/>
+                            <constraint firstItem="m2L-MA-Dyn" firstAttribute="top" secondItem="VPk-n4-BfT" secondAttribute="bottom" id="aNy-8B-Ib6"/>
+                            <constraint firstItem="czp-4s-Ia3" firstAttribute="top" secondItem="F07-vS-lvB" secondAttribute="bottom" id="dh6-Z1-K0Y"/>
+                            <constraint firstAttribute="trailing" secondItem="VPk-n4-BfT" secondAttribute="trailing" id="dt3-pD-kdU"/>
+                            <constraint firstItem="VPk-n4-BfT" firstAttribute="leading" secondItem="g3j-JA-RH4" secondAttribute="leading" id="lfb-pj-mZX"/>
+                            <constraint firstAttribute="trailing" secondItem="czp-4s-Ia3" secondAttribute="trailing" id="oHF-kG-yhi"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="JkE-3F-umJ"/>
+                    <connections>
+                        <outlet property="collectionView" destination="czp-4s-Ia3" id="aut-qD-aJj"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nUn-KP-oAG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="815.20000000000005" y="1080.8095952023989"/>
         </scene>
         <!--Profile-->
         <scene sceneID="dFX-9e-9D8">
@@ -871,7 +944,7 @@ Cap</string>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="81I-pj-r9Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="618" y="1146"/>
+            <point key="canvasLocation" x="1804" y="1065.5172413793105"/>
         </scene>
         <!--Chat-->
         <scene sceneID="XSx-Kn-wYe">
@@ -1512,6 +1585,25 @@ Cap</string>
             </objects>
             <point key="canvasLocation" x="3633" y="394"/>
         </scene>
+        <!--Events-->
+        <scene sceneID="SpP-Tl-FjW">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="5jg-Hg-fKd" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Events" id="TAF-cx-ZaK" customClass="SimpleTabBarItem" customModule="SimpleTab"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Pac-hl-rnx">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="9dD-sz-65b" kind="relationship" relationship="rootViewController" id="RGE-NT-GHa"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qib-bz-ee2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-124" y="1080.8095952023989"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Building-50" width="50" height="50"/>
@@ -1538,7 +1630,7 @@ Cap</string>
         <image name="whiteCheckmarkIcon" width="384" height="384"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="3oN-hO-BQ6"/>
         <segue reference="C6s-Ax-d0w"/>
+        <segue reference="Qvd-MR-VXP"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -29,6 +29,7 @@ target 'Flock' do
    pod 'BWWalkthrough'
    pod 'OneSignal', '~> 2.0'
    pod 'Instabug'
+   pod 'UPCarouselFlowLayout'
 
   target 'FlockTests' do
     inherit! :search_paths

@@ -99,6 +99,7 @@ PODS:
   - SCLAlertView (0.7.0)
   - SimpleTab (0.1.1)
   - SnapKit (3.0.2)
+  - UPCarouselFlowLayout (1.0.0)
 
 DEPENDENCIES:
   - AASquaresLoading
@@ -124,6 +125,7 @@ DEPENDENCIES:
   - SAConfettiView
   - SCLAlertView
   - SimpleTab
+  - UPCarouselFlowLayout
 
 SPEC CHECKSUMS:
   AASquaresLoading: 4039c25b61835d6f7c73d2d3382d6960a6039fa5
@@ -162,7 +164,8 @@ SPEC CHECKSUMS:
   SCLAlertView: 8a14ffc40590c619e183eed2298b854385f30be1
   SimpleTab: 4e490e339a19d0d1d26c0fa3c862188eaad73ecb
   SnapKit: 2e456761aa92d4d4067a7a5594c18769d451a8ad
+  UPCarouselFlowLayout: adfa361c52315c0efc56dbe2555c494b8940f58a
 
-PODFILE CHECKSUM: a7d4fd96f0dc35d5c548a94707cafaf6130a9fc0
+PODFILE CHECKSUM: 74a35d4338aed20579a510b7a5febb425f61b385
 
 COCOAPODS: 1.0.1
