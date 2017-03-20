@@ -8,8 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		33EF0432F411A0B94EA01FAB /* Pods_Flock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9311B80AF2DA5ADDCEA6C5AF /* Pods_Flock.framework */; };
-		5814A0991E7F1196000C53CA /* PeopleSelectorTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5814A0981E7F1196000C53CA /* PeopleSelectorTableViewController.swift */; };
-		5814A09B1E7F179C000C53CA /* PeopleSelectorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5814A09A1E7F179C000C53CA /* PeopleSelectorTableViewCell.swift */; };
+		583AAE2E1E7F77C600D28B60 /* PeopleSelectorTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583AAE2D1E7F77C600D28B60 /* PeopleSelectorTableViewController.swift */; };
+		583AAE301E7F77D300D28B60 /* PeopleSelectorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583AAE2F1E7F77D300D28B60 /* PeopleSelectorTableViewCell.swift */; };
+		583AAE321E7F77DC00D28B60 /* PlacesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583AAE311E7F77DC00D28B60 /* PlacesTableViewController.swift */; };
 		583DF4F01E5CF5D300E0622A /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583DF4EF1E5CF5D300E0622A /* ProfileViewController.swift */; };
 		58F1F4971E5956D90065DA38 /* Walkthrough.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 58F1F4961E5956D90065DA38 /* Walkthrough.storyboard */; };
 		58F1F49A1E5959C10065DA38 /* BWWalkthroughPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F1F4981E5959C10065DA38 /* BWWalkthroughPageViewController.swift */; };
@@ -62,7 +63,6 @@
 		5F61AF6D1E4A857E00BD6A0C /* CustomSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF6C1E4A857E00BD6A0C /* CustomSearchController.swift */; };
 		5F61AF6F1E4A858700BD6A0C /* CustomSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF6E1E4A858700BD6A0C /* CustomSearchBar.swift */; };
 		5F61AF711E4B7B7100BD6A0C /* EmptyBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF701E4B7B7100BD6A0C /* EmptyBackgroundView.swift */; };
-		5F61AF731E4BCBE500BD6A0C /* PlacesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF721E4BCBE500BD6A0C /* PlacesTableViewController.swift */; };
 		5F61AF751E4BCC6300BD6A0C /* PlacesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF741E4BCC6300BD6A0C /* PlacesTableViewCell.swift */; };
 		5F61AF771E4C0BE400BD6A0C /* ProfileViewControllerCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF761E4C0BE300BD6A0C /* ProfileViewControllerCopy.swift */; };
 		5FA3CABB1E565ADA00247CC4 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA3CABA1E565ADA00247CC4 /* ChatViewController.swift */; };
@@ -86,8 +86,9 @@
 
 /* Begin PBXFileReference section */
 		14B541D1C8FF72DC87A9426B /* Pods-Flock.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flock.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Flock/Pods-Flock.debug.xcconfig"; sourceTree = "<group>"; };
-		5814A0981E7F1196000C53CA /* PeopleSelectorTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleSelectorTableViewController.swift; sourceTree = "<group>"; };
-		5814A09A1E7F179C000C53CA /* PeopleSelectorTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleSelectorTableViewCell.swift; sourceTree = "<group>"; };
+		583AAE2D1E7F77C600D28B60 /* PeopleSelectorTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PeopleSelectorTableViewController.swift; path = ../../PeopleSelectorTableViewController.swift; sourceTree = "<group>"; };
+		583AAE2F1E7F77D300D28B60 /* PeopleSelectorTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PeopleSelectorTableViewCell.swift; path = ../../PeopleSelectorTableViewCell.swift; sourceTree = "<group>"; };
+		583AAE311E7F77DC00D28B60 /* PlacesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlacesTableViewController.swift; path = ../../PlacesTableViewController.swift; sourceTree = "<group>"; };
 		583DF4EF1E5CF5D300E0622A /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		58F1F4951E59293E0065DA38 /* Flock.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Flock.entitlements; sourceTree = "<group>"; };
 		58F1F4961E5956D90065DA38 /* Walkthrough.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Walkthrough.storyboard; sourceTree = "<group>"; };
@@ -140,7 +141,6 @@
 		5F61AF6C1E4A857E00BD6A0C /* CustomSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSearchController.swift; sourceTree = "<group>"; };
 		5F61AF6E1E4A858700BD6A0C /* CustomSearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSearchBar.swift; sourceTree = "<group>"; };
 		5F61AF701E4B7B7100BD6A0C /* EmptyBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyBackgroundView.swift; sourceTree = "<group>"; };
-		5F61AF721E4BCBE500BD6A0C /* PlacesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacesTableViewController.swift; sourceTree = "<group>"; };
 		5F61AF741E4BCC6300BD6A0C /* PlacesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacesTableViewCell.swift; sourceTree = "<group>"; };
 		5F61AF761E4C0BE300BD6A0C /* ProfileViewControllerCopy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewControllerCopy.swift; sourceTree = "<group>"; };
 		5FA3CABA1E565ADA00247CC4 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
@@ -305,7 +305,7 @@
 		5F5D37FB1E4536FD008E13E4 /* PeopleCells */ = {
 			isa = PBXGroup;
 			children = (
-				5814A09A1E7F179C000C53CA /* PeopleSelectorTableViewCell.swift */,
+				583AAE2F1E7F77D300D28B60 /* PeopleSelectorTableViewCell.swift */,
 				5F4E94051E7C6D8800143931 /* FlockSuggestionTableViewCell.swift */,
 				5F4E94071E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift */,
 				5F5D37F31E4536D7008E13E4 /* FriendRequestTableViewCell.swift */,
@@ -320,7 +320,7 @@
 			isa = PBXGroup;
 			children = (
 				5F5D37FB1E4536FD008E13E4 /* PeopleCells */,
-				5814A0981E7F1196000C53CA /* PeopleSelectorTableViewController.swift */,
+				583AAE2D1E7F77C600D28B60 /* PeopleSelectorTableViewController.swift */,
 				5F5D37FE1E466A7B008E13E4 /* SearchPeopleTableViewController.swift */,
 				5F61AF6C1E4A857E00BD6A0C /* CustomSearchController.swift */,
 				5F61AF6E1E4A858700BD6A0C /* CustomSearchBar.swift */,
@@ -350,7 +350,7 @@
 			isa = PBXGroup;
 			children = (
 				5F61AF741E4BCC6300BD6A0C /* PlacesTableViewCell.swift */,
-				5F61AF721E4BCBE500BD6A0C /* PlacesTableViewController.swift */,
+				583AAE311E7F77DC00D28B60 /* PlacesTableViewController.swift */,
 				5F61AF531E47D06800BD6A0C /* PopupSubViewController.swift */,
 				5F61AF551E48230C00BD6A0C /* VenueFriendTableViewCell.xib */,
 				5F61AF571E48266F00BD6A0C /* VenueFriendTableViewCell.swift */,
@@ -609,29 +609,29 @@
 				5F61AF711E4B7B7100BD6A0C /* EmptyBackgroundView.swift in Sources */,
 				5F5D37A01E43FFCE008E13E4 /* Flock.xcdatamodeld in Sources */,
 				58F1F49A1E5959C10065DA38 /* BWWalkthroughPageViewController.swift in Sources */,
-				5814A09B1E7F179C000C53CA /* PeopleSelectorTableViewCell.swift in Sources */,
 				5F61AF581E48266F00BD6A0C /* VenueFriendTableViewCell.swift in Sources */,
 				5F5D37FF1E466A7B008E13E4 /* SearchPeopleTableViewController.swift in Sources */,
 				5F5D37981E43FFCE008E13E4 /* AppDelegate.swift in Sources */,
+				583AAE321E7F77DC00D28B60 /* PlacesTableViewController.swift in Sources */,
 				5F5D37F81E4536F1008E13E4 /* PlannedTableViewCell.swift in Sources */,
 				5F61AF6D1E4A857E00BD6A0C /* CustomSearchController.swift in Sources */,
 				5F61AF541E47D06800BD6A0C /* PopupSubViewController.swift in Sources */,
 				5FE16B771E5D332500904FC2 /* ProfileTableViewController.swift in Sources */,
 				5F585CB51E7ED3CB009B135F /* EventsViewController.swift in Sources */,
-				5F61AF731E4BCBE500BD6A0C /* PlacesTableViewController.swift in Sources */,
 				5FA3CABB1E565ADA00247CC4 /* ChatViewController.swift in Sources */,
 				58F1F49B1E5959C10065DA38 /* BWWalkthroughViewController.swift in Sources */,
 				58F1F4A41E5A20E40065DA38 /* ChatsTableViewController.swift in Sources */,
 				5F61AF771E4C0BE400BD6A0C /* ProfileViewControllerCopy.swift in Sources */,
 				58F1F49E1E5959D10065DA38 /* CustomPageViewController.swift in Sources */,
 				5F5D37D11E44BE44008E13E4 /* TestingViewController.swift in Sources */,
-				5814A0991E7F1196000C53CA /* PeopleSelectorTableViewController.swift in Sources */,
+				583AAE2E1E7F77C600D28B60 /* PeopleSelectorTableViewController.swift in Sources */,
 				5F5D37FD1E465172008E13E4 /* TODO.swift in Sources */,
 				5F61AF751E4BCC6300BD6A0C /* PlacesTableViewCell.swift in Sources */,
 				5F585CB71E7EF81F009B135F /* EventCollectionViewCell.swift in Sources */,
 				5F5D37F21E45168D008E13E4 /* PeopleTableViewController.swift in Sources */,
 				5FA3CABD1E565BA300247CC4 /* Channel.swift in Sources */,
 				58F1F4A91E5A340F0065DA38 /* ChatTableViewCell.swift in Sources */,
+				583AAE301E7F77D300D28B60 /* PeopleSelectorTableViewCell.swift in Sources */,
 				5F5D37F41E4536D7008E13E4 /* FriendRequestTableViewCell.swift in Sources */,
 				5F4E94081E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift in Sources */,
 				5FA3CABF1E565D2200247CC4 /* ChatClient.swift in Sources */,

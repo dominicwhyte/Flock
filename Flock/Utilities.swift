@@ -232,7 +232,23 @@ class Utilities {
         if (userNotificationIDs.count != 0) {
             OneSignal.postNotification(["include_player_ids": userNotificationIDs, "contents": ["en": title]])
         }
-        
+    }
+    
+    static func sendPushNotificationToPartOfFlock(title: String, toFriends : [String]) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        var userNotificationIDs = [String]()
+        for friendFBID in toFriends {
+            print(friendFBID)
+            if (appDelegate.users[friendFBID] != nil) {
+                if let toNotificationID = appDelegate.users[friendFBID]!.NotificationInfo.notificationUserID {
+                    userNotificationIDs.append(toNotificationID)
+                    print("Notification heading to: \(toNotificationID)")
+                }
+            }
+        }
+        if (userNotificationIDs.count != 0) {
+            OneSignal.postNotification(["include_player_ids": userNotificationIDs, "contents": ["en": title]])
+        }
     }
     
 }
