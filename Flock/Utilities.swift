@@ -198,7 +198,7 @@ class Utilities {
         //walkthrough.add(viewController:page_zero)
         
         vc.present(walkthrough, animated: true, completion: nil)
-
+        
     }
     
     static func sendPushNotification(title : String, text : String, toUserFBID : String) {

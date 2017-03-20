@@ -8,9 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		33EF0432F411A0B94EA01FAB /* Pods_Flock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9311B80AF2DA5ADDCEA6C5AF /* Pods_Flock.framework */; };
-		583AAE2E1E7F77C600D28B60 /* PeopleSelectorTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583AAE2D1E7F77C600D28B60 /* PeopleSelectorTableViewController.swift */; };
-		583AAE301E7F77D300D28B60 /* PeopleSelectorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583AAE2F1E7F77D300D28B60 /* PeopleSelectorTableViewCell.swift */; };
-		583AAE321E7F77DC00D28B60 /* PlacesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583AAE311E7F77DC00D28B60 /* PlacesTableViewController.swift */; };
+		583AAE341E7F7A0900D28B60 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583AAE331E7F7A0900D28B60 /* Utilities.swift */; };
+		583AAE361E7F7A7800D28B60 /* PeopleSelectorTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583AAE351E7F7A7800D28B60 /* PeopleSelectorTableViewController.swift */; };
+		583AAE3A1E7F7ACB00D28B60 /* PeopleSelectorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583AAE391E7F7ACB00D28B60 /* PeopleSelectorTableViewCell.swift */; };
+		583AAE3C1E7F7B0900D28B60 /* PlacesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583AAE3B1E7F7B0900D28B60 /* PlacesTableViewController.swift */; };
 		583DF4F01E5CF5D300E0622A /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583DF4EF1E5CF5D300E0622A /* ProfileViewController.swift */; };
 		58F1F4971E5956D90065DA38 /* Walkthrough.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 58F1F4961E5956D90065DA38 /* Walkthrough.storyboard */; };
 		58F1F49A1E5959C10065DA38 /* BWWalkthroughPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F1F4981E5959C10065DA38 /* BWWalkthroughPageViewController.swift */; };
@@ -32,7 +33,6 @@
 		5F5D37B01E43FFCE008E13E4 /* FlockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D37AF1E43FFCE008E13E4 /* FlockTests.swift */; };
 		5F5D37BB1E43FFF2008E13E4 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D37BA1E43FFF2008E13E4 /* User.swift */; };
 		5F5D37BE1E4405E9008E13E4 /* LoginClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D37BD1E4405E9008E13E4 /* LoginClient.swift */; };
-		5F5D37C01E4407D9008E13E4 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D37BF1E4407D9008E13E4 /* Utilities.swift */; };
 		5F5D37C31E440CE6008E13E4 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D37C21E440CE6008E13E4 /* LoginViewController.swift */; };
 		5F5D37C51E440F4F008E13E4 /* Venue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D37C41E440F4F008E13E4 /* Venue.swift */; };
 		5F5D37C71E4411B3008E13E4 /* FIrebaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D37C61E4411B3008E13E4 /* FIrebaseClient.swift */; };
@@ -86,9 +86,10 @@
 
 /* Begin PBXFileReference section */
 		14B541D1C8FF72DC87A9426B /* Pods-Flock.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flock.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Flock/Pods-Flock.debug.xcconfig"; sourceTree = "<group>"; };
-		583AAE2D1E7F77C600D28B60 /* PeopleSelectorTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PeopleSelectorTableViewController.swift; path = ../../PeopleSelectorTableViewController.swift; sourceTree = "<group>"; };
-		583AAE2F1E7F77D300D28B60 /* PeopleSelectorTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PeopleSelectorTableViewCell.swift; path = ../../PeopleSelectorTableViewCell.swift; sourceTree = "<group>"; };
-		583AAE311E7F77DC00D28B60 /* PlacesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlacesTableViewController.swift; path = ../../PlacesTableViewController.swift; sourceTree = "<group>"; };
+		583AAE331E7F7A0900D28B60 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		583AAE351E7F7A7800D28B60 /* PeopleSelectorTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleSelectorTableViewController.swift; sourceTree = "<group>"; };
+		583AAE391E7F7ACB00D28B60 /* PeopleSelectorTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleSelectorTableViewCell.swift; sourceTree = "<group>"; };
+		583AAE3B1E7F7B0900D28B60 /* PlacesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacesTableViewController.swift; sourceTree = "<group>"; };
 		583DF4EF1E5CF5D300E0622A /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		58F1F4951E59293E0065DA38 /* Flock.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Flock.entitlements; sourceTree = "<group>"; };
 		58F1F4961E5956D90065DA38 /* Walkthrough.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Walkthrough.storyboard; sourceTree = "<group>"; };
@@ -115,7 +116,6 @@
 		5F5D37B11E43FFCE008E13E4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5F5D37BA1E43FFF2008E13E4 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		5F5D37BD1E4405E9008E13E4 /* LoginClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginClient.swift; sourceTree = "<group>"; };
-		5F5D37BF1E4407D9008E13E4 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		5F5D37C21E440CE6008E13E4 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		5F5D37C41E440F4F008E13E4 /* Venue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Venue.swift; sourceTree = "<group>"; };
 		5F5D37C61E4411B3008E13E4 /* FIrebaseClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FIrebaseClient.swift; sourceTree = "<group>"; };
@@ -246,9 +246,9 @@
 				58F1F4951E59293E0065DA38 /* Flock.entitlements */,
 				5F5D37FC1E465172008E13E4 /* TODO.swift */,
 				5F5D37971E43FFCE008E13E4 /* AppDelegate.swift */,
-				5F5D37BF1E4407D9008E13E4 /* Utilities.swift */,
 				5FC8C5631E52A8B80076F388 /* PermissionUtilities.swift */,
 				5F61AF591E48373500BD6A0C /* DateUtilities.swift */,
+				583AAE331E7F7A0900D28B60 /* Utilities.swift */,
 				58F1F4A01E595A220065DA38 /* Walkthrough */,
 				5F5D379B1E43FFCE008E13E4 /* Main.storyboard */,
 				5F585CB61E7EF81F009B135F /* EventCollectionViewCell.swift */,
@@ -305,10 +305,10 @@
 		5F5D37FB1E4536FD008E13E4 /* PeopleCells */ = {
 			isa = PBXGroup;
 			children = (
-				583AAE2F1E7F77D300D28B60 /* PeopleSelectorTableViewCell.swift */,
 				5F4E94051E7C6D8800143931 /* FlockSuggestionTableViewCell.swift */,
 				5F4E94071E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift */,
 				5F5D37F31E4536D7008E13E4 /* FriendRequestTableViewCell.swift */,
+				583AAE391E7F7ACB00D28B60 /* PeopleSelectorTableViewCell.swift */,
 				5F5D37F51E4536E8008E13E4 /* LiveTableViewCell.swift */,
 				5F5D37F71E4536F1008E13E4 /* PlannedTableViewCell.swift */,
 				5F5D37F91E4536F6008E13E4 /* AllTableViewCell.swift */,
@@ -320,8 +320,8 @@
 			isa = PBXGroup;
 			children = (
 				5F5D37FB1E4536FD008E13E4 /* PeopleCells */,
-				583AAE2D1E7F77C600D28B60 /* PeopleSelectorTableViewController.swift */,
 				5F5D37FE1E466A7B008E13E4 /* SearchPeopleTableViewController.swift */,
+				583AAE351E7F7A7800D28B60 /* PeopleSelectorTableViewController.swift */,
 				5F61AF6C1E4A857E00BD6A0C /* CustomSearchController.swift */,
 				5F61AF6E1E4A858700BD6A0C /* CustomSearchBar.swift */,
 				5F5D37F11E45168D008E13E4 /* PeopleTableViewController.swift */,
@@ -350,7 +350,7 @@
 			isa = PBXGroup;
 			children = (
 				5F61AF741E4BCC6300BD6A0C /* PlacesTableViewCell.swift */,
-				583AAE311E7F77DC00D28B60 /* PlacesTableViewController.swift */,
+				583AAE3B1E7F7B0900D28B60 /* PlacesTableViewController.swift */,
 				5F61AF531E47D06800BD6A0C /* PopupSubViewController.swift */,
 				5F61AF551E48230C00BD6A0C /* VenueFriendTableViewCell.xib */,
 				5F61AF571E48266F00BD6A0C /* VenueFriendTableViewCell.swift */,
@@ -609,10 +609,11 @@
 				5F61AF711E4B7B7100BD6A0C /* EmptyBackgroundView.swift in Sources */,
 				5F5D37A01E43FFCE008E13E4 /* Flock.xcdatamodeld in Sources */,
 				58F1F49A1E5959C10065DA38 /* BWWalkthroughPageViewController.swift in Sources */,
+				583AAE3A1E7F7ACB00D28B60 /* PeopleSelectorTableViewCell.swift in Sources */,
 				5F61AF581E48266F00BD6A0C /* VenueFriendTableViewCell.swift in Sources */,
 				5F5D37FF1E466A7B008E13E4 /* SearchPeopleTableViewController.swift in Sources */,
+				583AAE361E7F7A7800D28B60 /* PeopleSelectorTableViewController.swift in Sources */,
 				5F5D37981E43FFCE008E13E4 /* AppDelegate.swift in Sources */,
-				583AAE321E7F77DC00D28B60 /* PlacesTableViewController.swift in Sources */,
 				5F5D37F81E4536F1008E13E4 /* PlannedTableViewCell.swift in Sources */,
 				5F61AF6D1E4A857E00BD6A0C /* CustomSearchController.swift in Sources */,
 				5F61AF541E47D06800BD6A0C /* PopupSubViewController.swift in Sources */,
@@ -624,24 +625,22 @@
 				5F61AF771E4C0BE400BD6A0C /* ProfileViewControllerCopy.swift in Sources */,
 				58F1F49E1E5959D10065DA38 /* CustomPageViewController.swift in Sources */,
 				5F5D37D11E44BE44008E13E4 /* TestingViewController.swift in Sources */,
-				583AAE2E1E7F77C600D28B60 /* PeopleSelectorTableViewController.swift in Sources */,
 				5F5D37FD1E465172008E13E4 /* TODO.swift in Sources */,
 				5F61AF751E4BCC6300BD6A0C /* PlacesTableViewCell.swift in Sources */,
 				5F585CB71E7EF81F009B135F /* EventCollectionViewCell.swift in Sources */,
 				5F5D37F21E45168D008E13E4 /* PeopleTableViewController.swift in Sources */,
 				5FA3CABD1E565BA300247CC4 /* Channel.swift in Sources */,
 				58F1F4A91E5A340F0065DA38 /* ChatTableViewCell.swift in Sources */,
-				583AAE301E7F77D300D28B60 /* PeopleSelectorTableViewCell.swift in Sources */,
 				5F5D37F41E4536D7008E13E4 /* FriendRequestTableViewCell.swift in Sources */,
 				5F4E94081E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift in Sources */,
 				5FA3CABF1E565D2200247CC4 /* ChatClient.swift in Sources */,
 				5FC8C5641E52A8B80076F388 /* PermissionUtilities.swift in Sources */,
 				5F61AF6F1E4A858700BD6A0C /* CustomSearchBar.swift in Sources */,
 				5F5D37C51E440F4F008E13E4 /* Venue.swift in Sources */,
+				583AAE341E7F7A0900D28B60 /* Utilities.swift in Sources */,
 				5F5D37BE1E4405E9008E13E4 /* LoginClient.swift in Sources */,
 				58F1F49F1E5959D10065DA38 /* ViewController.swift in Sources */,
 				5F5D38041E466C17008E13E4 /* SearchTableViewCell.swift in Sources */,
-				5F5D37C01E4407D9008E13E4 /* Utilities.swift in Sources */,
 				5F5D37F61E4536E8008E13E4 /* LiveTableViewCell.swift in Sources */,
 				5F61AF5A1E48373500BD6A0C /* DateUtilities.swift in Sources */,
 				5F5D37FA1E4536F6008E13E4 /* AllTableViewCell.swift in Sources */,
@@ -650,6 +649,7 @@
 				5F4E94061E7C6D8800143931 /* FlockSuggestionTableViewCell.swift in Sources */,
 				5F5D37BB1E43FFF2008E13E4 /* User.swift in Sources */,
 				5F5D37C71E4411B3008E13E4 /* FIrebaseClient.swift in Sources */,
+				583AAE3C1E7F7B0900D28B60 /* PlacesTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
