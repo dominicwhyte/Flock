@@ -48,12 +48,10 @@ class EventsViewController: UIViewController, UICollectionViewDelegate, UICollec
         layout.spacingMode = UPCarouselFlowLayoutSpacingMode.overlap(visibleOffset: 30)
     }
     
-    
-//    func collectionView(_ collectionView: UICollectionView,
-//                        layout collectionViewLayout: UICollectionViewLayout,
-//                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        return CGSize(width: collectionView.bounds.size.width - 40, height: collectionView.bounds.size.width - 150)
-//    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        return CGSize(width: 100, height: 20)
+    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 5

@@ -19,6 +19,7 @@ class EventCollectionViewCell: UICollectionViewCell {
         frontView = UIView(frame: self.frame)
         frontView!.backgroundColor = UIColor.blue
         backView = UIView(frame: self.frame)
+        self.contentView.addSubview(backView!)
         backView!.backgroundColor = UIColor.red
         self.contentView.addSubview(frontView!)
         frontViewShowing = true
