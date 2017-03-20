@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'BF44EFED91F1F230D14E85A0CF3E2874'
+               BlueprintIdentifier = '7AE8A5E5BA1A29ACB0316D78C4D19BF5'
                BlueprintName = 'SimpleTab'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'SimpleTab.framework'>

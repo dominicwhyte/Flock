@@ -99,7 +99,7 @@ PODS:
   - SCLAlertView (0.7.0)
   - SimpleTab (0.1.1)
   - SnapKit (3.0.2)
-  - UPCarouselFlowLayout (1.0.0)
+  - ZFRippleButton (0.6)
 
 DEPENDENCIES:
   - AASquaresLoading
@@ -118,14 +118,14 @@ DEPENDENCIES:
   - LFTwitterProfile
   - MGSwipeTableCell
   - MVHorizontalPicker
-  - OneSignal (~> 2.0)
+  - OneSignal
   - PermissionScope
   - PopupDialog (~> 0.5)
   - PureLayout (~> 3.0.1)
   - SAConfettiView
   - SCLAlertView
   - SimpleTab
-  - UPCarouselFlowLayout
+  - ZFRippleButton
 
 SPEC CHECKSUMS:
   AASquaresLoading: 4039c25b61835d6f7c73d2d3382d6960a6039fa5
@@ -164,8 +164,8 @@ SPEC CHECKSUMS:
   SCLAlertView: 8a14ffc40590c619e183eed2298b854385f30be1
   SimpleTab: 4e490e339a19d0d1d26c0fa3c862188eaad73ecb
   SnapKit: 2e456761aa92d4d4067a7a5594c18769d451a8ad
-  UPCarouselFlowLayout: adfa361c52315c0efc56dbe2555c494b8940f58a
+  ZFRippleButton: 62ea35e209757704dea697d66489fe69c13d7b77
 
-PODFILE CHECKSUM: 74a35d4338aed20579a510b7a5febb425f61b385
+PODFILE CHECKSUM: 6bef2f6494e87000e4c937f1eeba4fbbf4f6eb25
 
 COCOAPODS: 1.0.1

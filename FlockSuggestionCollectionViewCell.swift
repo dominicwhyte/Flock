@@ -19,6 +19,14 @@ class FlockSuggestionCollectionViewCell: UICollectionViewCell {
     var isPerformed = false
     var delegate : FlockRecommenderDelegate?
     
+    //Change this to use for other purposes
+    var cellType : CollectionViewCellType = CollectionViewCellType.flockSuggester
+    
+    enum CollectionViewCellType {
+        case flockSuggester
+        case messager
+    }
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -31,20 +39,31 @@ class FlockSuggestionCollectionViewCell: UICollectionViewCell {
     
     func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
     {
+        
         if (!isPerformed) {
             if (isPressed) {
                 let appDelegate = UIApplication.shared.delegate as! AppDelegate
                 Utilities.printDebugMessage("take action")
-                self.plusIconImageView.image = UIImage(named: "whiteCheckmarkIcon")
-                self.isUserInteractionEnabled = false
-                if let userToFriendFBID = userToFriendFBID {
-                    self.isPerformed = true
-                    delegate?.updateFBIDFlocked(fbid: userToFriendFBID)
-                    FirebaseClient.sendFriendRequest(appDelegate.user!.FBID, toID: userToFriendFBID, completion: { (success) in
-                        self.isUserInteractionEnabled = true
-                        Utilities.printDebugMessage("Flocked status: \(success)")
-                    })
+                switch cellType {
+                case CollectionViewCellType.flockSuggester:
+                    self.plusIconImageView.image = UIImage(named: "whiteCheckmarkIcon")
+                    self.isUserInteractionEnabled = false
+                    if let userToFriendFBID = userToFriendFBID {
+                        self.isPerformed = true
+                        delegate?.updateFBIDFlocked(fbid: userToFriendFBID)
+                        FirebaseClient.sendFriendRequest(appDelegate.user!.FBID, toID: userToFriendFBID, completion: { (success) in
+                            self.isUserInteractionEnabled = true
+                            Utilities.printDebugMessage("Flocked status: \(success)")
+                        })
+                    }
+                case CollectionViewCellType.messager:
+                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                    if let fbid = userToFriendFBID {
+                        appDelegate.openChatController(FBID: fbid)
+                    }
+                    
                 }
+                
             }
             else {
                 self.setPressedUI()
@@ -55,8 +74,11 @@ class FlockSuggestionCollectionViewCell: UICollectionViewCell {
                 })
                 
             }
-
+            
         }
+        
+        
+        
     }
     
     func resetUINewCell() {
@@ -64,7 +86,12 @@ class FlockSuggestionCollectionViewCell: UICollectionViewCell {
         plusIconImageView.isHidden = true
         userImageView.alpha = 1
         isPerformed = false
-        plusIconImageView.image = UIImage(named: "whiteAddIcon")
+        switch cellType {
+            case CollectionViewCellType.flockSuggester:
+                plusIconImageView.image = UIImage(named: "whiteAddIcon")
+            case CollectionViewCellType.messager:
+                plusIconImageView.image = UIImage(named: "Chat-50")
+        }
     }
     
     func setPerformedUI() {

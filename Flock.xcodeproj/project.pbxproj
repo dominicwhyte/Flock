@@ -20,11 +20,15 @@
 		58F1F49F1E5959D10065DA38 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F1F49D1E5959D10065DA38 /* ViewController.swift */; };
 		58F1F4A41E5A20E40065DA38 /* ChatsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F1F4A31E5A20E40065DA38 /* ChatsTableViewController.swift */; };
 		58F1F4A91E5A340F0065DA38 /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F1F4A81E5A340F0065DA38 /* ChatTableViewCell.swift */; };
+		5F2EC0181E7F858B002F6D65 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F2EC0171E7F858B002F6D65 /* iCarousel.m */; };
+		5F2EC01B1E7F8D61002F6D65 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2EC01A1E7F8D61002F6D65 /* Event.swift */; };
+		5F2EC01D1E7F8D87002F6D65 /* FirebaseConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2EC01C1E7F8D87002F6D65 /* FirebaseConstants.swift */; };
+		5F2EC01F1E7F9597002F6D65 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2EC01E1E7F9597002F6D65 /* EventView.swift */; };
+		5F2EC0211E7FA620002F6D65 /* ZFRippleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2EC0201E7FA620002F6D65 /* ZFRippleButton.swift */; };
 		5F4E94061E7C6D8800143931 /* FlockSuggestionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E94051E7C6D8800143931 /* FlockSuggestionTableViewCell.swift */; };
 		5F4E94081E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E94071E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift */; };
 		5F4E940A1E7D9C9B00143931 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E94091E7D9C9B00143931 /* SettingsTableViewController.swift */; };
 		5F585CB51E7ED3CB009B135F /* EventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F585CB41E7ED3CB009B135F /* EventsViewController.swift */; };
-		5F585CB71E7EF81F009B135F /* EventCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F585CB61E7EF81F009B135F /* EventCollectionViewCell.swift */; };
 		5F5D37981E43FFCE008E13E4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D37971E43FFCE008E13E4 /* AppDelegate.swift */; };
 		5F5D379D1E43FFCE008E13E4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F5D379B1E43FFCE008E13E4 /* Main.storyboard */; };
 		5F5D37A01E43FFCE008E13E4 /* Flock.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D379E1E43FFCE008E13E4 /* Flock.xcdatamodeld */; };
@@ -99,11 +103,17 @@
 		58F1F49D1E5959D10065DA38 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		58F1F4A31E5A20E40065DA38 /* ChatsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatsTableViewController.swift; sourceTree = "<group>"; };
 		58F1F4A81E5A340F0065DA38 /* ChatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
+		5F2EC0161E7F858B002F6D65 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
+		5F2EC0171E7F858B002F6D65 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
+		5F2EC0191E7F859C002F6D65 /* Flock-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Flock-Bridging-Header.h"; sourceTree = "<group>"; };
+		5F2EC01A1E7F8D61002F6D65 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		5F2EC01C1E7F8D87002F6D65 /* FirebaseConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseConstants.swift; sourceTree = "<group>"; };
+		5F2EC01E1E7F9597002F6D65 /* EventView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
+		5F2EC0201E7FA620002F6D65 /* ZFRippleButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZFRippleButton.swift; sourceTree = "<group>"; };
 		5F4E94051E7C6D8800143931 /* FlockSuggestionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlockSuggestionTableViewCell.swift; sourceTree = "<group>"; };
 		5F4E94071E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlockSuggestionCollectionViewCell.swift; sourceTree = SOURCE_ROOT; };
 		5F4E94091E7D9C9B00143931 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		5F585CB41E7ED3CB009B135F /* EventsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsViewController.swift; sourceTree = "<group>"; };
-		5F585CB61E7EF81F009B135F /* EventCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventCollectionViewCell.swift; sourceTree = "<group>"; };
 		5F5D37941E43FFCE008E13E4 /* Flock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F5D37971E43FFCE008E13E4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5F5D379C1E43FFCE008E13E4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -246,12 +256,16 @@
 				58F1F4951E59293E0065DA38 /* Flock.entitlements */,
 				5F5D37FC1E465172008E13E4 /* TODO.swift */,
 				5F5D37971E43FFCE008E13E4 /* AppDelegate.swift */,
+				5F2EC0161E7F858B002F6D65 /* iCarousel.h */,
+				5F2EC0191E7F859C002F6D65 /* Flock-Bridging-Header.h */,
+				5F2EC0171E7F858B002F6D65 /* iCarousel.m */,
 				5FC8C5631E52A8B80076F388 /* PermissionUtilities.swift */,
 				5F61AF591E48373500BD6A0C /* DateUtilities.swift */,
 				583AAE331E7F7A0900D28B60 /* Utilities.swift */,
 				58F1F4A01E595A220065DA38 /* Walkthrough */,
 				5F5D379B1E43FFCE008E13E4 /* Main.storyboard */,
-				5F585CB61E7EF81F009B135F /* EventCollectionViewCell.swift */,
+				5F2EC01E1E7F9597002F6D65 /* EventView.swift */,
+				5F2EC0201E7FA620002F6D65 /* ZFRippleButton.swift */,
 				5F585CB41E7ED3CB009B135F /* EventsViewController.swift */,
 				58F1F4A51E5A328D0065DA38 /* Chats */,
 				5F61AF781E4C0BEB00BD6A0C /* Profile */,
@@ -288,6 +302,7 @@
 			isa = PBXGroup;
 			children = (
 				5F5D37C41E440F4F008E13E4 /* Venue.swift */,
+				5F2EC01A1E7F8D61002F6D65 /* Event.swift */,
 				5F5D37BA1E43FFF2008E13E4 /* User.swift */,
 			);
 			name = Objects;
@@ -296,6 +311,7 @@
 		5F5D37C11E440823008E13E4 /* Firebase */ = {
 			isa = PBXGroup;
 			children = (
+				5F2EC01C1E7F8D87002F6D65 /* FirebaseConstants.swift */,
 				5F5D37BD1E4405E9008E13E4 /* LoginClient.swift */,
 				5F5D37C61E4411B3008E13E4 /* FIrebaseClient.swift */,
 			);
@@ -627,14 +643,17 @@
 				5F5D37D11E44BE44008E13E4 /* TestingViewController.swift in Sources */,
 				5F5D37FD1E465172008E13E4 /* TODO.swift in Sources */,
 				5F61AF751E4BCC6300BD6A0C /* PlacesTableViewCell.swift in Sources */,
-				5F585CB71E7EF81F009B135F /* EventCollectionViewCell.swift in Sources */,
 				5F5D37F21E45168D008E13E4 /* PeopleTableViewController.swift in Sources */,
+				5F2EC0211E7FA620002F6D65 /* ZFRippleButton.swift in Sources */,
 				5FA3CABD1E565BA300247CC4 /* Channel.swift in Sources */,
 				58F1F4A91E5A340F0065DA38 /* ChatTableViewCell.swift in Sources */,
+				5F2EC01B1E7F8D61002F6D65 /* Event.swift in Sources */,
 				5F5D37F41E4536D7008E13E4 /* FriendRequestTableViewCell.swift in Sources */,
+				5F2EC0181E7F858B002F6D65 /* iCarousel.m in Sources */,
 				5F4E94081E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift in Sources */,
 				5FA3CABF1E565D2200247CC4 /* ChatClient.swift in Sources */,
 				5FC8C5641E52A8B80076F388 /* PermissionUtilities.swift in Sources */,
+				5F2EC01D1E7F8D87002F6D65 /* FirebaseConstants.swift in Sources */,
 				5F61AF6F1E4A858700BD6A0C /* CustomSearchBar.swift in Sources */,
 				5F5D37C51E440F4F008E13E4 /* Venue.swift in Sources */,
 				583AAE341E7F7A0900D28B60 /* Utilities.swift in Sources */,
@@ -642,6 +661,7 @@
 				58F1F49F1E5959D10065DA38 /* ViewController.swift in Sources */,
 				5F5D38041E466C17008E13E4 /* SearchTableViewCell.swift in Sources */,
 				5F5D37F61E4536E8008E13E4 /* LiveTableViewCell.swift in Sources */,
+				5F2EC01F1E7F9597002F6D65 /* EventView.swift in Sources */,
 				5F61AF5A1E48373500BD6A0C /* DateUtilities.swift in Sources */,
 				5F5D37FA1E4536F6008E13E4 /* AllTableViewCell.swift in Sources */,
 				583DF4F01E5CF5D300E0622A /* ProfileViewController.swift in Sources */,
@@ -787,6 +807,7 @@
 			baseConfigurationReference = 14B541D1C8FF72DC87A9426B /* Pods-Flock.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Flock/Flock.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = 23Q5KM3Q2Z;
@@ -795,6 +816,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = FindYourFlock.FindYourFlock;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Flock/Flock-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -804,6 +827,7 @@
 			baseConfigurationReference = BE43BF5ECD8A2F8930ECE437 /* Pods-Flock.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Flock/Flock.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -813,6 +837,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = FindYourFlock.FindYourFlock;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Flock/Flock-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

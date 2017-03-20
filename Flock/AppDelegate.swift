@@ -100,6 +100,17 @@
             })
         }
         
+        func openChatController(FBID : String) {
+            Utilities.printDebugMessage("Attempting to open Chat Controller")
+            if let user = self.user, let friendUser = self.users[FBID] {
+                if let channelID = user.ChannelIDs[FBID] {
+                    if let vc = self.getCurrentViewController() {
+                        vc.performSegue(withIdentifier: "CHAT_IDENTIFIER", sender: (channelID, friendUser))
+                    }
+                }
+            }
+        }
+        
         //Function to update data, use for refreshing
         func updateAllData(completion: @escaping (_ status: Bool) -> ()) {
             self.profileNeedsToUpdate = true

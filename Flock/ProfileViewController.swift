@@ -35,7 +35,7 @@ class ProfileViewController: UIViewController, ProfileDelegate {
     @IBOutlet weak var backgroundImage: UIImageView!
     
     @IBAction func settingsButtonPressed(_ sender: Any) {
-        Instabug.invoke(with: .newBug)
+        //Instabug.invoke(with: .newBug)
         /*let permissionScope = PermissionScope()
         PermissionUtilities.setupPermissionScope(permissionScope: permissionScope)
         PermissionUtilities.getPermissionsIfDenied(permissionScope: permissionScope)*/

@@ -27,9 +27,10 @@ target 'Flock' do
    pod 'SAConfettiView'
    pod 'PermissionScope'
    pod 'BWWalkthrough'
-   pod 'OneSignal', '~> 2.0'
+   pod 'OneSignal'
    pod 'Instabug'
-   pod 'UPCarouselFlowLayout'
+   #pod 'UPCarouselFlowLayout'
+   pod 'ZFRippleButton'
 
   target 'FlockTests' do
     inherit! :search_paths

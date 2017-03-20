@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '87A055D7993931385D331DE6734949C0'
-               BlueprintName = 'UPCarouselFlowLayout'
+               BlueprintIdentifier = '78BCB46B7F570B8716DB531B21B6DD5F'
+               BlueprintName = 'ZFRippleButton'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'UPCarouselFlowLayout.framework'>
+               BuildableName = 'ZFRippleButton.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
