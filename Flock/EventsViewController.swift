@@ -44,8 +44,8 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         super.viewWillAppear(animated)
 
         Utilities.applyVerticalGradient(aView: topCover, colorTop: FlockColors.FLOCK_BLUE, colorBottom: FlockColors.FLOCK_LIGHT_BLUE)
-        Utilities.applyVerticalGradient(aView: bottomCover, colorTop: FlockColors.FLOCK_LIGHT_BLUE, colorBottom: FlockColors.FLOCK_GOLD)
-
+        //Utilities.applyVerticalGradient(aView: bottomCover, colorTop: FlockColors.FLOCK_LIGHT_BLUE, colorBottom: FlockColors.FLOCK_GOLD)
+        bottomCover.backgroundColor = UIColor.white
         
     }
     

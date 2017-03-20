@@ -46,6 +46,18 @@ class EventView: UIView {
         self.addGestureRecognizer(gesture)
     }
     
+    override func layoutSubviews()
+    {
+        super.layoutSubviews()
+        
+        let shadowPath = UIBezierPath(rect: bounds)
+        layer.masksToBounds = false
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOffset = CGSize(width: 0.0, height: 5.0)
+        layer.shadowOpacity = 0.5
+        layer.shadowPath = shadowPath.cgPath
+    }
+    
     
     func flipView() {
         if frontViewShowing {
