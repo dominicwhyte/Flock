@@ -179,13 +179,13 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Planned" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ngc-cf-f4M">
-                                            <rect key="frame" x="216" y="285.5" width="63" height="23.5"/>
+                                            <rect key="frame" x="215.5" y="285.5" width="63" height="23.5"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Live" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QLf-Nl-V1P">
-                                            <rect key="frame" x="304" y="285" width="30" height="24"/>
+                                            <rect key="frame" x="303.5" y="285" width="30" height="24"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="24" id="fYq-Yi-RzI"/>
                                             </constraints>
@@ -200,7 +200,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kDI-lS-VlJ">
-                                            <rect key="frame" x="217" y="254" width="10" height="21"/>
+                                            <rect key="frame" x="216.5" y="254" width="10" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -212,7 +212,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Jr-gR-GYs">
-                                            <rect key="frame" x="232" y="249" width="30" height="30"/>
+                                            <rect key="frame" x="231.5" y="249" width="30" height="30"/>
                                             <state key="normal" title="Button" image="Dancing Party-50"/>
                                             <connections>
                                                 <action selector="plannedShouldPopUp:" destination="Wjk-FW-8ht" eventType="touchUpInside" id="zVx-JG-8zE"/>
@@ -1056,7 +1056,7 @@ Cap</string>
                                         </cells>
                                     </collectionView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yWs-YD-Hrv">
-                                        <rect key="frame" x="161" y="62.5" width="52.5" height="27.5"/>
+                                        <rect key="frame" x="161.5" y="62.5" width="52.5" height="27.5"/>
                                         <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>

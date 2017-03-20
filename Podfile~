@@ -27,7 +27,7 @@ target 'Flock' do
    pod 'SAConfettiView'
    pod 'PermissionScope'
    pod 'BWWalkthrough'
-   pod 'OneSignal', '~> 2.4'
+   pod 'OneSignal'
    pod 'Instabug'
    #pod 'UPCarouselFlowLayout'
    pod 'ZFRippleButton'
