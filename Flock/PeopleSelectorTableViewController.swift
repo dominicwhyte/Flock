@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PeopleSelectorTableViewController: UITableViewController {
+class PeopleSelectorTableViewController: UITableViewController, UpdateSelectorTableViewDelegate {
 
     struct Constants {
         static let REUSE_IDENTIFIERS = ["SELECTOR"]
@@ -56,12 +56,17 @@ class PeopleSelectorTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog("You selected cell number: \(indexPath.row)!")
         let currentCell = tableView.cellForRow(at: indexPath) as! PeopleSelectorTableViewCell
-        currentCell.setSelected(!currentCell.isSelected, animated: true)
-        
-        
-
+        currentCell.setSelected(currentCell.isSelected, animated: true)
+    }
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        NSLog("You selected cell number: \(indexPath.row)!")
+        let currentCell = tableView.cellForRow(at: indexPath) as! PeopleSelectorTableViewCell
+        currentCell.setSelected(currentCell.isSelected, animated: true)
     }
 
+    func addFriendIDToInvites(friendID : String) {
+        self.friendsToInvite.append(friendID)
+    }
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -87,7 +92,8 @@ class PeopleSelectorTableViewController: UITableViewController {
         cell.name.text = friend.Name
         self.retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic!)
         cell.subtitle.text = "Something goes here?"
-
+        cell.friendID = friend.FBID
+        cell.delegate = self
         //setupCell(cell: cell)
         return cell
 
@@ -159,4 +165,8 @@ class PeopleSelectorTableViewController: UITableViewController {
     }
     */
 
+}
+
+protocol UpdateSelectorTableViewDelegate: class {
+    func addFriendIDToInvites(friendID : String)
 }

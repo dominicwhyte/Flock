@@ -18,13 +18,17 @@ class PeopleSelectorTableViewCell: UITableViewCell {
         self.profilePic.makeViewCircle()
     }
 
+    var delegate : UpdateSelectorTableViewDelegate?
+    var friendID : String?
+    
     @IBOutlet weak var profilePic: UIImageView!
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var subtitle: UILabel!
     @IBOutlet weak var selectorButton: UIButton!
     
     @IBAction func selectorButtonPressed(_ sender: Any) {
-        self.setSelected(!self.isSelected, animated: true)
+        self.isSelected = !self.isSelected
+        self.setSelected(self.isSelected, animated: true)
     }
     func resetButtonUI() {
         self.selectorButton.backgroundColor = UIColor.clear
@@ -41,7 +45,7 @@ class PeopleSelectorTableViewCell: UITableViewCell {
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        if(self.isSelected) {
+        if(selected) {
             self.setButtonUI()
         } else {
             self.resetButtonUI()
