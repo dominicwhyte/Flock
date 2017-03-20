@@ -159,7 +159,7 @@ class Utilities {
         return string + "s"
     }
     
-    static func setPluralityForPeople(string :String, count : Int) -> String {
+    static func setPluralityForPeople(count : Int) -> String {
         if (count == 1) {
             return "person"
         } else {

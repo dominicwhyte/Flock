@@ -25,6 +25,10 @@
 		5F2EC01D1E7F8D87002F6D65 /* FirebaseConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2EC01C1E7F8D87002F6D65 /* FirebaseConstants.swift */; };
 		5F2EC01F1E7F9597002F6D65 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2EC01E1E7F9597002F6D65 /* EventView.swift */; };
 		5F2EC0211E7FA620002F6D65 /* ZFRippleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2EC0201E7FA620002F6D65 /* ZFRippleButton.swift */; };
+		5F2EC0231E8049D4002F6D65 /* FrontEventView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F2EC0221E8049D4002F6D65 /* FrontEventView.xib */; };
+		5F3474CD1E804FE400A29615 /* FrontEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3474CC1E804FE400A29615 /* FrontEventView.swift */; };
+		5F3474D11E805E2000A29615 /* BackEventView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F3474D01E805E2000A29615 /* BackEventView.xib */; };
+		5F3474D31E805E3600A29615 /* BackEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3474D21E805E3600A29615 /* BackEventView.swift */; };
 		5F4E94061E7C6D8800143931 /* FlockSuggestionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E94051E7C6D8800143931 /* FlockSuggestionTableViewCell.swift */; };
 		5F4E94081E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E94071E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift */; };
 		5F4E940A1E7D9C9B00143931 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E94091E7D9C9B00143931 /* SettingsTableViewController.swift */; };
@@ -110,6 +114,10 @@
 		5F2EC01C1E7F8D87002F6D65 /* FirebaseConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseConstants.swift; sourceTree = "<group>"; };
 		5F2EC01E1E7F9597002F6D65 /* EventView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		5F2EC0201E7FA620002F6D65 /* ZFRippleButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZFRippleButton.swift; sourceTree = "<group>"; };
+		5F2EC0221E8049D4002F6D65 /* FrontEventView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FrontEventView.xib; sourceTree = "<group>"; };
+		5F3474CC1E804FE400A29615 /* FrontEventView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrontEventView.swift; sourceTree = "<group>"; };
+		5F3474D01E805E2000A29615 /* BackEventView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BackEventView.xib; sourceTree = "<group>"; };
+		5F3474D21E805E3600A29615 /* BackEventView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackEventView.swift; sourceTree = "<group>"; };
 		5F4E94051E7C6D8800143931 /* FlockSuggestionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlockSuggestionTableViewCell.swift; sourceTree = "<group>"; };
 		5F4E94071E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlockSuggestionCollectionViewCell.swift; sourceTree = SOURCE_ROOT; };
 		5F4E94091E7D9C9B00143931 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
@@ -264,8 +272,12 @@
 				583AAE331E7F7A0900D28B60 /* Utilities.swift */,
 				58F1F4A01E595A220065DA38 /* Walkthrough */,
 				5F5D379B1E43FFCE008E13E4 /* Main.storyboard */,
-				5F2EC01E1E7F9597002F6D65 /* EventView.swift */,
 				5F2EC0201E7FA620002F6D65 /* ZFRippleButton.swift */,
+				5F2EC0221E8049D4002F6D65 /* FrontEventView.xib */,
+				5F3474D01E805E2000A29615 /* BackEventView.xib */,
+				5F3474D21E805E3600A29615 /* BackEventView.swift */,
+				5F3474CC1E804FE400A29615 /* FrontEventView.swift */,
+				5F2EC01E1E7F9597002F6D65 /* EventView.swift */,
 				5F585CB41E7ED3CB009B135F /* EventsViewController.swift */,
 				58F1F4A51E5A328D0065DA38 /* Chats */,
 				5F61AF781E4C0BEB00BD6A0C /* Profile */,
@@ -494,7 +506,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F2EC0231E8049D4002F6D65 /* FrontEventView.xib in Resources */,
 				5F61AF681E4994A400BD6A0C /* Oswald-Regular.ttf in Resources */,
+				5F3474D11E805E2000A29615 /* BackEventView.xib in Resources */,
 				5F61AF671E4994A000BD6A0C /* Oswald-Light.ttf in Resources */,
 				5F61AF561E48230C00BD6A0C /* VenueFriendTableViewCell.xib in Resources */,
 				5F61AF601E49949400BD6A0C /* OpenSans-Light.ttf in Resources */,
@@ -652,6 +666,7 @@
 				5F2EC0181E7F858B002F6D65 /* iCarousel.m in Sources */,
 				5F4E94081E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift in Sources */,
 				5FA3CABF1E565D2200247CC4 /* ChatClient.swift in Sources */,
+				5F3474D31E805E3600A29615 /* BackEventView.swift in Sources */,
 				5FC8C5641E52A8B80076F388 /* PermissionUtilities.swift in Sources */,
 				5F2EC01D1E7F8D87002F6D65 /* FirebaseConstants.swift in Sources */,
 				5F61AF6F1E4A858700BD6A0C /* CustomSearchBar.swift in Sources */,
@@ -670,6 +685,7 @@
 				5F5D37BB1E43FFF2008E13E4 /* User.swift in Sources */,
 				5F5D37C71E4411B3008E13E4 /* FIrebaseClient.swift in Sources */,
 				583AAE3C1E7F7B0900D28B60 /* PlacesTableViewController.swift in Sources */,
+				5F3474CD1E804FE400A29615 /* FrontEventView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

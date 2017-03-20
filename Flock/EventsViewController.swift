@@ -10,9 +10,12 @@ import UIKit
 
 class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDelegate {
     var events: [Event] = []
+    var userFBIDSofPlanningAttendees = [String]()
+    
     var imageCache = [String : UIImage]()
     
     @IBOutlet var carousel: iCarousel!
+    @IBOutlet weak var infoLabel: UILabel!
     
     @IBOutlet weak var topCover: UIView!
     @IBOutlet weak var bottomCover: UIView!
@@ -21,12 +24,28 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        for _ in 0 ... 5 {
-            let newDict = [EventFirebaseConstants.eventName : "Capmandu" as AnyObject, EventFirebaseConstants.eventDate : "2017-03-17" as AnyObject, EventFirebaseConstants.specialEvent : true as AnyObject, EventFirebaseConstants.venueID : "-KeKwZoP21jkaCs4LFN0" as AnyObject, EventFirebaseConstants.eventAttendeeFBIDs : ["10208026242633924" : "10208026242633924", "10206799811314250" : "10206799811314250", "10210419661620438" : "10210419661620438"] as AnyObject] as [String : AnyObject]
-            let newEvent = Event(dict: newDict)
-            events.append(newEvent)
-        }
+        var newDict = [EventFirebaseConstants.eventName : "Capmandu" as AnyObject, EventFirebaseConstants.eventDate : "2017-03-17" as AnyObject, EventFirebaseConstants.specialEvent : true as AnyObject, EventFirebaseConstants.venueID : "-KeKwZoP21jkaCs4LFN0" as AnyObject, EventFirebaseConstants.eventAttendeeFBIDs : ["10208026242633924" : "10208026242633924", "10210419661620438" : "10210419661620438"] as AnyObject] as [String : AnyObject]
+        var newEvent = Event(dict: newDict)
+        events.append(newEvent)
+        
+        newDict = [EventFirebaseConstants.eventName : "Capmandu lit party lot's of fun" as AnyObject, EventFirebaseConstants.eventDate : "2017-03-17" as AnyObject, EventFirebaseConstants.specialEvent : true as AnyObject, EventFirebaseConstants.venueID : "-KeKwZoP21jkaCs4LFN0" as AnyObject, EventFirebaseConstants.eventAttendeeFBIDs : ["10208026242633924" : "10208026242633924"] as AnyObject] as [String : AnyObject]
+        newEvent = Event(dict: newDict)
+        
+        events.append(newEvent)
+        newDict = [EventFirebaseConstants.eventName : "Capmandu lit party lot's of fun" as AnyObject, EventFirebaseConstants.eventDate : "2017-03-17" as AnyObject, EventFirebaseConstants.specialEvent : true as AnyObject, EventFirebaseConstants.venueID : "-KeKwZoP21jkaCs4LFN0" as AnyObject, EventFirebaseConstants.eventAttendeeFBIDs : ["10208026242633924" : "10208026242633924", "10206799811314250" : "10206799811314250", "10210419661620438" : "10210419661620438"] as AnyObject] as [String : AnyObject]
+        newEvent = Event(dict: newDict)
+        events.append(newEvent)
+        
+        newDict = [EventFirebaseConstants.eventName : "Capmandu lit party lot's of fun" as AnyObject, EventFirebaseConstants.eventDate : "2017-03-17" as AnyObject, EventFirebaseConstants.specialEvent : true as AnyObject, EventFirebaseConstants.venueID : "-KeKwZoP21jkaCs4LFN0" as AnyObject, EventFirebaseConstants.eventAttendeeFBIDs : ["10208026242633924" : "10208026242633924", "10206799811314250" : "10206799811314250", "10210419661620438" : "10210419661620438"] as AnyObject, EventFirebaseConstants.eventImageURL : "https://firebasestorage.googleapis.com/v0/b/flock-43b66.appspot.com/o/message_images%2F1FD8CE52-BFC2-48A6-885E-F842C5E7B01C?alt=media&token=fc3d3624-6b3f-4577-9a29-594c47e9deb8" as AnyObject] as [String : AnyObject]
+        newEvent = Event(dict: newDict)
+        events.append(newEvent)
+        
+        
+        
+        
     }
+    
+
     
     override func viewDidLoad() {
         collectionView.delegate = self
@@ -34,31 +53,83 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         collectionView.setContentOffset(collectionView.contentOffset, animated:false) // Stops collection view if it was scrolling.
         
         super.viewDidLoad()
-        carousel.type = .invertedWheel
+        carousel.type = .linear
+        carousel.isPagingEnabled = true
         
         self.collectionView.backgroundColor = UIColor.clear
         self.collectionView.backgroundView = nil
+        
+        if (events.count != 0) {
+            let event = events[0]
+            self.userFBIDSofPlanningAttendees = Array(event.EventAttendeeFBIDs.values)
+            self.setupLabel(event: event)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        
         Utilities.applyVerticalGradient(aView: topCover, colorTop: FlockColors.FLOCK_BLUE, colorBottom: FlockColors.FLOCK_LIGHT_BLUE)
         //Utilities.applyVerticalGradient(aView: bottomCover, colorTop: FlockColors.FLOCK_LIGHT_BLUE, colorBottom: FlockColors.FLOCK_GOLD)
         bottomCover.backgroundColor = UIColor.white
-        
+        carousel.reloadData()
     }
     
     func numberOfItems(in carousel: iCarousel) -> Int {
         return events.count
     }
     
+    
+    func carousel(_ carousel: iCarousel, didSelectItemAt index: Int) {
+        
+        if (index == carousel.currentItemIndex) {
+            if let currentEventView = carousel.currentItemView as? EventView {
+                currentEventView.flipView()
+            }
+            else {
+                Utilities.printDebugMessage("Error getting EventView")
+            }
+        }
+    }
+    
+    func carouselCurrentItemIndexDidChange(_ carousel: iCarousel) {
+        let event = events[carousel.currentItemIndex]
+        self.userFBIDSofPlanningAttendees = Array(event.EventAttendeeFBIDs.values)
+        
+        setupLabel(event: event)
+        
+        collectionView.reloadData()
+    }
+    
+    func setupLabel(event : Event) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let userFriends = appDelegate.user!.Friends
+        let attendeesFBIDs = event.EventAttendeeFBIDs
+        var friendsCount = 0
+        for (fbid,_) in attendeesFBIDs {
+            if (userFriends[fbid] != nil) {
+                friendsCount += 1
+            }
+        }
+        
+        let peoplePlurality = Utilities.setPluralityForPeople(count: attendeesFBIDs.count)
+        let startText = "\(attendeesFBIDs.count) \(peoplePlurality) going "
+        let endText = "(\(friendsCount) friends)"
+        let totalText = startText + endText
+        let range = (totalText as NSString).range(of: endText)
+        let attributedString = NSMutableAttributedString(string:totalText)
+        attributedString.addAttribute(NSForegroundColorAttributeName, value: FlockColors.FLOCK_BLUE , range: range)
+        infoLabel.attributedText = attributedString
+    }
+    
     func carousel(_ carousel: iCarousel, viewForItemAt index: Int, reusing view: UIView?) -> UIView {
+        
         var eventView: EventView
         
         //reuse view if available, otherwise create a new view
         if let view = view as? EventView {
             eventView = view
+            eventView.setupEventView(event: events[index])
             //get a reference to the label in the recycled view
             //label = itemView.viewWithTag(1) as! UILabel
         } else {
@@ -68,12 +139,12 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
             eventView = EventView(frame: CGRect(x: 0, y: 0, width: 250, height: 250))
             eventView.setupEventView(event: events[index])
             
-//            label = UILabel(frame: itemView.bounds)
-//            label.backgroundColor = .clear
-//            label.textAlignment = .center
-//            label.font = label.font.withSize(50)
-//            label.tag = 1
-//            itemView.addSubview(label)
+            //            label = UILabel(frame: itemView.bounds)
+            //            label.backgroundColor = .clear
+            //            label.textAlignment = .center
+            //            label.font = label.font.withSize(50)
+            //            label.tag = 1
+            //            itemView.addSubview(label)
         }
         
         //set item label
@@ -81,9 +152,11 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         //views outside of the `if (view == nil) {...}` check otherwise
         //you'll get weird issues with carousel item content appearing
         //in the wrong place in the carousel
-
+        
         
         return eventView
+        
+        
     }
     
 
@@ -92,6 +165,11 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         if (option == .spacing) {
             return value * 1.1
         }
+        //enable wrap
+        if (option == .wrap) {
+            return 1
+        }
+        
         return value
     }
     
@@ -115,25 +193,25 @@ extension EventsViewController: UICollectionViewDelegate, UICollectionViewDataSo
         }
         
     }
-
+    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return self.userFBIDSofPlanningAttendees.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        Utilities.printDebugMessage("running")
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FLOCK_SUGGESTION_COLLECTION_CELL", for: indexPath) as! FlockSuggestionCollectionViewCell
         cell.cellType = FlockSuggestionCollectionViewCell.CollectionViewCellType.messager
-//        cell.delegate = self
+        //        cell.delegate = self
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let suggestedUser = appDelegate.users["1590517560973218"]!
+        let suggestedUser = appDelegate.users[self.userFBIDSofPlanningAttendees[indexPath.row]]!
         let userImage = cell.viewWithTag(2) as! UIImageView
         let nameLabel = cell.viewWithTag(1) as! UILabel
         cell.userToFriendFBID = suggestedUser.FBID
         nameLabel.text = suggestedUser.Name
         userImage.makeViewCircle()
         self.retrieveImage(imageURL: suggestedUser.PictureURL, imageView: userImage)
+        
         if let delegate = cell.delegate {
             if delegate.FBIDWasFlocked(fbid: suggestedUser.FBID) {
                 cell.setPerformedUI()

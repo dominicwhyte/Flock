@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="BackEventView" customModule="Flock" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="250" height="250"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lUX-Fe-hJw">
+                    <rect key="frame" x="0.0" y="0.0" width="250" height="250"/>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="lUX-Fe-hJw" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="R7L-tp-JXF"/>
+                <constraint firstItem="lUX-Fe-hJw" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="cSY-2m-ydG"/>
+                <constraint firstAttribute="trailing" secondItem="lUX-Fe-hJw" secondAttribute="trailing" id="l6A-sc-vhi"/>
+                <constraint firstAttribute="bottom" secondItem="lUX-Fe-hJw" secondAttribute="bottom" id="utm-25-CEE"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+</document>

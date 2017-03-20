@@ -81,13 +81,13 @@
                                     </constraints>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10 Live" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ea0-er-vvG">
-                                    <rect key="frame" x="20" y="51" width="34" height="12"/>
+                                    <rect key="frame" x="20" y="50" width="34" height="12"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ALl-An-kFg">
-                                    <rect key="frame" x="92" y="45" width="37" height="24"/>
+                                    <rect key="frame" x="92" y="44" width="37" height="24"/>
                                     <string key="text">10 Live 
 Friends</string>
                                     <fontDescription key="fontDescription" type="system" pointSize="10"/>
@@ -95,7 +95,7 @@ Friends</string>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10 Planned" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Wa-S2-GyZ">
-                                    <rect key="frame" x="157" y="51" width="53" height="12"/>
+                                    <rect key="frame" x="157" y="50" width="53" height="12"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
@@ -107,7 +107,7 @@ Friends</string>
                                     </constraints>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RIT-KU-iKl">
-                                    <rect key="frame" x="228" y="45" width="56" height="24"/>
+                                    <rect key="frame" x="228" y="44" width="56" height="24"/>
                                     <string key="text">10 Planned 
 Friends</string>
                                     <fontDescription key="fontDescription" type="system" pointSize="10"/>

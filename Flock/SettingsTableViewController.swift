@@ -59,7 +59,7 @@ class SettingsTableViewController: UITableViewController {
         aView.layer.shadowColor = UIColor.black.cgColor
         aView.layer.shadowOpacity = 0.4
         //aView.layer.shadowOffset = CGSize(width: 0, height: 3)
-        aView.layer.shadowRadius = 3
+        aView.layer.shadowRadius = 1.5
         aView.layer.shadowPath = UIBezierPath(rect: aView.bounds).cgPath
     }
     
