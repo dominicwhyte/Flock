@@ -416,6 +416,8 @@
             return Statistics(maxPlansInOneNight: maxPlansInOneNight, loyalty: loyalty, popularity: popularity, lifetimeLive: lifetimeLive, venuePlanCountsForDatesForVenues: venuePlanCountsForDatesForVenues)
         }
         
+        
+        
         func computeUserStats(user : User) -> (String?, Int, Double?, Int)? {
             // Stats to return
             var favoriteClub : String?

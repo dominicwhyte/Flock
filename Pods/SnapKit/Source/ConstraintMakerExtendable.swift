@@ -110,6 +110,12 @@ open class ConstraintMakerExtendable: ConstraintMakerRelatable {
     }
     
     @available(iOS 8.0, *)
+    open var topMargin: ConstraintMakerExtendable {
+        self.description.attributes += .topMargin
+        return self
+    }
+    
+    @available(iOS 8.0, *)
     open var bottomMargin: ConstraintMakerExtendable {
         self.description.attributes += .bottomMargin
         return self

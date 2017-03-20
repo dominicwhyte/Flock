@@ -49,7 +49,7 @@ open class SimpleTabBar: UITabBar , UITabBarControllerDelegate {
             self.deselectedIndex = oldValue
             if let style = self.tabBarStyle {
                 if oldValue != self.selectedIndex {
-                    style.animateTabTransition(self, toIndex: self.selectedIndex, fromIndex: self.deselectedIndex!)
+                    style.animateTabTransition(tabBar: self, toIndex: self.selectedIndex, fromIndex: self.deselectedIndex!)
                 }
             }
         }
@@ -70,5 +70,7 @@ open class SimpleTabBar: UITabBar , UITabBarControllerDelegate {
     open func tabBarController(_ tabBarController: UITabBarController, animationControllerForTransitionFrom fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self.transitionObject
     }
+    
+    
 
 }

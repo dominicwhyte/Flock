@@ -29,30 +29,30 @@ import Foundation
 open class SimpleTabBarStyle :NSObject {
     
     ///To hold CGRect Frames of all SimpleTabBarItems
-    open var barFrames:[CGRect] = []
+    public var barFrames:[CGRect] = []
     
     ///Handle to the tab bar
-    open var tabBar:SimpleTabBar?
+    public var tabBar:SimpleTabBar?
     
     ///Tab bar item iconview size
-    open var iconSize:CGSize = CGSize(width: 25 , height: 25 )
+    public var iconSize:CGSize = CGSize(width: 25 , height: 25 )
     
     ///Tab bar item icon top offset
-    open var iconTopOffset:CGFloat = 3.0
+    public var iconTopOffset:CGFloat = 3.0
     
     ///Tab bar item title bottom offset
-    open var titleBottomOffset:CGFloat = 5.0
+    public var titleBottomOffset:CGFloat = 5.0
     
     ///Tab bar item title label height
-    open var titleHeight:CGFloat = 15
+    public var titleHeight:CGFloat = 15
     
     //Tab bar item title label text attributes options
     //Can be set in AppDelegate / App Load
-    internal fileprivate(set)  var titleTextAttributes:[UInt:[AnyHashable: Any]] = [:]
+    internal private(set)  var titleTextAttributes:[UInt:[NSObject:AnyObject]] = [:]
     
     //Tab bar icon state color options
     //Can be set in AppDelegate / App Load
-    internal fileprivate(set)  var iconColors:[UInt:UIColor] = [:]
+    internal private(set)  var iconColors:[UInt:UIColor] = [:]
     
     /*
         Init SimpleTabBarStyle with associated Tab Bar
@@ -61,28 +61,28 @@ open class SimpleTabBarStyle :NSObject {
     public init(tabBar:SimpleTabBar) {
         super.init()
         
-        iconColors[UIControlState().rawValue] = UIColor.gray
+        iconColors[UIControlState.normal.rawValue] = UIColor.gray
         iconColors[UIControlState.selected.rawValue] = tabBar.tintColor
         
-        titleTextAttributes[UIControlState().rawValue] = [NSForegroundColorAttributeName: UIColor.gray]
-        titleTextAttributes[UIControlState.selected.rawValue] = [NSForegroundColorAttributeName: tabBar.tintColor]
+        titleTextAttributes[UIControlState.normal.rawValue] = [NSForegroundColorAttributeName as NSObject: UIColor.gray]
+        titleTextAttributes[UIControlState.selected.rawValue] = [NSForegroundColorAttributeName as NSObject: tabBar.tintColor]
         
         self.tabBar = tabBar
-        self.layoutTabBarItems(tabBar, initialize: true)
+        self.layoutTabBarItems(tabBar: tabBar, initialize: true)
         self.refreshColors()
     }
     
-    fileprivate func layoutTabBarItems(_ tabBar: SimpleTabBar , initialize:Bool=false) {
+    private func layoutTabBarItems(tabBar: SimpleTabBar , initialize:Bool=false) {
         
         barFrames = []
         var barItems:[SimpleTabBarItem] = []
         
         for view in tabBar.subviews {
-            if view.isUserInteractionEnabled && view.isKind(of: UIControl.self) {
-                barFrames.append(view.frame)
+            if view.isUserInteractionEnabled && view.isKind(of:UIControl.self) {
+                self.barFrames.append(view.frame)
             }
         }
-        barFrames.sorted { (this, that) -> Bool in
+        barFrames.sort { (this, that) -> Bool in
             return this.origin.x < that.origin.x
         }
         var i = 0
@@ -103,13 +103,13 @@ open class SimpleTabBarStyle :NSObject {
         }
     }
     
-    open func refresh() {
-        layoutTabBarItems(self.tabBar!)
+    public func refresh() {
+        layoutTabBarItems(tabBar: self.tabBar!)
         refreshColors()
     }
     
-    open func refreshColors() {
-        
+    public func refreshColors() {
+    
         tabBar!.barItems.map { barItem -> SimpleTabBarItem in
             let state:UInt = barItem.index == self.tabBar!.selectedIndex ? UIControlState.selected.rawValue : UIControlState.normal.rawValue
             if let attributes = self.titleTextAttributes[state] as! [String: AnyObject]? {
@@ -123,23 +123,23 @@ open class SimpleTabBarStyle :NSObject {
             
             return barItem
         }
-        
+
     }
     
     
-    open func tabBarCtrlLoaded(_ tabBarCtrl:SimpleTabBarController , tabBar:SimpleTabBar, selectedIndex:Int) {
+    public func tabBarCtrlLoaded(tabBarCtrl:SimpleTabBarController , tabBar:SimpleTabBar, selectedIndex:Int) {
         
     }
     
-    open func setIconColor(_ color:UIColor , forState state:UIControlState) {
+    public func setIconColor(color:UIColor , forState state:UIControlState) {
         iconColors[state.rawValue] = color
     }
     
-    open func setTitleTextAttributes(_ attributes:[AnyHashable: Any] , forState state:UIControlState) {
+    public func setTitleTextAttributes(attributes:[NSObject:AnyObject] , forState state:UIControlState) {
         titleTextAttributes[state.rawValue] = attributes
     }
     
-    open func animateTabTransition(_ tabBar: SimpleTabBar, toIndex: Int,fromIndex: Int) {
+    public func animateTabTransition(tabBar: SimpleTabBar, toIndex: Int,fromIndex: Int) {
         refresh()
     }
 }

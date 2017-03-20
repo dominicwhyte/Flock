@@ -25,12 +25,6 @@
 
 import UIKit
 
-struct FlockColors {
-    static let FLOCK_BLUE = UIColor(red: 76/255, green: 181/255, blue: 245/255, alpha: 1.0)
-    static let FLOCK_GRAY = UIColor(red: 183/255, green: 184/255, blue: 182/255, alpha: 1.0)
-    static let FLOCK_LIGHT_BLUE = UIColor(red: 129/255, green: 202/255, blue: 247/255, alpha: 1.0)
-}
-
 open class SimpleTabBarController: UITabBarController {
 
     var _tabBar:SimpleTabBar?
@@ -44,77 +38,31 @@ open class SimpleTabBarController: UITabBarController {
 
         }
     }
-    
-    
-    open override func viewDidLoad() {
-        super.viewDidLoad()
-        setupSimpleTab()
-        
-    }
-    
-    
-    
-    func setupSimpleTab() {
-        
-        //# Get Handle of Tab Bar Control
-        /* In storyboard, ensure :
-         - Tab Bar Controller is set as SimpleTabBarController
-         - Tab Bar is set as SimpleTabBar
-         - Tab Bar Item is set as SimpleTabBarItem
-         */
-        let simpleTBC : SimpleTabBarController = self
-        
-        //# Set the View Transition
-//        simpleTBC.viewTransition = PopViewTransition()
-        simpleTBC.viewTransition = CrossFadeViewTransition()
-        
-        //# Set Tab Bar Style ( tab bar , tab item animation style etc )
-        let style:SimpleTabBarStyle = ElegantTabBarStyle(tabBar: simpleTBC.tabBar)
-        //var style:SimpleTabBarStyle = ElegantTabBarStyle(tabBar: simpleTBC!.tabBar)
-        
-        //# Optional - Set Tab Title attributes for selected and unselected (normal) states.
-        // Or use the App tint color to set the states
-        style.setTitleTextAttributes([NSFontAttributeName as NSObject : UIFont.systemFont(ofSize: 14),  NSForegroundColorAttributeName as NSObject: UIColor.lightGray], forState: .normal)
-        style.setTitleTextAttributes([NSFontAttributeName as NSObject : UIFont.systemFont(ofSize: 14),NSForegroundColorAttributeName as NSObject: FlockColors.FLOCK_BLUE], forState: .selected)
-        
-        //# Optional - Set Tab Icon colors for selected and unselected (normal) states.
-        // Or use the App tint color to set the states
-        style.setIconColor(UIColor.lightGray, forState: UIControlState.normal)
-        style.setIconColor(colorWithHexString("4CB5F5"), forState: UIControlState.selected)
-        
-        //# Let the tab bar control know of the style
-        // Note: All style settings must be done prior to this.
-        simpleTBC.tabBarStyle = style
-    }
-    
-    //# Handy function to return UIColors from Hex Strings
-    func colorWithHexString (_ hexStr:String) -> UIColor {
-        
-        let hex = hexStr.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
-        var int = UInt32()
-        Scanner(string: hex).scanHexInt32(&int)
-        let a, r, g, b: UInt32
-        switch hex.characters.count {
-        case 3: // RGB (12-bit)
-            (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
-        case 6: // RGB (24-bit)
-            (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
-        case 8: // ARGB (32-bit)
-            (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
-        default:
-            return .clear
-        }
-        return UIColor(red: CGFloat(r) / 255, green: CGFloat(g) / 255, blue: CGFloat(b) / 255, alpha: CGFloat(a) / 255)
-        
-    }
-    
+
     ///View Transitioning Object
-    open var viewTransition:UIViewControllerAnimatedTransitioning?
+    open var viewTransition:UIViewControllerAnimatedTransitioning? {
+        didSet {
+            tabBar.transitionObject = self.viewTransition
+        }
+    }
 
     ///Tab Bar Style ( with animation control for tab switching )
     open var tabBarStyle:SimpleTabBarStyle? {
         didSet {
             self.tabBarStyle?.refresh()
+        }
+    }
+    
+    /**
+    Set or Get Selected Index
+    */
+    override open var selectedIndex:Int {
+        get {
+            return super.selectedIndex
+        }
+        set {
+            super.selectedIndex = newValue
+            self.tabBar.selectedIndex = newValue
         }
     }
 
@@ -123,16 +71,20 @@ open class SimpleTabBarController: UITabBarController {
 
         //Initial setup
         tabBar.selectedIndex = self.selectedIndex
-        tabBar.transitionObject = self.viewTransition! ?? CrossFadeViewTransition()
-        tabBar.tabBarStyle = self.tabBarStyle! ?? ElegantTabBarStyle(tabBar: tabBar)
+        tabBar.transitionObject = self.viewTransition ?? CrossFadeViewTransition()
+        tabBar.tabBarStyle = self.tabBarStyle ?? ElegantTabBarStyle(tabBar: tabBar)
         tabBar.tabBarCtrl = self
         self.delegate = tabBar
 
         //Let the style object know when things are loaded
-        self.tabBarStyle?.tabBarCtrlLoaded(self, tabBar: tabBar, selectedIndex: tabBar.selectedIndex)
+        self.tabBarStyle?.tabBarCtrlLoaded(tabBarCtrl: self, tabBar: tabBar, selectedIndex: tabBar.selectedIndex)
 
     }
 
+    override open func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
     
     public func animateToTab(_ toIndex: Int, completion: @escaping (_ toVC : UIViewController) -> ()) {
         let tabViewControllers = viewControllers!

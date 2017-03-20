@@ -32,7 +32,7 @@ open class ElegantTabBarStyle: SimpleTabBarStyle {
     open var selectorSideInsets:CGFloat = 10
     open var selectorColor:UIColor?
     
-    override open func tabBarCtrlLoaded(_ tabBarCtrl: SimpleTabBarController, tabBar: SimpleTabBar, selectedIndex: Int) {
+    override open func tabBarCtrlLoaded(tabBarCtrl: SimpleTabBarController, tabBar: SimpleTabBar, selectedIndex: Int) {
         
         //Setup a selection indicator view
         let selectedItemFrame:CGRect = tabBar.barItems[selectedIndex].frame
@@ -64,7 +64,7 @@ open class ElegantTabBarStyle: SimpleTabBarStyle {
         
     }
     
-    override open func animateTabTransition(_ tabBar: SimpleTabBar, toIndex: Int,fromIndex: Int) {
+    override open func animateTabTransition(tabBar: SimpleTabBar, toIndex: Int,fromIndex: Int) {
         
         let toBarItem:SimpleTabBarItem = tabBar.barItems[toIndex]
         let fromBarItem:SimpleTabBarItem = tabBar.barItems[fromIndex]

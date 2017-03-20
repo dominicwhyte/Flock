@@ -28,8 +28,29 @@
 #endif
 
 
-@available(iOS 9.0, *)
+@available(iOS 9.0, OSX 10.11, *)
 public struct ConstraintLayoutGuideDSL: ConstraintAttributesDSL {
+    
+    @discardableResult
+    public func prepareConstraints(_ closure: (_ make: ConstraintMaker) -> Void) -> [Constraint] {
+        return ConstraintMaker.prepareConstraints(self.guide, closure: closure)
+    }
+    
+    public func makeConstraints(_ closure: (_ make: ConstraintMaker) -> Void) {
+        ConstraintMaker.makeConstraints(self.guide, closure: closure)
+    }
+    
+    public func remakeConstraints(_ closure: (_ make: ConstraintMaker) -> Void) {
+        ConstraintMaker.remakeConstraints(self.guide, closure: closure)
+    }
+    
+    public func updateConstraints(_ closure: (_ make: ConstraintMaker) -> Void) {
+        ConstraintMaker.updateConstraints(self.guide, closure: closure)
+    }
+    
+    public func removeConstraints() {
+        ConstraintMaker.removeConstraints(self.guide)
+    }
     
     public var target: AnyObject? {
         return self.guide

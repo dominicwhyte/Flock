@@ -51,8 +51,6 @@ public struct ConstraintViewDSL: ConstraintAttributesDSL {
         ConstraintMaker.removeConstraints(self.view)
     }
     
-    
-    
     public var contentHuggingHorizontalPriority: Float {
         get {
             return self.view.contentHuggingPriority(for: .horizontal)
@@ -76,7 +74,7 @@ public struct ConstraintViewDSL: ConstraintAttributesDSL {
             return self.view.contentCompressionResistancePriority(for: .horizontal)
         }
         set {
-            self.view.setContentHuggingPriority(newValue, for: .horizontal)
+            self.view.setContentCompressionResistancePriority(newValue, for: .horizontal)
         }
     }
     
@@ -100,36 +98,4 @@ public struct ConstraintViewDSL: ConstraintAttributesDSL {
         
     }
     
-    internal var constraints: [Constraint] {
-        return self.constraintsHashTable.allObjects
-    }
-    
-    internal func add(_ constraints: [Constraint]) {
-        let hashTable = self.constraintsHashTable
-        for constraint in constraints {
-            hashTable.add(constraint)
-        }
-    }
-    
-    internal func remove(_ constraints: [Constraint]) {
-        let hashTable = self.constraintsHashTable
-        for constraint in constraints {
-            hashTable.remove(constraint)
-        }
-    }
-    
-    fileprivate var constraintsHashTable: NSHashTable<Constraint> {
-        let constraints: NSHashTable<Constraint>
-        
-        if let existing = objc_getAssociatedObject(self.view, &constraintsKey) as? NSHashTable<Constraint> {
-            constraints = existing
-        } else {
-            constraints = NSHashTable<Constraint>()
-            objc_setAssociatedObject(self.view, &constraintsKey, constraints, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-        return constraints
-        
-    }
-    
 }
-private var constraintsKey: UInt8 = 0

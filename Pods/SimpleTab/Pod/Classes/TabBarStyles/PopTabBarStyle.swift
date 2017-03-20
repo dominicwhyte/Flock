@@ -34,7 +34,7 @@ open class PopTabBarStyle: SimpleTabBarStyle {
     
     open var step:NSInteger = 0
     
-    override open func tabBarCtrlLoaded(_ tabBarCtrl: SimpleTabBarController, tabBar: SimpleTabBar, selectedIndex: Int) {
+    override open func tabBarCtrlLoaded(tabBarCtrl: SimpleTabBarController, tabBar: SimpleTabBar, selectedIndex: Int) {
         
         //Setup a selection indicator view
         let selectedItemFrame:CGRect = tabBar.barItems[selectedIndex].frame
@@ -64,13 +64,13 @@ open class PopTabBarStyle: SimpleTabBarStyle {
         
     }
     
-    override open func animateTabTransition(_ tabBar: SimpleTabBar, toIndex: Int,fromIndex: Int) {
+    override open func animateTabTransition(tabBar: SimpleTabBar, toIndex: Int,fromIndex: Int) {
         
         let toBarItem:SimpleTabBarItem = tabBar.barItems[toIndex]
         let fromBarItem:SimpleTabBarItem = tabBar.barItems[fromIndex]
         
         self.selectorView.frame.origin.x = toBarItem.frame.origin.x + self.selectorSideInsets
-        self.selectorView.frame.offsetBy(dx: 0, dy: 0)
+        self.selectorView.frame.offsetBy(dx: 0, dy: 10)
         
         
         UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions(), animations: { () -> Void in

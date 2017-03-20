@@ -47,7 +47,7 @@ NSString *const FBSDKAppEventNameViewedContent           = @"fb_mobile_content_v
 NSString *const FBSDKAppEventNameSearched                = @"fb_mobile_search";
 NSString *const FBSDKAppEventNameRated                   = @"fb_mobile_rate";
 NSString *const FBSDKAppEventNameCompletedTutorial       = @"fb_mobile_tutorial_completion";
-NSString *const FBSDKAppEventParameterLaunchSource          = @"fb_mobile_launch_source";
+NSString *const FBSDKAppEventParameterLaunchSource       = @"fb_mobile_launch_source";
 
 // Ecommerce related
 NSString *const FBSDKAppEventNameAddedToCart             = @"fb_mobile_add_to_cart";
@@ -91,6 +91,8 @@ NSString *const FBSDKAppEventNamePurchased        = @"fb_mobile_purchase";
 NSString *const FBSDKAppEventNameLoginViewUsage                   = @"fb_login_view_usage";
 NSString *const FBSDKAppEventNameShareSheetLaunch                 = @"fb_share_sheet_launch";
 NSString *const FBSDKAppEventNameShareSheetDismiss                = @"fb_share_sheet_dismiss";
+NSString *const FBSDKAppEventNameShareTrayDidLaunch               = @"fb_share_tray_did_launch";
+NSString *const FBSDKAppEventNameShareTrayDidSelectActivity       = @"fb_share_tray_did_select_activity";
 NSString *const FBSDKAppEventNamePermissionsUILaunch              = @"fb_permissions_ui_launch";
 NSString *const FBSDKAppEventNamePermissionsUIDismiss             = @"fb_permissions_ui_dismiss";
 NSString *const FBSDKAppEventNameFBDialogsPresentShareDialog      = @"fb_dialogs_present_share";
@@ -144,13 +146,15 @@ NSString *const FBSDKAppEventNameFBSDKEventShareDialogShow =            @"fb_dia
 NSString *const FBSDKAppEventNameFBSDKEventMessengerShareDialogShow =   @"fb_messenger_dialog_share_show";
 NSString *const FBSDKAppEventNameFBSDKEventAppInviteShareDialogShow =   @"fb_app_invite_share_show";
 
-NSString *const FBSDKAppEventNameFBSessionNativeAppSwitchLoginDialogResult = @"fb_mobile_login_native_app_switch_dialog_result";
+NSString *const FBSDKAppEventNameFBSessionFASLoginDialogResult = @"fb_mobile_login_fas_dialog_result";
 
 // Event Parameters internal to this file
 NSString *const FBSDKAppEventParameterDialogOutcome               = @"fb_dialog_outcome";
 NSString *const FBSDKAppEventParameterDialogErrorMessage          = @"fb_dialog_outcome_error_message";
 NSString *const FBSDKAppEventParameterDialogMode                  = @"fb_dialog_mode";
 NSString *const FBSDKAppEventParameterDialogShareContentType      = @"fb_dialog_share_content_type";
+NSString *const FBSDKAppEventParameterShareTrayActivityName       = @"fb_share_tray_activity";
+NSString *const FBSDKAppEventParameterShareTrayResult             = @"fb_share_tray_result";
 NSString *const FBSDKAppEventParameterLogTime = @"_logTime";
 NSString *const FBSDKAppEventParameterEventName = @"_eventName";
 NSString *const FBSDKAppEventParameterImplicitlyLogged = @"_implicitlyLogged";
@@ -181,9 +185,11 @@ NSString *const FBSDKAppEventsOverrideAppIDBundleKey = @"FacebookLoggingOverride
 
 //
 // Push Notifications
+//
 // Activities Endpoint Parameter
 static NSString *const FBSDKActivitesParameterPushDeviceToken = @"device_token";
-// Event Name
+// Event Names
+static NSString *const FBSDKAppEventNamePushTokenObtained = @"fb_mobile_obtain_push_token";
 static NSString *const FBSDKAppEventNamePushOpened = @"fb_mobile_push_opened";
 // Event Parameter
 static NSString *const FBSDKAppEventParameterPushCampaign = @"fb_push_campaign";
@@ -419,7 +425,22 @@ static NSString *g_overrideAppID = nil;
 
 + (void)setPushNotificationsDeviceToken:(NSData *)deviceToken
 {
-  [FBSDKAppEvents singleton].pushNotificationsDeviceTokenString = [FBSDKInternalUtility hexadecimalStringFromData:deviceToken];
+  NSString *deviceTokenString = [FBSDKInternalUtility hexadecimalStringFromData:deviceToken];
+  if (deviceTokenString == nil) {
+    [FBSDKAppEvents singleton].pushNotificationsDeviceTokenString = nil;
+    return;
+  }
+
+  if (![deviceTokenString isEqualToString:([FBSDKAppEvents singleton].pushNotificationsDeviceTokenString)]) {
+    [FBSDKAppEvents singleton].pushNotificationsDeviceTokenString = deviceTokenString;
+
+    [FBSDKAppEvents logEvent:FBSDKAppEventNamePushTokenObtained];
+
+    // Unless the behavior is set to only allow explicit flushing, we go ahead and flush the event
+    if ([FBSDKAppEvents flushBehavior] != FBSDKAppEventsFlushBehaviorExplicitOnly) {
+      [[FBSDKAppEvents singleton] flushForReason:FBSDKAppEventsFlushReasonEagerlyFlushingEvent];
+    }
+  }
 }
 
 + (FBSDKAppEventsFlushBehavior)flushBehavior

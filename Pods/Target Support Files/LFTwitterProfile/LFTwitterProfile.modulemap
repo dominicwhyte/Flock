@@ -1,0 +1,6 @@
+framework module LFTwitterProfile {
+  umbrella header "LFTwitterProfile-umbrella.h"
+
+  export *
+  module * { export * }
+}

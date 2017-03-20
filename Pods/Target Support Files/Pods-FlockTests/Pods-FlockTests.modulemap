@@ -1,0 +1,6 @@
+framework module Pods_FlockTests {
+  umbrella header "Pods-FlockTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
