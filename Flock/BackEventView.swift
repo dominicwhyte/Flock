@@ -9,7 +9,16 @@
 import UIKit
 
 class BackEventView: UIView {
+    
+    @IBOutlet weak var backgroundImage: UIImageView!
+    
+    @IBOutlet weak var textLabel: UILabel!
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+         //Utilities.applyVerticalGradient(aView: self, colorTop: UIColor.white, colorBottom: UIColor.black)
+        self.backgroundColor = UIColor.black
+    }
     
     override func layoutSubviews()
     {
@@ -23,12 +32,25 @@ class BackEventView: UIView {
         layer.shadowPath = shadowPath.cgPath
     }
     
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    func setupBackView(event : Event) {
+        let random = Int(arc4random_uniform(UInt32(Utilities.Constants.PARTY_IMAGES.count)))
+        backgroundImage.image = UIImage(named: Utilities.Constants.PARTY_IMAGES[random])
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
+        
+        let startText = DateUtilities.convertDateToStringByFormat(date: event.EventDate, dateFormat: DateUtilities.Constants.uiDisplayFormat)
+        let middleText = " @ "
+        var endText = "TBD"
+        if let venueName = appDelegate.venues[event.VenueID]?.VenueName {
+            endText = venueName
+        }
+        let totalText = startText + middleText + endText
+        let range = (totalText as NSString).range(of: middleText)
+        let attributedString = NSMutableAttributedString(string:totalText)
+        attributedString.addAttribute(NSForegroundColorAttributeName, value: FlockColors.FLOCK_BLUE , range: range)
+        textLabel.attributedText = attributedString
+        
     }
-    */
-
+    
 }

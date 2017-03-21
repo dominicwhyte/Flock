@@ -25,7 +25,8 @@ class ProfileTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        //eliminate lines at bottom
+        
         self.tableView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         tableView.register(UINib(nibName: "VenueFriendTableViewCell", bundle: nil), forCellReuseIdentifier: "VENUE_FRIEND")
         
@@ -104,12 +105,6 @@ class ProfileTableViewController: UITableViewController {
         }
         let cell = tableView.dequeueReusableCell(withIdentifier: "VENUE_FRIEND", for: indexPath) as! VenueFriendTableViewCell
         
-        if (plan.specialEventID != nil) {
-            cell.nameLabel.text = appDelegate.specialEvents[plan.specialEventID!]?.EventName
-        }
-        else {
-            cell.nameLabel.text = venue.VenueName
-        }
         
         
         if (indexPath.section == Constants.LIVE_SECTION_ROW) {
@@ -122,7 +117,6 @@ class ProfileTableViewController: UITableViewController {
             cell.profilePic.image = venueImage
             cell.profilePic.clipsToBounds = true
             cell.profilePic.layer.borderWidth = 2
-            cell.profilePic.layer.borderColor = UIColor.lightGray.cgColor
         }
         else {
             appDelegate.getMissingImage(imageURL: venue.ImageURL, completion: { (status) in
@@ -132,7 +126,6 @@ class ProfileTableViewController: UITableViewController {
                             cell.profilePic.image = venueImage
                             cell.profilePic.clipsToBounds = true
                             cell.profilePic.layer.borderWidth = 2
-                            cell.profilePic.layer.borderColor = UIColor.lightGray.cgColor
                         }
                         else {
                             Utilities.printDebugMessage("Error: could not retrieve image")
@@ -141,7 +134,24 @@ class ProfileTableViewController: UITableViewController {
                 }
             })
         }
+        if (plan.specialEventID != nil) {
+            cell.nameLabel.text = appDelegate.specialEvents[plan.specialEventID!]?.EventName
+            cell.profilePic.layer.borderColor = FlockColors.FLOCK_BLUE.cgColor
+            cell.nameLabel.textColor = FlockColors.FLOCK_BLUE
+            
+        }
+        else {
+            cell.nameLabel.text = venue.VenueName
+            cell.profilePic.layer.borderColor = UIColor.lightGray.cgColor
+            cell.nameLabel.textColor = UIColor.black
+        }
+
+        
         cell.selectionStyle = .none
+        cell.preservesSuperviewLayoutMargins = false
+        cell.separatorInset = UIEdgeInsets.zero
+        cell.layoutMargins = UIEdgeInsets.zero
+        
         return cell
         
     }

@@ -8,6 +8,7 @@
 
 import UIKit
 import MVHorizontalPicker
+import SAConfettiView
 
 class PopupSubViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate {
     
@@ -230,14 +231,29 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func setAttendButtonTitle() {
-        let venueString = self.delegate!.venueToPass!.VenueNickName.uppercased()
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let venue = self.delegate!.venueToPass!
+        let venueString = venue.VenueNickName.uppercased()
         let dateString = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]
         let date = DateUtilities.getDateFromString(date: dateString)
         let dateStringInFormat = DateUtilities.convertDateToStringByFormat(date: date, dateFormat: "MMMM d")
         
+        for (_,event) in venue.Events {
+            if (event.EventDate == date) {
+                if (event.SpecialEvent) {
+                    Utilities.printDebugMessage("This event is special!")
+                    handleSpecialEvent()
+                }
+                else {
+                    
+                    Utilities.printDebugMessage("This venue is open!")
+                }
+            }
+        }
+        
         var disable = false
         if let plannedUsersForDate = self.allFriendsForDate[dateString]?[INDEX_OF_PLANNED_ATTENDEES] {
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            
             for user in plannedUsersForDate {
                 Utilities.printDebugMessage("checking")
                 if(user.FBID == appDelegate.user!.FBID) {
@@ -253,6 +269,24 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         
         
         self.delegate?.changeButtonTitle(title: "GO TO \(venueString) ON \(dateStringInFormat.uppercased())", shouldDisable: disable)
+    }
+    
+    func handleSpecialEvent() {
+        let confettiView = SAConfettiView(frame: self.view.bounds)
+        confettiView.type = SAConfettiView.ConfettiType.confetti
+        confettiView.intensity = 0.5
+        self.venueImageView.addSubview(confettiView)
+        
+        confettiView.startConfetti()
+        let delayInSeconds = 1.0
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
+            DispatchQueue.main.async {
+                confettiView.stopConfetti()
+                confettiView.removeFromSuperview()
+                
+            }
+        }
+        
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {

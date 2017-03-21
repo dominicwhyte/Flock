@@ -9,8 +9,10 @@ import OneSignal
 struct FlockColors {
     static let FLOCK_BLUE = UIColor(red: 76/255, green: 181/255, blue: 245/255, alpha: 1.0)
     static let FLOCK_GRAY = UIColor(red: 183/255, green: 184/255, blue: 182/255, alpha: 1.0)
+    static let FLOCK_LIGHT_GRAY = UIColor(red: 233/255, green: 233/255, blue: 233/255, alpha: 1.0)
     static let FLOCK_LIGHT_BLUE = UIColor(red: 129/255, green: 202/255, blue: 247/255, alpha: 1.0)
     static let FLOCK_GOLD = UIColor(red: 255/255, green: 215/255, blue: 0/255, alpha: 1.0)
+    static let FLOCK_LIGHT_GOLD = UIColor(red: 255/255, green: 243/255, blue: 155/255, alpha: 1.0)
 }
 
 

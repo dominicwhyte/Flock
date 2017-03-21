@@ -24,7 +24,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="250" height="250"/>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bDu-9O-1GD">
-                    <rect key="frame" x="16" y="214" width="218" height="28"/>
+                    <rect key="frame" x="16" y="111.5" width="218" height="27.5"/>
                     <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
@@ -37,8 +37,8 @@
                 <constraint firstAttribute="trailing" secondItem="bDu-9O-1GD" secondAttribute="trailing" constant="16" id="TBV-Rz-YkA"/>
                 <constraint firstItem="CmP-0h-zeh" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="cfF-Ns-dHd"/>
                 <constraint firstItem="bDu-9O-1GD" firstAttribute="centerX" secondItem="CmP-0h-zeh" secondAttribute="centerX" id="e5O-L3-rg0"/>
-                <constraint firstAttribute="bottom" secondItem="bDu-9O-1GD" secondAttribute="bottom" constant="8" id="efh-HC-QY9"/>
                 <constraint firstItem="CmP-0h-zeh" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="i9y-nA-UUa"/>
+                <constraint firstItem="bDu-9O-1GD" firstAttribute="centerY" secondItem="CmP-0h-zeh" secondAttribute="centerY" id="tSx-sS-Pu3"/>
                 <constraint firstAttribute="trailing" secondItem="CmP-0h-zeh" secondAttribute="trailing" id="wQI-cT-AMd"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

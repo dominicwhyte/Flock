@@ -25,9 +25,19 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        events = Array(appDelegate.specialEvents.values)
+        
+        setEventsInTimeFrame()
     
+    }
+    
+    func setEventsInTimeFrame() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        self.events = []
+        for (_,event) in appDelegate.specialEvents {
+            if (DateUtilities.dateIsWithinValidTimeframe(date: event.EventDate)) {
+                self.events.append(event)
+            }
+        }
     }
     
     func addTestEvents() {
@@ -73,7 +83,7 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Utilities.applyVerticalGradient(aView: topCover, colorTop: FlockColors.FLOCK_BLUE, colorBottom: FlockColors.FLOCK_LIGHT_BLUE)
+        Utilities.applyVerticalGradient(aView: topCover, colorTop: FlockColors.FLOCK_GRAY, colorBottom: FlockColors.FLOCK_LIGHT_GRAY)
         //Utilities.applyVerticalGradient(aView: bottomCover, colorTop: FlockColors.FLOCK_LIGHT_BLUE, colorBottom: FlockColors.FLOCK_GOLD)
         bottomCover.backgroundColor = UIColor.white
         carousel.reloadData()
@@ -130,7 +140,7 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         
         let peoplePlurality = Utilities.setPluralityForPeople(count: attendeesFBIDs.count)
         let startText = "\(attendeesFBIDs.count) \(peoplePlurality) going "
-        let endText = "(\(friendsCount) friends)"
+        let endText = "(\(friendsCount) \(Utilities.setPlurality(string: "friend", count: friendsCount)))"
         let totalText = startText + endText
         let range = (totalText as NSString).range(of: endText)
         let attributedString = NSMutableAttributedString(string:totalText)
@@ -143,6 +153,10 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         else {
             submitButton.setTitle("Invite your Flock", for: .normal)
         }
+        
+        submitButton.titleLabel?.minimumScaleFactor = 0.5
+        submitButton.titleLabel?.numberOfLines = 1
+        submitButton.titleLabel?.adjustsFontSizeToFitWidth = true
     }
     
     func carousel(_ carousel: iCarousel, viewForItemAt index: Int, reusing view: UIView?) -> UIView {
@@ -213,7 +227,7 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
     
     func updateUI() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        self.events = Array(appDelegate.specialEvents.values)
+        setEventsInTimeFrame()
         
         let event = self.events[self.carousel.currentItemIndex]
         self.userFBIDSofPlanningAttendees = Array(event.EventAttendeeFBIDs.values)
@@ -241,8 +255,7 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
                             Utilities.printDebugMessage("Error refreshing events page")
                         }
                         Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
-                    })
-                   
+                    })                   
                 })
             }
             else {

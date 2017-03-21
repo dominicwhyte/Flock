@@ -109,6 +109,7 @@ class DateUtilities {
     }
     
     static func isValidTimeFrame(dayDiff: Int) -> Bool {
+        //Allow people to see and plan for yesterday
         return (dayDiff >= 0 && dayDiff < Constants.NUMBER_OF_DAYS_TO_DISPLAY)
     }
 }

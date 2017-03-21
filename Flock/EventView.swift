@@ -12,7 +12,7 @@ class EventView: UIView {
     
     
     var frontView : FrontEventView?
-    var backView : UIView?
+    var backView : BackEventView?
     var frontViewShowing = true
     
     func setupEventView(event : Event) {
@@ -23,15 +23,15 @@ class EventView: UIView {
 //        self.addSubview(backView!)
 //        backView!.backgroundColor = UIColor.red
         
-        backView = UINib(nibName: "BackEventView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as? BackEventView
-        
+        backView = UINib(nibName: "BackEventView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! BackEventView
+        backView!.setupBackView(event: event)
         //backView!.transform = CGAffineTransform(scaleX: scaleFactor, y: scaleFactor)
        
         self.addSubview(backView!)
 
         
-        frontView = UINib(nibName: "FrontEventView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as? FrontEventView
-        frontView?.setupFrontView(event: event)
+        frontView = UINib(nibName: "FrontEventView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! FrontEventView
+        frontView!.setupFrontView(event: event)
         //frontView!.transform = CGAffineTransform(scaleX: scaleFactor, y: scaleFactor)
         
         self.addSubview(frontView!)

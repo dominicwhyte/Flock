@@ -17,6 +17,8 @@ class ChatsTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
         self.tableView.separatorColor = FlockColors.FLOCK_BLUE
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         self.user = appDelegate.user!
@@ -119,7 +121,7 @@ class ChatsTableViewController: UITableViewController {
         // #warning Incomplete implementation, return the number of rows
         return conversations.count
     }
-    
+
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! ChatTableViewCell
@@ -127,6 +129,11 @@ class ChatsTableViewController: UITableViewController {
         //Setup Cell
         let conversation : Conversation = self.conversations[indexPath.row]
         var labelsHaveBeenUpdated = false
+        
+        //Lines go all the way
+        cell.preservesSuperviewLayoutMargins = false
+        cell.separatorInset = UIEdgeInsets.zero
+        cell.layoutMargins = UIEdgeInsets.zero
         
         cell.chatTitle.text = conversation.participant.Name
         cell.chatSubtitle.text = ""
