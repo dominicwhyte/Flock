@@ -50,6 +50,21 @@ class ChatViewController: JSQMessagesViewController {
         observeTyping()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Add title
+        if let friendUser = self.friendUser {
+            self.navigationItem.title = friendUser.Name
+            
+            let attrs = [
+                NSForegroundColorAttributeName: UIColor.white,
+                NSFontAttributeName: UIFont(name: "OpenSans-Semibold", size: 18)!
+            ]
+            self.navigationController?.navigationBar.titleTextAttributes = attrs
+        }
+    }
+
+    
     private func observeTyping() {
         let typingIndicatorRef = channelRef!.child("typingIndicator")
         userIsTypingRef = typingIndicatorRef.child(senderId)

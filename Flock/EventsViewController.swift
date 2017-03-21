@@ -211,7 +211,7 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
             else {
                 Utilities.printDebugMessage("Invite flock!")
             }
-            
+            carousel.reloadData()
         }
     }
     

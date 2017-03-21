@@ -104,8 +104,10 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if (appDelegate.users.count > 0) {
             title = "\(Constants.SECTION_TITLES[section]) (\(appDelegate.users.count))"
+            self.navigationItem.title = nil
         } else {
             title = Constants.SECTION_TITLES[section]
+            self.navigationItem.title = nil
         }
         Utilities.printDebugMessage("\(appDelegate.users.count)")
         return title
@@ -133,8 +135,10 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
         if (appDelegate.users.count > 0) {
             label.text = "\(Constants.SECTION_TITLES[section]) (\(appDelegate.users.count))"
             title = "\(Constants.SECTION_TITLES[section]) (\(appDelegate.users.count))"
+            self.navigationItem.title = nil
         } else {
             label.text = Constants.SECTION_TITLES[section]
+            self.navigationItem.title = nil
         }
         //label.text = Constants.SECTION_TITLES[section]
         returnedView.addSubview(label)
