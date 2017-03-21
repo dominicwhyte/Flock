@@ -111,6 +111,8 @@
             }
         }
         
+        
+        
         //Function to update data, use for refreshing
         func updateAllData(completion: @escaping (_ status: Bool) -> ()) {
             self.profileNeedsToUpdate = true
@@ -271,6 +273,7 @@
                 
             }
         }
+        
         
         //call this function if an imageURL is not in the venueImages cache
         func getMissingImage(imageURL : String, completion: @escaping (_ status: Bool) -> ()) {
@@ -1141,7 +1144,7 @@
                 //                    }
                 //                }
                 //                print(fullMessage)
-                Utilities.printDebugMessage("yay")
+                //Utilities.printDebugMessage("yay")
             }, settings: [kOSSettingsKeyAutoPrompt : true, kOSSettingsKeyInFocusDisplayOption : OSNotificationDisplayType.notification.rawValue])
             
             
@@ -1152,7 +1155,7 @@
             self.registerForPushNotifications(application: application)
             //remove notification tags
             UIApplication.shared.applicationIconBadgeNumber = 0
-            
+            //self.setupSimpleTBC()
             // Check for wakeup from inactive app
             if(launchOptions != nil) {
                 if let _ = launchOptions![UIApplicationLaunchOptionsKey.location] {

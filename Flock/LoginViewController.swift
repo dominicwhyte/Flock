@@ -246,6 +246,17 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, BWWalkthr
         if let tabVC = segue.destination as? SimpleTabBarController {
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             appDelegate.simpleTBC = tabVC
+            appDelegate.simpleTBC?.viewTransition = CrossFadeViewTransition()
+            let style:SimpleTabBarStyle = ElegantTabBarStyle(tabBar: appDelegate.simpleTBC!.tabBar)
+            style.setIconColor(color: UIColor.lightGray, forState: .normal)
+            style.setIconColor(color: FlockColors.FLOCK_BLUE, forState: .selected)
+            
+            style.setTitleTextAttributes(attributes: [NSFontAttributeName as NSObject : UIFont.systemFont(ofSize: 14),  NSForegroundColorAttributeName as NSObject: UIColor.lightGray], forState: .normal)
+            style.setTitleTextAttributes(attributes: [NSFontAttributeName as NSObject : UIFont.systemFont(ofSize: 14),  NSForegroundColorAttributeName as NSObject: FlockColors.FLOCK_BLUE], forState: .selected)
+
+            appDelegate.simpleTBC?.tabBarStyle = style
+            
+            
             
             // Setup Badges
             var totalUnread = 0

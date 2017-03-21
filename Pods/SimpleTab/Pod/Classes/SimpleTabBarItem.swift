@@ -119,6 +119,7 @@ open class SimpleTabBarItem: UITabBarItem  {
         //Set tab title label
         titleLabel.frame = CGRect(x: 0 , y: frame.size.height - titleHeight! - titleBottoOffset! , width: frame.size.width , height:titleHeight!  )
         titleLabel.textAlignment = NSTextAlignment.center
+        //titleLabel.font = UIFont(descriptor: "OpenSans-Light", size: 10)
 
         //Set tab icon
         iconView.frame = CGRect(x: 0 , y: iconTopOffset! , width: iconSize!.width  , height:iconSize!.height  )

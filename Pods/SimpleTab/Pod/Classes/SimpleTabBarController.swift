@@ -72,7 +72,7 @@ open class SimpleTabBarController: UITabBarController {
         //Initial setup
         tabBar.selectedIndex = self.selectedIndex
         tabBar.transitionObject = self.viewTransition ?? CrossFadeViewTransition()
-        tabBar.tabBarStyle = self.tabBarStyle ?? ElegantTabBarStyle(tabBar: tabBar)
+        tabBar.tabBarStyle = self.tabBarStyle ?? SimpleTabBarStyle(tabBar: tabBar)
         tabBar.tabBarCtrl = self
         self.delegate = tabBar
 

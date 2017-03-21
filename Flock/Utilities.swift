@@ -301,7 +301,7 @@ class Utilities {
             }
         }
         if (userNotificationIDs.count != 0) {
-            OneSignal.postNotification(["include_player_ids": userNotificationIDs, "contents": ["en": title]])
+            OneSignal.postNotification(["include_player_ids": userNotificationIDs, "contents": ["en": title], "buttons": [["id": "goWith", "text": "Go With"], ["id": "pass", "text": "Pass"]]])
         }
     }
     
