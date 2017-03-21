@@ -29,7 +29,7 @@ class ChatsTableViewController: UITableViewController {
 
                 conversation1.participant.Name < conversation2.participant.Name
             })
-            Utilities.printDebugMessage("getting conversation for \(friend.Name)")
+
         }
         
         // Remove appDelegate observer as soon as we start observing:
@@ -63,7 +63,7 @@ class ChatsTableViewController: UITableViewController {
                 newConversations.sort(by: { (conversation1, conversation2) -> Bool in
                     conversation1.participant.Name < conversation2.participant.Name
                 })
-                Utilities.printDebugMessage("RE getting conversation for \(friend.Name)")
+
             }
             self.conversations = newConversations
         }
@@ -71,7 +71,6 @@ class ChatsTableViewController: UITableViewController {
         self.tableView.setNeedsDisplay()
         self.tableView.setNeedsLayout()
         
-        Utilities.printDebugMessage("HERE")
     }
     
     override func didReceiveMemoryWarning() {
@@ -276,7 +275,6 @@ class ChatsTableViewController: UITableViewController {
         //        cell.liveLabel.text = "\(venue.CurrentAttendees.count) live"
         //        cell.plannedLabel.text = "\(venue.PlannedAttendees.count) planned"
         //cell.subtitleLabel.text = "\(venue.CurrentAttendees.count) live   \(venue.PlannedAttendees.count) planned"
-        Utilities.printDebugMessage("Setting up cell")
 
 
         return cell

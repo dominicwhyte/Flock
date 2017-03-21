@@ -16,7 +16,7 @@ class DateUtilities {
         static let dayOfWeekDateFormat = "EEEE"
         static let fullDateFormat = "yyyy-MM-dd"
         static let uiDisplayFormat = "EEEE, MMMM d"
-        static let NUMBER_OF_DAYS_TO_DISPLAY = 7
+        static let NUMBER_OF_DAYS_TO_DISPLAY = 10
         static let START_NIGHT_OUT_TIME : Double = 22.0
         static let END_NIGHT_OUT_TIME : Double = 6.0
     }
@@ -87,6 +87,10 @@ class DateUtilities {
         dateFormatter.dateFormat = dateFormat
         let dayOfWeekString = dateFormatter.string(from: date)
         return dayOfWeekString
+    }
+    //Should use this from now on
+    static func dateIsWithinValidTimeframe(date : Date) -> Bool {
+        return DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: date))
     }
     
     static func daysUntilPlan(planDate: Date) -> Int {

@@ -77,6 +77,12 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         //Utilities.applyVerticalGradient(aView: bottomCover, colorTop: FlockColors.FLOCK_LIGHT_BLUE, colorBottom: FlockColors.FLOCK_GOLD)
         bottomCover.backgroundColor = UIColor.white
         carousel.reloadData()
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        if(appDelegate.eventsNeedsToUpdate) {
+            Utilities.printDebugMessage("Updating events page")
+            appDelegate.eventsNeedsToUpdate = false
+            self.updateUI()
+        }
     }
     
     
@@ -174,8 +180,6 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         
         
         return eventView
-        
-        
     }
     
 
@@ -192,6 +196,33 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         return value
     }
     
+    func updateDataAndCarouselAndCollectionView(_ completion: @escaping (Bool) -> Void) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.updateAllDataWithoutUpdatingLocation { (success) in
+            DispatchQueue.main.async {
+                if (success) {
+                    self.updateUI()
+                }
+                else {
+                    Utilities.printDebugMessage("Error updating and reloading data in table view")
+                }
+                completion(success)
+            }
+        }
+    }
+    
+    func updateUI() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        self.events = Array(appDelegate.specialEvents.values)
+        
+        let event = self.events[self.carousel.currentItemIndex]
+        self.userFBIDSofPlanningAttendees = Array(event.EventAttendeeFBIDs.values)
+        
+        self.setupLabelAndButton(event: event)
+        
+        self.collectionView.reloadData()
+    }
+    
     @IBAction func submitButtonPressed(_ sender: Any) {
         if (events.count != 0) {
             let event = events[carousel.currentItemIndex]
@@ -205,7 +236,13 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
                     else {
                         Utilities.printDebugMessage("Error making making to go to event")
                     }
-                    Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+                    self.updateDataAndCarouselAndCollectionView({ (secondarySuccess) in
+                        if (!secondarySuccess) {
+                            Utilities.printDebugMessage("Error refreshing events page")
+                        }
+                        Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+                    })
+                   
                 })
             }
             else {
@@ -275,75 +312,3 @@ extension EventsViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
 }
 
-
-//    fileprivate var currentPage: Int = 0 {
-//        didSet {
-//            Utilities.printDebugMessage("changed")
-//        }
-//    }
-//
-//    fileprivate var pageSize: CGSize {
-//        let layout = self.collectionView.collectionViewLayout as! UPCarouselFlowLayout
-//        var pageSize = layout.itemSize
-//        if layout.scrollDirection == .horizontal {
-//            pageSize.width += layout.minimumLineSpacing
-//        } else {
-//            pageSize.height += layout.minimumLineSpacing
-//        }
-//        return pageSize
-//    }
-//
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//
-//        setupLayout()
-//
-//
-//        collectionView.showsHorizontalScrollIndicator = false
-//        collectionView.showsVerticalScrollIndicator = false
-//
-//        collectionView.delegate = self
-//        collectionView.dataSource = self
-//    }
-//
-//    fileprivate func setupLayout() {
-//        let layout = self.collectionView.collectionViewLayout as! UPCarouselFlowLayout
-//        layout.spacingMode = UPCarouselFlowLayoutSpacingMode.overlap(visibleOffset: 30)
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//
-//        return CGSize(width: 100, height: 20)
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return 5
-//    }
-//
-//    func numberOfSections(in collectionView: UICollectionView) -> Int {
-//        return 1
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EVENT_CELL", for: indexPath) as! EventCollectionViewCell
-//        return cell
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        if (currentPage == indexPath.row) {
-//            if let cell = collectionView.cellForItem(at: indexPath) as? EventCollectionViewCell {
-//                Utilities.printDebugMessage("Cell selected")
-//                cell.flip()
-//            }
-//
-//        }
-//    }
-//
-//    // MARK: - UIScrollViewDelegate
-//
-//    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-//        let layout = self.collectionView.collectionViewLayout as! UPCarouselFlowLayout
-//        let pageSide = (layout.scrollDirection == .horizontal) ? self.pageSize.width : self.pageSize.height
-//        let offset = (layout.scrollDirection == .horizontal) ? scrollView.contentOffset.x : scrollView.contentOffset.y
-//        currentPage = Int(floor((offset - pageSide / 2) / pageSide) + 1)
-//    }

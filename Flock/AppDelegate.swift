@@ -39,6 +39,7 @@
         var friendRequestUsers = [String : User]()
         var facebookFriendsFBIDs : [String : String] = [:]
         var profileNeedsToUpdate = true
+        var eventsNeedsToUpdate = true
         var chatNeedsToUpdate = true
         var venueStatistics : Statistics?
         let gcmMessageIDKey = "gcm.message_id"
@@ -117,6 +118,7 @@
         //Function to update data, use for refreshing
         func updateAllData(completion: @escaping (_ status: Bool) -> ()) {
             self.profileNeedsToUpdate = true
+            self.eventsNeedsToUpdate = true
             LoginClient.retrieveData { (data, startTime, endTime) in
                 self.startGoingOutTime = startTime
                 self.endGoingOutTime = endTime
@@ -149,6 +151,7 @@
         //Function to update data, use for refreshing
         func updateAllDataWithoutUpdatingLocation(completion: @escaping (_ status: Bool) -> ()) {
             self.profileNeedsToUpdate = true
+            self.eventsNeedsToUpdate = true
             LoginClient.retrieveData { (data, startTime, endTime) in
                 self.startGoingOutTime = startTime
                 self.endGoingOutTime = endTime

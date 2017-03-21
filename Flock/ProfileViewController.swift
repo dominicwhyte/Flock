@@ -104,7 +104,6 @@ class ProfileViewController: UIViewController, ProfileDelegate {
         
         if let tableVC = self.tableViewController {
             tableVC.plans = Array(user!.Plans.values).filter({ (plan) -> Bool in
-                Utilities.printDebugMessage("VenueID: \(plan.venueID), Date: \(plan.date)")
                 return DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))
                 
             })

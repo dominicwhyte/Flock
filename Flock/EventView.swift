@@ -42,7 +42,6 @@ class EventView: UIView {
     
     override func layoutSubviews() {
         let scaleFactor = self.frame.width / (backView?.frame.width)!
-        Utilities.printDebugMessage("scale factor \(scaleFactor)")
         frontView!.transform = CGAffineTransform(scaleX: scaleFactor, y: scaleFactor)
         backView!.transform = CGAffineTransform(scaleX: scaleFactor, y: scaleFactor)
         super.layoutSubviews()

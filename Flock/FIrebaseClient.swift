@@ -522,7 +522,6 @@ class FirebaseClient: NSObject
                 completion(false)
             }
         })
-        
     }
     
     static func addPlanToUserForDate(date: String, venueID : String, userID : String, add: Bool, specialEventID : String?, completion: @escaping (Bool) -> Void) {

@@ -167,11 +167,9 @@ class ProfileTableViewController: UITableViewController {
     
     //UpdateTableViewDelegate function
     func updateDataAndTableView(_ completion: @escaping (Bool) -> Void) {
-        let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.updateAllDataWithoutUpdatingLocation { (success) in
             DispatchQueue.main.async {
-                Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
                 if (success) {
                     if let delegate = self.delegate {
                         delegate.setupUser()
@@ -254,7 +252,7 @@ class ProfileTableViewController: UITableViewController {
             // delete item at indexPath
             let planDate = DateUtilities.getStringFromDate(date: self.plans[indexPath.row].date)
             let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
-            FirebaseClient.addUserToVenuePlansForDate(date: DateUtilities.getStringFromDate(date: self.plans[indexPath.row].date), venueID: venue.VenueID, userID: appDelegate.user!.FBID, add: false, specialEventID: nil, completion: { (success) in
+            FirebaseClient.addUserToVenuePlansForDate(date: DateUtilities.getStringFromDate(date: self.plans[indexPath.row].date), venueID: venue.VenueID, userID: appDelegate.user!.FBID, add: false, specialEventID: self.plans[indexPath.row].specialEventID, completion: { (success) in
                 if (success) {
                     Utilities.printDebugMessage("Successfully removed plan to attend venue")
                     self.updateDataAndTableView({ (success) in
