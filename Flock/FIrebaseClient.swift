@@ -276,6 +276,48 @@ class FirebaseClient: NSObject
         return newChannelRef.key
     }
     
+    class func uploadEvent(_ chosenVenueID : String, chosenEventName : String, chosenDateString : String, optionalImageURL : String?, isSpecialEvent : Bool, completion: @escaping (Bool) -> Void) {
+        
+        dataRef.child("Venues").observeSingleEvent(of: .value, with: { (snapshot) in
+            // Confirm unfriend request conditions
+            
+            if (snapshot.hasChild(chosenVenueID)) {
+                let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]
+                let venueDict = dictionary[chosenVenueID] as! [String: AnyObject]
+                
+                let uniqueEventID = UUID().uuidString
+                
+                var newDict = [EventFirebaseConstants.eventDate : chosenDateString as AnyObject, EventFirebaseConstants.eventName : chosenEventName as AnyObject, EventFirebaseConstants.specialEvent : isSpecialEvent as AnyObject, EventFirebaseConstants.venueID : chosenVenueID as AnyObject, EventFirebaseConstants.eventID : uniqueEventID as AnyObject] as [String : AnyObject]
+                
+                if let imageURL = optionalImageURL {
+                    newDict[EventFirebaseConstants.eventImageURL] = imageURL as AnyObject
+                }
+                
+                if (venueDict[EventFirebaseConstants.eventsSubgroup] == nil) {
+                    let updates = [EventFirebaseConstants.eventsSubgroup : [uniqueEventID : newDict]]
+                    dataRef.child("Venues").child(chosenVenueID).updateChildValues(updates)
+                }
+                else {
+                    var events = venueDict[EventFirebaseConstants.eventsSubgroup] as! [String : [String : AnyObject]]
+                    if (events[uniqueEventID] == nil) {
+                        events[uniqueEventID] = newDict
+                    }
+                    else {
+                        Utilities.printDebugMessage("Fatal error: unique IDs not unique")
+                        completion(false)
+                        return
+                    }
+                    let updates = [EventFirebaseConstants.eventsSubgroup : events]
+                    dataRef.child("Venues").child(chosenVenueID).updateChildValues(updates)
+                }
+                completion(true)
+            }
+            else {
+                completion(false)
+            }
+        })
+    }
+    
     
     class func unFriendUser(_ fromID : String, toID : String, completion: @escaping (Bool) -> Void) {
         
@@ -366,10 +408,10 @@ class FirebaseClient: NSObject
     
     
     //Add plan to user plans and add user to planned attendees in venue
-    class func addUserToVenuePlansForDate(date: String, venueID : String, userID : String, add: Bool, completion: @escaping (Bool) -> Void) {
-        addUserToVenuePlannedAttendees(venueID: venueID, userID: userID, add: add) { (venueSuccess) in
+    class func addUserToVenuePlansForDate(date: String, venueID : String, userID : String, add: Bool, specialEventID : String?, completion: @escaping (Bool) -> Void) {
+        addUserToVenuePlannedAttendeesAndSpecialEventIfNecessary(venueID: venueID, userID: userID, add: add, specialEventID : specialEventID) { (venueSuccess) in
             if (venueSuccess) {
-                addPlanToUserForDate(date: date, venueID: venueID, userID: userID, add : add, completion: { (userSuccess) in
+                addPlanToUserForDate(date: date, venueID: venueID, userID: userID, add : add, specialEventID : specialEventID,completion: { (userSuccess) in
                     completion(userSuccess)
                 })
             }
@@ -379,11 +421,52 @@ class FirebaseClient: NSObject
         }
     }
     
-    static func addUserToVenuePlannedAttendees(venueID : String, userID : String,  add: Bool, completion: @escaping (Bool) -> Void) {
+    static func addUserToVenuePlannedAttendeesAndSpecialEventIfNecessary(venueID : String, userID : String,  add: Bool, specialEventID : String?, completion: @escaping (Bool) -> Void) {
         
         dataRef.observeSingleEvent(of: .value, with: { (snapshot) in
             //Confirm send friend request conditions
             if (snapshot.childSnapshot(forPath: "Venues").hasChild(venueID)) {
+                //add to special event a new attendee, or remove if add is False
+                if let specialEventID = specialEventID {
+                    if (snapshot.childSnapshot(forPath: "Venues").hasChild(EventFirebaseConstants.eventsSubgroup) && snapshot.childSnapshot(forPath: "Venues").childSnapshot(forPath: EventFirebaseConstants.eventsSubgroup).hasChild(specialEventID)) {
+                        
+                        let dictionary :[String:AnyObject] = snapshot.childSnapshot(forPath: "Venues").value as! [String : AnyObject]
+                        let venueDict = dictionary[venueID] as! [String: AnyObject]
+                        let eventsDict = venueDict[EventFirebaseConstants.eventsSubgroup] as! [String: AnyObject]
+                        let eventToPlanWithDict = eventsDict[specialEventID] as! [String : AnyObject]
+                        
+                        if (add) {
+                            if (snapshot.childSnapshot(forPath: "Venues").childSnapshot(forPath: venueID).childSnapshot(forPath: EventFirebaseConstants.eventsSubgroup).childSnapshot(forPath: specialEventID).hasChild(EventFirebaseConstants.eventAttendeeFBIDs)) {
+                                var planningAttendees = eventToPlanWithDict[EventFirebaseConstants.eventAttendeeFBIDs] as! [String:String]
+                                planningAttendees[userID] = userID
+                                let updates = [EventFirebaseConstants.eventAttendeeFBIDs: planningAttendees]
+                                dataRef.child("Venues").child(venueID).child(EventFirebaseConstants.eventsSubgroup).child(specialEventID).updateChildValues(updates)
+                                
+                            }
+                            else {
+                                let updates = [EventFirebaseConstants.eventAttendeeFBIDs: [userID:userID]]
+                                dataRef.child("Venues").child(venueID).child(EventFirebaseConstants.eventsSubgroup).child(specialEventID).updateChildValues(updates)
+                            }
+                        }
+                        else {
+                            if (snapshot.childSnapshot(forPath: "Venues").childSnapshot(forPath: venueID).childSnapshot(forPath: EventFirebaseConstants.eventsSubgroup).childSnapshot(forPath: specialEventID).hasChild(EventFirebaseConstants.eventAttendeeFBIDs)) {
+                                var planningAttendees = eventToPlanWithDict[EventFirebaseConstants.eventAttendeeFBIDs] as! [String:String]
+                                planningAttendees[userID] = nil
+                                let updates = [EventFirebaseConstants.eventAttendeeFBIDs: planningAttendees]
+                                dataRef.child("Venues").child(venueID).child(EventFirebaseConstants.eventsSubgroup).child(specialEventID).updateChildValues(updates)
+                            }
+                            else {
+                                Utilities.printDebugMessage("Error removing user from plan to go to special event")
+                            }
+                        }
+                        
+                    }
+                    else {
+                        Utilities.printDebugMessage("Error: Trying to add or remove event plan from nonexisting event. Does not complete false in case a past event was deleted")
+                    }
+                }
+                
+                
                 if (snapshot.childSnapshot(forPath: "Venues").childSnapshot(forPath: venueID).hasChild("PlannedAttendees") ) {
                     let dictionary :[String:AnyObject] = snapshot.childSnapshot(forPath: "Venues").value as! [String : AnyObject]
                     let venueDict = dictionary[venueID] as! [String: AnyObject]
@@ -439,7 +522,7 @@ class FirebaseClient: NSObject
         
     }
     
-    static func addPlanToUserForDate(date: String, venueID : String, userID : String, add: Bool, completion: @escaping (Bool) -> Void) {
+    static func addPlanToUserForDate(date: String, venueID : String, userID : String, add: Bool, specialEventID : String?, completion: @escaping (Bool) -> Void) {
         dataRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot) in
             //Confirm send friend request conditions
             if (snapshot.hasChild(userID)) {
@@ -450,7 +533,12 @@ class FirebaseClient: NSObject
                     // Adding plan to user
                     if(add) {
                         let uniqueVisitID = UUID().uuidString
-                        let planDetails = ["Date" : date, "VenueID" : venueID]
+                        var planDetails = ["Date" : date, "VenueID" : venueID]
+                        
+                        if let specialEventID = specialEventID {
+                            planDetails["SpecialEventID"] = specialEventID
+                        }
+                        
                         if (plansDict[uniqueVisitID] == nil) {
                             plansDict[uniqueVisitID] = planDetails as AnyObject?
                         }
@@ -478,7 +566,12 @@ class FirebaseClient: NSObject
                 {
                     if(add) {
                         let uniqueVisitID = UUID().uuidString
-                        let planDetails = ["Date" : date, "VenueID" : venueID]
+                        var planDetails = ["Date" : date, "VenueID" : venueID]
+                        
+                        if let specialEventID = specialEventID {
+                            planDetails["SpecialEventID"] = specialEventID
+                        }
+                        
                         let plansDict = [uniqueVisitID : planDetails]
                         let updates = ["Plans": plansDict]
                         dataRef.child("Users").child(userID).updateChildValues(updates)
@@ -523,7 +616,7 @@ class FirebaseClient: NSObject
                             completion(true)
                             return
                         }
-                        //remove the user from currentAttendees
+                            //remove the user from currentAttendees
                         else {
                             // Get things from Firebase
                             let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]
@@ -697,7 +790,7 @@ class FirebaseClient: NSObject
                     
                     // FB get current user
                     let request = FBSDKGraphRequest(graphPath: "/\(FBID)/friends", parameters: parameters, tokenString: FBSDKAccessToken.current().tokenString, version: nil, httpMethod: "GET")
-
+                    
                     
                     // POST current user to Firebase
                     request!.start(completionHandler: { (connection, result, requestError) -> Void in
@@ -731,6 +824,7 @@ class FirebaseClient: NSObject
             completion([])
         }
     }
+    
     
     
 }

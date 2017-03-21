@@ -24,6 +24,11 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        events = Array(appDelegate.specialEvents.values)
+    }
+    
+    func addTestEvents() {
         var newDict = [EventFirebaseConstants.eventName : "Capmandu" as AnyObject, EventFirebaseConstants.eventDate : "2017-03-17" as AnyObject, EventFirebaseConstants.specialEvent : true as AnyObject, EventFirebaseConstants.venueID : "-KeKwZoP21jkaCs4LFN0" as AnyObject, EventFirebaseConstants.eventAttendeeFBIDs : ["10208026242633924" : "10208026242633924", "10210419661620438" : "10210419661620438"] as AnyObject] as [String : AnyObject]
         var newEvent = Event(dict: newDict)
         events.append(newEvent)
@@ -39,12 +44,7 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         newDict = [EventFirebaseConstants.eventName : "Capmandu lit party lot's of fun" as AnyObject, EventFirebaseConstants.eventDate : "2017-03-17" as AnyObject, EventFirebaseConstants.specialEvent : true as AnyObject, EventFirebaseConstants.venueID : "-KeKwZoP21jkaCs4LFN0" as AnyObject, EventFirebaseConstants.eventAttendeeFBIDs : ["10208026242633924" : "10208026242633924", "10206799811314250" : "10206799811314250", "10210419661620438" : "10210419661620438"] as AnyObject, EventFirebaseConstants.eventImageURL : "https://firebasestorage.googleapis.com/v0/b/flock-43b66.appspot.com/o/message_images%2F1FD8CE52-BFC2-48A6-885E-F842C5E7B01C?alt=media&token=fc3d3624-6b3f-4577-9a29-594c47e9deb8" as AnyObject] as [String : AnyObject]
         newEvent = Event(dict: newDict)
         events.append(newEvent)
-        
-        
-        
-        
     }
-    
 
     
     override func viewDidLoad() {
@@ -68,17 +68,21 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         Utilities.applyVerticalGradient(aView: topCover, colorTop: FlockColors.FLOCK_BLUE, colorBottom: FlockColors.FLOCK_LIGHT_BLUE)
         //Utilities.applyVerticalGradient(aView: bottomCover, colorTop: FlockColors.FLOCK_LIGHT_BLUE, colorBottom: FlockColors.FLOCK_GOLD)
         bottomCover.backgroundColor = UIColor.white
         carousel.reloadData()
     }
     
+    
     func numberOfItems(in carousel: iCarousel) -> Int {
         return events.count
     }
     
+    func test() {
+        carousel.reloadData()
+        Utilities.printDebugMessage("reloading son")
+    }
     
     func carousel(_ carousel: iCarousel, didSelectItemAt index: Int) {
         
@@ -136,7 +140,9 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
             //don't do anything specific to the index within
             //this `if ... else` statement because the view will be
             //recycled and used with other index values later
-            eventView = EventView(frame: CGRect(x: 0, y: 0, width: 250, height: 250))
+            let width = self.view.frame.width
+            
+            eventView = EventView(frame: CGRect(x: 0, y: 0, width: width - 150, height: width - 150))
             eventView.setupEventView(event: events[index])
             
             //            label = UILabel(frame: itemView.bounds)
@@ -166,8 +172,8 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
             return value * 1.1
         }
         //enable wrap
-        if (option == .wrap) {
-            return 1
+        if (option == .wrap && events.count > 2) {
+            return 1 //living the objective C life though
         }
         
         return value

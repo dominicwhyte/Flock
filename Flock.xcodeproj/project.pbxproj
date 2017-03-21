@@ -29,6 +29,7 @@
 		5F3474CD1E804FE400A29615 /* FrontEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3474CC1E804FE400A29615 /* FrontEventView.swift */; };
 		5F3474D11E805E2000A29615 /* BackEventView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F3474D01E805E2000A29615 /* BackEventView.xib */; };
 		5F3474D31E805E3600A29615 /* BackEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3474D21E805E3600A29615 /* BackEventView.swift */; };
+		5F3474D71E80DA5300A29615 /* CreateEventTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3474D61E80DA5300A29615 /* CreateEventTableViewController.swift */; };
 		5F4E94061E7C6D8800143931 /* FlockSuggestionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E94051E7C6D8800143931 /* FlockSuggestionTableViewCell.swift */; };
 		5F4E94081E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E94071E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift */; };
 		5F4E940A1E7D9C9B00143931 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E94091E7D9C9B00143931 /* SettingsTableViewController.swift */; };
@@ -118,6 +119,7 @@
 		5F3474CC1E804FE400A29615 /* FrontEventView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrontEventView.swift; sourceTree = "<group>"; };
 		5F3474D01E805E2000A29615 /* BackEventView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BackEventView.xib; sourceTree = "<group>"; };
 		5F3474D21E805E3600A29615 /* BackEventView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackEventView.swift; sourceTree = "<group>"; };
+		5F3474D61E80DA5300A29615 /* CreateEventTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateEventTableViewController.swift; sourceTree = "<group>"; };
 		5F4E94051E7C6D8800143931 /* FlockSuggestionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlockSuggestionTableViewCell.swift; sourceTree = "<group>"; };
 		5F4E94071E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlockSuggestionCollectionViewCell.swift; sourceTree = SOURCE_ROOT; };
 		5F4E94091E7D9C9B00143931 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
@@ -238,6 +240,19 @@
 			name = Chats;
 			sourceTree = "<group>";
 		};
+		5F3474D81E80FC3E00A29615 /* Events */ = {
+			isa = PBXGroup;
+			children = (
+				5F2EC0221E8049D4002F6D65 /* FrontEventView.xib */,
+				5F3474D01E805E2000A29615 /* BackEventView.xib */,
+				5F3474D21E805E3600A29615 /* BackEventView.swift */,
+				5F3474CC1E804FE400A29615 /* FrontEventView.swift */,
+				5F2EC01E1E7F9597002F6D65 /* EventView.swift */,
+				5F585CB41E7ED3CB009B135F /* EventsViewController.swift */,
+			);
+			name = Events;
+			sourceTree = "<group>";
+		};
 		5F5D378B1E43FFCE008E13E4 = {
 			isa = PBXGroup;
 			children = (
@@ -268,17 +283,12 @@
 				5F2EC0191E7F859C002F6D65 /* Flock-Bridging-Header.h */,
 				5F2EC0171E7F858B002F6D65 /* iCarousel.m */,
 				5FC8C5631E52A8B80076F388 /* PermissionUtilities.swift */,
+				5F2EC0201E7FA620002F6D65 /* ZFRippleButton.swift */,
 				5F61AF591E48373500BD6A0C /* DateUtilities.swift */,
 				583AAE331E7F7A0900D28B60 /* Utilities.swift */,
 				58F1F4A01E595A220065DA38 /* Walkthrough */,
 				5F5D379B1E43FFCE008E13E4 /* Main.storyboard */,
-				5F2EC0201E7FA620002F6D65 /* ZFRippleButton.swift */,
-				5F2EC0221E8049D4002F6D65 /* FrontEventView.xib */,
-				5F3474D01E805E2000A29615 /* BackEventView.xib */,
-				5F3474D21E805E3600A29615 /* BackEventView.swift */,
-				5F3474CC1E804FE400A29615 /* FrontEventView.swift */,
-				5F2EC01E1E7F9597002F6D65 /* EventView.swift */,
-				5F585CB41E7ED3CB009B135F /* EventsViewController.swift */,
+				5F3474D81E80FC3E00A29615 /* Events */,
 				58F1F4A51E5A328D0065DA38 /* Chats */,
 				5F61AF781E4C0BEB00BD6A0C /* Profile */,
 				5F5D38091E46C87F008E13E4 /* Places */,
@@ -370,6 +380,7 @@
 			isa = PBXGroup;
 			children = (
 				5F5D37D01E44BE44008E13E4 /* TestingViewController.swift */,
+				5F3474D61E80DA5300A29615 /* CreateEventTableViewController.swift */,
 			);
 			name = Testing;
 			sourceTree = "<group>";
@@ -647,6 +658,7 @@
 				5F5D37F81E4536F1008E13E4 /* PlannedTableViewCell.swift in Sources */,
 				5F61AF6D1E4A857E00BD6A0C /* CustomSearchController.swift in Sources */,
 				5F61AF541E47D06800BD6A0C /* PopupSubViewController.swift in Sources */,
+				5F3474D71E80DA5300A29615 /* CreateEventTableViewController.swift in Sources */,
 				5FE16B771E5D332500904FC2 /* ProfileTableViewController.swift in Sources */,
 				5F585CB51E7ED3CB009B135F /* EventsViewController.swift in Sources */,
 				5FA3CABB1E565ADA00247CC4 /* ChatViewController.swift in Sources */,

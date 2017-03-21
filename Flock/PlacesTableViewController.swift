@@ -41,7 +41,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             let alert = SCLAlertView()
             _ = alert.showInfo("Oops!", subTitle: "Looks like you don't have internet! Connect to internet so you can go live on Flock")
         }
-        else if(CLLocationManager.authorizationStatus() == .authorizedAlways) {
+        else if(CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse) {
             appDelegate.locationManager.requestLocation()
             appDelegate.presentNavBarActivityIndicator(navItem: self.navigationItem)
             
@@ -533,7 +533,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             
             
             //Add Venue and present popup
-            FirebaseClient.addUserToVenuePlansForDate(date: date, venueID: self.venueToPass!.VenueID, userID: appDelegate.user!.FBID, add: true, completion: { (success) in
+            FirebaseClient.addUserToVenuePlansForDate(date: date, venueID: self.venueToPass!.VenueID, userID: appDelegate.user!.FBID, add: true, specialEventID: nil, completion: { (success) in
                 if (success) {
                     appDelegate.profileNeedsToUpdate = true
                     Utilities.printDebugMessage("Successfully added plan to attend venue")

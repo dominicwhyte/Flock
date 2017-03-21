@@ -15,7 +15,6 @@ class EventView: UIView {
     var backView : UIView?
     var frontViewShowing = true
     
-    
     func setupEventView(event : Event) {
         
         
@@ -25,17 +24,31 @@ class EventView: UIView {
 //        backView!.backgroundColor = UIColor.red
         
         backView = UINib(nibName: "BackEventView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as? BackEventView
+        
+        //backView!.transform = CGAffineTransform(scaleX: scaleFactor, y: scaleFactor)
+       
         self.addSubview(backView!)
+
         
         frontView = UINib(nibName: "FrontEventView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as? FrontEventView
         frontView?.setupFrontView(event: event)
+        //frontView!.transform = CGAffineTransform(scaleX: scaleFactor, y: scaleFactor)
+        
         self.addSubview(frontView!)
         
         frontViewShowing = true
+        
     }
     
-   
+    override func layoutSubviews() {
+        let scaleFactor = self.frame.width / (backView?.frame.width)!
+        Utilities.printDebugMessage("scale factor \(scaleFactor)")
+        frontView!.transform = CGAffineTransform(scaleX: scaleFactor, y: scaleFactor)
+        backView!.transform = CGAffineTransform(scaleX: scaleFactor, y: scaleFactor)
+        super.layoutSubviews()
+    }
     
+
     
     func flipView() {
         if frontViewShowing {
@@ -59,4 +72,5 @@ class EventView: UIView {
         })
     }
 }
+
 

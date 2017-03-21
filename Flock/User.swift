@@ -40,7 +40,8 @@ class User: NSObject
             for (visitID, planDict) in plansDict {
                 let date = planDict["Date"]
                 let venueID = planDict["VenueID"]
-                plans[visitID] = Plan(date: date!, venueID: venueID!)
+                let specialEventID = planDict["SpecialEventID"]
+                plans[visitID] = Plan(date: date!, venueID: venueID!, specialEventID: specialEventID)
             }
         }
         self.Plans = plans
@@ -85,11 +86,13 @@ class Plan: NSObject
 {
     var date: Date
     var venueID: String
+    var specialEventID: String? //if this is a special event
     
-    init(date : String, venueID : String)
+    init(date : String, venueID : String, specialEventID: String?)
     {
         self.date = DateUtilities.getDateFromString(date: date)
         self.venueID =  venueID
+        self.specialEventID = specialEventID
     }
 }
 

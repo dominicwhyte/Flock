@@ -147,7 +147,6 @@ class Utilities {
             else {
                 Utilities.printDebugMessage("Error: could not convert VC")
             }
-            
         })
     }
     

@@ -16,14 +16,19 @@ class SettingsTableViewController: UITableViewController {
 
     struct Constants {
         static let SECTION_TITLES = ["Profile", "Support", "More Info"]
+        static let ADMINS = ["10212248821081735", "1569272013102770"]
     }
     
+    @IBOutlet weak var adminButton: UIButton!
     
     @IBOutlet var backgroundViewCollection: [UIView]!
     
     @IBOutlet weak var autoLiveSwitch: UISwitch!
     
     override func viewDidLoad() {
+        adminButton.isEnabled = false
+        adminButton.isHidden = true
+        
         super.viewDidLoad()
         autoLiveSwitch.backgroundColor = UIColor.white
         autoLiveSwitch.layer.cornerRadius = 16
@@ -38,6 +43,15 @@ class SettingsTableViewController: UITableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        if (Constants.ADMINS.contains(appDelegate.user!.FBID)) {
+            adminButton.isEnabled = true
+            adminButton.isHidden = false
+        }
+        else {
+            adminButton.isEnabled = false
+            adminButton.isHidden = true
+        }
         super.viewWillAppear(animated)
         let nav = self.navigationController?.navigationBar
         nav?.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]

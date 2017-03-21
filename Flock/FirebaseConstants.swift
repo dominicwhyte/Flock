@@ -9,6 +9,8 @@
 import Foundation
 
 struct EventFirebaseConstants {
+    static let eventsSubgroup = "Events"
+    static let eventID = "EventID"
     static let eventName = "Name"
     static let eventDate = "Date"
     static let eventAttendeeFBIDs = "Attendees"

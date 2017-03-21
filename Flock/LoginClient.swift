@@ -101,7 +101,7 @@ class LoginClient: NSObject
     }
     
     //Load up the user, that is: fetch all projects and all updates.
-    class func retrieveData(_ completion: @escaping ((User, [String:Venue], [String : User])?, Double, Double) -> Void)
+    class func retrieveData(_ completion: @escaping ((User, [String:Venue], [String : User], [String : Event])?, Double, Double) -> Void)
     {
         var startTimeDouble : Double = DateUtilities.Constants.START_NIGHT_OUT_TIME
         var endTimeDouble : Double = DateUtilities.Constants.END_NIGHT_OUT_TIME
@@ -164,7 +164,18 @@ class LoginClient: NSObject
                             venues[venue.VenueID] = venue
                         }
                     }
-                    completion((user,venues, users), startTimeDouble, endTimeDouble)
+                    
+                    var specialEvents = [String:Event]()
+                    for (_,venue) in venues {
+                        for (eventID,event) in venue.Events {
+                            if (event.SpecialEvent) {
+                                specialEvents[eventID] = event
+                            }
+                        }
+                    }
+                    
+                    
+                    completion((user,venues, users, specialEvents), startTimeDouble, endTimeDouble)
                 }
                 else {
                     completion(nil, startTimeDouble, endTimeDouble)

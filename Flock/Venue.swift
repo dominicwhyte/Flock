@@ -10,6 +10,7 @@ class Venue: NSObject
     var PlannedAttendees: [String:String]
     var CurrentAttendees: [String:String]
     var VenueNickName: String
+    var Events: [String:Event]
     
     init(dict: [String: AnyObject])
     {
@@ -38,6 +39,15 @@ class Venue: NSObject
             self.VenueNickName = dict["VenueNickName"] as! String
         } else {
             self.VenueNickName = self.VenueName
+        }
+        
+        self.Events = [:]
+        
+        if(dict[EventFirebaseConstants.eventsSubgroup] != nil) {
+            let eventDicts = dict[EventFirebaseConstants.eventsSubgroup] as! [String : [String: AnyObject]]
+            for (eventID,eventDict) in eventDicts {
+                self.Events[eventID] = Event(dict: eventDict)
+            }
         }
     }
     
