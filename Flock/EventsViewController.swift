@@ -17,6 +17,7 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
     @IBOutlet var carousel: iCarousel!
     @IBOutlet weak var infoLabel: UILabel!
     
+    @IBOutlet weak var submitButton: ZFRippleButton!
     @IBOutlet weak var topCover: UIView!
     @IBOutlet weak var bottomCover: UIView!
     
@@ -26,6 +27,7 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         super.awakeFromNib()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         events = Array(appDelegate.specialEvents.values)
+    
     }
     
     func addTestEvents() {
@@ -62,8 +64,11 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         if (events.count != 0) {
             let event = events[0]
             self.userFBIDSofPlanningAttendees = Array(event.EventAttendeeFBIDs.values)
-            self.setupLabel(event: event)
+            self.setupLabelAndButton(event: event)
         }
+        
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -100,12 +105,13 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         let event = events[carousel.currentItemIndex]
         self.userFBIDSofPlanningAttendees = Array(event.EventAttendeeFBIDs.values)
         
-        setupLabel(event: event)
+        setupLabelAndButton(event: event)
         
         collectionView.reloadData()
     }
     
-    func setupLabel(event : Event) {
+    
+    func setupLabelAndButton(event : Event) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let userFriends = appDelegate.user!.Friends
         let attendeesFBIDs = event.EventAttendeeFBIDs
@@ -124,6 +130,13 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         let attributedString = NSMutableAttributedString(string:totalText)
         attributedString.addAttribute(NSForegroundColorAttributeName, value: FlockColors.FLOCK_BLUE , range: range)
         infoLabel.attributedText = attributedString
+        
+        if (event.EventAttendeeFBIDs[appDelegate.user!.FBID] == nil) {
+            submitButton.setTitle("Go to \(event.EventName)", for: .normal)
+        }
+        else {
+            submitButton.setTitle("Invite your Flock", for: .normal)
+        }
     }
     
     func carousel(_ carousel: iCarousel, viewForItemAt index: Int, reusing view: UIView?) -> UIView {
@@ -178,6 +191,30 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         
         return value
     }
+    
+    @IBAction func submitButtonPressed(_ sender: Any) {
+        if (events.count != 0) {
+            let event = events[carousel.currentItemIndex]
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            if (event.EventAttendeeFBIDs[appDelegate.user!.FBID] == nil) {
+                let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
+                FirebaseClient.addUserToVenuePlansForDate(date: DateUtilities.getStringFromDate(date: event.EventDate), venueID: event.VenueID, userID: appDelegate.user!.FBID, add: true, specialEventID: event.EventID, completion: { (success) in
+                    if (success) {
+                        Utilities.printDebugMessage("Successfully made plan to go to event")
+                    }
+                    else {
+                        Utilities.printDebugMessage("Error making making to go to event")
+                    }
+                    Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+                })
+            }
+            else {
+                Utilities.printDebugMessage("Invite flock!")
+            }
+            
+        }
+    }
+    
     
 }
 

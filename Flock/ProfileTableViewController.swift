@@ -95,18 +95,27 @@ class ProfileTableViewController: UITableViewController {
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         var venue : Venue
+        let plan : Plan = self.plans[indexPath.row]
         if (indexPath.section == Constants.LIVE_SECTION_ROW) {
             venue = appDelegate.venues[user!.LiveClubID!]!
         }
         else {
-            venue = appDelegate.venues[self.plans[indexPath.row].venueID]!
+            venue = appDelegate.venues[plan.venueID]!
         }
         let cell = tableView.dequeueReusableCell(withIdentifier: "VENUE_FRIEND", for: indexPath) as! VenueFriendTableViewCell
-        cell.nameLabel.text = venue.VenueName
+        
+        if (plan.specialEventID != nil) {
+            cell.nameLabel.text = appDelegate.specialEvents[plan.specialEventID!]?.EventName
+        }
+        else {
+            cell.nameLabel.text = venue.VenueName
+        }
+        
+        
         if (indexPath.section == Constants.LIVE_SECTION_ROW) {
             cell.subtitleLabel.text = DateUtilities.convertDateToStringByFormat(date: Date(), dateFormat: DateUtilities.Constants.uiDisplayFormat)
         } else {
-            cell.subtitleLabel.text = DateUtilities.convertDateToStringByFormat(date: self.plans[indexPath.row].date, dateFormat: DateUtilities.Constants.uiDisplayFormat)
+            cell.subtitleLabel.text = DateUtilities.convertDateToStringByFormat(date: plan.date, dateFormat: DateUtilities.Constants.uiDisplayFormat)
         }
         
         if let venueImage = appDelegate.venueImages[venue.ImageURL] {
@@ -245,7 +254,7 @@ class ProfileTableViewController: UITableViewController {
             // delete item at indexPath
             let planDate = DateUtilities.getStringFromDate(date: self.plans[indexPath.row].date)
             let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
-            FirebaseClient.addUserToVenuePlansForDate(date: DateUtilities.getStringFromDate(date: self.plans[indexPath.row].date), venueID: venue.VenueID, userID: appDelegate.user!.FBID, add: false, completion: { (success) in
+            FirebaseClient.addUserToVenuePlansForDate(date: DateUtilities.getStringFromDate(date: self.plans[indexPath.row].date), venueID: venue.VenueID, userID: appDelegate.user!.FBID, add: false, specialEventID: nil, completion: { (success) in
                 if (success) {
                     Utilities.printDebugMessage("Successfully removed plan to attend venue")
                     self.updateDataAndTableView({ (success) in

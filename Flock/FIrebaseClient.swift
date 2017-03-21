@@ -428,7 +428,8 @@ class FirebaseClient: NSObject
             if (snapshot.childSnapshot(forPath: "Venues").hasChild(venueID)) {
                 //add to special event a new attendee, or remove if add is False
                 if let specialEventID = specialEventID {
-                    if (snapshot.childSnapshot(forPath: "Venues").hasChild(EventFirebaseConstants.eventsSubgroup) && snapshot.childSnapshot(forPath: "Venues").childSnapshot(forPath: EventFirebaseConstants.eventsSubgroup).hasChild(specialEventID)) {
+                    Utilities.printDebugMessage("check1")
+                    if (snapshot.childSnapshot(forPath: "Venues").childSnapshot(forPath: venueID).hasChild(EventFirebaseConstants.eventsSubgroup) && snapshot.childSnapshot(forPath: "Venues").childSnapshot(forPath: venueID).childSnapshot(forPath: EventFirebaseConstants.eventsSubgroup).hasChild(specialEventID)) {
                         
                         let dictionary :[String:AnyObject] = snapshot.childSnapshot(forPath: "Venues").value as! [String : AnyObject]
                         let venueDict = dictionary[venueID] as! [String: AnyObject]
@@ -436,6 +437,7 @@ class FirebaseClient: NSObject
                         let eventToPlanWithDict = eventsDict[specialEventID] as! [String : AnyObject]
                         
                         if (add) {
+                            Utilities.printDebugMessage("adding")
                             if (snapshot.childSnapshot(forPath: "Venues").childSnapshot(forPath: venueID).childSnapshot(forPath: EventFirebaseConstants.eventsSubgroup).childSnapshot(forPath: specialEventID).hasChild(EventFirebaseConstants.eventAttendeeFBIDs)) {
                                 var planningAttendees = eventToPlanWithDict[EventFirebaseConstants.eventAttendeeFBIDs] as! [String:String]
                                 planningAttendees[userID] = userID
@@ -444,6 +446,7 @@ class FirebaseClient: NSObject
                                 
                             }
                             else {
+                                Utilities.printDebugMessage("all da way")
                                 let updates = [EventFirebaseConstants.eventAttendeeFBIDs: [userID:userID]]
                                 dataRef.child("Venues").child(venueID).child(EventFirebaseConstants.eventsSubgroup).child(specialEventID).updateChildValues(updates)
                             }

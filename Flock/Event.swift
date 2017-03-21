@@ -10,9 +10,11 @@ class Event: NSObject
     var SpecialEvent : Bool
     var VenueID : String
     var EventImageURL : String? //if nil, use a random image
+    var EventID : String
     
     init(dict: [String: AnyObject])
     {
+        self.EventID = dict[EventFirebaseConstants.eventID] as! String
         self.EventName = dict[EventFirebaseConstants.eventName] as! String
         self.SpecialEvent = dict[EventFirebaseConstants.specialEvent] as! Bool
         self.VenueID = dict[EventFirebaseConstants.venueID] as! String
