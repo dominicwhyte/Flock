@@ -23,14 +23,14 @@ class EventView: UIView {
 //        self.addSubview(backView!)
 //        backView!.backgroundColor = UIColor.red
         
-        backView = UINib(nibName: "BackEventView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! BackEventView
-        backView!.setupBackView(event: event)
+        backView = UINib(nibName: "BackEventView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as? BackEventView
+        
         //backView!.transform = CGAffineTransform(scaleX: scaleFactor, y: scaleFactor)
        
         self.addSubview(backView!)
-
+        backView!.setupBackView(event: event)
         
-        frontView = UINib(nibName: "FrontEventView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! FrontEventView
+        frontView = UINib(nibName: "FrontEventView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as? FrontEventView
         frontView!.setupFrontView(event: event)
         //frontView!.transform = CGAffineTransform(scaleX: scaleFactor, y: scaleFactor)
         

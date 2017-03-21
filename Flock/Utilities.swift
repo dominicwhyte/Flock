@@ -32,7 +32,7 @@ class Utilities {
         let gradientLayer = CAGradientLayer()
         gradientLayer.colors = [ colorTop.cgColor, colorBottom.cgColor]
         gradientLayer.locations = [ 0.0, 1.0]
-        gradientLayer.frame = aView.frame
+        gradientLayer.frame = aView.bounds
         
         aView.layer.insertSublayer(gradientLayer, at: 0)
     }
