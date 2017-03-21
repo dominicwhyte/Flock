@@ -10,12 +10,19 @@
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="OpenSans-Semibold.ttf">
+            <string>OpenSans-Semibold</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PopupSubViewController" customModule="PopupDialog">
             <connections>
                 <outlet property="datePicker" destination="HLy-g9-Jlm" id="5EN-dS-rwR"/>
+                <outlet property="gradientBackgroundForImage" destination="jx8-rF-UGg" id="Ya3-KE-1lv"/>
                 <outlet property="liveAttendeesLabel" destination="Ea0-er-vvG" id="m7t-YM-YuS"/>
                 <outlet property="liveFriendsLabel" destination="ALl-An-kFg" id="Lfc-dZ-NLB"/>
+                <outlet property="optionalEventNameLabel" destination="6j6-eI-Lx5" id="a81-4g-gHn"/>
                 <outlet property="plannedAttendeesLabel" destination="5Wa-S2-GyZ" id="x5G-tT-DQ8"/>
                 <outlet property="plannedFriendsLabel" destination="RIT-KU-iKl" id="y9c-cU-GV1"/>
                 <outlet property="tableViewFrameView" destination="R0S-Vr-o45" id="iyh-CP-37u"/>
@@ -31,6 +38,10 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IS1-mO-qkH">
                     <rect key="frame" x="0.0" y="0.0" width="300" height="500"/>
                     <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jx8-rF-UGg">
+                            <rect key="frame" x="0.0" y="0.0" width="292" height="164"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HLy-g9-Jlm" customClass="MVHorizontalPicker" customModule="MVHorizontalPicker">
                             <rect key="frame" x="0.0" y="241" width="292" height="40"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -146,20 +157,33 @@ Friends</string>
                                 <constraint firstAttribute="height" constant="219" id="8nf-Z3-wbT"/>
                             </constraints>
                         </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6j6-eI-Lx5">
+                            <rect key="frame" x="8" y="128.5" width="276" height="27.5"/>
+                            <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <constraints>
                         <constraint firstItem="93f-NF-nyy" firstAttribute="top" secondItem="IS1-mO-qkH" secondAttribute="top" id="1yf-ZF-XH5"/>
                         <constraint firstAttribute="trailing" secondItem="HLy-g9-Jlm" secondAttribute="trailing" constant="8" id="4kl-i4-vdu"/>
                         <constraint firstAttribute="trailing" secondItem="R0S-Vr-o45" secondAttribute="trailing" id="6aB-W9-4ea"/>
+                        <constraint firstItem="6j6-eI-Lx5" firstAttribute="leading" secondItem="IS1-mO-qkH" secondAttribute="leading" constant="8" id="C1m-JW-VCb"/>
+                        <constraint firstItem="jx8-rF-UGg" firstAttribute="leading" secondItem="IS1-mO-qkH" secondAttribute="leading" id="FXx-Jj-eJy"/>
                         <constraint firstItem="HLy-g9-Jlm" firstAttribute="top" secondItem="Fe7-aa-iik" secondAttribute="bottom" id="Gxo-6N-bef"/>
                         <constraint firstItem="Fe7-aa-iik" firstAttribute="top" secondItem="93f-NF-nyy" secondAttribute="bottom" id="Sah-X1-jOa"/>
+                        <constraint firstAttribute="trailing" secondItem="6j6-eI-Lx5" secondAttribute="trailing" constant="16" id="UMu-kx-glc"/>
                         <constraint firstItem="R0S-Vr-o45" firstAttribute="leading" secondItem="IS1-mO-qkH" secondAttribute="leading" id="Uzr-sE-u9u"/>
                         <constraint firstAttribute="trailing" secondItem="Fe7-aa-iik" secondAttribute="trailing" constant="8" id="XiB-C8-kz8"/>
+                        <constraint firstItem="jx8-rF-UGg" firstAttribute="top" secondItem="IS1-mO-qkH" secondAttribute="top" id="Xoq-zj-aBv"/>
+                        <constraint firstItem="jx8-rF-UGg" firstAttribute="width" secondItem="93f-NF-nyy" secondAttribute="width" id="YZR-bl-O3n"/>
                         <constraint firstItem="R0S-Vr-o45" firstAttribute="top" secondItem="HLy-g9-Jlm" secondAttribute="bottom" id="h7C-fY-n6N"/>
                         <constraint firstItem="93f-NF-nyy" firstAttribute="leading" secondItem="IS1-mO-qkH" secondAttribute="leading" id="iPW-J0-uX5"/>
                         <constraint firstItem="HLy-g9-Jlm" firstAttribute="leading" secondItem="IS1-mO-qkH" secondAttribute="leading" id="k9a-Yc-ZPj"/>
                         <constraint firstItem="Fe7-aa-iik" firstAttribute="leading" secondItem="IS1-mO-qkH" secondAttribute="leading" id="pYa-xd-br7"/>
+                        <constraint firstItem="Fe7-aa-iik" firstAttribute="top" secondItem="jx8-rF-UGg" secondAttribute="bottom" id="rF1-U5-zhE"/>
                         <constraint firstAttribute="trailing" secondItem="93f-NF-nyy" secondAttribute="trailing" constant="8" id="rIX-fv-vf0"/>
+                        <constraint firstItem="Fe7-aa-iik" firstAttribute="top" secondItem="6j6-eI-Lx5" secondAttribute="bottom" constant="8" id="sx2-fF-aMG"/>
                         <constraint firstAttribute="bottom" secondItem="R0S-Vr-o45" secondAttribute="bottom" id="uFD-C5-Eib"/>
                     </constraints>
                 </view>

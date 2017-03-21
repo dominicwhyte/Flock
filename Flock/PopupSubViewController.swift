@@ -19,7 +19,9 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         static let PLANNED_SECTION_ROW = 1
         static let CELL_HEIGHT : CGFloat = 74.0
     }
+    @IBOutlet weak var gradientBackgroundForImage: UIView!
     
+    @IBOutlet weak var optionalEventNameLabel: UILabel!
     @IBOutlet weak var tableViewFrameView: UIView!
     @IBOutlet weak var datePicker: MVHorizontalPicker!
     @IBOutlet weak var venueImageView: UIImageView!
@@ -107,6 +109,8 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     //    }
     
     override func viewDidLoad() {
+        Utilities.applyVerticalGradient(aView: gradientBackgroundForImage, colorTop: UIColor.white, colorBottom: UIColor.black)
+        
         datePicker.titles = self.determineTitleOrder(dayCount: DateUtilities.Constants.NUMBER_OF_DAYS_TO_DISPLAY)
         datePicker.itemWidth = 100
         
@@ -238,15 +242,18 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         let date = DateUtilities.getDateFromString(date: dateString)
         let dateStringInFormat = DateUtilities.convertDateToStringByFormat(date: date, dateFormat: "MMMM d")
         
+        venueImageView.alpha = 1
+        optionalEventNameLabel.text = ""
         for (_,event) in venue.Events {
             if (event.EventDate == date) {
                 if (event.SpecialEvent) {
                     Utilities.printDebugMessage("This event is special!")
-                    handleSpecialEvent()
+                    handleSpecialEvent(event: event)
+                    break
                 }
                 else {
-                    
                     Utilities.printDebugMessage("This venue is open!")
+                    break
                 }
             }
         }
@@ -271,21 +278,29 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         self.delegate?.changeButtonTitle(title: "GO TO \(venueString) ON \(dateStringInFormat.uppercased())", shouldDisable: disable)
     }
     
-    func handleSpecialEvent() {
-        let confettiView = SAConfettiView(frame: self.view.bounds)
-        confettiView.type = SAConfettiView.ConfettiType.confetti
-        confettiView.intensity = 0.5
-        self.venueImageView.addSubview(confettiView)
+    func handleSpecialEvent(event : Event) {
         
-        confettiView.startConfetti()
-        let delayInSeconds = 1.0
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
-            DispatchQueue.main.async {
-                confettiView.stopConfetti()
-                confettiView.removeFromSuperview()
-                
+        UIView.animate(withDuration: 0.5, animations: { 
+            self.venueImageView.alpha = 0.6
+            self.optionalEventNameLabel.text = event.EventName
+        }) { (success) in
+            let confettiView = SAConfettiView(frame: self.view.bounds)
+            confettiView.type = SAConfettiView.ConfettiType.confetti
+            confettiView.intensity = 0.5
+            self.venueImageView.addSubview(confettiView)
+            
+            confettiView.startConfetti()
+            let delayInSeconds = 3.0
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
+                DispatchQueue.main.async {
+                    confettiView.stopConfetti()
+                    confettiView.removeFromSuperview()
+                    
+                }
             }
         }
+        
+        
         
     }
     
