@@ -63,6 +63,7 @@ PODS:
   - FirebaseStorage (1.1.0):
     - FirebaseAnalytics (~> 3.7)
     - GTMSessionFetcher/Core (~> 1.1)
+  - Gecco (1.0.0)
   - GoogleToolboxForMac/DebugUtils (2.1.1):
     - GoogleToolboxForMac/Defines (= 2.1.1)
   - GoogleToolboxForMac/Defines (2.1.1)
@@ -107,6 +108,7 @@ DEPENDENCIES:
   - Firebase/Database
   - Firebase/Messaging
   - Firebase/Storage
+  - Gecco
   - Instabug
   - JSQMessagesViewController
   - LFTwitterProfile
@@ -140,6 +142,7 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: 2d0518b1378fe9d685ef40cbdd63d2fdc1125339
   FirebaseMessaging: df8267f378580a24174ce7861233aa11d5c90109
   FirebaseStorage: a5c55b23741a49a72af8f30f95b3bb5ddbeda12d
+  Gecco: e662f949821e742997787bad7b730ccc0052e43c
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   GTMSessionFetcher: 5c046c76a1f859bc9c187e918f18e4fc7bb57b5e
   Instabug: 13b238537cdacc1d6a2db71a8375b0c6fbcbe248
@@ -159,6 +162,6 @@ SPEC CHECKSUMS:
   SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
   ZFRippleButton: 62ea35e209757704dea697d66489fe69c13d7b77
 
-PODFILE CHECKSUM: e3ded19b08fc42ebbfcad5b18409bc0375f1362e
+PODFILE CHECKSUM: 8b6f521e7991a474dc01d62e1ceaf5c303221a6c
 
 COCOAPODS: 1.0.1

@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '4D0BDE07CCAA14A7C407D5B934FEB2BD'
-               BlueprintName = 'SimpleTab'
+               BlueprintIdentifier = 'FA8878248422855EE0136DE3E0E2D26F'
+               BlueprintName = 'Gecco'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'SimpleTab.framework'>
+               BuildableName = 'Gecco.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

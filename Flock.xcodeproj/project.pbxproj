@@ -30,6 +30,7 @@
 		5F3474D11E805E2000A29615 /* BackEventView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F3474D01E805E2000A29615 /* BackEventView.xib */; };
 		5F3474D31E805E3600A29615 /* BackEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3474D21E805E3600A29615 /* BackEventView.swift */; };
 		5F3474D71E80DA5300A29615 /* CreateEventTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3474D61E80DA5300A29615 /* CreateEventTableViewController.swift */; };
+		5F3474DA1E8240F400A29615 /* AnnotationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3474D91E8240F400A29615 /* AnnotationViewController.swift */; };
 		5F4E94061E7C6D8800143931 /* FlockSuggestionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E94051E7C6D8800143931 /* FlockSuggestionTableViewCell.swift */; };
 		5F4E94081E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E94071E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift */; };
 		5F4E940A1E7D9C9B00143931 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E94091E7D9C9B00143931 /* SettingsTableViewController.swift */; };
@@ -120,6 +121,7 @@
 		5F3474D01E805E2000A29615 /* BackEventView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BackEventView.xib; sourceTree = "<group>"; };
 		5F3474D21E805E3600A29615 /* BackEventView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackEventView.swift; sourceTree = "<group>"; };
 		5F3474D61E80DA5300A29615 /* CreateEventTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateEventTableViewController.swift; sourceTree = "<group>"; };
+		5F3474D91E8240F400A29615 /* AnnotationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnotationViewController.swift; sourceTree = "<group>"; };
 		5F4E94051E7C6D8800143931 /* FlockSuggestionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlockSuggestionTableViewCell.swift; sourceTree = "<group>"; };
 		5F4E94071E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlockSuggestionCollectionViewCell.swift; sourceTree = SOURCE_ROOT; };
 		5F4E94091E7D9C9B00143931 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
@@ -406,6 +408,7 @@
 				583DF4EF1E5CF5D300E0622A /* ProfileViewController.swift */,
 				5FE16B761E5D332500904FC2 /* ProfileTableViewController.swift */,
 				5F4E94091E7D9C9B00143931 /* SettingsTableViewController.swift */,
+				5F3474D91E8240F400A29615 /* AnnotationViewController.swift */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -685,6 +688,7 @@
 				5F5D37C51E440F4F008E13E4 /* Venue.swift in Sources */,
 				583AAE341E7F7A0900D28B60 /* Utilities.swift in Sources */,
 				5F5D37BE1E4405E9008E13E4 /* LoginClient.swift in Sources */,
+				5F3474DA1E8240F400A29615 /* AnnotationViewController.swift in Sources */,
 				58F1F49F1E5959D10065DA38 /* ViewController.swift in Sources */,
 				5F5D38041E466C17008E13E4 /* SearchTableViewCell.swift in Sources */,
 				5F5D37F61E4536E8008E13E4 /* LiveTableViewCell.swift in Sources */,

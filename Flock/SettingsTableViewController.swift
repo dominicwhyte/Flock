@@ -165,6 +165,26 @@ class SettingsTableViewController: UITableViewController {
         
     }
     
+    
+    @IBAction func showWalkthroughPressed(_ sender: Any) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.simpleTBC!.animateToTab(0, completion: { (navCon) in
+            if let navCon = navCon as? UINavigationController {
+                let vc = navCon.topViewController as! PlacesTableViewController
+                vc.tableView.setContentOffset(CGPoint.zero, animated: true)
+                
+                let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Annotation") as! AnnotationViewController
+                viewController.alpha = 0.5
+                
+                appDelegate.simpleTBC!.present(viewController, animated: true, completion: nil)
+            }
+            
+        })
+        
+        
+    }
+    
+    
     @IBAction func shareOnFacebookPressed(_ sender: Any) {
         let vc = SLComposeViewController(forServiceType:SLServiceTypeFacebook)
         
