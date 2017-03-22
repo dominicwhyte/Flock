@@ -19,9 +19,11 @@ class PeopleSelectorTableViewController: UITableViewController, UpdateSelectorTa
     var userName : String?
     var venueName : String?
     var displayDate : String?
+    var eventName : String?
     var friends  = [User]()
     var friendsToInvite = [String]()
     var imageCache = [String : UIImage]()
+    var plannedAttendees = [String : String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +55,14 @@ class PeopleSelectorTableViewController: UITableViewController, UpdateSelectorTa
             print("Friend: \(friend)")
         }
         if let userName = self.userName, let venueName = self.venueName, let displayDate = self.displayDate {
-            Utilities.sendPushNotificationToPartOfFlock(title: "TESTING. \(userName) is planning to go to \(venueName) on \(displayDate)!", toFriends: friendsToInvite)
+            var title = ""
+            if(self.eventName != nil) {
+                title = "\(userName) is planning to go to \(self.eventName) at \(venueName) on \(displayDate)!"
+            } else {
+                title = "\(userName) is planning to go to \(venueName) on \(displayDate)!"
+            }
+            
+            Utilities.sendPushNotificationToPartOfFlock(title: title, toFriends: friendsToInvite)
         }
         self.dismiss(animated: true) {
             Utilities.printDebugMessage("Successfully dismissed friend selector")
@@ -140,7 +149,11 @@ class PeopleSelectorTableViewController: UITableViewController, UpdateSelectorTa
         let friend = self.friends[indexPath.row]
         cell.name.text = friend.Name
         self.retrieveImage(imageURL: friend.PictureURL, venueID: nil, imageView: cell.profilePic!)
-        cell.subtitle.text = "Something goes here?"
+        if(self.plannedAttendees[friend.FBID] != nil) {
+            cell.subtitle.text = "Already planning"
+        } else {
+            cell.subtitle.text = "Not planning yet"
+        }
         cell.friendID = friend.FBID
         cell.delegate = self
         cell.row = indexPath.row

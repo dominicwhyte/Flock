@@ -61,6 +61,9 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
                 let fullDate = DateUtilities.convertDateToStringByFormat(date: startDate, dateFormat: DateUtilities.Constants.fullDateFormat)
                 if let startIndex = stringsOfUpcomingDays.index(of: fullDate) {
                     datePicker.setSelectedItemIndex(startIndex, animated: true)
+                    setAttendButtonTitle()
+                    setLabelsForGraphic()
+                    self.tableView.reloadData()
                 }
             }
         }
@@ -314,7 +317,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
             self.venueImageView.addSubview(confettiView)
             
             confettiView.startConfetti()
-            let delayInSeconds = 5.0
+            let delayInSeconds = 3.0
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
                 DispatchQueue.main.async {
                     confettiView.stopConfetti()
