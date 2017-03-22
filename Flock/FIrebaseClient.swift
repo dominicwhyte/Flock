@@ -361,10 +361,15 @@ class FirebaseClient: NSObject
     
     //Get an image from a URL, with completion handler for caching the image
     //Should use this function more!
-    static func getImageFromURL(_ imageURL : String, _ completion: @escaping (UIImage?) -> Void) {
+    static func getImageFromURL(_ imageURL : String, venueID : String?, _ completion: @escaping (UIImage?) -> Void) {
         if (imageURL == "") {
             Utilities.printDebugMessage("Blank profile pic")
             completion(nil)
+        }
+        else if (venueID != nil && UIImage(named: venueID!) != nil){
+            Utilities.printDebugMessage("Image was stored in casettes")
+            let image = UIImage(named: venueID!)
+            completion(image)
         }
         else {
             let imageURLObj = URL(string: imageURL)

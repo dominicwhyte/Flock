@@ -122,7 +122,7 @@ class ProfileViewController: UIViewController, ProfileDelegate {
             self.favoriteClubLabel.text = "Top Place:\n None Yet!"
         }
         
-        FirebaseClient.getImageFromURL(user!.PictureURL) { (image) in
+        FirebaseClient.getImageFromURL(user!.PictureURL, venueID: nil) { (image) in
             DispatchQueue.main.async {
                 self.profilePic.image = image
                 self.profilePic.formatProfilePicture()

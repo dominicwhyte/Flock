@@ -120,7 +120,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         
         datePicker.tintColor = UIColor.black
         super.viewDidLoad()
-        delegate?.retrieveImage(imageURL: (delegate?.venueToPass?.ImageURL)!, completion: { (image) in
+        delegate?.retrieveImage(imageURL: (delegate?.venueToPass?.ImageURL)!, venueID: (delegate?.venueToPass?.VenueID)!, completion: { (image) in
             DispatchQueue.main.async {
                 self.venueImageView.image = image
             }
@@ -191,7 +191,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         else {
             cell.subtitleLabel.text = Utilities.setPlurality(string: "\(planCount) plan", count: planCount)
         }
-        retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic)
+        retrieveImage(imageURL: friend.PictureURL, venueID: nil, imageView: cell.profilePic)
         return cell
     }
     
@@ -281,16 +281,16 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     func handleSpecialEvent(event : Event) {
         
         UIView.animate(withDuration: 0.5, animations: { 
-            self.venueImageView.alpha = 0.6
+            self.venueImageView.alpha = 0.7
             self.optionalEventNameLabel.text = event.EventName
         }) { (success) in
             let confettiView = SAConfettiView(frame: self.view.bounds)
             confettiView.type = SAConfettiView.ConfettiType.confetti
-            confettiView.intensity = 0.5
+            confettiView.intensity = 0.6
             self.venueImageView.addSubview(confettiView)
             
             confettiView.startConfetti()
-            let delayInSeconds = 3.0
+            let delayInSeconds = 5.0
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
                 DispatchQueue.main.async {
                     confettiView.stopConfetti()
@@ -379,12 +379,12 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     
     
     //Retrieve image with caching
-    func retrieveImage(imageURL : String, imageView : UIImageView) {
+    func retrieveImage(imageURL : String, venueID : String?, imageView : UIImageView) {
         if let image = imageCache[imageURL] {
             imageView.image = image
         }
         else {
-            FirebaseClient.getImageFromURL(imageURL) { (image) in
+            FirebaseClient.getImageFromURL(imageURL, venueID: venueID) { (image) in
                 DispatchQueue.main.async {
                     self.imageCache[imageURL] = image
                     imageView.image = image

@@ -240,7 +240,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             
             
             cell.placesNameLabel.text = venue.VenueNickName
-            self.retrieveImage(imageURL: venue.ImageURL, imageView: cell.backgroundImage)
+            self.retrieveImage(imageURL: venue.ImageURL, venueID: venue.VenueID, imageView: cell.backgroundImage)
             //        cell.liveLabel.text = "\(venue.CurrentAttendees.count) live"
             //        cell.plannedLabel.text = "\(venue.PlannedAttendees.count) planned"
             
@@ -454,12 +454,12 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     
     
     //Retrieve image with caching
-    func retrieveImage(imageURL : String, imageView : UIImageView) {
+    func retrieveImage(imageURL : String, venueID: String?, imageView : UIImageView) {
         if let image = imageCache[imageURL] {
             imageView.image = image
         }
         else {
-            FirebaseClient.getImageFromURL(imageURL) { (image) in
+            FirebaseClient.getImageFromURL(imageURL, venueID: venueID) { (image) in
                 DispatchQueue.main.async {
                     self.imageCache[imageURL] = image
                     imageView.image = image
@@ -476,12 +476,12 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     }
     
     
-    func retrieveImage(imageURL : String, completion: @escaping (_ image: UIImage) -> ()) {
+    func retrieveImage(imageURL : String, venueID: String?, completion: @escaping (_ image: UIImage) -> ()) {
         if let image = imageCache[imageURL] {
             completion(image)
         }
         else {
-            FirebaseClient.getImageFromURL(imageURL) { (image) in
+            FirebaseClient.getImageFromURL(imageURL, venueID: venueID) { (image) in
                 completion(image!)
                 self.imageCache[imageURL] = image
             }
@@ -655,7 +655,7 @@ extension PlacesTableViewController: UISearchResultsUpdating {
 
 protocol VenueDelegate: class {
     var venueToPass : Venue? {get set}
-    func retrieveImage(imageURL : String, completion: @escaping (_ image: UIImage) -> ())
+    func retrieveImage(imageURL : String, venueID: String?, completion: @escaping (_ image: UIImage) -> ())
     func changeButtonTitle(title: String, shouldDisable: Bool)
     
 }

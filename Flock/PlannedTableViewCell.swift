@@ -51,13 +51,14 @@ class PlannedTableViewCell: MGSwipeTableCell, MGSwipeTableCellDelegate {
             if (plans.count > index) {
                 var button = MGSwipeButton(title: "", icon: UIImage(named:"cat.png"), backgroundColor: UIColor.blue)
                 if let venue = venues[plans[index].venueID] {
-                    if let venueImage = venueImages[venue.ImageURL] {
+                    if (UIImage(named: venue.VenueID) != nil) {
+                        let venueImage = UIImage(named: venue.VenueID)
                         button = MGSwipeButton(title: "", icon: nil, backgroundColor: UIColor.clear)
                         button.setBackgroundImage(venueImage, for: .normal)
                         button.frame = CGRect(x: 0, y: 0, width: Constants.CELL_HEIGHT, height: Constants.CELL_HEIGHT)
                     }
                     else {
-                        appDelegate.getMissingImage(imageURL: venue.ImageURL, completion: { (status) in
+                        appDelegate.getMissingImage(imageURL: venue.ImageURL, venueID: venue.VenueID, completion: { (status) in
                             if (status) {
                                 DispatchQueue.main.async {
                                     if let venueImage = venueImages[venue.ImageURL] {

@@ -139,7 +139,7 @@ class PeopleSelectorTableViewController: UITableViewController, UpdateSelectorTa
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.REUSE_IDENTIFIERS[indexPath.section], for: indexPath) as! PeopleSelectorTableViewCell
         let friend = self.friends[indexPath.row]
         cell.name.text = friend.Name
-        self.retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic!)
+        self.retrieveImage(imageURL: friend.PictureURL, venueID: nil, imageView: cell.profilePic!)
         cell.subtitle.text = "Something goes here?"
         cell.friendID = friend.FBID
         cell.delegate = self
@@ -155,19 +155,18 @@ class PeopleSelectorTableViewController: UITableViewController, UpdateSelectorTa
     }
     
     //Retrieve image with caching
-    func retrieveImage(imageURL : String, imageView : UIImageView) {
+    func retrieveImage(imageURL : String, venueID : String?, imageView : UIImageView) {
         if let image = imageCache[imageURL] {
             imageView.image = image
         }
         else {
-            FirebaseClient.getImageFromURL(imageURL) { (image) in
+            FirebaseClient.getImageFromURL(imageURL, venueID: venueID) { (image) in
                 DispatchQueue.main.async {
                     self.imageCache[imageURL] = image
                     imageView.image = image
                 }
             }
         }
-        
     }
 }
 

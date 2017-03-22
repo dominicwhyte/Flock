@@ -77,14 +77,21 @@
                     }
                     Utilities.printDebugMessage("TESTEND")
                     
-                    self.setAllVenueImages(venueImageURLs: imageURLArray, completion: { (venueImageSuccess) in
-                        self.handlePushNotificationSetup()
-                        if (!venueImageSuccess) {
-                            Utilities.printDebugMessage("Failure fetching venue images")
+//                    self.setAllVenueImages(venueImageURLs: imageURLArray, completion: { (venueImageSuccess) in
+//                        self.handlePushNotificationSetup()
+//                        if (!venueImageSuccess) {
+//                            Utilities.printDebugMessage("Failure fetching venue images")
+//                        }
+//                        completion(venueImageSuccess)
+//                        
+//                    })
+                    self.handlePushNotificationSetup()
+                    FirebaseClient.getFriends { (friends) in
+                        for friend in friends {
+                            self.facebookFriendsFBIDs[friend] = friend
                         }
-                        completion(venueImageSuccess)
-                        
-                    })
+                        completion(true)
+                    }
                 }
                 else {
                     completion(false)
@@ -247,43 +254,43 @@
         //    }
         
         //Call only upon app launch
-        func setAllVenueImages(venueImageURLs : [String], completion: @escaping (_ status: Bool) -> ()) {
-            var venueImagesTemp = [String : UIImage]()
-            var imagesFetched = 0
-            let imagesToFetch = venueImageURLs.count
-            for imageURL in venueImageURLs {
-                FirebaseClient.getImageFromURL(imageURL, { (image) in
-                    imagesFetched += 1
-                    venueImagesTemp[imageURL] = image
-                    if (imagesFetched >= imagesToFetch) {
-                        self.venueImages = venueImagesTemp
-                        
-                        //Get facebook friends, to populate this. Do in here since only done on app launch
-                        FirebaseClient.getFriends { (friends) in
-                            for friend in friends {
-                                self.facebookFriendsFBIDs[friend] = friend
-                            }
-                            completion(true)
-                        }
-                    }
-                })
-            }
-            if (venueImageURLs.count == 0) {
-                //Get facebook friends, to populate this. Do in here since only done on app launch
-                FirebaseClient.getFriends { (friends) in
-                    for friend in friends {
-                        self.facebookFriendsFBIDs[friend] = friend
-                    }
-                    completion(true)
-                }
-                
-            }
-        }
+//        func setAllVenueImages(venueImageURLs : [String], completion: @escaping (_ status: Bool) -> ()) {
+//            var venueImagesTemp = [String : UIImage]()
+//            var imagesFetched = 0
+//            let imagesToFetch = venueImageURLs.count
+//            for imageURL in venueImageURLs {
+//                FirebaseClient.getImageFromURL(imageURL, { (image) in
+//                    imagesFetched += 1
+//                    venueImagesTemp[imageURL] = image
+//                    if (imagesFetched >= imagesToFetch) {
+//                        self.venueImages = venueImagesTemp
+//                        
+//                        //Get facebook friends, to populate this. Do in here since only done on app launch
+//                        FirebaseClient.getFriends { (friends) in
+//                            for friend in friends {
+//                                self.facebookFriendsFBIDs[friend] = friend
+//                            }
+//                            completion(true)
+//                        }
+//                    }
+//                })
+//            }
+//            if (venueImageURLs.count == 0) {
+//                //Get facebook friends, to populate this. Do in here since only done on app launch
+//                FirebaseClient.getFriends { (friends) in
+//                    for friend in friends {
+//                        self.facebookFriendsFBIDs[friend] = friend
+//                    }
+//                    completion(true)
+//                }
+//                
+//            }
+//        }
         
         
         //call this function if an imageURL is not in the venueImages cache
-        func getMissingImage(imageURL : String, completion: @escaping (_ status: Bool) -> ()) {
-            FirebaseClient.getImageFromURL(imageURL) { (image) in
+        func getMissingImage(imageURL : String, venueID : String?, completion: @escaping (_ status: Bool) -> ()) {
+            FirebaseClient.getImageFromURL(imageURL, venueID: venueID) { (image) in
                 if let image = image {
                     self.venueImages[imageURL] = image
                     completion(true)

@@ -119,7 +119,7 @@ class ProfileTableViewController: UITableViewController {
             cell.profilePic.layer.borderWidth = 2
         }
         else {
-            appDelegate.getMissingImage(imageURL: venue.ImageURL, completion: { (status) in
+            appDelegate.getMissingImage(imageURL: venue.ImageURL, venueID: venue.VenueID, completion: { (status) in
                 if (status) {
                     DispatchQueue.main.async {
                         if let venueImage = appDelegate.venueImages[venue.ImageURL] {

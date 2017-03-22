@@ -272,12 +272,12 @@ extension EventsViewController: UICollectionViewDelegate, UICollectionViewDataSo
     
     
     //Retrieve image with caching
-    func retrieveImage(imageURL : String, imageView : UIImageView) {
+    func retrieveImage(imageURL : String, venueID: String?, imageView : UIImageView) {
         if let image = imageCache[imageURL] {
             imageView.image = image
         }
         else {
-            FirebaseClient.getImageFromURL(imageURL) { (image) in
+            FirebaseClient.getImageFromURL(imageURL, venueID: venueID) { (image) in
                 DispatchQueue.main.async {
                     self.imageCache[imageURL] = image
                     imageView.image = image
@@ -303,7 +303,7 @@ extension EventsViewController: UICollectionViewDelegate, UICollectionViewDataSo
         cell.userToFriendFBID = suggestedUser.FBID
         nameLabel.text = suggestedUser.Name
         userImage.makeViewCircle()
-        self.retrieveImage(imageURL: suggestedUser.PictureURL, imageView: userImage)
+        self.retrieveImage(imageURL: suggestedUser.PictureURL, venueID: nil, imageView: userImage)
         
         if let delegate = cell.delegate {
             if delegate.FBIDWasFlocked(fbid: suggestedUser.FBID) {

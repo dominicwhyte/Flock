@@ -21,9 +21,9 @@ class FrontEventView: UIView {
     }
     
     func setupFrontView(event : Event) {
-        if let imageURL = event.EventImageURL {
+        if let imageURL = event.EventImageURL, let venueID : String = event.VenueID {
             let loadingScreen = Utilities.presentLoadingScreen(vcView: self)
-            FirebaseClient.getImageFromURL(imageURL, { (image) in
+            FirebaseClient.getImageFromURL(imageURL, venueID: venueID, { (image) in
                 DispatchQueue.main.async {
                     Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self)
                     self.backgroundImage.image = image

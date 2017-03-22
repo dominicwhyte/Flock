@@ -70,12 +70,12 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
 
     }
     //Retrieve image with caching
-    func retrieveImage(imageURL : String, imageView : UIImageView) {
+    func retrieveImage(imageURL : String, venueID : String?, imageView : UIImageView) {
         if let image = imageCache[imageURL] {
             imageView.image = image
         }
         else {
-            FirebaseClient.getImageFromURL(imageURL) { (image) in
+            FirebaseClient.getImageFromURL(imageURL, venueID: venueID) { (image) in
                 DispatchQueue.main.async {
                     self.imageCache[imageURL] = image
                     imageView.image = image
@@ -177,7 +177,7 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
         }
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "SEARCH", for: indexPath) as! SearchTableViewCell
-        self.retrieveImage(imageURL: user.PictureURL, imageView: cell.profilePic)
+        self.retrieveImage(imageURL: user.PictureURL, venueID: nil, imageView: cell.profilePic)
         self.makeViewCircle(imageView: cell.profilePic)
         cell.name.text = user.Name
         cell.setupCell(userState: userState, currentUserID: currentUser.FBID, cellID: user.FBID)

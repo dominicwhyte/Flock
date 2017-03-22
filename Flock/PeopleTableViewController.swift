@@ -297,12 +297,12 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
     }
     
     //Retrieve image with caching
-    func retrieveImage(imageURL : String, imageView : UIImageView) {
+    func retrieveImage(imageURL : String, venueID: String?, imageView : UIImageView) {
         if let image = imageCache[imageURL] {
             imageView.image = image
         }
         else {
-            FirebaseClient.getImageFromURL(imageURL) { (image) in
+            FirebaseClient.getImageFromURL(imageURL, venueID: venueID) { (image) in
                 DispatchQueue.main.async {
                     self.imageCache[imageURL] = image
                     imageView.image = image
@@ -378,7 +378,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.REUSE_IDENTIFIERS[indexPath.section], for: indexPath) as! FriendRequestTableViewCell
             cell.setIDs(fromID: friend.FBID, toID: appDelegate.user!.FBID)
             cell.friendName.text = friend.Name
-            self.retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic!)
+            self.retrieveImage(imageURL: friend.PictureURL, venueID: nil, imageView: cell.profilePic!)
             
             //Set the delegate for tableview reloaddata updates
             cell.delegate = self
@@ -399,7 +399,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
             cell.chatButton.isHidden = (appDelegate.user!.FBID == friend.FBID)
             cell.FBID = friend.FBID
             cell.chatDelegate = self
-            self.retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic!)
+            self.retrieveImage(imageURL: friend.PictureURL, venueID: nil, imageView: cell.profilePic!)
             
             setupCell(cell: cell)
             return cell
@@ -407,7 +407,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         case Constants.PLANNED_FRIENDS_INDEX:
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.REUSE_IDENTIFIERS[indexPath.section], for: indexPath) as! PlannedTableViewCell
             cell.friendName.text = friend.Name
-            self.retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic!)
+            self.retrieveImage(imageURL: friend.PictureURL, venueID: nil, imageView: cell.profilePic!)
             let plansCount = friend.Plans.values.count
             cell.subtitleLabel.text = Utilities.setPlurality(string: "\(plansCount) plan", count: plansCount)
             
@@ -439,7 +439,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
             }
             cell.friendName.text = friend.Name
             cell.profilePic!.image = UIImage()
-            self.retrieveImage(imageURL: friend.PictureURL, imageView: cell.profilePic!)
+            self.retrieveImage(imageURL: friend.PictureURL, venueID: nil, imageView: cell.profilePic!)
             cell.preservesSuperviewLayoutMargins = false
             cell.profilePic.makeViewCircle()
             cell.FBID = friend.FBID
@@ -563,7 +563,7 @@ extension PeopleTableViewController: UICollectionViewDelegate, UICollectionViewD
         cell.userToFriendFBID = suggestedUser.FBID
         nameLabel.text = suggestedUser.Name
         userImage.makeViewCircle()
-        self.retrieveImage(imageURL: suggestedUser.PictureURL, imageView: userImage)
+        self.retrieveImage(imageURL: suggestedUser.PictureURL, venueID: nil, imageView: userImage)
         if let delegate = cell.delegate {
             if delegate.FBIDWasFlocked(fbid: suggestedUser.FBID) {
                 cell.setPerformedUI()

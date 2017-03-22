@@ -44,7 +44,8 @@ class LiveTableViewCell: MGSwipeTableCell, MGSwipeTableCellDelegate {
         let venueImages = appDelegate.venueImages
         
         
-        if let venueImage = venueImages[venue.ImageURL] {
+        if (UIImage(named: venue.VenueID) != nil) {
+            let venueImage = UIImage(named: venue.VenueID)
             let button = MGSwipeButton(title: "", icon: nil, backgroundColor: UIColor.clear)
             button.setBackgroundImage(venueImage, for: .normal)
             button.frame = CGRect(x: 0, y: 0, width: Constants.CELL_HEIGHT, height: Constants.CELL_HEIGHT)
@@ -52,7 +53,7 @@ class LiveTableViewCell: MGSwipeTableCell, MGSwipeTableCellDelegate {
         }
         //imageURL not in image cache
         else {
-            appDelegate.getMissingImage(imageURL: venue.ImageURL, completion: { (status) in
+            appDelegate.getMissingImage(imageURL: venue.ImageURL, venueID: venue.VenueID, completion: { (status) in
                 if (status) {
                     DispatchQueue.main.async {
                         if let venueImage = venueImages[venue.ImageURL] {
