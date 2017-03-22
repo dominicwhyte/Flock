@@ -78,6 +78,7 @@
 		5FA3CABB1E565ADA00247CC4 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA3CABA1E565ADA00247CC4 /* ChatViewController.swift */; };
 		5FA3CABD1E565BA300247CC4 /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA3CABC1E565BA300247CC4 /* Channel.swift */; };
 		5FA3CABF1E565D2200247CC4 /* ChatClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA3CABE1E565D2200247CC4 /* ChatClient.swift */; };
+		5FC231CA1E82EC17008ECE6B /* InviteFriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC231C91E82EC17008ECE6B /* InviteFriendsViewController.swift */; };
 		5FC8C5641E52A8B80076F388 /* PermissionUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC8C5631E52A8B80076F388 /* PermissionUtilities.swift */; };
 		5FE16B771E5D332500904FC2 /* ProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE16B761E5D332500904FC2 /* ProfileTableViewController.swift */; };
 		5FE16B791E6124AF00904FC2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5FE16B781E6124AF00904FC2 /* GoogleService-Info.plist */; };
@@ -168,6 +169,7 @@
 		5FA3CABA1E565ADA00247CC4 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		5FA3CABC1E565BA300247CC4 /* Channel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
 		5FA3CABE1E565D2200247CC4 /* ChatClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatClient.swift; sourceTree = "<group>"; };
+		5FC231C91E82EC17008ECE6B /* InviteFriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InviteFriendsViewController.swift; sourceTree = "<group>"; };
 		5FC8C5631E52A8B80076F388 /* PermissionUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PermissionUtilities.swift; sourceTree = "<group>"; };
 		5FE16B761E5D332500904FC2 /* ProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTableViewController.swift; sourceTree = "<group>"; };
 		5FE16B781E6124AF00904FC2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -290,6 +292,7 @@
 				583AAE331E7F7A0900D28B60 /* Utilities.swift */,
 				58F1F4A01E595A220065DA38 /* Walkthrough */,
 				5F5D379B1E43FFCE008E13E4 /* Main.storyboard */,
+				5FC231C91E82EC17008ECE6B /* InviteFriendsViewController.swift */,
 				5F3474D81E80FC3E00A29615 /* Events */,
 				58F1F4A51E5A328D0065DA38 /* Chats */,
 				5F61AF781E4C0BEB00BD6A0C /* Profile */,
@@ -698,6 +701,7 @@
 				583DF4F01E5CF5D300E0622A /* ProfileViewController.swift in Sources */,
 				5F4E940A1E7D9C9B00143931 /* SettingsTableViewController.swift in Sources */,
 				5F4E94061E7C6D8800143931 /* FlockSuggestionTableViewCell.swift in Sources */,
+				5FC231CA1E82EC17008ECE6B /* InviteFriendsViewController.swift in Sources */,
 				5F5D37BB1E43FFF2008E13E4 /* User.swift in Sources */,
 				5F5D37C71E4411B3008E13E4 /* FIrebaseClient.swift in Sources */,
 				583AAE3C1E7F7B0900D28B60 /* PlacesTableViewController.swift in Sources */,
