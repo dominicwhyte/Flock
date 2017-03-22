@@ -31,6 +31,7 @@ target 'Flock' do
    pod 'Instabug'
    #pod 'UPCarouselFlowLayout'
    pod 'ZFRippleButton'
+   pod 'Gecco'
 
   target 'FlockTests' do
     inherit! :search_paths

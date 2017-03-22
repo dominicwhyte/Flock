@@ -72,9 +72,7 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         self.collectionView.backgroundView = nil
         
         if (events.count != 0) {
-            let event = events[0]
-            self.userFBIDSofPlanningAttendees = Array(event.EventAttendeeFBIDs.values)
-            self.setupLabelAndButton(event: event)
+            updateUINoCollectionReload()
         }
         
         
@@ -100,11 +98,6 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         return events.count
     }
     
-    func test() {
-        carousel.reloadData()
-        Utilities.printDebugMessage("reloading son")
-    }
-    
     func carousel(_ carousel: iCarousel, didSelectItemAt index: Int) {
         
         if (index == carousel.currentItemIndex) {
@@ -118,14 +111,8 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
     }
     
     func carouselCurrentItemIndexDidChange(_ carousel: iCarousel) {
-        let event = events[carousel.currentItemIndex]
-        self.userFBIDSofPlanningAttendees = Array(event.EventAttendeeFBIDs.values)
-        
-        setupLabelAndButton(event: event)
-        
-        collectionView.reloadData()
-    }
-    
+        updateUI()
+    }    
     
     func setupLabelAndButton(event : Event) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -225,14 +212,21 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         }
     }
     
-    func updateUI() {
+    func updateUINoCollectionReload() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         setEventsInTimeFrame()
         
         let event = self.events[self.carousel.currentItemIndex]
         self.userFBIDSofPlanningAttendees = Array(event.EventAttendeeFBIDs.values)
+        userFBIDSofPlanningAttendees = userFBIDSofPlanningAttendees.filter { (fbid) -> Bool in
+            return (appDelegate.friends[fbid] != nil)
+        }
         
         self.setupLabelAndButton(event: event)
+    }
+    
+    func updateUI() {
+        updateUINoCollectionReload()
         
         self.collectionView.reloadData()
     }

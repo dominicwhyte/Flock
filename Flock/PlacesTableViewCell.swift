@@ -17,5 +17,6 @@ class PlacesTableViewCell: UITableViewCell {
     @IBOutlet weak var leftStatLabel: UILabel!
     @IBOutlet weak var rightStatLabel: UILabel!
     
+    @IBOutlet weak var nextOpenLabel: UILabel!
     
 }

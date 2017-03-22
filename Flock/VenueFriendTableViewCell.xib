@@ -35,14 +35,14 @@
                             <constraint firstAttribute="width" constant="59" id="G19-ae-Cqs"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A99-gh-IOh">
-                        <rect key="frame" x="75" y="12.5" width="52.5" height="27.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="A99-gh-IOh">
+                        <rect key="frame" x="75" y="13" width="292" height="28"/>
                         <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VJp-Oi-Y1O">
-                        <rect key="frame" x="75" y="40" width="37" height="20.5"/>
+                        <rect key="frame" x="75" y="41" width="37" height="20.5"/>
                         <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -54,6 +54,7 @@
                     <constraint firstAttribute="bottomMargin" secondItem="DhH-zx-asg" secondAttribute="bottom" id="eYF-Ig-gzn"/>
                     <constraint firstItem="VJp-Oi-Y1O" firstAttribute="top" secondItem="A99-gh-IOh" secondAttribute="bottom" id="fYY-8Z-l5m"/>
                     <constraint firstItem="DhH-zx-asg" firstAttribute="leading" secondItem="vBM-5z-LCs" secondAttribute="leadingMargin" id="kJq-My-WtD"/>
+                    <constraint firstItem="A99-gh-IOh" firstAttribute="trailing" secondItem="vBM-5z-LCs" secondAttribute="trailingMargin" id="oc9-t9-cAU"/>
                     <constraint firstItem="A99-gh-IOh" firstAttribute="centerY" secondItem="vBM-5z-LCs" secondAttribute="centerY" multiplier="0.7" id="tOv-ms-Hsz"/>
                     <constraint firstItem="VJp-Oi-Y1O" firstAttribute="leading" secondItem="A99-gh-IOh" secondAttribute="leading" id="w75-QD-1cT"/>
                 </constraints>

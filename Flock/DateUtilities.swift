@@ -93,6 +93,10 @@ class DateUtilities {
         return DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: date))
     }
     
+    static func dateIsWithinOneCalendarWeek(date : Date) -> Bool {
+        return DateUtilities.isWithinOneCalendarWeek(dayDiff: DateUtilities.daysUntilPlan(planDate: date))
+    }
+    
     static func daysUntilPlan(planDate: Date) -> Int {
         let calendar = NSCalendar.current
         
@@ -111,5 +115,10 @@ class DateUtilities {
     static func isValidTimeFrame(dayDiff: Int) -> Bool {
         //Allow people to see and plan for yesterday
         return (dayDiff >= 0 && dayDiff < Constants.NUMBER_OF_DAYS_TO_DISPLAY)
+    }
+    
+    static func isWithinOneCalendarWeek(dayDiff: Int) -> Bool {
+        //Allow people to see and plan for yesterday
+        return (dayDiff >= 0 && dayDiff < 7)
     }
 }

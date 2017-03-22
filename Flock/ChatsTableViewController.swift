@@ -28,10 +28,10 @@ class ChatsTableViewController: UITableViewController {
             
             self.conversations.append(conversation)
             self.conversations.sort(by: { (conversation1, conversation2) -> Bool in
-
+                
                 conversation1.participant.Name < conversation2.participant.Name
             })
-
+            
         }
         
         // Remove appDelegate observer as soon as we start observing:
@@ -40,13 +40,13 @@ class ChatsTableViewController: UITableViewController {
         for (_, count) in appDelegate.unreadMessageCount {
             totalUnread += count
         }
-//        if let stb = appDelegate.simpleTBC {
-//            if totalUnread > 0 {
-//                stb.addBadge(index: 3, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
-//            } else {
-//                stb.removeAllBadges()
-//            }
-//        }
+        //        if let stb = appDelegate.simpleTBC {
+        //            if totalUnread > 0 {
+        //                stb.addBadge(index: 3, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
+        //            } else {
+        //                stb.removeAllBadges()
+        //            }
+        //        }
         
         self.retrieveUserImageWithoutSetting(imageURL: self.user!.PictureURL, venueID: nil)
     }
@@ -56,19 +56,19 @@ class ChatsTableViewController: UITableViewController {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         self.user = appDelegate.user!
         var newConversations = [Conversation]()
-        if(self.conversations.count != user?.ChannelIDs.count){
-            for(FBID, channelID) in self.user!.ChannelIDs {
-                let friend = appDelegate.users[FBID]!
-                let conversation = Conversation(channelID: channelID, participant: friend, imageURL : friend.PictureURL, lastMessage: nil )
-                
-                newConversations.append(conversation)
-                newConversations.sort(by: { (conversation1, conversation2) -> Bool in
-                    conversation1.participant.Name < conversation2.participant.Name
-                })
-
-            }
-            self.conversations = newConversations
+        
+        for(FBID, channelID) in self.user!.ChannelIDs {
+            let friend = appDelegate.users[FBID]!
+            let conversation = Conversation(channelID: channelID, participant: friend, imageURL : friend.PictureURL, lastMessage: nil )
+            
+            newConversations.append(conversation)
+            newConversations.sort(by: { (conversation1, conversation2) -> Bool in
+                conversation1.participant.Name < conversation2.participant.Name
+            })
+            
         }
+        self.conversations = newConversations
+        
         self.tableView.reloadData()
         self.tableView.setNeedsDisplay()
         self.tableView.setNeedsLayout()
@@ -121,7 +121,7 @@ class ChatsTableViewController: UITableViewController {
         // #warning Incomplete implementation, return the number of rows
         return conversations.count
     }
-
+    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! ChatTableViewCell
@@ -184,13 +184,13 @@ class ChatsTableViewController: UITableViewController {
                     totalUnread += count
                 }
                 
-//                if let stb = appDelegate.simpleTBC {
-//                    if totalUnread > 0 {
-//                        stb.addBadge(index: 3, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
-//                    } else {
-//                        stb.removeAllBadges()
-//                    }
-//                }
+                //                if let stb = appDelegate.simpleTBC {
+                //                    if totalUnread > 0 {
+                //                        stb.addBadge(index: 3, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
+                //                    } else {
+                //                        stb.removeAllBadges()
+                //                    }
+                //                }
                 if(unreadCount > 0 && !labelsHaveBeenUpdated) {
                     // Unread messages
                     if(unreadCount > 0 && unreadCount <= 5) {
@@ -209,7 +209,7 @@ class ChatsTableViewController: UITableViewController {
                         labelsHaveBeenUpdated = true
                     }
                 }
-
+                
                 
                 DispatchQueue.main.async {
                     if(conversation.lastMessage != nil) {
@@ -253,13 +253,13 @@ class ChatsTableViewController: UITableViewController {
             totalUnread += count
         }
         
-//        if let stb = appDelegate.simpleTBC {
-//            if totalUnread > 0 {
-//                stb.addBadge(index: 3, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
-//            } else {
-//                stb.removeAllBadges()
-//            }
-//        }
+        //        if let stb = appDelegate.simpleTBC {
+        //            if totalUnread > 0 {
+        //                stb.addBadge(index: 3, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
+        //            } else {
+        //                stb.removeAllBadges()
+        //            }
+        //        }
         if(unreadCount > 0 && !labelsHaveBeenUpdated) {
             // Unread messages
             if(unreadCount > 0 && unreadCount <= 5) {
@@ -282,8 +282,8 @@ class ChatsTableViewController: UITableViewController {
         //        cell.liveLabel.text = "\(venue.CurrentAttendees.count) live"
         //        cell.plannedLabel.text = "\(venue.PlannedAttendees.count) planned"
         //cell.subtitleLabel.text = "\(venue.CurrentAttendees.count) live   \(venue.PlannedAttendees.count) planned"
-
-
+        
+        
         return cell
         
     }

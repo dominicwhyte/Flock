@@ -35,6 +35,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     
     let INDEX_OF_PLANNED_ATTENDEES = 1
     let INDEX_OF_LIVE_ATTENDEES = 0
+    var specialEventID : String?
     var stringsOfUpcomingDays : [String] = [] // Full dates
     var imageCache = [String: UIImage]()
     //keys are yyyy-MM-dd
@@ -244,15 +245,23 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         
         venueImageView.alpha = 1
         optionalEventNameLabel.text = ""
+        
+        specialEventID = nil
+        
+        var specialEventName : String?
+        
         for (_,event) in venue.Events {
             if (event.EventDate == date) {
                 if (event.SpecialEvent) {
                     Utilities.printDebugMessage("This event is special!")
                     handleSpecialEvent(event: event)
+                    specialEventName = event.EventName
+                    specialEventID = event.EventID
                     break
                 }
                 else {
                     Utilities.printDebugMessage("This venue is open!")
+                    handleRegularEvent(event: event)
                     break
                 }
             }
@@ -271,11 +280,26 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
             }
         } else {
             disable = true
-            Utilities.printDebugMessage("Something wrong with date dictionary - doesn't contain dateString")
+            Utilities.printDebugMessage("Error with date dictionary - doesn't contain dateString")
         }
         
+        if (specialEventID != nil) {
+            self.delegate?.changeButtonTitle(title: "GO TO \(specialEventName!.uppercased()) @ \(venueString)", shouldDisable: disable)
+        }
+        else {
+            self.delegate?.changeButtonTitle(title: "GO TO \(venueString) ON \(dateStringInFormat.uppercased())", shouldDisable: disable)
+        }
         
-        self.delegate?.changeButtonTitle(title: "GO TO \(venueString) ON \(dateStringInFormat.uppercased())", shouldDisable: disable)
+    }
+    
+    func handleRegularEvent(event : Event) {
+        
+        UIView.animate(withDuration: 0.5, animations: { 
+            self.venueImageView.alpha = 0.7
+            self.optionalEventNameLabel.text = "Open"
+        })
+
+
     }
     
     func handleSpecialEvent(event : Event) {
@@ -327,10 +351,14 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
                     if(DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))) {
                         if(plan.venueID == venue.VenueID) {
                             let fullDate = DateUtilities.convertDateToStringByFormat(date: plan.date, dateFormat: DateUtilities.Constants.fullDateFormat)
-                            allFriendsForDate[fullDate]![self.INDEX_OF_PLANNED_ATTENDEES].append(friend)
+                            //check that there is not already a plan for this friend for this day
+                            if (!allFriendsForDate[fullDate]![self.INDEX_OF_PLANNED_ATTENDEES].contains(friend)) {
+                                allFriendsForDate[fullDate]![self.INDEX_OF_PLANNED_ATTENDEES].append(friend)
+                                
+                                self.allPlannedFriendsForDateCountDict[fullDate]! += 1
+                                self.allPlannedAttendeesForDateCountDict[fullDate]! += 1
+                            }
                             
-                            self.allPlannedFriendsForDateCountDict[fullDate]! += 1
-                            self.allPlannedAttendeesForDateCountDict[fullDate]! += 1
                         }
                     } else {
                         friend.Plans[visitID] = nil

@@ -109,7 +109,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             if Int(countText) == 1 {
                 peopleText = "person is"
             }
-            _ = alert.showInfo("Planned", subTitle: "\(countText) \(peopleText) planning to go to \(venue.VenueNickName)")
+            _ = alert.showInfo("Planned", subTitle: "\(countText) \(peopleText) planning to go to \(venue.VenueNickName) in the coming days")
         }
     }
     
@@ -139,7 +139,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             if Int(countText) == 1 {
                 peopleText = "person is"
             }
-            _ = alert.showInfo("Live", subTitle: "\(countText) \(peopleText) live at \(venue.VenueNickName)")
+            _ = alert.showInfo("Live", subTitle: "\(countText) \(peopleText) currently live at \(venue.VenueNickName)")
         }
     }
     
@@ -208,6 +208,25 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             //                cell.rightStatLabel.text = "\(String(lifetime))"
             //
             //            }
+            
+            var closestEvent : Event?
+            for (_,event) in venue.Events {
+                if (DateUtilities.dateIsWithinOneCalendarWeek(date: event.EventDate)) {
+                    if (closestEvent == nil) {
+                        closestEvent = event
+                    }
+                    else if (DateUtilities.daysUntilPlan(planDate: closestEvent!.EventDate) > DateUtilities.daysUntilPlan(planDate: event.EventDate)) {
+                        closestEvent = event
+                    }
+                }
+            }
+            if let closestEvent = closestEvent {
+                cell.nextOpenLabel.text = "Next open \(DateUtilities.convertDateToStringByFormat(date: closestEvent.EventDate, dateFormat: "E"))"
+            }
+            else {
+                cell.nextOpenLabel.text = "Next open TBD"
+            }
+            
             let currentLive = venue.CurrentAttendees.count
             cell.rightStatLabel.text = "\(String(currentLive))"
             var totalPlanned = 0
@@ -533,7 +552,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             
             
             //Add Venue and present popup
-            FirebaseClient.addUserToVenuePlansForDate(date: date, venueID: self.venueToPass!.VenueID, userID: appDelegate.user!.FBID, add: true, specialEventID: nil, completion: { (success) in
+            FirebaseClient.addUserToVenuePlansForDate(date: date, venueID: self.venueToPass!.VenueID, userID: appDelegate.user!.FBID, add: true, specialEventID: popupSubView.specialEventID, completion: { (success) in
                 if (success) {
                     appDelegate.profileNeedsToUpdate = true
                     Utilities.printDebugMessage("Successfully added plan to attend venue")
@@ -555,6 +574,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
                 }
             })
         }
+        
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         attendButton.isEnabled = self.shouldAttendButtonBeEnabledUponInitialPopup(appDelegate: appDelegate)
         attendButton.backgroundColor = FlockColors.FLOCK_BLUE
@@ -571,6 +591,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             Utilities.printDebugMessage("Height error")
         }
         else {
+            popupSubView.setAttendButtonTitle()
             present(popup, animated: true, completion: nil)
         }
         // Present dialog
