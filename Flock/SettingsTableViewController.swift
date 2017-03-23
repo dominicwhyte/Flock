@@ -25,7 +25,12 @@ class SettingsTableViewController: UITableViewController {
     
     @IBOutlet weak var autoLiveSwitch: UISwitch!
     
+    @IBOutlet weak var profileNameLabel: UILabel!
+    
+    
     override func viewDidLoad() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        profileNameLabel.text = appDelegate.user!.Name
         adminButton.isEnabled = false
         adminButton.isHidden = true
         

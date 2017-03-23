@@ -37,14 +37,6 @@ extension InviteFriendsViewController: FBSDKAppInviteDialogDelegate{
     }
 
     func appInviteDialog(_ appInviteDialog: FBSDKAppInviteDialog!, didCompleteWithResults results: [AnyHashable : Any]!) {
-        let resultObject = NSDictionary(dictionary: results)
         
-        if let didCancel = resultObject.value(forKey: "completionGesture")
-        {
-            if (didCancel as AnyObject).caseInsensitiveCompare("Cancel") == ComparisonResult.orderedSame
-            {
-                print("User Canceled invitation dialog")
-            }
-        }
     }
 }

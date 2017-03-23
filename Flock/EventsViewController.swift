@@ -255,7 +255,7 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
             else {
                 Utilities.printDebugMessage("Invite flock!")
                 let userName = appDelegate.user!.Name
-                let venueName = appDelegate.venues[event.VenueID]
+                let venueName = appDelegate.venues[event.VenueID]!.VenueName
                 let displayDate = DateUtilities.convertDateToStringByFormat(date: event.EventDate, dateFormat: DateUtilities.Constants.uiDisplayFormat)
                 let plannedAttendees = event.EventAttendeeFBIDs
                 let eventName = event.EventName

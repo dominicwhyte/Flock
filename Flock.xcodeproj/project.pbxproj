@@ -79,6 +79,7 @@
 		5FA3CABD1E565BA300247CC4 /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA3CABC1E565BA300247CC4 /* Channel.swift */; };
 		5FA3CABF1E565D2200247CC4 /* ChatClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA3CABE1E565D2200247CC4 /* ChatClient.swift */; };
 		5FC231CA1E82EC17008ECE6B /* InviteFriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC231C91E82EC17008ECE6B /* InviteFriendsViewController.swift */; };
+		5FC231CC1E8376BC008ECE6B /* InviteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC231CB1E8376BC008ECE6B /* InviteTableViewCell.swift */; };
 		5FC8C5641E52A8B80076F388 /* PermissionUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC8C5631E52A8B80076F388 /* PermissionUtilities.swift */; };
 		5FE16B771E5D332500904FC2 /* ProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE16B761E5D332500904FC2 /* ProfileTableViewController.swift */; };
 		5FE16B791E6124AF00904FC2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5FE16B781E6124AF00904FC2 /* GoogleService-Info.plist */; };
@@ -170,6 +171,7 @@
 		5FA3CABC1E565BA300247CC4 /* Channel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
 		5FA3CABE1E565D2200247CC4 /* ChatClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatClient.swift; sourceTree = "<group>"; };
 		5FC231C91E82EC17008ECE6B /* InviteFriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InviteFriendsViewController.swift; sourceTree = "<group>"; };
+		5FC231CB1E8376BC008ECE6B /* InviteTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InviteTableViewCell.swift; sourceTree = "<group>"; };
 		5FC8C5631E52A8B80076F388 /* PermissionUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PermissionUtilities.swift; sourceTree = "<group>"; };
 		5FE16B761E5D332500904FC2 /* ProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTableViewController.swift; sourceTree = "<group>"; };
 		5FE16B781E6124AF00904FC2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -354,6 +356,7 @@
 				583AAE391E7F7ACB00D28B60 /* PeopleSelectorTableViewCell.swift */,
 				5F5D37F51E4536E8008E13E4 /* LiveTableViewCell.swift */,
 				5F5D37F71E4536F1008E13E4 /* PlannedTableViewCell.swift */,
+				5FC231CB1E8376BC008ECE6B /* InviteTableViewCell.swift */,
 				5F5D37F91E4536F6008E13E4 /* AllTableViewCell.swift */,
 			);
 			name = PeopleCells;
@@ -690,6 +693,7 @@
 				5F61AF6F1E4A858700BD6A0C /* CustomSearchBar.swift in Sources */,
 				5F5D37C51E440F4F008E13E4 /* Venue.swift in Sources */,
 				583AAE341E7F7A0900D28B60 /* Utilities.swift in Sources */,
+				5FC231CC1E8376BC008ECE6B /* InviteTableViewCell.swift in Sources */,
 				5F5D37BE1E4405E9008E13E4 /* LoginClient.swift in Sources */,
 				5F3474DA1E8240F400A29615 /* AnnotationViewController.swift in Sources */,
 				58F1F49F1E5959D10065DA38 /* ViewController.swift in Sources */,

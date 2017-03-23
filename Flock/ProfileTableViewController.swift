@@ -138,12 +138,14 @@ class ProfileTableViewController: UITableViewController {
             cell.nameLabel.text = appDelegate.specialEvents[plan.specialEventID!]?.EventName
             cell.profilePic.layer.borderColor = FlockColors.FLOCK_BLUE.cgColor
             cell.nameLabel.textColor = FlockColors.FLOCK_BLUE
+            cell.subtitleLabel.textColor = FlockColors.FLOCK_BLUE
             
         }
         else {
             cell.nameLabel.text = venue.VenueName
             cell.profilePic.layer.borderColor = UIColor.lightGray.cgColor
             cell.nameLabel.textColor = UIColor.black
+            cell.subtitleLabel.textColor = UIColor.black
         }
 
         
