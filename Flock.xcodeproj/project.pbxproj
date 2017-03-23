@@ -75,6 +75,8 @@
 		5F61AF711E4B7B7100BD6A0C /* EmptyBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF701E4B7B7100BD6A0C /* EmptyBackgroundView.swift */; };
 		5F61AF751E4BCC6300BD6A0C /* PlacesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF741E4BCC6300BD6A0C /* PlacesTableViewCell.swift */; };
 		5F61AF771E4C0BE400BD6A0C /* ProfileViewControllerCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F61AF761E4C0BE300BD6A0C /* ProfileViewControllerCopy.swift */; };
+		5F9E5B7D1E8481F100FAA292 /* InviteRequestCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9E5B7C1E8481F100FAA292 /* InviteRequestCollectionViewCell.swift */; };
+		5F9E5B7F1E84824F00FAA292 /* InviteRequestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9E5B7E1E84824F00FAA292 /* InviteRequestTableViewCell.swift */; };
 		5FA3CABB1E565ADA00247CC4 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA3CABA1E565ADA00247CC4 /* ChatViewController.swift */; };
 		5FA3CABD1E565BA300247CC4 /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA3CABC1E565BA300247CC4 /* Channel.swift */; };
 		5FA3CABF1E565D2200247CC4 /* ChatClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA3CABE1E565D2200247CC4 /* ChatClient.swift */; };
@@ -167,6 +169,8 @@
 		5F61AF701E4B7B7100BD6A0C /* EmptyBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyBackgroundView.swift; sourceTree = "<group>"; };
 		5F61AF741E4BCC6300BD6A0C /* PlacesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacesTableViewCell.swift; sourceTree = "<group>"; };
 		5F61AF761E4C0BE300BD6A0C /* ProfileViewControllerCopy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewControllerCopy.swift; sourceTree = "<group>"; };
+		5F9E5B7C1E8481F100FAA292 /* InviteRequestCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InviteRequestCollectionViewCell.swift; sourceTree = "<group>"; };
+		5F9E5B7E1E84824F00FAA292 /* InviteRequestTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InviteRequestTableViewCell.swift; sourceTree = "<group>"; };
 		5FA3CABA1E565ADA00247CC4 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		5FA3CABC1E565BA300247CC4 /* Channel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
 		5FA3CABE1E565D2200247CC4 /* ChatClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatClient.swift; sourceTree = "<group>"; };
@@ -294,6 +298,8 @@
 				583AAE331E7F7A0900D28B60 /* Utilities.swift */,
 				58F1F4A01E595A220065DA38 /* Walkthrough */,
 				5F5D379B1E43FFCE008E13E4 /* Main.storyboard */,
+				5F9E5B7E1E84824F00FAA292 /* InviteRequestTableViewCell.swift */,
+				5F9E5B7C1E8481F100FAA292 /* InviteRequestCollectionViewCell.swift */,
 				5FC231C91E82EC17008ECE6B /* InviteFriendsViewController.swift */,
 				5F3474D81E80FC3E00A29615 /* Events */,
 				58F1F4A51E5A328D0065DA38 /* Chats */,
@@ -679,6 +685,7 @@
 				5F5D37FD1E465172008E13E4 /* TODO.swift in Sources */,
 				5F61AF751E4BCC6300BD6A0C /* PlacesTableViewCell.swift in Sources */,
 				5F5D37F21E45168D008E13E4 /* PeopleTableViewController.swift in Sources */,
+				5F9E5B7F1E84824F00FAA292 /* InviteRequestTableViewCell.swift in Sources */,
 				5F2EC0211E7FA620002F6D65 /* ZFRippleButton.swift in Sources */,
 				5FA3CABD1E565BA300247CC4 /* Channel.swift in Sources */,
 				58F1F4A91E5A340F0065DA38 /* ChatTableViewCell.swift in Sources */,
@@ -710,6 +717,7 @@
 				5F5D37C71E4411B3008E13E4 /* FIrebaseClient.swift in Sources */,
 				583AAE3C1E7F7B0900D28B60 /* PlacesTableViewController.swift in Sources */,
 				5F3474CD1E804FE400A29615 /* FrontEventView.swift in Sources */,
+				5F9E5B7D1E8481F100FAA292 /* InviteRequestCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

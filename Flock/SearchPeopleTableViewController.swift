@@ -291,6 +291,7 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
     }
     
     func openTextMessage(toUser : String, phoneNumber : String, cell : InviteTableViewCell) {
+        self.lastClickedInviteCell = cell
         Utilities.printDebugMessage(toUser + " " + phoneNumber)
         if !MFMessageComposeViewController.canSendText() {
             let alert = SCLAlertView()
@@ -316,7 +317,32 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
         
     }
     
+    var lastClickedInviteCell : InviteTableViewCell?
+    
     func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        if (result == .sent) {
+            if let cell = lastClickedInviteCell {
+                if let indexPath = cell.indexPath {
+                    if searchController.isActive && searchController.searchBar.text != "" {
+                        self.filteredPeopleToInvite.remove(at: indexPath.row)
+                    } else {
+                        self.peopleToInvite.remove(at: indexPath.row)
+                    }
+                    
+                    
+                    DispatchQueue.main.async {
+                        self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                    }
+                }
+                
+            }
+            
+        }
+        else {
+            if let cell = lastClickedInviteCell {
+                cell.resetUI()
+            }
+        }
         controller.dismiss(animated: true, completion: nil)
     }
     
@@ -330,7 +356,10 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
                 return cell
             }
             let cell = tableView.dequeueReusableCell(withIdentifier: "INVITE_TO_FLOCK", for: indexPath) as! InviteTableViewCell
+            cell.resetUI()
             var person : SwiftAddressBookPerson
+            cell.activityIndicator.isHidden = true
+            cell.indexPath = indexPath
             if searchController.isActive && searchController.searchBar.text != "" {
                 person = filteredPeopleToInvite[indexPath.row]
             } else {

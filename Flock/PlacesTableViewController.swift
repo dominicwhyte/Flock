@@ -20,6 +20,12 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     let items = ["Princeton", "Harvard", "Dartmouth", "Stanford"]
     var currentTab : String = "Princeton" //Which college
     
+    struct Constants {
+        static let FLOCK_INVITE_REQUEST_CELL_SIZE = 129.0
+    }
+    
+    var flockInviteRequestCollectionView : UICollectionView?
+    
     fileprivate let reuseIdentifier = "PLACE"
     fileprivate let sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     
@@ -28,6 +34,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     fileprivate let itemsPerRow: CGFloat = 1
     var venues = [Venue]()
     var filteredVenues = [Venue]()
+    var invitationRequests = [Invitation]()
     
     var imageCache = [String : UIImage]()
     let searchController = UISearchController(searchResultsController: nil)
@@ -52,7 +59,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         
     }
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
     
     //UpdateTableViewDelegate function
@@ -61,6 +68,8 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         appDelegate.updateAllData { (success) in
             DispatchQueue.main.async {
                 if (success) {
+                    self.setDataForInvitesRequestsCollectionView()
+                    self.flockInviteRequestCollectionView?.reloadData()
                     Utilities.printDebugMessage("Successfully reloaded data and tableview")
                     self.getVenuesAndSort()
                     
@@ -170,7 +179,9 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         if (currentTab == items[0]) {
             tableView.separatorStyle = .none
             tableView.backgroundView?.isHidden = false
-            // #warning Incomplete implementation, return the number of items
+            if (section == 0) {
+                return 1
+            }
             if searchController.isActive && searchController.searchBar.text != "" {
                 return self.filteredVenues.count
             }
@@ -188,6 +199,12 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if (indexPath.section == 0) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "INVITE_REQUEST_TABLE_VIEW_CELL", for: indexPath) as! InviteRequestTableViewCell
+            cell.setCollectionViewDataSourceDelegate(self)
+            flockInviteRequestCollectionView = cell.collectionView
+            return cell
+        }
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! PlacesTableViewCell
         cell.selectionStyle = .none
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -290,6 +307,9 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     let b : CGFloat  = 60
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if (indexPath.section == 0) {
+            return CGFloat(Constants.FLOCK_INVITE_REQUEST_CELL_SIZE)
+        }
         let cellHeight = inverseGoldenRatio * (CGFloat(self.view.frame.width) - l - r) + b + t
         return cellHeight
     }
@@ -400,6 +420,15 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         self.view.backgroundColor = UIColor.clear
         //empty background view
         setupEmptyBackgroundView()
+        
+        //setup collection view for invites
+        setDataForInvitesRequestsCollectionView()
+    }
+    
+    func setDataForInvitesRequestsCollectionView() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let user = appDelegate.user!
+        invitationRequests = Array(user.Invitations.values)
     }
     
     func refresh(refreshControl: UIRefreshControl) {
@@ -683,7 +712,7 @@ protocol VenueDelegate: class {
     func changeButtonTitle(title: String, shouldDisable: Bool)
     
 }
-
+/*
 public extension UIDevice {
     
     var modelName: String {
@@ -726,4 +755,26 @@ public extension UIDevice {
         }
     }
     
+}*/
+
+extension PlacesTableViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        Utilities.printDebugMessage(String(invitationRequests.count))
+        return invitationRequests.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FLOCK_INVITE_REQUEST_COLLECTION_VIEW_CELL", for: indexPath) as! InviteRequestCollectionViewCell
+
+        let inviteRequest = invitationRequests[indexPath.row]
+
+        cell.imageView.makeViewCircle()
+        cell.nameLabel.text = inviteRequest.fromUserID
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
+    }
 }

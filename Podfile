@@ -33,6 +33,7 @@ target 'Flock' do
    pod 'ZFRippleButton'
    pod 'Gecco'
    pod 'SwiftAddressBook'
+   pod 'KCFloatingActionButton', '~> 2.2.0'
 
   target 'FlockTests' do
     inherit! :search_paths

@@ -12,9 +12,11 @@ class InviteTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+
         // Initialization code
     }
     
+    var indexPath : IndexPath?
     var delegate : InviteSenderTableViewDelegate?
     var firstName : String?
     
@@ -22,6 +24,9 @@ class InviteTableViewCell: UITableViewCell {
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var backgroundButtonView: UIButton!
     @IBOutlet weak var innerButtonView: UIButton!
+    
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     
     @IBAction func innerbuttonPressed(_ sender: Any) {
         performInvite()
@@ -32,14 +37,21 @@ class InviteTableViewCell: UITableViewCell {
         performInvite()
     }
     
+    func resetUI() {
+        activityIndicator.stopAnimating()
+        activityIndicator.isHidden = true
+        backgroundButtonView.isHidden = false
+        innerButtonView.isHidden = false
+    }
+    
+    
     func performInvite() {
-        let indicator = UIActivityIndicatorView(frame: backgroundButtonView.frame)
+
         backgroundButtonView.isHidden = true
         innerButtonView.isHidden = true
-        indicator.color = FlockColors.FLOCK_BLUE
-        
-        self.addSubview(indicator)
-        
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+        activityIndicator.color = FlockColors.FLOCK_BLUE
         let nameToPass : String
         if firstName != nil {
             nameToPass = firstName!

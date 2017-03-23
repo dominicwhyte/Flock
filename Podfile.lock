@@ -81,6 +81,7 @@ PODS:
   - JSQMessagesViewController (7.3.4):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
+  - KCFloatingActionButton (2.2.0)
   - LFTwitterProfile (0.1.1):
     - SnapKit (~> 3.0)
   - MGSwipeTableCell (1.5.6)
@@ -112,6 +113,7 @@ DEPENDENCIES:
   - Gecco
   - Instabug
   - JSQMessagesViewController
+  - KCFloatingActionButton (~> 2.2.0)
   - LFTwitterProfile
   - MGSwipeTableCell
   - MVHorizontalPicker
@@ -150,6 +152,7 @@ SPEC CHECKSUMS:
   Instabug: 13b238537cdacc1d6a2db71a8375b0c6fbcbe248
   JSQMessagesViewController: 39fed975e3c9f8eba7292071e29eeb541d105e66
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
+  KCFloatingActionButton: 8c71fa25774e422c8d407f82b4b27809d0cd5233
   LFTwitterProfile: 57cc1c1602e3b4cf297b3d80b85dff16b5257ad4
   MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
   MVHorizontalPicker: d0d821ef2fa0c2dd9b11c907e650f5551c2f501c
@@ -165,6 +168,6 @@ SPEC CHECKSUMS:
   SwiftAddressBook: 88c68c6bd0c6a9cb10e5cdc80f91fd87b5e0f4ec
   ZFRippleButton: 62ea35e209757704dea697d66489fe69c13d7b77
 
-PODFILE CHECKSUM: 3592cacb881288299c653b95a4add172cbb43148
+PODFILE CHECKSUM: fcc3f229ad7fb3bf0fa80683ccd52722e7a67ec9
 
 COCOAPODS: 1.0.1
