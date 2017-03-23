@@ -20,6 +20,9 @@ class PeopleSelectorTableViewController: UITableViewController, UpdateSelectorTa
     var venueName : String?
     var fullDate : String?
     var eventName : String?
+    var venueID : String?
+    var userID : String?
+    var specialEventID : String?
     var friends  = [User]()
     var friendsToInvite = [String]()
     var imageCache = [String : UIImage]()
@@ -33,6 +36,15 @@ class PeopleSelectorTableViewController: UITableViewController, UpdateSelectorTa
             user1.Name < user2.Name
         }
         self.inviteButton.isEnabled = false
+        if let _ = self.userID {
+            self.userName = appDelegate.user!.Name
+        }
+        if let venueID = self.venueID {
+            self.venueName = appDelegate.venues[venueID]!.VenueName
+        }
+        if let specialEventID = self.specialEventID {
+            self.eventName = appDelegate.specialEvents[specialEventID]!.EventName
+        }
         
         
         
@@ -65,6 +77,16 @@ class PeopleSelectorTableViewController: UITableViewController, UpdateSelectorTa
             }
             
             Utilities.sendPushNotificationToPartOfFlock(title: title, toFriends: friendsToInvite)
+            for friendID in friendsToInvite {
+                if let userID = self.userID, let venueID = self.venueID{
+                    let specialEventID : String? = self.specialEventID
+                    FirebaseClient.addInvitationToUserForVenueForDate(toUserID: friendID, fromUserID: userID, date: fullDate, venueID: venueID, add: true, specialEventID: specialEventID, completion: { (success) in
+                        if(success) {
+                            Utilities.printDebugMessage("Successfully added invitation on Firebase")
+                        }
+                    })
+                }
+            }
         }
         self.dismiss(animated: true) {
             Utilities.printDebugMessage("Successfully dismissed friend selector")

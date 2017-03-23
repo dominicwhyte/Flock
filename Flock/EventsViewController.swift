@@ -254,12 +254,12 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
             }
             else {
                 Utilities.printDebugMessage("Invite flock!")
-                let userName = appDelegate.user!.Name
-                let venueName = appDelegate.venues[event.VenueID]!.VenueName
+                let userID = appDelegate.user!.FBID
+                let venueID = appDelegate.venues[event.VenueID]!.VenueID
                 let fullDate = DateUtilities.convertDateToStringByFormat(date: event.EventDate, dateFormat: DateUtilities.Constants.fullDateFormat)
                 let plannedAttendees = event.EventAttendeeFBIDs
-                let eventName = event.EventName
-                performSegue(withIdentifier: "SELECTOR_IDENTIFIER", sender: (userName, venueName, fullDate, plannedAttendees, eventName))
+                let specialEventID = event.EventID
+                performSegue(withIdentifier: "SELECTOR_IDENTIFIER", sender: (userID, venueID, fullDate, plannedAttendees, specialEventID))
             }
             carousel.reloadData()
         }
@@ -268,12 +268,12 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let navController = segue.destination as? UINavigationController {
             if let peopleSelectorTableViewController = navController.topViewController as? PeopleSelectorTableViewController {
-                if let (userName, venueName, fullDate, plannedAttendees, eventName) = sender as? (String, String, String, [String:String], String) {
-                    peopleSelectorTableViewController.userName = userName
-                    peopleSelectorTableViewController.venueName = venueName
+                if let (userID, venueID, fullDate, plannedAttendees, specialEventID) = sender as? (String, String, String, [String:String], String) {
+                    peopleSelectorTableViewController.userID = userID
+                    peopleSelectorTableViewController.venueID = venueID
                     peopleSelectorTableViewController.fullDate = fullDate
                     peopleSelectorTableViewController.plannedAttendees = plannedAttendees
-                    peopleSelectorTableViewController.eventName = eventName
+                    peopleSelectorTableViewController.specialEventID = specialEventID
                 }
             }
         }
