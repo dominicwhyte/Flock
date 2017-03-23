@@ -154,6 +154,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>SwiftAddressBook.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>ZFRippleButton.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -163,11 +168,6 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>03E6E56F8533C2E42C696D7CCAC42910</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>0B396E73AFF406A1B04DAAA60C6A6354</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -202,12 +202,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>359CE610D78A99709FB99D8A96122729</key>
+		<key>35E6F44531BE997B8B77173DB2B066E5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>4D0BDE07CCAA14A7C407D5B934FEB2BD</key>
+		<key>3E593875897A2C0E7AD8D1D73296E8A3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -232,17 +232,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>62BF51DC1F31CCD070BFED19FBC4C550</key>
+		<key>651955E67791D5ADC2764704F5CDEB95</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7D1B4C765AD3E64A85C49D7650B8358B</key>
+		<key>68AAE1717B16AD178583B7082889CC53</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>8329B4DD82B7A073B34A61C9527865D0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>83C416DF9D62C577731D94F7F0859D5F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -257,7 +262,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>95658385589ADDA97C0CA980D912D915</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9CA288CE3734F9340F8F6486E5F6B116</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>9D0F2E5EA1B46A5D72FFD42B0B39DBBC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A3027A7CD8CDEF76DE27BF5506277789</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -267,17 +287,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B7FA04C08A40818AF16AB8F3BF557B74</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>C55E46AC6A1E70A6AA25E306AE545375</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>C9129B9EA7464E5EC6D9197C1DFCDBAA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -297,12 +307,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F5088FBFFB4998C0E809AF99E2AF6A3D</key>
+		<key>EDB08F2592EED5EB0CDF2C13428A397D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F965FF62CDB4BC5AB5B3ED709C65B544</key>
+		<key>EEE0FA589BED53AA7CEB255611C97A5C</key>
 		<dict>
 			<key>primary</key>
 			<true/>

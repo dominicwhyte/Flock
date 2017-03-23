@@ -94,6 +94,7 @@ PODS:
   - SCLAlertView (0.7.0)
   - SimpleTab (0.2.0)
   - SnapKit (3.2.0)
+  - SwiftAddressBook (0.6.2)
   - ZFRippleButton (0.6)
 
 DEPENDENCIES:
@@ -121,6 +122,7 @@ DEPENDENCIES:
   - SAConfettiView
   - SCLAlertView
   - SimpleTab
+  - SwiftAddressBook
   - ZFRippleButton
 
 SPEC CHECKSUMS:
@@ -160,8 +162,9 @@ SPEC CHECKSUMS:
   SCLAlertView: 8a14ffc40590c619e183eed2298b854385f30be1
   SimpleTab: 79148eaeb8656f1bbc1accab7b75c9cb19b462e3
   SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
+  SwiftAddressBook: 88c68c6bd0c6a9cb10e5cdc80f91fd87b5e0f4ec
   ZFRippleButton: 62ea35e209757704dea697d66489fe69c13d7b77
 
-PODFILE CHECKSUM: 8b6f521e7991a474dc01d62e1ceaf5c303221a6c
+PODFILE CHECKSUM: 3592cacb881288299c653b95a4add172cbb43148
 
 COCOAPODS: 1.0.1

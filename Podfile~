@@ -32,7 +32,6 @@ target 'Flock' do
    #pod 'UPCarouselFlowLayout'
    pod 'ZFRippleButton'
    pod 'Gecco'
-   pod 'SwiftAddressBook'
 
   target 'FlockTests' do
     inherit! :search_paths

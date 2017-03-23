@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import SwiftAddressBook
+import SCLAlertView
 
 class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableViewDelegate {
     
@@ -44,6 +46,44 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
         self.tableView.separatorColor = FlockColors.FLOCK_BLUE
     }
     
+    
+    
+    @IBAction func segmentChanged(_ sender: UISegmentedControl) {
+        if (sender.selectedSegmentIndex == 1) {
+            if (SwiftAddressBook.authorizationStatus() == .notDetermined) {
+
+                SwiftAddressBook.requestAccessWithCompletion({ (success, error) -> Void in
+                    if success {
+                        //do something with swiftAddressBook
+                        self.showInviteToFlockUI()
+                    }
+                    else {
+                        self.showRestrictedAddressSettingsAlert()
+                    }
+                })
+            }
+            else if (SwiftAddressBook.authorizationStatus() == .authorized) {
+                showInviteToFlockUI()
+            }
+            else {
+                showRestrictedAddressSettingsAlert()
+                sender.selectedSegmentIndex = 0
+            }
+        }
+    }
+    
+    func showRestrictedAddressSettingsAlert() {
+        let alert = SCLAlertView()
+        let _ = alert.addButton("Settings", action: {
+            UIApplication.shared.openURL(NSURL(string: UIApplicationOpenSettingsURLString) as! URL)
+        })
+        _ = alert.showInfo("Address Book Settings", subTitle: "To invite people to Flock, we need access to your contacts! Hit settings to allow Flock access - we'll never send invites to your friends without your permission.")
+    }
+    
+    func showInviteToFlockUI() {
+        
+    }
+    
     func orderUsers(users : [User], facebookFriends : [String:String]) -> [User] {
         return users.sorted { (user1, user2) -> Bool in
             (facebookFriends[user1.FBID] != nil)
@@ -69,6 +109,9 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
         }
 
     }
+    
+    
+    
     //Retrieve image with caching
     func retrieveImage(imageURL : String, venueID : String?, imageView : UIImageView) {
         if let image = imageCache[imageURL] {
@@ -83,6 +126,8 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
             }
         }
     }
+    
+    
     
     enum UserStates {
         case alreadyFriends
@@ -145,6 +190,8 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
         
         return returnedView
     }
+    
+    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate

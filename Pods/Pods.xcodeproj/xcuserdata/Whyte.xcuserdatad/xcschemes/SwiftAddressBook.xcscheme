@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '68AAE1717B16AD178583B7082889CC53'
-               BlueprintName = 'SimpleTab'
+               BlueprintIdentifier = '651955E67791D5ADC2764704F5CDEB95'
+               BlueprintName = 'SwiftAddressBook'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'SimpleTab.framework'>
+               BuildableName = 'SwiftAddressBook.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
