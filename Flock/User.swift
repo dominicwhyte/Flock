@@ -15,6 +15,7 @@ class User: NSObject
     var LastLive: Date?
     var ChannelIDs: [String:String]
     var NotificationInfo : NotificationInfoClass
+    var Invitations: [String : Invitation]
     
     init(dict: [String: AnyObject])
     {
@@ -45,6 +46,19 @@ class User: NSObject
             }
         }
         self.Plans = plans
+        
+        var invitations : [String : Invitation] = [:]
+        if (dict["Invitations"] != nil) {
+            let invitationsDict = dict["Invitations"] as! [String: [String:String]]
+            for (invitationID, invitationDict) in invitationsDict {
+                let fromUserID = invitationDict["FromUserID"]
+                let date = invitationDict["Date"]
+                let venueID = invitationDict["VenueID"]
+                let specialEventID = invitationDict["SpecialEventID"]
+                invitations[invitationID] = Invitation(fromUserID: fromUserID!, date: date!, venueID: venueID!, specialEventID: specialEventID)
+            }
+        }
+        self.Invitations = invitations
         
         var executions : [String : Execution] = [:]
         if (dict["Executions"] != nil) {
@@ -117,5 +131,21 @@ class Execution: NSObject
     {
         self.date = DateUtilities.getDateFromString(date: date)
         self.venueID =  venueID
+    }
+}
+
+class Invitation: NSObject
+{
+    var fromUserID: String
+    var date: Date
+    var venueID: String
+    var specialEventID: String?
+    
+    init(fromUserID: String, date : String, venueID : String, specialEventID: String?)
+    {
+        self.fromUserID = fromUserID
+        self.date = DateUtilities.getDateFromString(date: date)
+        self.venueID =  venueID
+        self.specialEventID = specialEventID
     }
 }

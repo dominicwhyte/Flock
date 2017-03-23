@@ -247,6 +247,26 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
             }
         }
         
+        // Sorting
+        friendArrayArray[Constants.FRIEND_REQUEST_INDEX].sort { (user1, user2) -> Bool in
+            return user1.Name < user2.Name
+        }
+        friendArrayArray[Constants.LIVE_FRIENDS_INDEX].sort { (user1, user2) -> Bool in
+            return user1.Name < user2.Name
+        }
+        friendArrayArray[Constants.PLANNED_FRIENDS_INDEX].sort { (user1, user2) -> Bool in
+            return user1.Name < user2.Name
+        }
+        friendArrayArray[Constants.REMAINING_FRIENDS_INDEX].sort { (user1, user2) -> Bool in
+            if(user1.LastLive != nil && user2.LastLive == nil) {
+                return true
+            } else if (user1.LastLive == nil && user2.LastLive != nil) {
+                return false
+            } else {
+                return user1.Name < user2.Name
+            }
+        }
+        
         return friendArrayArray
     }
     

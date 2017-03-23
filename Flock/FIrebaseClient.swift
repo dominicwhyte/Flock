@@ -593,6 +593,73 @@ class FirebaseClient: NSObject
         })
     }
     
+    // Add invitation to toUser for a venue on a date, with a special eventID if necessary
+    static func addInvitationToUserForVenueForDate(toUserID: String, fromUserID: String, date: String, venueID : String, add: Bool, specialEventID : String?, completion: @escaping (Bool) -> Void) {
+        dataRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot) in
+            //Confirm send friend request conditions
+            if (snapshot.hasChild(toUserID)) {
+                if (snapshot.childSnapshot(forPath: toUserID).hasChild("Invitations")) {
+                    let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]
+                    let userDict = dictionary[toUserID] as! [String: AnyObject]
+                    var invitationsDict = userDict["Invitations"] as! [String : AnyObject]
+                    // Adding invitation to user
+                    if(add) {
+                        let uniqueInvitationID = UUID().uuidString
+                        var invitationDetails = ["FromUserID": fromUserID, "Date" : date, "VenueID" : venueID]
+                        
+                        if let specialEventID = specialEventID {
+                            invitationDetails["SpecialEventID"] = specialEventID
+                        }
+                        
+                        if (invitationsDict[uniqueInvitationID] == nil) {
+                            invitationsDict[uniqueInvitationID] = invitationDetails as AnyObject?
+                        }
+                        else {
+                            Utilities.printDebugMessage("Error: unique IDs are not unique")
+                        }
+                    }
+                        // Removing plan from user
+                    else {
+                        for (uniqueInvitationID, invitation) in invitationsDict {
+                            if((invitation["Date"] as! String) == date && (invitation["VenueID"] as! String) == venueID && (invitation["fromUserID"] as! String) == fromUserID) {
+                                if (invitationsDict[uniqueInvitationID] != nil) {
+                                    invitationsDict[uniqueInvitationID] = nil
+                                }
+                            }
+                        }
+                    }
+                    
+                    let updates = ["Invitations": invitationsDict]
+                    dataRef.child("Users").child(toUserID).updateChildValues(updates)
+                    completion(true)
+                }
+                    //Planned attendees dict not present
+                else
+                {
+                    if(add) {
+                        let uniqueInvitationID = UUID().uuidString
+                        var invitationDetails = ["FromUserID": fromUserID, "Date" : date, "VenueID" : venueID]
+                        
+                        if let specialEventID = specialEventID {
+                            invitationDetails["SpecialEventID"] = specialEventID
+                        }
+                        
+                        let invitationsDict = [uniqueInvitationID : invitationDetails]
+                        let updates = ["Invitations": invitationsDict]
+                        dataRef.child("Users").child(toUserID).updateChildValues(updates)
+                        completion(true)
+                    }
+                }
+                
+            }
+            else {
+                completion(false)
+            }
+        })
+    }
+
+    
+    
     
     
     //Add plan to user plans and add user to planned attendees in venue

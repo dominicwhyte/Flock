@@ -256,10 +256,10 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
                 Utilities.printDebugMessage("Invite flock!")
                 let userName = appDelegate.user!.Name
                 let venueName = appDelegate.venues[event.VenueID]!.VenueName
-                let displayDate = DateUtilities.convertDateToStringByFormat(date: event.EventDate, dateFormat: DateUtilities.Constants.uiDisplayFormat)
+                let fullDate = DateUtilities.convertDateToStringByFormat(date: event.EventDate, dateFormat: DateUtilities.Constants.fullDateFormat)
                 let plannedAttendees = event.EventAttendeeFBIDs
                 let eventName = event.EventName
-                performSegue(withIdentifier: "SELECTOR_IDENTIFIER", sender: (userName, venueName, displayDate, plannedAttendees, eventName))
+                performSegue(withIdentifier: "SELECTOR_IDENTIFIER", sender: (userName, venueName, fullDate, plannedAttendees, eventName))
             }
             carousel.reloadData()
         }
@@ -268,10 +268,10 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let navController = segue.destination as? UINavigationController {
             if let peopleSelectorTableViewController = navController.topViewController as? PeopleSelectorTableViewController {
-                if let (userName, venueName, displayDate, plannedAttendees, eventName) = sender as? (String, String, String, [String:String], String) {
+                if let (userName, venueName, fullDate, plannedAttendees, eventName) = sender as? (String, String, String, [String:String], String) {
                     peopleSelectorTableViewController.userName = userName
                     peopleSelectorTableViewController.venueName = venueName
-                    peopleSelectorTableViewController.displayDate = displayDate
+                    peopleSelectorTableViewController.fullDate = fullDate
                     peopleSelectorTableViewController.plannedAttendees = plannedAttendees
                     peopleSelectorTableViewController.eventName = eventName
                 }

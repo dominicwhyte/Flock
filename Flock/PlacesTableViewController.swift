@@ -611,12 +611,13 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     }
     
     func displayAttendedPopup(venueName : String, attendFullDate : String, plannedAttendees: [String:String]) {
+        let fullDate = DateUtilities.convertDateToStringByFormat(date: DateUtilities.getDateFromString(date: attendFullDate), dateFormat: DateUtilities.Constants.fullDateFormat)
         let displayDate = DateUtilities.convertDateToStringByFormat(date: DateUtilities.getDateFromString(date: attendFullDate), dateFormat: DateUtilities.Constants.uiDisplayFormat)
         let alert = SCLAlertView()
         alert.addButton("Invite Flock", action: {
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             if let user = appDelegate.user {
-                self.selectFlockersToInvite(userName: user.Name, venueName : venueName, displayDate : displayDate, plannedAttendees: plannedAttendees)
+                self.selectFlockersToInvite(userName: user.Name, venueName : venueName, fullDate : fullDate, plannedAttendees: plannedAttendees)
             }
         })
         alert.addButton("Share with Flock", action: {
@@ -634,18 +635,19 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         //        confettiView.startConfetti()
     }
     
-    func selectFlockersToInvite(userName : String, venueName : String, displayDate : String, plannedAttendees: [String:String]) {
+    func selectFlockersToInvite(userName : String, venueName : String, fullDate : String, plannedAttendees: [String:String]) {
         print("First button tapped")
-        performSegue(withIdentifier: "SELECTOR_IDENTIFIER", sender: (userName, venueName, displayDate, plannedAttendees))
+        performSegue(withIdentifier: "SELECTOR_IDENTIFIER", sender: (userName, venueName, fullDate, plannedAttendees))
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let navController = segue.destination as? UINavigationController {
             if let peopleSelectorTableViewController = navController.topViewController as? PeopleSelectorTableViewController {
-                if let (userName, venueName, displayDate, plannedAttendees) = sender as? (String, String, String, [String:String]) {
+                if let (userName, venueName, fullDate, plannedAttendees) = sender as? (String, String, String, [String:String]) {
+                    Utilities.printDebugMessage("I'm being passed correctly")
                     peopleSelectorTableViewController.userName = userName
                     peopleSelectorTableViewController.venueName = venueName
-                    peopleSelectorTableViewController.displayDate = displayDate
+                    peopleSelectorTableViewController.fullDate = fullDate
                     peopleSelectorTableViewController.plannedAttendees = plannedAttendees
                 }
             }

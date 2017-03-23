@@ -18,7 +18,7 @@ class PeopleSelectorTableViewController: UITableViewController, UpdateSelectorTa
     
     var userName : String?
     var venueName : String?
-    var displayDate : String?
+    var fullDate : String?
     var eventName : String?
     var friends  = [User]()
     var friendsToInvite = [String]()
@@ -54,8 +54,10 @@ class PeopleSelectorTableViewController: UITableViewController, UpdateSelectorTa
         for friend in self.friendsToInvite {
             print("Friend: \(friend)")
         }
-        if let userName = self.userName, let venueName = self.venueName, let displayDate = self.displayDate {
+        if let userName = self.userName, let venueName = self.venueName, let fullDate = self.fullDate {
             var title = ""
+            let date = DateUtilities.getDateFromString(date: fullDate)
+            let displayDate = DateUtilities.convertDateToStringByFormat(date: date, dateFormat: DateUtilities.Constants.uiDisplayFormat)
             if(self.eventName != nil) {
                 title = "\(userName) is planning to go to \(self.eventName) at \(venueName) on \(displayDate)!"
             } else {

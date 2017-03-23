@@ -220,6 +220,11 @@
 			<key>orderHint</key>
 			<integer>28</integer>
 		</dict>
+		<key>SwiftAddressBook.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>35</integer>
+		</dict>
 		<key>UPCarouselFlowLayout.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -318,6 +323,11 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>35E6F44531BE997B8B77173DB2B066E5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>377C84BDC3F7B92C8E19400F09471EF3</key>
 		<dict>
 			<key>primary</key>
@@ -329,6 +339,11 @@
 			<true/>
 		</dict>
 		<key>3C24518F0CBE02173F42742AA51CBF5B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>3E593875897A2C0E7AD8D1D73296E8A3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -408,6 +423,16 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>651955E67791D5ADC2764704F5CDEB95</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>68AAE1717B16AD178583B7082889CC53</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>6B1DFE116C03C8F4C9CAEE6DE545D01A</key>
 		<dict>
 			<key>primary</key>
@@ -458,6 +483,11 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>83C416DF9D62C577731D94F7F0859D5F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>87A055D7993931385D331DE6734949C0</key>
 		<dict>
 			<key>primary</key>
@@ -478,7 +508,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>95658385589ADDA97C0CA980D912D915</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>9C066DD9B77AF50A240CBC9601516224</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9CA288CE3734F9340F8F6486E5F6B116</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -494,6 +534,11 @@
 			<true/>
 		</dict>
 		<key>A1BA2053647604D6202BE07C836BEAD6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A3027A7CD8CDEF76DE27BF5506277789</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -629,6 +674,16 @@
 			<true/>
 		</dict>
 		<key>EC52B8B121320ADF5EEA83D8568184DF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EDB08F2592EED5EB0CDF2C13428A397D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EEE0FA589BED53AA7CEB255611C97A5C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
