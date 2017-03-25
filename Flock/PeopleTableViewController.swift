@@ -505,7 +505,21 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "ADD_IDENTIFIER" {
+            Utilities.printDebugMessage("Hmmm")
+            let popoverViewController = segue.destination as! UINavigationController
+            popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
+
+            if let searchPeopleTableViewController = popoverViewController.topViewController as?
+                SearchPeopleTableViewController {
+                Utilities.printDebugMessage("More hmm")
+                searchPeopleTableViewController.delegate = self
+            }
+        }
+        
         if let navController = segue.destination as? UINavigationController {
+            
             if let searchPeopleTableViewController = navController.topViewController as? SearchPeopleTableViewController {
                 searchPeopleTableViewController.delegate = self
             }

@@ -173,9 +173,9 @@ class SettingsTableViewController: UITableViewController {
     
     @IBAction func showWalkthroughPressed(_ sender: Any) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        appDelegate.simpleTBC!.animateToTab(0, completion: { (navCon) in
+        appDelegate.simpleTBC!.animateToTab(1, completion: { (navCon) in
             if let navCon = navCon as? UINavigationController {
-                let vc = navCon.topViewController as! PlacesTableViewController
+                let vc = navCon.topViewController as! PeopleTableViewController
                 vc.tableView.setContentOffset(CGPoint.zero, animated: true)
                 
                 let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Annotation") as! AnnotationViewController

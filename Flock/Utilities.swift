@@ -152,6 +152,7 @@ class Utilities {
         })
     }
     
+    
     /*
      This function goes in the cocoapod SimpleTabBarController.swift:
      

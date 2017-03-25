@@ -29,8 +29,36 @@ class AnnotationViewController: SpotlightViewController {
         switch stepIndex {
         case 0:
             self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width - 50, y: 42), size: CGSize(width: 200, height: 40), cornerRadius: 6))
+            
         case 1:
+            
+            appDelegate.simpleTBC!.animateToSearch(1, completion: { (navCon) in
+                if let navCon = navCon as? UINavigationController {
+                    let vc = navCon.topViewController as! PeopleTableViewController
+                    vc.performSegue(withIdentifier: "ADD_IDENTIFIER", sender: vc)
+                    //appDelegate.simpleTBC!.present(vc, animated: true, completion: nil)
+                    vc.tableView.setContentOffset(CGPoint.zero, animated: true)
+                    
+                    //let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Annotation") as! AnnotationViewController
+                    //viewController.alpha = 0.5
+                    
+                    //appDelegate.simpleTBC!.present(viewController, animated: true, completion: nil)
+                }
+                
+            })
+            
+            
+            /*let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+            let nextViewController = storyBoard.instantiateViewController(withIdentifier: "Search") as! SearchPeopleTableViewController
+            self.present(nextViewController, animated:true, completion:nil)
+            let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Annotation") as! AnnotationViewController*/
+            
+            
+            
             spotlightView.move(Spotlight.Oval(center: CGPoint(x: screenSize.width - 75, y: 42), diameter: 50))
+
+            
+
             
         case 2:
             spotlightView.move(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width / 2, y: 42), size: CGSize(width: 200, height: 40), cornerRadius: 6), moveType: .disappear)
