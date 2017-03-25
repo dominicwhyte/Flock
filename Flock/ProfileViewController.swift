@@ -183,7 +183,7 @@ class ProfileViewController: UIViewController, ProfileDelegate {
             tableViewController.user = self.user
         }
         else {
-            Utilities.printDebugMessage("Error: could not get table vc")
+            Utilities.printDebugMessage("Error: could not get table vc (might be in walkthrough)")
         }
     }
 }

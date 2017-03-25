@@ -8,6 +8,7 @@
 
 import UIKit
 import Gecco
+import PopupDialog
 
 class AnnotationViewController: SpotlightViewController {
     
@@ -31,6 +32,40 @@ class AnnotationViewController: SpotlightViewController {
             self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width - 50, y: 42), size: CGSize(width: 200, height: 40), cornerRadius: 6))
             
         case 1:
+
+            Utilities.animateToPlacesTabWithVenueIDandDate(venueID: "-KeKwzPquXWfqtI-jjPU", date: Date())
+            let vc = appDelegate.getCurrentViewController() as! PopupDialog
+            /*
+        Messing around:
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+                let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Annotation") as! AnnotationViewController
+                viewController.alpha = 0.5
+                viewController.stepIndex = 2
+                let vc = appDelegate.getCurrentViewController() as! PopupDialog
+                vc.present(viewController, animated: true, completion: nil)
+
+            })
+            
+            */
+            
+            
+            /*
+            appDelegate.simpleTBC!.animateToTab(0, completion: { (navCon) in
+                if let navCon = navCon as? UINavigationController {
+                    let vc = navCon.topViewController as! PlacesTableViewController
+                    if (vc.venues.count != 0) {
+                        let venueID = vc.venues[0].VenueID
+                        
+                                                //vc.displayVenuePopupWithVenueIDForDay(venueID: venueID, date: Date())
+                    }
+                    else {
+                        Utilities.printDebugMessage("Failed to present walkthrough popup")
+                    }
+                    
+                    
+                }
+
+            })
             
             appDelegate.simpleTBC!.animateToSearch(1, completion: { (navCon) in
                 if let navCon = navCon as? UINavigationController {
@@ -46,7 +81,7 @@ class AnnotationViewController: SpotlightViewController {
                 }
                 
             })
-            
+            */
             
             /*let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
             let nextViewController = storyBoard.instantiateViewController(withIdentifier: "Search") as! SearchPeopleTableViewController
@@ -61,6 +96,18 @@ class AnnotationViewController: SpotlightViewController {
 
             
         case 2:
+            appDelegate.simpleTBC!.animateToTab(2, completion: { (navCon) in
+                if let navCon = navCon as? UINavigationController {
+                    let vc = navCon.topViewController as! ChatsTableViewController
+
+                    
+                    //let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Annotation") as! AnnotationViewController
+                    //viewController.alpha = 0.5
+                    
+                    //appDelegate.simpleTBC!.present(viewController, animated: true, completion: nil)
+                }
+                
+            })
             spotlightView.move(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width / 2, y: 42), size: CGSize(width: 200, height: 40), cornerRadius: 6), moveType: .disappear)
         case 3:
             spotlightView.move(Spotlight.Oval(center: CGPoint(x: screenSize.width / 2, y: 200), diameter: 220), moveType: .disappear)
