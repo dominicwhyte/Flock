@@ -106,7 +106,7 @@ class SettingsTableViewController: UITableViewController {
     }
     
     @IBAction func privacyPolicyPressed(_ sender: Any) {
-        UIApplication.shared.openURL(URL(string: "https://github.com/dominicwhyte/Flock-Privacy-Policy/blob/master/Private-Policy.pdf")!)
+        UIApplication.shared.openURL(URL(string: "findyourflock.io/privacypolicy/")!)
     }
     
     

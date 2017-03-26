@@ -226,8 +226,9 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
     }
     
     func updateUI() {
-        updateUINoCollectionReload()
-        
+        if (events.count != 0) {
+            updateUINoCollectionReload()
+        }
         self.collectionView.reloadData()
     }
     

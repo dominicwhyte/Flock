@@ -24,14 +24,19 @@ class PeopleSelectorTableViewController: UITableViewController, UpdateSelectorTa
     var userID : String?
     var specialEventID : String?
     var friends  = [User]()
+    var filteredFriends = [User]()
     var friendsToInvite = [String]()
     var imageCache = [String : UIImage]()
     var plannedAttendees = [String : String]()
+    let searchController = UISearchController(searchResultsController: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         self.friends = Array(appDelegate.friends.values)
+        if let index = friends.index(of: appDelegate.user!) {
+            self.friends.remove(at: index)
+        }
         self.friends.sort { (user1, user2) -> Bool in
             user1.Name < user2.Name
         }
@@ -46,13 +51,18 @@ class PeopleSelectorTableViewController: UITableViewController, UpdateSelectorTa
             self.eventName = appDelegate.specialEvents[specialEventID]!.EventName
         }
         
+        //Search
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        definesPresentationContext = true
+        searchController.dimsBackgroundDuringPresentation = false
         
+        searchController.searchBar.barTintColor = UIColor.white
+        searchController.searchBar.tintColor = FlockColors.FLOCK_GRAY
         
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
+        searchController.searchBar.placeholder = "Search                                                                                     "
         
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        tableView.tableHeaderView = searchController.searchBar
     }
     
     @IBAction func cancelButtonPressed(_ sender: Any) {
@@ -71,9 +81,9 @@ class PeopleSelectorTableViewController: UITableViewController, UpdateSelectorTa
             let date = DateUtilities.getDateFromString(date: fullDate)
             let displayDate = DateUtilities.convertDateToStringByFormat(date: date, dateFormat: DateUtilities.Constants.uiDisplayFormat)
             if(self.eventName != nil) {
-                title = "\(userName) is planning to go to \(self.eventName) at \(venueName) on \(displayDate)!"
+                title = "\(userName) invited you to \(self.eventName) at \(venueName) on \(displayDate)!"
             } else {
-                title = "\(userName) is planning to go to \(venueName) on \(displayDate)!"
+                title = "\(userName) invited you to \(venueName) on \(displayDate)!"
             }
             
             Utilities.sendPushNotificationToPartOfFlock(title: title, toFriends: friendsToInvite)
@@ -102,17 +112,35 @@ class PeopleSelectorTableViewController: UITableViewController, UpdateSelectorTa
         NSLog("You selected cell number: \(indexPath.row)!")
         let currentCell = tableView.cellForRow(at: indexPath) as! PeopleSelectorTableViewCell
         currentCell.setSelected(currentCell.isSelected, animated: true)
-        let friendID = self.friends[indexPath.row].FBID
+        
+        let friendID : String
+        if searchController.isActive && searchController.searchBar.text != "" {
+            friendID = self.filteredFriends[indexPath.row].FBID
+        }
+        else {
+            friendID = self.friends[indexPath.row].FBID
+        }
+        
         self.addFriendIDToInvites(friendID: friendID)
         for friend in self.friendsToInvite {
             print(friend)
         }
     }
+    
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         NSLog("You selected cell number: \(indexPath.row)!")
         let currentCell = tableView.cellForRow(at: indexPath) as! PeopleSelectorTableViewCell
         currentCell.setSelected(currentCell.isSelected, animated: true)
-        let friendID = self.friends[indexPath.row].FBID
+
+        
+        let friendID : String
+        if searchController.isActive && searchController.searchBar.text != "" {
+            friendID = self.filteredFriends[indexPath.row].FBID
+        }
+        else {
+            friendID = self.friends[indexPath.row].FBID
+        }
+        
         self.removeFriendIDFromInvites(friendID: friendID)
         for friend in self.friendsToInvite {
             print(friend)
@@ -123,24 +151,45 @@ class PeopleSelectorTableViewController: UITableViewController, UpdateSelectorTa
         let indexPath : IndexPath = IndexPath(row: row, section: section)
         if(!isSelected) {
             self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-            let friendID = self.friends[indexPath.row].FBID
+            
+            let friendID : String
+            if searchController.isActive && searchController.searchBar.text != "" {
+                friendID = self.filteredFriends[indexPath.row].FBID
+            }
+            else {
+                friendID = self.friends[indexPath.row].FBID
+            }
+            
             self.addFriendIDToInvites(friendID: friendID)
         } else {
             self.tableView.deselectRow(at: indexPath, animated: true)
-            let friendID = self.friends[indexPath.row].FBID
+            
+            let friendID : String
+            if searchController.isActive && searchController.searchBar.text != "" {
+                friendID = self.filteredFriends[indexPath.row].FBID
+            }
+            else {
+                friendID = self.friends[indexPath.row].FBID
+            }
+            
             self.removeFriendIDFromInvites(friendID: friendID)
         }
+        /*
         for friend in self.friendsToInvite {
             print(friend)
-        }
+        } */
     }
     
     func addFriendIDToInvites(friendID : String) {
-        self.friendsToInvite.append(friendID)
-        if(self.friendsToInvite.count > 0) {
-            self.inviteButton.isEnabled = true
+        
+        if (!friendsToInvite.contains(friendID)) {
+            self.friendsToInvite.append(friendID)
+            if(self.friendsToInvite.count > 0) {
+                self.inviteButton.isEnabled = true
+            }
         }
     }
+    
     func removeFriendIDFromInvites(friendID : String) {
         if let removeIndex = self.friendsToInvite.index(of: friendID) {
             self.friendsToInvite.remove(at: removeIndex)
@@ -158,6 +207,9 @@ class PeopleSelectorTableViewController: UITableViewController, UpdateSelectorTa
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
+        if searchController.isActive && searchController.searchBar.text != "" {
+            return self.filteredFriends.count
+        }
         return self.friends.count
     }
     
@@ -167,10 +219,19 @@ class PeopleSelectorTableViewController: UITableViewController, UpdateSelectorTa
         cell.layoutMargins = UIEdgeInsets.zero
     }
     
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.REUSE_IDENTIFIERS[indexPath.section], for: indexPath) as! PeopleSelectorTableViewCell
-        let friend = self.friends[indexPath.row]
+        let friend : User
+        if searchController.isActive && searchController.searchBar.text != "" {
+            friend = self.filteredFriends[indexPath.row]
+        }
+        else {
+            friend = self.friends[indexPath.row]
+        }
+        if (friendsToInvite.contains(friend.FBID)) {
+            self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+        }
+        
         cell.name.text = friend.Name
         self.retrieveImage(imageURL: friend.PictureURL, venueID: nil, imageView: cell.profilePic!)
         if(self.plannedAttendees[friend.FBID] != nil) {
@@ -205,8 +266,31 @@ class PeopleSelectorTableViewController: UITableViewController, UpdateSelectorTa
             }
         }
     }
+    
+    func filterContentForSearchText(_ searchText: String) {
+            self.filteredFriends = (friends.filter({( user : User) -> Bool in
+                    return user.Name.lowercased().contains(searchText.lowercased())
+            }))
+        
+        tableView.reloadData()
+    }
 }
 
 protocol UpdateSelectorTableViewDelegate: class {
     func manuallySelectCell(row: Int, section: Int, isSelected: Bool)
+}
+
+extension PeopleSelectorTableViewController: UISearchBarDelegate {
+    // MARK: - UISearchBar Delegate
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        filterContentForSearchText(searchBar.text!)
+    }
+}
+
+extension PeopleSelectorTableViewController: UISearchResultsUpdating {
+    // MARK: - UISearchResultsUpdating Delegate
+    func updateSearchResults(for searchController: UISearchController) {
+        _ = searchController.searchBar
+        filterContentForSearchText(searchController.searchBar.text!)
+    }
 }

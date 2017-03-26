@@ -42,7 +42,10 @@ class FriendRequestTableViewCell: UITableViewCell {
             let loadingScreen = Utilities.presentLoadingScreen(vcView: self.delegate!.parentView!)
             FirebaseClient.confirmFriendRequest(self.fromID!, toID: self.toID!) { (success) in
                 self.delegate?.updateDataAndTableView({ (successReloadData) in
-                    Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.delegate!.parentView!)
+                    DispatchQueue.main.async {
+                        Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.delegate!.parentView!)
+                    }
+                    
                     if(success && successReloadData) {
                         Utilities.printDebugMessage("Successfully accepted friend request and reloaded data")
                     } else {
@@ -58,8 +61,13 @@ class FriendRequestTableViewCell: UITableViewCell {
             if (!success) {
                 Utilities.printDebugMessage("Error with button animation")
             }
+            let loadingScreen = Utilities.presentLoadingScreen(vcView: self.delegate!.parentView!)
             FirebaseClient.rejectFriendRequest(self.fromID!, toID: self.toID!) { (success) in
                 self.delegate?.updateDataAndTableView({ (successReloadData) in
+                    DispatchQueue.main.async {
+                        Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.delegate!.parentView!)
+                    }
+                    
                     if(success && successReloadData) {
                         Utilities.printDebugMessage("Successfully rejected friend rquest")
                     } else {

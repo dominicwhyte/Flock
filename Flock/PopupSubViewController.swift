@@ -9,6 +9,7 @@
 import UIKit
 import MVHorizontalPicker
 import SAConfettiView
+import SCLAlertView
 
 class PopupSubViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate {
     
@@ -68,6 +69,46 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
             }
         }
     }
+    
+    @IBAction func liveIconPressed(_ sender: Any) {
+           let venue = self.delegate!.venueToPass!
+        let venueString = venue.VenueNickName
+        let dateString = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]
+        let date = DateUtilities.getDateFromString(date: dateString)
+            let alert = SCLAlertView()
+        _ = alert.showInfo("Live Total", subTitle: "The number of people currently live at \(venueString)")
+    }
+    
+    
+    @IBAction func liveFriendsIconPressed(_ sender: Any) {
+          let venue = self.delegate!.venueToPass!
+        let venueString = venue.VenueNickName
+        let dateString = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]
+        let date = DateUtilities.getDateFromString(date: dateString)
+            let alert = SCLAlertView()
+        _ = alert.showInfo("Live Friends", subTitle: "How many of your friends are currently live at \(venueString)")
+    }
+    
+    @IBAction func plannedPressed(_ sender: Any) {
+        let venue = self.delegate!.venueToPass!
+        let venueString = venue.VenueNickName
+        let dateString = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]
+        let date = DateUtilities.getDateFromString(date: dateString)
+        let dateStringInFormat = DateUtilities.convertDateToStringByFormat(date: date, dateFormat: DateUtilities.Constants.uiDisplayFormat)
+        let alert = SCLAlertView()
+        _ = alert.showInfo("Planned Total", subTitle: "The number of people planning to go to \(venueString) on \(dateStringInFormat)")
+    }
+    
+    @IBAction func plannedFriendsPressed(_ sender: Any) {
+        let venue = self.delegate!.venueToPass!
+        let venueString = venue.VenueNickName
+        let dateString = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]
+        let date = DateUtilities.getDateFromString(date: dateString)
+        let dateStringInFormat = DateUtilities.convertDateToStringByFormat(date: date, dateFormat: DateUtilities.Constants.uiDisplayFormat)
+        let alert = SCLAlertView()
+        _ = alert.showInfo("Planned Friends", subTitle: "How many of your friends are planning to go to \(venueString) on \(dateStringInFormat)")
+    }
+    
     
     //Very hacky code:
     //    var overrideBool = false
@@ -294,6 +335,8 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         }
         
     }
+    
+    
     
     func handleRegularEvent(event : Event) {
         

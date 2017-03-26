@@ -10,6 +10,7 @@ import UIKit
 
 class InviteRequestCollectionViewCell: UICollectionViewCell {
     
+    @IBOutlet weak var blackBackgroundView: UIView!
     @IBOutlet weak var imageView: UIImageView!
     
     @IBOutlet weak var nameLabel: UILabel!

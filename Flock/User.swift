@@ -49,13 +49,15 @@ class User: NSObject
         
         var invitations : [String : Invitation] = [:]
         if (dict["Invitations"] != nil) {
-            let invitationsDict = dict["Invitations"] as! [String: [String:String]]
+            let invitationsDict = dict["Invitations"] as! [String: [String:AnyObject]]
             for (invitationID, invitationDict) in invitationsDict {
-                let fromUserID = invitationDict["FromUserID"]
-                let date = invitationDict["Date"]
-                let venueID = invitationDict["VenueID"]
-                let specialEventID = invitationDict["SpecialEventID"]
-                invitations[invitationID] = Invitation(fromUserID: fromUserID!, date: date!, venueID: venueID!, specialEventID: specialEventID)
+                let fromUserID = invitationDict["FromUserID"] as! String?
+                let date = invitationDict["Date"] as! String?
+                let venueID = invitationDict["VenueID"] as! String?
+                let specialEventID = invitationDict["SpecialEventID"] as! String?
+                let accepted = invitationDict["Accepted"] as! Bool?
+                let inviteID = invitationDict["InviteID"] as! String?
+                invitations[invitationID] = Invitation(fromUserID: fromUserID!, date: date!, venueID: venueID!, specialEventID: specialEventID, accepted : accepted, inviteID : inviteID!)
             }
         }
         self.Invitations = invitations
@@ -140,12 +142,16 @@ class Invitation: NSObject
     var date: Date
     var venueID: String
     var specialEventID: String?
+    var accepted : Bool? //was the invitation accepted? Nil if no response yet
+    var inviteID : String
     
-    init(fromUserID: String, date : String, venueID : String, specialEventID: String?)
+    init(fromUserID: String, date : String, venueID : String, specialEventID: String?, accepted: Bool?, inviteID : String)
     {
         self.fromUserID = fromUserID
         self.date = DateUtilities.getDateFromString(date: date)
         self.venueID =  venueID
         self.specialEventID = specialEventID
+        self.accepted = accepted
+        self.inviteID = inviteID
     }
 }

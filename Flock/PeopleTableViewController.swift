@@ -559,6 +559,13 @@ extension UIImageView {
     }
 }
 
+extension UIView {
+    func makeViewCircleNoBorder() {
+        self.layer.cornerRadius = self.frame.size.width/2
+        self.clipsToBounds = true
+    }
+}
+
 extension PeopleTableViewController: UISearchBarDelegate {
     // MARK: - UISearchBar Delegate
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {

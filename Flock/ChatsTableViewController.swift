@@ -14,6 +14,7 @@ class ChatsTableViewController: UITableViewController {
     
     
     fileprivate let reuseIdentifier = "CHAT"
+    let searchController = UISearchController(searchResultsController: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +50,31 @@ class ChatsTableViewController: UITableViewController {
         //        }
         
         self.retrieveUserImageWithoutSetting(imageURL: self.user!.PictureURL, venueID: nil)
+        
+        //Search
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        definesPresentationContext = true
+        searchController.dimsBackgroundDuringPresentation = false
+        
+        searchController.searchBar.barTintColor = UIColor.white
+        searchController.searchBar.tintColor = FlockColors.FLOCK_GRAY
+        
+        searchController.searchBar.placeholder = "Search                                                                                     "
+        
+        tableView.tableHeaderView = searchController.searchBar
     }
+    
+    func filterContentForSearchText(_ searchText: String) {
+        self.filteredConversations = (conversations.filter({( convo : Conversation) -> Bool in
+                return convo.participant.Name.lowercased().contains(searchText.lowercased())
+            
+        }))
+        
+        
+        tableView.reloadData()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -107,6 +132,7 @@ class ChatsTableViewController: UITableViewController {
     }
     
     var conversations = [Conversation]()
+    var filteredConversations = [Conversation]()
     var user : User?
     var imageCache = [String : UIImage]()
     
@@ -119,6 +145,9 @@ class ChatsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
+        if searchController.isActive && searchController.searchBar.text != "" {
+            return self.filteredConversations.count
+        }
         return conversations.count
     }
     
@@ -127,7 +156,13 @@ class ChatsTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! ChatTableViewCell
         //cell.selectionStyle = .none
         //Setup Cell
-        let conversation : Conversation = self.conversations[indexPath.row]
+        let conversation : Conversation
+        if searchController.isActive && searchController.searchBar.text != "" {
+            conversation = self.filteredConversations[indexPath.row]
+        }
+        else {
+            conversation = self.conversations[indexPath.row]
+        }
         var labelsHaveBeenUpdated = false
         
         //Lines go all the way
@@ -290,7 +325,13 @@ class ChatsTableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let conversation = conversations[indexPath.row]
+        let conversation : Conversation
+        if searchController.isActive && searchController.searchBar.text != "" {
+            conversation = filteredConversations[indexPath.row]
+        }
+        else {
+            conversation = conversations[indexPath.row]
+        }
         let FBID = conversation.participant.FBID
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if let user = appDelegate.user, let friendUser = appDelegate.users[FBID] {
@@ -433,6 +474,23 @@ extension UITabBarController {
         badgeView.center = CGPoint(x: center.x + xOffset,y: center.y + yOffset)
         badgeView.layer.cornerRadius = badgeView.bounds.width/2
         tabBar.bringSubview(toFront: badgeView)
+    }
+    
+    
+}
+
+extension ChatsTableViewController: UISearchBarDelegate {
+    // MARK: - UISearchBar Delegate
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        filterContentForSearchText(searchBar.text!)
+    }
+}
+
+extension ChatsTableViewController: UISearchResultsUpdating {
+    // MARK: - UISearchResultsUpdating Delegate
+    func updateSearchResults(for searchController: UISearchController) {
+        _ = searchController.searchBar
+        filterContentForSearchText(searchController.searchBar.text!)
     }
 }
 

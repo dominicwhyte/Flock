@@ -59,6 +59,9 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         
     }
     override func numberOfSections(in tableView: UITableView) -> Int {
+        if (invitationRequests.count == 0) {
+            return 1
+        }
         return 2
     }
     
@@ -179,8 +182,10 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         if (currentTab == items[0]) {
             tableView.separatorStyle = .none
             tableView.backgroundView?.isHidden = false
-            if (section == 0) {
-                return 1
+            if (invitationRequests.count != 0) {
+                if (section == 0) {
+                    return 1
+                }
             }
             if searchController.isActive && searchController.searchBar.text != "" {
                 return self.filteredVenues.count
@@ -199,7 +204,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if (indexPath.section == 0) {
+        if (indexPath.section == 0 && invitationRequests.count != 0) {
             let cell = tableView.dequeueReusableCell(withIdentifier: "INVITE_REQUEST_TABLE_VIEW_CELL", for: indexPath) as! InviteRequestTableViewCell
             cell.setCollectionViewDataSourceDelegate(self)
             flockInviteRequestCollectionView = cell.collectionView
@@ -307,7 +312,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     let b : CGFloat  = 60
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if (indexPath.section == 0) {
+        if (indexPath.section == 0 && invitationRequests.count != 0) {
             return CGFloat(Constants.FLOCK_INVITE_REQUEST_CELL_SIZE)
         }
         let cellHeight = inverseGoldenRatio * (CGFloat(self.view.frame.width) - l - r) + b + t
@@ -427,8 +432,15 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     
     func setDataForInvitesRequestsCollectionView() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        invitationRequests = []
         let user = appDelegate.user!
-        invitationRequests = Array(user.Invitations.values)
+        for (_,invite) in user.Invitations {
+            if (DateUtilities.dateIsWithinValidTimeframe(date: invite.date)) {
+                if (invite.accepted == nil) {
+                    invitationRequests.append(invite)
+                }
+            }
+        }
     }
     
     func refresh(refreshControl: UIRefreshControl) {
@@ -575,33 +587,19 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         let todaysDate = DateUtilities.convertDateToStringByFormat(date: Date(), dateFormat: "MMMM d")
         let attendButton = DefaultButton(title: "GO TO \(venue.VenueNickName.uppercased()) ON \(todaysDate.uppercased())", dismissOnTap: true) {
             Utilities.printDebugMessage("Attending \(venue.VenueNickName.uppercased())")
-            let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
             let date = popupSubView.stringsOfUpcomingDays[popupSubView.datePicker.selectedItemIndex]
             
+            let plannedFriendUsersForDate = popupSubView.allFriendsForDate[popupSubView.stringsOfUpcomingDays[popupSubView.datePicker.selectedItemIndex]]![1] //1 for planned attendees
+            var plannedAttendeesForDate = [String:String]()
+            
+            for user in plannedFriendUsersForDate {
+                Utilities.printDebugMessage(user.Name)
+                plannedAttendeesForDate[user.FBID] = user.FBID
+            }
             
             //Add Venue and present popup
-            FirebaseClient.addUserToVenuePlansForDate(date: date, venueID: self.venueToPass!.VenueID, userID: appDelegate.user!.FBID, add: true, specialEventID: popupSubView.specialEventID, completion: { (success) in
-                if (success) {
-                    appDelegate.profileNeedsToUpdate = true
-                    Utilities.printDebugMessage("Successfully added plan to attend venue")
-                    self.updateDataAndTableView({ (success) in
-                        Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
-                        if (success) {
-                            DispatchQueue.main.async {
-                                self.displayAttendedPopup(venueName: self.venueToPass!.VenueNickName, venueID: self.venueToPass!.VenueID, attendFullDate: date, plannedAttendees: self.venueToPass!.PlannedAttendees)
-                            }
-                        }
-                        else {
-                            Utilities.printDebugMessage("Error reloading tableview in venues")
-                        }
-                    })
-                }
-                else {
-                    Utilities.printDebugMessage("Error adding user to venue plans for date")
-                    Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
-                }
-            })
+            self.attendVenueWithConfirmation(date: date, venueID: self.venueToPass!.VenueID, add: true, specialEventID: popupSubView.specialEventID, plannedFriendAttendeesForDate: plannedAttendeesForDate)
+            
         }
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -626,6 +624,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         // Present dialog
         
     }
+    
     
     func shouldAttendButtonBeEnabledUponInitialPopup(appDelegate : AppDelegate) -> Bool {
         let user = appDelegate.user!
@@ -673,7 +672,6 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         if let navController = segue.destination as? UINavigationController {
             if let peopleSelectorTableViewController = navController.topViewController as? PeopleSelectorTableViewController {
                 if let (userID, venueID, fullDate, plannedAttendees) = sender as? (String, String, String, [String:String]) {
-                    Utilities.printDebugMessage("I'm being passed correctly")
                     peopleSelectorTableViewController.userID = userID
                     peopleSelectorTableViewController.venueID = venueID
                     peopleSelectorTableViewController.fullDate = fullDate
@@ -713,49 +711,49 @@ protocol VenueDelegate: class {
     
 }
 /*
-public extension UIDevice {
-    
-    var modelName: String {
-        var systemInfo = utsname()
-        uname(&systemInfo)
-        let machineMirror = Mirror(reflecting: systemInfo.machine)
-        let identifier = machineMirror.children.reduce("") { identifier, element in
-            guard let value = element.value as? Int8, value != 0 else { return identifier }
-            return identifier + String(UnicodeScalar(UInt8(value)))
-        }
-        
-        switch identifier {
-        case "iPod5,1":                                 return "iPod Touch 5"
-        case "iPod7,1":                                 return "iPod Touch 6"
-        case "iPhone3,1", "iPhone3,2", "iPhone3,3":     return "iPhone 4"
-        case "iPhone4,1":                               return "iPhone 4s"
-        case "iPhone5,1", "iPhone5,2":                  return "iPhone 5"
-        case "iPhone5,3", "iPhone5,4":                  return "iPhone 5c"
-        case "iPhone6,1", "iPhone6,2":                  return "iPhone 5s"
-        case "iPhone7,2":                               return "iPhone 6"
-        case "iPhone7,1":                               return "iPhone 6 Plus"
-        case "iPhone8,1":                               return "iPhone 6s"
-        case "iPhone8,2":                               return "iPhone 6s Plus"
-        case "iPhone9,1", "iPhone9,3":                  return "iPhone 7"
-        case "iPhone9,2", "iPhone9,4":                  return "iPhone 7 Plus"
-        case "iPhone8,4":                               return "iPhone SE"
-        case "iPad2,1", "iPad2,2", "iPad2,3", "iPad2,4":return "iPad 2"
-        case "iPad3,1", "iPad3,2", "iPad3,3":           return "iPad 3"
-        case "iPad3,4", "iPad3,5", "iPad3,6":           return "iPad 4"
-        case "iPad4,1", "iPad4,2", "iPad4,3":           return "iPad Air"
-        case "iPad5,3", "iPad5,4":                      return "iPad Air 2"
-        case "iPad2,5", "iPad2,6", "iPad2,7":           return "iPad Mini"
-        case "iPad4,4", "iPad4,5", "iPad4,6":           return "iPad Mini 2"
-        case "iPad4,7", "iPad4,8", "iPad4,9":           return "iPad Mini 3"
-        case "iPad5,1", "iPad5,2":                      return "iPad Mini 4"
-        case "iPad6,3", "iPad6,4", "iPad6,7", "iPad6,8":return "iPad Pro"
-        case "AppleTV5,3":                              return "Apple TV"
-        case "i386", "x86_64":                          return "Simulator"
-        default:                                        return identifier
-        }
-    }
-    
-}*/
+ public extension UIDevice {
+ 
+ var modelName: String {
+ var systemInfo = utsname()
+ uname(&systemInfo)
+ let machineMirror = Mirror(reflecting: systemInfo.machine)
+ let identifier = machineMirror.children.reduce("") { identifier, element in
+ guard let value = element.value as? Int8, value != 0 else { return identifier }
+ return identifier + String(UnicodeScalar(UInt8(value)))
+ }
+ 
+ switch identifier {
+ case "iPod5,1":                                 return "iPod Touch 5"
+ case "iPod7,1":                                 return "iPod Touch 6"
+ case "iPhone3,1", "iPhone3,2", "iPhone3,3":     return "iPhone 4"
+ case "iPhone4,1":                               return "iPhone 4s"
+ case "iPhone5,1", "iPhone5,2":                  return "iPhone 5"
+ case "iPhone5,3", "iPhone5,4":                  return "iPhone 5c"
+ case "iPhone6,1", "iPhone6,2":                  return "iPhone 5s"
+ case "iPhone7,2":                               return "iPhone 6"
+ case "iPhone7,1":                               return "iPhone 6 Plus"
+ case "iPhone8,1":                               return "iPhone 6s"
+ case "iPhone8,2":                               return "iPhone 6s Plus"
+ case "iPhone9,1", "iPhone9,3":                  return "iPhone 7"
+ case "iPhone9,2", "iPhone9,4":                  return "iPhone 7 Plus"
+ case "iPhone8,4":                               return "iPhone SE"
+ case "iPad2,1", "iPad2,2", "iPad2,3", "iPad2,4":return "iPad 2"
+ case "iPad3,1", "iPad3,2", "iPad3,3":           return "iPad 3"
+ case "iPad3,4", "iPad3,5", "iPad3,6":           return "iPad 4"
+ case "iPad4,1", "iPad4,2", "iPad4,3":           return "iPad Air"
+ case "iPad5,3", "iPad5,4":                      return "iPad Air 2"
+ case "iPad2,5", "iPad2,6", "iPad2,7":           return "iPad Mini"
+ case "iPad4,4", "iPad4,5", "iPad4,6":           return "iPad Mini 2"
+ case "iPad4,7", "iPad4,8", "iPad4,9":           return "iPad Mini 3"
+ case "iPad5,1", "iPad5,2":                      return "iPad Mini 4"
+ case "iPad6,3", "iPad6,4", "iPad6,7", "iPad6,8":return "iPad Pro"
+ case "AppleTV5,3":                              return "Apple TV"
+ case "i386", "x86_64":                          return "Simulator"
+ default:                                        return identifier
+ }
+ }
+ 
+ }*/
 
 extension PlacesTableViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -765,16 +763,149 @@ extension PlacesTableViewController: UICollectionViewDelegate, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FLOCK_INVITE_REQUEST_COLLECTION_VIEW_CELL", for: indexPath) as! InviteRequestCollectionViewCell
-
-        let inviteRequest = invitationRequests[indexPath.row]
-
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let invitationRequest = invitationRequests[indexPath.row]
+        
         cell.imageView.makeViewCircle()
-        cell.nameLabel.text = inviteRequest.fromUserID
+        cell.imageView.contentMode = .scaleAspectFill
+        cell.imageView.clipsToBounds = true
+        
+        cell.blackBackgroundView.isHidden = true
+        
+        if let venue = appDelegate.venues[invitationRequest.venueID] {
+            if (invitationRequest.specialEventID != nil) {
+                if let event = appDelegate.specialEvents[invitationRequest.specialEventID!] {
+                    cell.nameLabel.text = "\(event.EventName) Invite"
+                }
+                else {
+                    cell.nameLabel.text = "\(venue.VenueNickName) Invite"
+                }
+                self.retrieveImage(imageURL: venue.ImageURL, venueID: venue.VenueID, imageView: cell.imageView)
+            }
+            else {
+                cell.nameLabel.text = "\(venue.VenueNickName) Invite"
+                self.retrieveImage(imageURL: venue.ImageURL, venueID: venue.VenueID, imageView: cell.imageView)
+            }
+        }
+        else {
+            cell.nameLabel.text = "Pending Invite"
+        }
+        
         
         return cell
     }
     
+    func attendVenueWithConfirmation(date : String, venueID : String, add : Bool, specialEventID : String?, plannedFriendAttendeesForDate : [String : String]) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
+        FirebaseClient.addUserToVenuePlansForDate(date: date, venueID: venueID, userID: appDelegate.user!.FBID, add: true, specialEventID: specialEventID, completion: { (success) in
+            if (success) {
+                appDelegate.profileNeedsToUpdate = true
+                Utilities.printDebugMessage("Successfully added plan to attend venue")
+                self.updateDataAndTableView({ (success) in
+                    if (success) {
+                        DispatchQueue.main.async {
+                            let venue = appDelegate.venues[venueID]!
+                            Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+                            self.displayAttendedPopup(venueName: venue.VenueNickName, venueID: venueID, attendFullDate: date, plannedAttendees: plannedFriendAttendeesForDate)
+                        }
+                    }
+                    else {
+                        Utilities.printDebugMessage("Error reloading tableview in venues")
+                    }
+                })
+            }
+            else {
+                Utilities.printDebugMessage("Error adding user to venue plans for date")
+                Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+            }
+        })
+        
+    }
+    
+    
+    
+    func getPlannedAttendees(venue : Venue, fullDate : String) -> [String:String] {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let friends = appDelegate.friends
+        var plannedFriendAttendeesForDate = [String:String]()
+        let plannedAttendees = venue.PlannedAttendees
+        
+        for (_, plannedAttendee) in plannedAttendees {
+            if let friend = friends[plannedAttendee] {
+                for (_,plan) in friend.Plans {
+                    if(DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))) {
+                        if(plan.venueID == venue.VenueID) {
+                            let fullDatePlan = DateUtilities.getStringFromDate(date: plan.date)
+                            if (fullDatePlan == fullDate) {
+                                plannedFriendAttendeesForDate[friend.FBID] = friend.FBID
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        
+        return plannedFriendAttendeesForDate
+    }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
+        let invitationRequest = invitationRequests[indexPath.row]
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        if let fromUser = appDelegate.users[invitationRequest.fromUserID], let venue = appDelegate.venues[invitationRequest.venueID] {
+            let alert = SCLAlertView()
+            let _ = alert.addButton("Accept", action: {
+                let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
+                var plannedFriendAttendeesForDate = [String:String]()
+                if let venue = appDelegate.venues[invitationRequest.venueID] {
+                    plannedFriendAttendeesForDate = self.getPlannedAttendees(venue: venue, fullDate: DateUtilities.getStringFromDate(date: invitationRequest.date))
+                }
+                FirebaseClient.acceptOrRejectInviteRequest(accepted: true, uniqueInvitationID: invitationRequest.inviteID, userID: appDelegate.user!.FBID, completion: { (success) in
+                    let venue = appDelegate.venues[invitationRequest.venueID]!
+                    Utilities.sendPushNotification(title: "\(appDelegate.user!.Name) accepted your invite to \(venue.VenueNickName) for \(DateUtilities.convertDateToStringByFormat(date: invitationRequest.date, dateFormat: DateUtilities.Constants.uiDisplayFormat))", toUserFBID: invitationRequest.fromUserID)
+                    if (!success) {
+                        Utilities.printDebugMessage("Failure accepting invite request")
+                    }
+                    else {
+                        Utilities.printDebugMessage("Success accepting invite request")
+                    }
+                    DispatchQueue.main.async {
+                        Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+                    }
+                    
+                    self.attendVenueWithConfirmation(date: DateUtilities.getStringFromDate(date: invitationRequest.date), venueID: invitationRequest.venueID, add: true, specialEventID: invitationRequest.specialEventID, plannedFriendAttendeesForDate: plannedFriendAttendeesForDate)
+                })
+                
+            })
+            let _ = alert.addButton("Reject", action: {
+                let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
+                FirebaseClient.acceptOrRejectInviteRequest(accepted: false, uniqueInvitationID: invitationRequest.inviteID, userID: appDelegate.user!.FBID, completion: { (success) in
+                    if (!success) {
+                        Utilities.printDebugMessage("Failure rejecting invite request")
+                    }
+                    else {
+                        Utilities.printDebugMessage("Success rejecting invite request")
+                    }
+                    self.updateDataAndTableView({ (success) in
+                        DispatchQueue.main.async {
+                            Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+                        }
+                    })
+
+                })
+            })
+            if (fromUser.Name.components(separatedBy: " ").count != 0) {
+                if let firstName = fromUser.Name.components(separatedBy: " ").first {
+                    _ = alert.showInfo("Invite from \(firstName)", subTitle: "\(fromUser.Name) invited you to go to \(venue.VenueNickName) on \(DateUtilities.convertDateToStringByFormat(date: invitationRequest.date, dateFormat: DateUtilities.Constants.uiDisplayFormat))!")
+                }
+            }
+        }
+        else {
+            Utilities.printDebugMessage("Error: could not find user")
+        }
+        
+        
     }
 }

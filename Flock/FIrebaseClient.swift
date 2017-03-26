@@ -605,7 +605,7 @@ class FirebaseClient: NSObject
                     // Adding invitation to user
                     if(add) {
                         let uniqueInvitationID = UUID().uuidString
-                        var invitationDetails = ["FromUserID": fromUserID, "Date" : date, "VenueID" : venueID]
+                        var invitationDetails = ["FromUserID": fromUserID, "Date" : date, "VenueID" : venueID, "InviteID" : uniqueInvitationID]
                         
                         if let specialEventID = specialEventID {
                             invitationDetails["SpecialEventID"] = specialEventID
@@ -638,7 +638,7 @@ class FirebaseClient: NSObject
                 {
                     if(add) {
                         let uniqueInvitationID = UUID().uuidString
-                        var invitationDetails = ["FromUserID": fromUserID, "Date" : date, "VenueID" : venueID]
+                        var invitationDetails = ["FromUserID": fromUserID, "Date" : date, "VenueID" : venueID, "InviteID" : uniqueInvitationID]
                         
                         if let specialEventID = specialEventID {
                             invitationDetails["SpecialEventID"] = specialEventID
@@ -659,7 +659,24 @@ class FirebaseClient: NSObject
     }
 
     
-    
+    class func acceptOrRejectInviteRequest(accepted : Bool, uniqueInvitationID : String, userID : String, completion: @escaping (Bool) -> Void) {
+        dataRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot) in
+            //Confirm send friend request conditions
+            if (snapshot.hasChild(userID) && snapshot.childSnapshot(forPath: userID).hasChild("Invitations") && snapshot.childSnapshot(forPath: userID).childSnapshot(forPath: "Invitations").hasChild(uniqueInvitationID)) {
+                let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]
+                let userDict = dictionary[userID] as! [String: AnyObject]
+                var invitationsDict = userDict["Invitations"] as! [String : AnyObject]
+                var invitationDict = invitationsDict[uniqueInvitationID] as! [String : AnyObject]
+                invitationDict["Accepted"] = accepted as AnyObject?
+                let updates = [uniqueInvitationID: invitationDict]
+                dataRef.child("Users").child(userID).child("Invitations").updateChildValues(updates)
+                completion(true)
+            }
+            else {
+                completion(false)
+            }
+        })
+    }
     
     
     //Add plan to user plans and add user to planned attendees in venue
