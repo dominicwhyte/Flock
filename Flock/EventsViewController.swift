@@ -7,12 +7,15 @@
 //
 
 import UIKit
+import Firebase
 
-class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDelegate {
+class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDelegate, FlockSuggestionCollectionViewCellDelegate {
     var events: [Event] = []
     var userFBIDSofPlanningAttendees = [String]()
     
     var imageCache = [String : UIImage]()
+    
+    var tap = UITapGestureRecognizer()
     
     @IBOutlet var carousel: iCarousel!
     @IBOutlet weak var infoLabel: UILabel!
@@ -27,7 +30,7 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         super.awakeFromNib()
         
         setEventsInTimeFrame()
-    
+        
     }
     
     func setEventsInTimeFrame() {
@@ -57,7 +60,7 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         newEvent = Event(dict: newDict)
         events.append(newEvent)
     }
-
+    
     
     override func viewDidLoad() {
         collectionView.delegate = self
@@ -75,13 +78,57 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
             updateUINoCollectionReload()
         }
         
+        tap.numberOfTapsRequired = 2  // add double tap
+        tap.addTarget(self, action: "goToChatFromDoubleTap")
+        collectionView.isUserInteractionEnabled = true
+        self.collectionView.addGestureRecognizer(tap)
         
+        
+        self.topCover.setNeedsDisplay()
+        
+    }
+    
+    func goToChatFromDoubleTap(){
+        var pointInCollectionView: CGPoint = tap.location(in: self.collectionView)
+        if(self.collectionView.indexPathForItem(at: pointInCollectionView) != nil) {
+            var indexPath: IndexPath = self.collectionView.indexPathForItem(at: pointInCollectionView)!
+            
+            var selectedCell: FlockSuggestionCollectionViewCell = self.collectionView.cellForItem(at: indexPath)! as! FlockSuggestionCollectionViewCell
+            let friendFBID = selectedCell.userToFriendFBID
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            if let user = appDelegate.user, let friendUser = appDelegate.users[friendFBID!] {
+                if let channelID = user.ChannelIDs[friendFBID!] {
+                    performSegue(withIdentifier: "CHAT_IDENTIFIER", sender: (channelID, friendUser))
+                }
+            }
+            
+            //if (friendFBID != nil) {
+            //    appDelegate.openChatController(FBID: friendFBID!)
+            //}
+            // Rest code
+            Utilities.printDebugMessage("I just got double tapped double time")
+        }
+        
+    }
+    
+    func goToChat(friendFBID: String) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        if let user = appDelegate.user, let friendUser = appDelegate.users[friendFBID] {
+            if let channelID = user.ChannelIDs[friendFBID] {
+                performSegue(withIdentifier: "CHAT_IDENTIFIER", sender: (channelID, friendUser))
+            }
+        }
+    }
+    
+    override func viewWillLayoutSubviews() {
+        Utilities.applyVerticalGradient(aView: topCover, colorTop: FlockColors.FLOCK_GRAY, colorBottom: FlockColors.FLOCK_LIGHT_GRAY)
+        super.viewWillLayoutSubviews()
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Utilities.applyVerticalGradient(aView: topCover, colorTop: FlockColors.FLOCK_GRAY, colorBottom: FlockColors.FLOCK_LIGHT_GRAY)
+        
         //Utilities.applyVerticalGradient(aView: bottomCover, colorTop: FlockColors.FLOCK_LIGHT_BLUE, colorBottom: FlockColors.FLOCK_GOLD)
         bottomCover.backgroundColor = UIColor.white
         carousel.reloadData()
@@ -112,7 +159,7 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
     
     func carouselCurrentItemIndexDidChange(_ carousel: iCarousel) {
         updateUI()
-    }    
+    }
     
     func setupLabelAndButton(event : Event) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -183,7 +230,7 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         return eventView
     }
     
-
+    
     
     func carousel(_ carousel: iCarousel, valueFor option: iCarouselOption, withDefault value: CGFloat) -> CGFloat {
         if (option == .spacing) {
@@ -250,7 +297,7 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
                             Utilities.printDebugMessage("Error refreshing events page")
                         }
                         Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
-                    })                   
+                    })
                 })
             }
             else {
@@ -275,6 +322,18 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
                     peopleSelectorTableViewController.fullDate = fullDate
                     peopleSelectorTableViewController.plannedAttendees = plannedAttendees
                     peopleSelectorTableViewController.specialEventID = specialEventID
+                }
+            }
+            else if let chatViewController = navController.topViewController as? ChatViewController {
+                if let (channelID, friendUser) = sender as? (String, User) {
+                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                    if let friendImage = imageCache[friendUser.PictureURL], let userImage = imageCache[appDelegate.user!.PictureURL] {
+                        chatViewController.userImage = userImage
+                        chatViewController.friendImage = friendImage
+                    }
+                    chatViewController.channelRef = FIRDatabase.database().reference().child("channels").child(channelID)
+                    chatViewController.friendUser = friendUser
+                    chatViewController.channelID = channelID
                 }
             }
         }
@@ -319,7 +378,7 @@ extension EventsViewController: UICollectionViewDelegate, UICollectionViewDataSo
         nameLabel.text = suggestedUser.Name
         userImage.makeViewCircle()
         self.retrieveImage(imageURL: suggestedUser.PictureURL, venueID: nil, imageView: userImage)
-        
+        cell.flockSuggestionCollectionViewCellDelegate = self
         if let delegate = cell.delegate {
             if delegate.FBIDWasFlocked(fbid: suggestedUser.FBID) {
                 cell.setPerformedUI()
@@ -338,5 +397,9 @@ extension EventsViewController: UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
     }
+}
+
+protocol FlockSuggestionCollectionViewCellDelegate: class {
+    func goToChat(friendFBID: String)
 }
 

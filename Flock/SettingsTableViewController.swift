@@ -37,15 +37,31 @@ class SettingsTableViewController: UITableViewController {
         super.viewDidLoad()
         autoLiveSwitch.backgroundColor = UIColor.white
         autoLiveSwitch.layer.cornerRadius = 16
-        autoLiveSwitch.setOn((CLLocationManager.authorizationStatus() == .authorizedAlways), animated: false)
+        
+        
+        //For now, always off
+        //autoLiveSwitch.setOn((CLLocationManager.authorizationStatus() == .authorizedAlways), animated: false)
         
         self.tableView.separatorStyle = .none
         
+        
+        
+        self.view.setNeedsDisplay()
+        
+        
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
         for backgroundViewInstance in backgroundViewCollection {
-            setGradientBackground(aView: backgroundViewInstance)
+            //setGradientBackground(aView: backgroundViewInstance)
+            
+            Utilities.applyHorizontalGradient(aView: backgroundViewInstance, colorTop: FlockColors.FLOCK_BLUE, colorBottom: FlockColors.FLOCK_LIGHT_BLUE)
+            
             setShadow(aView: backgroundViewInstance)
         }
     }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -115,10 +131,25 @@ class SettingsTableViewController: UITableViewController {
     
     @IBAction func autoLiveSwitchTriggered(_ sender: UISwitch) {
         
+        
+        
+        
+        // KEY KEY KEY!!! THE CODE BELOW HERE WORKS!!! DO NOT DELETE
+        
         if (!ignoreSwitch) {
+            let alert = SCLAlertView()
+            let _ = alert.addButton("Settings", action: {
+                self.autoLiveSwitch.setOn(false, animated: true)
+                UIApplication.shared.openURL(NSURL(string: UIApplicationOpenSettingsURLString) as! URL)
+            })
+            _ = alert.showInfo("Coming Soon!", subTitle: "Auto-live let's you go live at a Venue without even having to open the app, letting your flock know where you are so they can join in on the fun. Flock only uses your location when your device is already checking it, meaning that there is no additional drain to your battery.")
+            ignoreSwitch = true
+            autoLiveSwitch.setOn(false, animated: false)
+            
+            /*
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             let newStatus = sender.isOn
-            ignoreSwitch = true
+            
             autoLiveSwitch.setOn(!newStatus, animated: false)
             if (!newStatus) {
                 let alert = SCLAlertView()
@@ -163,11 +194,13 @@ class SettingsTableViewController: UITableViewController {
                 })
                 _ = alert.showInfo("Enable auto-live?", subTitle: "Auto-live let's you go live at a Venue without even having to open the app, letting your flock know where you are so they can join in on the fun. Flock only uses your location when your device is already checking it, meaning that there is no additional drain to your battery.")
             }
+ */
         }
         else {
             ignoreSwitch = false
         }
         
+        // KEY KEY KEY!!! THE CODE ABOVE HERE WORKS!!! DO NOT DELETE
     }
     
     
@@ -202,3 +235,15 @@ class SettingsTableViewController: UITableViewController {
     
     
    }
+
+
+
+
+
+
+
+
+
+
+
+

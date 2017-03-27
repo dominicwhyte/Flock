@@ -28,13 +28,31 @@ class Utilities {
     }
     
     static func applyVerticalGradient(aView : UIView, colorTop : UIColor, colorBottom : UIColor) {
-
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [ colorTop.cgColor, colorBottom.cgColor]
-        gradientLayer.locations = [ 0.0, 1.0]
-        gradientLayer.frame = aView.bounds
         
-        aView.layer.insertSublayer(gradientLayer, at: 0)
+        let gradient = CAGradientLayer()
+        
+        gradient.frame = aView.bounds
+        
+        gradient.startPoint = CGPoint(x: 0.5, y: 0)
+        gradient.endPoint = CGPoint(x: 0.5, y: 1)
+        gradient.colors = [colorTop.cgColor, colorBottom.cgColor]
+        
+        aView.layer.insertSublayer(gradient, at: 0)
+        
+    }
+    
+    static func applyHorizontalGradient(aView : UIView, colorTop : UIColor, colorBottom : UIColor) {
+        
+        let gradient = CAGradientLayer()
+        
+        gradient.frame = aView.bounds
+        
+        gradient.startPoint = CGPoint(x: 0, y: 0.5)
+        gradient.endPoint = CGPoint(x: 1, y: 0.5)
+        gradient.colors = [colorTop.cgColor, colorBottom.cgColor]
+        
+        aView.layer.insertSublayer(gradient, at: 0)
+        
     }
     
     static func setUnderlinedTextAttribute(text : String, button : UIButton) {

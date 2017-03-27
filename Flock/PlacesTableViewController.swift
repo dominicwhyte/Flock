@@ -33,6 +33,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     
     fileprivate let itemsPerRow: CGFloat = 1
     var venues = [Venue]()
+    var totalPlansInDateRangeForVenueID = [String:Int]()
     var filteredVenues = [Venue]()
     var invitationRequests = [Invitation]()
     
@@ -52,8 +53,16 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             appDelegate.locationManager.requestLocation()
             appDelegate.presentNavBarActivityIndicator(navItem: self.navigationItem)
             
-        } else {
+        }
+        else if (CLLocationManager.authorizationStatus() == .notDetermined) {
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            appDelegate.locationManager.requestWhenInUseAuthorization()
+        }
+        else {
             let alert = SCLAlertView()
+            let _ = alert.addButton("Settings", action: {
+                UIApplication.shared.openURL(NSURL(string: UIApplicationOpenSettingsURLString) as! URL)
+            })
             _ = alert.showInfo("Oops!", subTitle: "Looks like you haven't setup your location services permissions. Hit the settings button in your profile to enable this for a better Flock experience!")
         }
         
@@ -213,7 +222,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! PlacesTableViewCell
         cell.selectionStyle = .none
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let stats = appDelegate.venueStatistics!
+        
         
         //Setup Cell
         if (currentTab == items[0]) {
@@ -251,17 +260,14 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             
             let currentLive = venue.CurrentAttendees.count
             cell.rightStatLabel.text = "\(String(currentLive))"
-            var totalPlanned = 0
-            if let venueDates = stats.venuePlanCountsForDatesForVenues[venue.VenueID] {
-                for (date, count) in venueDates {
-                    let daysUntil = DateUtilities.daysUntilPlan(planDate: date)
-                    if(DateUtilities.isValidTimeFrame(dayDiff: daysUntil)){
-                        totalPlanned += count
-                    }
-                }
+            
+            if let plannedCount = totalPlansInDateRangeForVenueID[venue.VenueID] {
+                cell.leftStatLabel.text = "\(plannedCount)"
+            }
+            else {
+                cell.leftStatLabel.text = "0"
             }
             
-            cell.leftStatLabel.text = "\(String(totalPlanned))"
             
             
             //            //TEMP
@@ -353,24 +359,39 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     
     func getVenuesAndSort() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        self.venues = Array(appDelegate.venues.values)
+        
+        //compute totalPlansInDateRangeForVenueID
+        var totalPlansInDateRangeForVenueID = [String:Int]()
         if let stats = appDelegate.venueStatistics {
-            let lifetimelive = stats.lifetimeLive
-            self.venues = self.venues.sorted { (venue1, venue2) -> Bool in
-                var venue1Live = 0
-                var venue2Live = 0
-                if (lifetimelive[venue1.VenueID] != nil) {
-                    venue1Live = lifetimelive[venue1.VenueID]!
+            for (_,venue) in appDelegate.venues {
+                totalPlansInDateRangeForVenueID[venue.VenueID] = 0
+                if let venueDates = stats.venuePlanCountsForDatesForVenues[venue.VenueID] {
+                    for (date, count) in venueDates {
+                        let daysUntil = DateUtilities.daysUntilPlan(planDate: date)
+                        if(DateUtilities.isValidTimeFrame(dayDiff: daysUntil)){
+                            totalPlansInDateRangeForVenueID[venue.VenueID]! = count + totalPlansInDateRangeForVenueID[venue.VenueID]!
+                        }
+                    }
                 }
-                if (lifetimelive[venue2.VenueID] != nil) {
-                    venue2Live = lifetimelive[venue2.VenueID]!
-                }
-                return venue1Live > venue2Live
             }
         }
-        else {
-            Utilities.printDebugMessage("No stats")
-        }
+        self.totalPlansInDateRangeForVenueID = totalPlansInDateRangeForVenueID
+        
+        
+        
+        self.venues = Array(appDelegate.venues.values)
+
+            self.venues = self.venues.sorted { (venue1, venue2) -> Bool in
+                var venue1Planned = 0
+                var venue2Planned = 0
+                if (totalPlansInDateRangeForVenueID[venue1.VenueID] != nil) {
+                    venue1Planned = totalPlansInDateRangeForVenueID[venue1.VenueID]!
+                }
+                if (totalPlansInDateRangeForVenueID[venue2.VenueID] != nil) {
+                    venue2Planned = totalPlansInDateRangeForVenueID[venue2.VenueID]!
+                }
+                return venue1Planned > venue2Planned
+            }
     }
     
     

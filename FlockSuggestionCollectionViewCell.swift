@@ -18,6 +18,7 @@ class FlockSuggestionCollectionViewCell: UICollectionViewCell {
     var isPressed = false
     var isPerformed = false
     var delegate : FlockRecommenderDelegate?
+    var flockSuggestionCollectionViewCellDelegate : FlockSuggestionCollectionViewCellDelegate?
     
     //Change this to use for other purposes
     var cellType : CollectionViewCellType = CollectionViewCellType.flockSuggester
@@ -59,7 +60,7 @@ class FlockSuggestionCollectionViewCell: UICollectionViewCell {
                 case CollectionViewCellType.messager:
                     let appDelegate = UIApplication.shared.delegate as! AppDelegate
                     if let fbid = userToFriendFBID {
-                        appDelegate.openChatController(FBID: fbid)
+                        flockSuggestionCollectionViewCellDelegate?.goToChat(friendFBID: fbid)
                     }
                     
                 }
@@ -87,10 +88,10 @@ class FlockSuggestionCollectionViewCell: UICollectionViewCell {
         userImageView.alpha = 1
         isPerformed = false
         switch cellType {
-            case CollectionViewCellType.flockSuggester:
-                plusIconImageView.image = UIImage(named: "whiteAddIcon")
-            case CollectionViewCellType.messager:
-                plusIconImageView.image = UIImage(named: "Chat-50")
+        case CollectionViewCellType.flockSuggester:
+            plusIconImageView.image = UIImage(named: "whiteAddIcon")
+        case CollectionViewCellType.messager:
+            plusIconImageView.image = UIImage(named: "Chat-50")
         }
     }
     

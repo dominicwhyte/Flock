@@ -692,7 +692,7 @@ Cap</string>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstItem="ocn-qG-qkV" firstAttribute="leading" secondItem="MdC-Lp-mp7" secondAttribute="leading" constant="8" id="3dA-a8-hxh"/>
                                                         <constraint firstAttribute="bottom" secondItem="ocn-qG-qkV" secondAttribute="bottom" constant="8" id="7vS-1X-Dd0"/>
@@ -733,7 +733,7 @@ Cap</string>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7VL-a1-duJ">
+                                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="7VL-a1-duJ">
                                                             <rect key="frame" x="302" y="8" width="51" height="32"/>
                                                             <color key="onTintColor" red="0.61166977621242091" green="0.96078431369999995" blue="0.28567622298680728" alpha="1" colorSpace="calibratedRGB"/>
                                                             <connections>
@@ -1553,6 +1553,7 @@ Cap</string>
                         <outlet property="submitButton" destination="luh-mL-fhz" id="RfB-xj-mK7"/>
                         <outlet property="topCover" destination="b3G-jE-Oyf" id="Zg8-w6-vXB"/>
                         <segue destination="poD-Ws-0OS" kind="presentation" identifier="SELECTOR_IDENTIFIER" id="Pft-md-crX"/>
+                        <segue destination="KcW-Kd-qrk" kind="presentation" identifier="CHAT_IDENTIFIER" id="vL9-tq-qKz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nUn-KP-oAG" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2348,7 +2349,7 @@ Cap</string>
         <scene sceneID="SpP-Tl-FjW">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="5jg-Hg-fKd" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Events" id="TAF-cx-ZaK" customClass="SimpleTabBarItem" customModule="SimpleTab"/>
+                    <tabBarItem key="tabBarItem" title="Events" image="Calendar-32" id="TAF-cx-ZaK" customClass="SimpleTabBarItem" customModule="SimpleTab"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Pac-hl-rnx">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -2384,6 +2385,7 @@ Cap</string>
     </scenes>
     <resources>
         <image name="Building-50" width="50" height="50"/>
+        <image name="Calendar-32" width="32" height="32"/>
         <image name="Chat-32" width="32" height="32"/>
         <image name="Chat-50" width="50" height="50"/>
         <image name="ChatIcon" width="384" height="384"/>
@@ -2410,8 +2412,8 @@ Cap</string>
         <image name="whiteCheckmarkIcon" width="384" height="384"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="OAc-BJ-I4b"/>
-        <segue reference="aNt-J0-525"/>
-        <segue reference="3oN-hO-BQ6"/>
+        <segue reference="Pft-md-crX"/>
+        <segue reference="Qvd-MR-VXP"/>
+        <segue reference="vL9-tq-qKz"/>
     </inferredMetricsTieBreakers>
 </document>

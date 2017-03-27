@@ -642,6 +642,8 @@
         func setupLocationServices() {
             locationManager.delegate = self
             self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            /*
+             Ask for this later!
             if (CLLocationManager.authorizationStatus() == .notDetermined) {
                 locationManager.requestAlwaysAuthorization()
                 locationManager.requestWhenInUseAuthorization()
@@ -650,6 +652,7 @@
             if (CLLocationManager.authorizationStatus() == .authorizedAlways){
                 self.startMonitoringVisits()
             }
+            */
             
         }
         
@@ -1170,10 +1173,15 @@
             UIApplication.shared.applicationIconBadgeNumber = 0
             //self.setupSimpleTBC()
             // Check for wakeup from inactive app
+            
             if(launchOptions != nil) {
                 if let _ = launchOptions![UIApplicationLaunchOptionsKey.location] {
                     self.appIsWakingUpFromVisit = true
+                    if (CLLocationManager.authorizationStatus() != .notDetermined && CLLocationManager.authorizationStatus() != .denied) {
+                        
+                    
                     locationManager.requestLocation()
+                    }
                 }
             } else {
                 self.appIsWakingUpFromVisit = false

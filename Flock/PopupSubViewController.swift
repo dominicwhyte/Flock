@@ -154,7 +154,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     //    }
     
     override func viewDidLoad() {
-        Utilities.applyVerticalGradient(aView: gradientBackgroundForImage, colorTop: UIColor.white, colorBottom: UIColor.black)
+        
         
         datePicker.titles = self.determineTitleOrder(dayCount: DateUtilities.Constants.NUMBER_OF_DAYS_TO_DISPLAY)
         datePicker.itemWidth = 100
@@ -178,6 +178,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.delegate      =   self
         tableView.dataSource    =   self
         
+        
         tableView.register(UINib(nibName: "VenueFriendTableViewCell", bundle: nil), forCellReuseIdentifier: "VENUE_FRIEND")
         setFriendsForVenueForDate(venue: delegate!.venueToPass!)
         setAttendButtonTitle()
@@ -189,6 +190,9 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         //self.datePicker.addGestureRecognizer(tap)
         
         self.view.addSubview(tableView)
+        
+        gradientBackgroundForImage.frame = CGRect(x: 0.0, y: 0.0, width: tableViewFrameView.frame.width + 50.0, height: gradientBackgroundForImage.frame.height)
+        Utilities.applyVerticalGradient(aView: gradientBackgroundForImage, colorTop: UIColor.white, colorBottom: UIColor.black)
     }
     
     func tapDatePicker(_ sender: UITapGestureRecognizer) {
