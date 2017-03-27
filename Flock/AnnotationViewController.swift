@@ -111,11 +111,13 @@ class AnnotationViewController: SpotlightViewController {
             //            })
             //spotlightView.move(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width / 2, y: 42), size: CGSize(width: 200, height: 40), cornerRadius: 6), moveType: .disappear)
             //self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width - 50, y: 42), size: CGSize(width: 200, height: 40), cornerRadius: 6))
-            spotlightView.move(Spotlight.Oval(center: CGPoint(x: screenSize.width / 2, y: screenSize.height/2), diameter: screenSize.width), moveType: .disappear)
+            self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: 0, y: 0), size: CGSize(width: 0, height: 0), cornerRadius: 6))
         case 3:
             appDelegate.simpleTBC!.animateToTab(0, completion: { (navCon) in
                 if let navCon = navCon as? UINavigationController {
                     let vc = navCon.topViewController as! PlacesTableViewController
+                    print("\(vc.tableView.contentOffset.y)")
+                    vc.tableView.setContentOffset(CGPoint(x: 0,y: -64), animated: true)
                     //vc.displayVenuePopupWithVenueIDForDay(venueID: "-KeKx9Pri9kpJmNe72uQ", date: Date())
                     //vc.showCustomDialog(venue: appDelegate.venues["-KeKx9Pri9kpJmNe72uQ"]!, startDisplayDate: Date())
                     
@@ -133,10 +135,11 @@ class AnnotationViewController: SpotlightViewController {
                 for (_, invitation) in user.Invitations {
                     if(DateUtilities.dateIsWithinValidTimeframe(date: invitation.date)) {
                         if let isAccepted = invitation.accepted {
-                            if(!isAccepted) {
+                            if(isAccepted) {
                                 hasPendingInvitations = true
                             }
                         } else {
+                            print("Hmmm, something is curious")
                             hasPendingInvitations = true
                         }
                     }
@@ -156,7 +159,7 @@ class AnnotationViewController: SpotlightViewController {
                 for (_, invitation) in user.Invitations {
                     if(DateUtilities.dateIsWithinValidTimeframe(date: invitation.date)) {
                         if let isAccepted = invitation.accepted {
-                            if(!isAccepted) {
+                            if(isAccepted) {
                                 hasPendingInvitations = true
                             }
                         } else {
@@ -173,27 +176,7 @@ class AnnotationViewController: SpotlightViewController {
                 }
             }
         case 5:
-            if let user = appDelegate.user {
-                var hasPendingInvitations = false
-                for (_, invitation) in user.Invitations {
-                    if(DateUtilities.dateIsWithinValidTimeframe(date: invitation.date)) {
-                        if let isAccepted = invitation.accepted {
-                            if(!isAccepted) {
-                                hasPendingInvitations = true
-                            }
-                        } else {
-                            hasPendingInvitations = true
-                        }
-                    }
-                }
-                if(!hasPendingInvitations) {
-                    print("No invites")
-                    self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width/2, y: screenSize.height*(8/20)), size: CGSize(width: screenSize.width, height: screenSize.height*(9/20)), cornerRadius: 6))
-                } else {
-                    print("I have some invitations yo")
-                    self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width/2, y: screenSize.height*(8/20) + 124), size: CGSize(width: screenSize.width, height: screenSize.height*(9/20)), cornerRadius: 6))
-                }
-            }
+            self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width - 50, y: 42), size: CGSize(width: screenSize.width/2, height: 40), cornerRadius: 6))
         case 6:
             appDelegate.simpleTBC!.animateToTab(4, completion: { (navCon) in
                 if let navCon = navCon as? UINavigationController {
@@ -227,9 +210,9 @@ class AnnotationViewController: SpotlightViewController {
                 }
                 
             })
-            self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width/2, y: screenSize.height/5), size: CGSize(width: screenSize.width, height: screenSize.height*(2/5)), cornerRadius: 6))
+            self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width/2, y: screenSize.height*(0.18)), size: CGSize(width: screenSize.width, height: screenSize.height*(0.36)), cornerRadius: 6))
         case 9:
-            self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width/2, y: screenSize.height*(7/10)), size: CGSize(width: screenSize.width, height: screenSize.height*(6/10)), cornerRadius: 6))
+            self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width/2, y: screenSize.height*(0.70)), size: CGSize(width: screenSize.width, height: screenSize.height*(0.62)), cornerRadius: 6))
         case 10:
             appDelegate.simpleTBC!.animateToTab(2, completion: { (navCon) in
                 if let navCon = navCon as? UINavigationController {

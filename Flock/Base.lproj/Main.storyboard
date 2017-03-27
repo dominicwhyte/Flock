@@ -134,42 +134,139 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hey, and welcome to Flock! Let's get started by adding some friends." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o7J-6g-B2X" userLabel="Hey">
-                                <rect key="frame" x="66" y="252.5" width="243" height="163.5"/>
-                                <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Connect with friends in Flock so you can share plans, send invites, and go live with others. To add friends, tap this button." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ooy-Vr-zsj">
-                                <rect key="frame" x="66" y="252.5" width="243" height="163.5"/>
-                                <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4RJ-nk-OGc">
-                                <rect key="frame" x="66" y="74" width="243" height="218"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ooy-Vr-zsj">
+                                <rect key="frame" x="66" y="261" width="243" height="147.5"/>
                                 <string key="text">Hey there, and welcome to Flock! This walkthrough will take you through using the app - once you’ve got the hang of something, just tap on the screen to move on.</string>
-                                <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="20"/>
+                                <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="18"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Connect with friends in Flock so you can share plans, send invites, and go live with others. To add friends, tap this button." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gnh-2l-f4i">
+                                <rect key="frame" x="66" y="261" width="243" height="147.5"/>
+                                <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="18"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Check out who's planning to go out or who's &quot;Live&quot; (out at) a club. Tap on someone to see their profile and plans." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4RJ-nk-OGc">
+                                <rect key="frame" x="66" y="74" width="243" height="123"/>
+                                <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="18"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v8s-f3-OGx">
+                                <rect key="frame" x="66" y="492" width="243" height="123"/>
+                                <string key="text">Here you can scroll through clubs and see at a glance how many friends/people are planning to go there, and who's live right now.</string>
+                                <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="18"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gkH-mp-vbl">
+                                <rect key="frame" x="66" y="484" width="243" height="131"/>
+                                <string key="text">Tap on a venue to see more, like which friends are going on which days. From there you can plan to go yourself by scrolling to the day and tapping the "Go To" button.</string>
+                                <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="16"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Events let you see fun things coming up like Capmandu or Sunday Funday. You can tap on the image to see more info." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Mz-qF-mR1">
+                                <rect key="frame" x="66" y="490" width="243" height="123"/>
+                                <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="18"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="See which if your friends are going and double tap their picture to chat with them." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sKP-aO-NNn">
+                                <rect key="frame" x="66" y="64" width="243" height="98.5"/>
+                                <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="18"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="On your profile you can see what club you go to most (&quot;Top Place&quot;) and how many friends your're connected with (&quot;Flock Size&quot;)." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o7J-6g-B2X">
+                                <rect key="frame" x="66" y="260.5" width="243" height="147.5"/>
+                                <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="18"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5fN-he-sx1">
+                                <rect key="frame" x="66" y="64" width="243" height="123"/>
+                                <string key="text">You can also see your plans here. If you want to go quickly to that club/day, tap on a plan. If you want to delete one, swipe left on it.</string>
+                                <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="18"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ua4-7v-UVl">
+                                <rect key="frame" x="66" y="74" width="243" height="147.5"/>
+                                <string key="text">Finally, you can chat with friends in real-time. They'll get a notification from you, so if you're having a great time out and wnat to let them know, hit them up!</string>
+                                <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="18"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="On a night out, you can also &quot;Go Live&quot; at a club to let them know where you're having fun." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Pb-MD-JDP">
+                                <rect key="frame" x="66" y="260.5" width="243" height="147.5"/>
+                                <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="gkH-mp-vbl" firstAttribute="leading" secondItem="lBh-lB-egG" secondAttribute="leadingMargin" constant="50" id="0NU-Ek-Yo1"/>
+                            <constraint firstItem="rne-8K-VED" firstAttribute="top" secondItem="4Mz-qF-mR1" secondAttribute="bottom" constant="54" id="0eH-CB-42A"/>
                             <constraint firstItem="4RJ-nk-OGc" firstAttribute="centerX" secondItem="lBh-lB-egG" secondAttribute="centerX" id="12Q-MT-wii"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="4Mz-qF-mR1" secondAttribute="trailing" constant="50" id="1Vb-WP-IUb"/>
                             <constraint firstAttribute="trailingMargin" secondItem="o7J-6g-B2X" secondAttribute="trailing" constant="50" id="1nv-ig-5eV"/>
+                            <constraint firstItem="5fN-he-sx1" firstAttribute="top" secondItem="Gen-JM-OTN" secondAttribute="bottom" constant="44" id="3Qp-Y1-cFf"/>
+                            <constraint firstItem="gkH-mp-vbl" firstAttribute="centerX" secondItem="lBh-lB-egG" secondAttribute="centerX" id="447-es-cjv"/>
                             <constraint firstItem="Ooy-Vr-zsj" firstAttribute="centerX" secondItem="o7J-6g-B2X" secondAttribute="centerX" id="6fn-fy-riF"/>
+                            <constraint firstItem="gnh-2l-f4i" firstAttribute="centerY" secondItem="o7J-6g-B2X" secondAttribute="centerY" id="6pF-xR-6ja"/>
+                            <constraint firstItem="Ua4-7v-UVl" firstAttribute="top" secondItem="Gen-JM-OTN" secondAttribute="bottom" constant="54" id="7D7-l7-OdT"/>
+                            <constraint firstItem="4Mz-qF-mR1" firstAttribute="leading" secondItem="lBh-lB-egG" secondAttribute="leadingMargin" constant="50" id="BE3-Qo-YDT"/>
                             <constraint firstItem="o7J-6g-B2X" firstAttribute="centerY" secondItem="lBh-lB-egG" secondAttribute="centerY" id="Dbn-Xd-j8S"/>
+                            <constraint firstItem="0Pb-MD-JDP" firstAttribute="height" secondItem="o7J-6g-B2X" secondAttribute="height" id="EmA-0f-7Qa"/>
+                            <constraint firstItem="rne-8K-VED" firstAttribute="top" secondItem="gkH-mp-vbl" secondAttribute="bottom" constant="52" id="Fch-PV-2h7"/>
                             <constraint firstItem="o7J-6g-B2X" firstAttribute="leading" secondItem="lBh-lB-egG" secondAttribute="leadingMargin" constant="50" id="Flr-Xs-gUw"/>
+                            <constraint firstItem="sKP-aO-NNn" firstAttribute="top" secondItem="Gen-JM-OTN" secondAttribute="bottom" constant="44" id="Gu0-kp-EYc"/>
+                            <constraint firstItem="gnh-2l-f4i" firstAttribute="centerX" secondItem="o7J-6g-B2X" secondAttribute="centerX" id="Jk5-tM-6Ei"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="gkH-mp-vbl" secondAttribute="trailing" constant="50" id="Mup-WB-sxa"/>
+                            <constraint firstItem="sKP-aO-NNn" firstAttribute="centerX" secondItem="lBh-lB-egG" secondAttribute="centerX" id="No8-Qr-vT8"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="5fN-he-sx1" secondAttribute="trailing" constant="50" id="SiV-90-pcx"/>
+                            <constraint firstItem="5fN-he-sx1" firstAttribute="centerX" secondItem="lBh-lB-egG" secondAttribute="centerX" id="TCb-Yi-uJu"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="v8s-f3-OGx" secondAttribute="trailing" constant="50" id="W34-hB-Dak"/>
+                            <constraint firstItem="4Mz-qF-mR1" firstAttribute="centerX" secondItem="lBh-lB-egG" secondAttribute="centerX" id="XFO-AP-J8e"/>
                             <constraint firstItem="4RJ-nk-OGc" firstAttribute="top" secondItem="Gen-JM-OTN" secondAttribute="bottom" constant="54" id="YOG-Hi-fgg"/>
+                            <constraint firstItem="Ua4-7v-UVl" firstAttribute="centerX" secondItem="lBh-lB-egG" secondAttribute="centerX" id="ZLu-D0-OmG"/>
+                            <constraint firstItem="0Pb-MD-JDP" firstAttribute="centerY" secondItem="o7J-6g-B2X" secondAttribute="centerY" id="aGs-hZ-RmT"/>
+                            <constraint firstItem="gnh-2l-f4i" firstAttribute="height" secondItem="o7J-6g-B2X" secondAttribute="height" id="aUF-BB-LjJ"/>
                             <constraint firstItem="o7J-6g-B2X" firstAttribute="centerX" secondItem="lBh-lB-egG" secondAttribute="centerX" id="aqF-GY-0a1"/>
                             <constraint firstItem="Ooy-Vr-zsj" firstAttribute="width" secondItem="o7J-6g-B2X" secondAttribute="width" id="bgM-Ab-56v"/>
+                            <constraint firstItem="v8s-f3-OGx" firstAttribute="centerX" secondItem="lBh-lB-egG" secondAttribute="centerX" id="by0-OV-zJa"/>
+                            <constraint firstItem="0Pb-MD-JDP" firstAttribute="width" secondItem="o7J-6g-B2X" secondAttribute="width" id="chc-wY-XdR"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="sKP-aO-NNn" secondAttribute="trailing" constant="50" id="eZm-2y-FuY"/>
                             <constraint firstAttribute="trailingMargin" secondItem="4RJ-nk-OGc" secondAttribute="trailing" constant="50" id="gK4-fs-3Kt"/>
                             <constraint firstItem="Ooy-Vr-zsj" firstAttribute="height" secondItem="o7J-6g-B2X" secondAttribute="height" id="gTH-Eh-iUV"/>
+                            <constraint firstItem="0Pb-MD-JDP" firstAttribute="centerX" secondItem="o7J-6g-B2X" secondAttribute="centerX" id="kY8-0M-VC7"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Ua4-7v-UVl" secondAttribute="trailing" constant="50" id="kjK-8q-Qux"/>
                             <constraint firstItem="Ooy-Vr-zsj" firstAttribute="centerY" secondItem="o7J-6g-B2X" secondAttribute="centerY" id="mju-ry-c7y"/>
+                            <constraint firstItem="Ua4-7v-UVl" firstAttribute="leading" secondItem="lBh-lB-egG" secondAttribute="leadingMargin" constant="50" id="nTf-xZ-9Zk"/>
+                            <constraint firstItem="v8s-f3-OGx" firstAttribute="leading" secondItem="lBh-lB-egG" secondAttribute="leadingMargin" constant="50" id="pS2-so-PIu"/>
+                            <constraint firstItem="5fN-he-sx1" firstAttribute="leading" secondItem="lBh-lB-egG" secondAttribute="leadingMargin" constant="50" id="prV-Yf-dxf"/>
+                            <constraint firstItem="sKP-aO-NNn" firstAttribute="leading" secondItem="lBh-lB-egG" secondAttribute="leadingMargin" constant="50" id="qdH-5e-wQl"/>
                             <constraint firstItem="4RJ-nk-OGc" firstAttribute="leading" secondItem="lBh-lB-egG" secondAttribute="leadingMargin" constant="50" id="tru-HH-Bs1"/>
+                            <constraint firstItem="gnh-2l-f4i" firstAttribute="width" secondItem="o7J-6g-B2X" secondAttribute="width" id="tw0-TU-9wl"/>
+                            <constraint firstItem="rne-8K-VED" firstAttribute="top" secondItem="v8s-f3-OGx" secondAttribute="bottom" constant="52" id="zKI-hk-PcY"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outletCollection property="annotationViews" destination="Ooy-Vr-zsj" collectionClass="NSMutableArray" id="aoE-DW-kA8"/>
+                        <outletCollection property="annotationViews" destination="gnh-2l-f4i" collectionClass="NSMutableArray" id="Ww1-Lj-5Gm"/>
+                        <outletCollection property="annotationViews" destination="4RJ-nk-OGc" collectionClass="NSMutableArray" id="tQ2-Vr-yuN"/>
+                        <outletCollection property="annotationViews" destination="v8s-f3-OGx" collectionClass="NSMutableArray" id="jL6-8A-6P1"/>
+                        <outletCollection property="annotationViews" destination="gkH-mp-vbl" collectionClass="NSMutableArray" id="SrA-po-RKx"/>
+                        <outletCollection property="annotationViews" destination="0Pb-MD-JDP" collectionClass="NSMutableArray" id="1ey-Y3-cO0"/>
+                        <outletCollection property="annotationViews" destination="4Mz-qF-mR1" collectionClass="NSMutableArray" id="5FU-dR-YPc"/>
+                        <outletCollection property="annotationViews" destination="sKP-aO-NNn" collectionClass="NSMutableArray" id="dir-DG-tF2"/>
+                        <outletCollection property="annotationViews" destination="o7J-6g-B2X" collectionClass="NSMutableArray" id="JAm-Uu-gfw"/>
+                        <outletCollection property="annotationViews" destination="5fN-he-sx1" collectionClass="NSMutableArray" id="MXz-ia-Dxr"/>
+                        <outletCollection property="annotationViews" destination="Ua4-7v-UVl" collectionClass="NSMutableArray" id="a2Q-LI-vbp"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VcS-gS-4Tw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
