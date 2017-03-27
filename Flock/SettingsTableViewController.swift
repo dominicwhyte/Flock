@@ -205,6 +205,7 @@ class SettingsTableViewController: UITableViewController {
     
     
     @IBAction func showWalkthroughPressed(_ sender: Any) {
+        self.navigationController!.popViewController(animated: true)
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.simpleTBC!.animateToTab(1, completion: { (navCon) in
             if let navCon = navCon as? UINavigationController {
@@ -218,6 +219,7 @@ class SettingsTableViewController: UITableViewController {
                 viewController.alpha = 0.5
                 
                 appDelegate.simpleTBC!.present(viewController, animated: true, completion: nil)
+                
             }
             
         })
