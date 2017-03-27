@@ -153,16 +153,15 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v8s-f3-OGx">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Here you can browse clubs and see how many friends/ people are planning to go there, and who's live right now." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v8s-f3-OGx">
                                 <rect key="frame" x="66" y="492" width="243" height="123"/>
-                                <string key="text">Here you can scroll through clubs and see at a glance how many friends/people are planning to go there, and who's live right now.</string>
                                 <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gkH-mp-vbl">
-                                <rect key="frame" x="66" y="484" width="243" height="131"/>
-                                <string key="text">Tap on a venue to see more, like which friends are going on which days. From there you can plan to go yourself by scrolling to the day and tapping the "Go To" button.</string>
+                                <rect key="frame" x="66" y="506" width="243" height="109"/>
+                                <string key="text">Tap on a venue to see more, like which friends are planning to go. From there you can plan yourself by going to the day and tapping the button.</string>
                                 <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="16"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -187,14 +186,13 @@
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5fN-he-sx1">
                                 <rect key="frame" x="66" y="64" width="243" height="123"/>
-                                <string key="text">You can also see your plans here. If you want to go quickly to that club/day, tap on a plan. If you want to delete one, swipe left on it.</string>
+                                <string key="text">You can also see your plans here. If you want to go quickly to that club/day, tap on a plan. If you want to delete one, swipe left</string>
                                 <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ua4-7v-UVl">
-                                <rect key="frame" x="66" y="74" width="243" height="147.5"/>
-                                <string key="text">Finally, you can chat with friends in real-time. They'll get a notification from you, so if you're having a great time out and wnat to let them know, hit them up!</string>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Finally, you can chat with friends in real-time. Communicate about plans or events or just catch up about the night out." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ua4-7v-UVl">
+                                <rect key="frame" x="66" y="74" width="243" height="123"/>
                                 <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>

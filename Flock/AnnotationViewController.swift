@@ -136,7 +136,9 @@ class AnnotationViewController: SpotlightViewController {
                     if(DateUtilities.dateIsWithinValidTimeframe(date: invitation.date)) {
                         if let isAccepted = invitation.accepted {
                             if(isAccepted) {
-                                hasPendingInvitations = true
+                                hasPendingInvitations = false
+                            } else {
+                                hasPendingInvitations = false
                             }
                         } else {
                             print("Hmmm, something is curious")
@@ -160,7 +162,9 @@ class AnnotationViewController: SpotlightViewController {
                     if(DateUtilities.dateIsWithinValidTimeframe(date: invitation.date)) {
                         if let isAccepted = invitation.accepted {
                             if(isAccepted) {
-                                hasPendingInvitations = true
+                                hasPendingInvitations = false
+                            } else {
+                                hasPendingInvitations = false
                             }
                         } else {
                             hasPendingInvitations = true
