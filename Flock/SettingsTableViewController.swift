@@ -142,7 +142,7 @@ class SettingsTableViewController: UITableViewController {
                 self.autoLiveSwitch.setOn(false, animated: true)
                 UIApplication.shared.openURL(NSURL(string: UIApplicationOpenSettingsURLString) as! URL)
             })
-            _ = alert.showInfo("Coming Soon!", subTitle: "Auto-live let's you go live at a Venue without even having to open the app, letting your flock know where you are so they can join in on the fun. Flock only uses your location when your device is already checking it, meaning that there is no additional drain to your battery.")
+            _ = alert.showInfo("Coming Soon!", subTitle: "Auto-live lets you go live at a club without even having to open the app, so your flock knows where you are to join in on the fun. Flock only uses your location when your device is already checking it, meaning that there is no additional drain to your battery.")
             ignoreSwitch = true
             autoLiveSwitch.setOn(false, animated: false)
             
