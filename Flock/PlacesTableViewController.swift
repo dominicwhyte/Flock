@@ -689,6 +689,44 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         performSegue(withIdentifier: "SELECTOR_IDENTIFIER", sender: (userID, venueID, fullDate, plannedAttendees))
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        
+        let userDefaults = UserDefaults.standard
+        
+        if !userDefaults.bool(forKey: "hasSeenWalkthrough") {
+            Utilities.printDebugMessage("Walkthrough has NOT been seen!")
+            //Utilities.showWalkthrough(vcDelegate: self, vc: self)
+            
+            UserDefaults.standard.set(true, forKey: "hasSeenWalkthrough") // Set defaults so no walkthrough next time
+            
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            appDelegate.simpleTBC!.animateToTab(1, completion: { (navCon) in
+                if let navCon = navCon as? UINavigationController {
+                    let vc = navCon.topViewController as! PeopleTableViewController
+                    vc.tableView.setContentOffset(CGPoint.zero, animated: true)
+                    
+                    
+                    
+                    
+                    let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Annotation") as! AnnotationViewController
+                    viewController.alpha = 0.5
+                    
+                    appDelegate.simpleTBC!.present(viewController, animated: true, completion: nil)
+                    
+                }
+            })
+            
+            
+            userDefaults.set(true, forKey: "hasSeenWalkthrough")
+            userDefaults.synchronize()
+        } else {
+            Utilities.printDebugMessage("Walkthrough has been seen!")
+        }
+    }
+    
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let navController = segue.destination as? UINavigationController {
             if let peopleSelectorTableViewController = navController.topViewController as? PeopleSelectorTableViewController {

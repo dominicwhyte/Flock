@@ -161,6 +161,11 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         updateUI()
     }
     
+    func setupLabelForNoEvents() {
+        infoLabel.text = "No upcoming events!"
+        submitButton.isEnabled = false
+    }
+    
     func setupLabelAndButton(event : Event) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let userFriends = appDelegate.user!.Friends
@@ -209,7 +214,21 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
             //recycled and used with other index values later
             let width = self.view.frame.width
             
-            eventView = EventView(frame: CGRect(x: 0, y: 0, width: width - 150, height: width - 150))
+            var offset = 170.0
+            if(width < 325) {
+                offset = 70.0
+            } else if (width < 345) {
+                offset = 90.0
+            } else if (width < 365) {
+                offset = 110.0
+            } else if (width < 385) {
+                offset = 130.0
+            } else if (width < 405) {
+                offset = 150.0
+            }
+            
+            //eventView = EventView(frame: CGRect(x: 0, y: 0, width: width - 150, height: width - 150))
+            eventView = EventView(frame: CGRect(x: 0, y: 0, width: width - CGFloat(offset), height: width - CGFloat(offset)))
             eventView.setupEventView(event: events[index])
             
             //            label = UILabel(frame: itemView.bounds)
@@ -275,9 +294,13 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
     func updateUI() {
         if (events.count != 0) {
             updateUINoCollectionReload()
+        } else {
+            setupLabelForNoEvents()
         }
         self.collectionView.reloadData()
     }
+    
+    
     
     @IBAction func submitButtonPressed(_ sender: Any) {
         if (events.count != 0) {

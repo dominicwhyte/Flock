@@ -81,7 +81,7 @@ class PeopleSelectorTableViewController: UITableViewController, UpdateSelectorTa
             let date = DateUtilities.getDateFromString(date: fullDate)
             let displayDate = DateUtilities.convertDateToStringByFormat(date: date, dateFormat: DateUtilities.Constants.uiDisplayFormat)
             if(self.eventName != nil) {
-                title = "\(userName) invited you to \(self.eventName) at \(venueName) on \(displayDate)!"
+                title = "\(userName) invited you to \(self.eventName!) at \(venueName) on \(displayDate)!"
             } else {
                 title = "\(userName) invited you to \(venueName) on \(displayDate)!"
             }

@@ -54,11 +54,11 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
     }
     
     func inviteFacebookPressed() {
-        let content = FBSDKAppInviteContent()
+        /*let content = FBSDKAppInviteContent()
         content.appLinkURL = NSURL(string: "https://fb.me/1911872325698779") as URL!
         content.appInvitePreviewImageURL = NSURL(string: "https://firebasestorage.googleapis.com/v0/b/flock-43b66.appspot.com/o/message_images%2F76C9E67E-1CAB-4454-9287-C02746850D91?alt=media&token=ef9cc51c-5db6-4983-b046-fa0ae8e0d4a3") as URL!
         
-        FBSDKAppInviteDialog.show(from: self, with: content, delegate: self)
+        FBSDKAppInviteDialog.show(from: self, with: content, delegate: self)*/
 
     }
     
@@ -177,9 +177,9 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (segmentedControl.selectedSegmentIndex == 1) {
-            if (section == 0) {
-                return 1
-            }
+            //if (section == 0) {
+            //    return 1
+            //}
             if searchController.isActive && searchController.searchBar.text != "" {
                 return self.filteredPeopleToInvite.count
             }
@@ -195,7 +195,7 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         if (segmentedControl.selectedSegmentIndex == 1) {
-            return 2
+            return 1
         }
         else {
             return 1
@@ -205,10 +205,10 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if (segmentedControl.selectedSegmentIndex == 1) {
-            if (section == 1) {
-                return "Facebook"
-            }
-            else {
+            //if (section == 1) {
+            //    return "Facebook"
+            //}
+            //else {
                 var title: String?
                 if (peopleToInvite.count > 0) {
                     title = "All Contacts (\(peopleToInvite.count))"
@@ -218,7 +218,7 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
                     self.navigationItem.title = nil
                 }
                 return title
-            }
+            //}
             
         }
         else {
@@ -257,9 +257,9 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
         
         if (segmentedControl.selectedSegmentIndex == 1) {
             var title: String?
-            if (section == 0) {
-                title = "Facebook"
-            }
+            //if (section == 0) {
+            //    title = "Facebook"
+            //}
             if (peopleToInvite.count > 0) {
                 title = "All Contacts (\(peopleToInvite.count))"
                 self.navigationItem.title = nil
@@ -349,12 +349,12 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if (segmentedControl.selectedSegmentIndex == 1) {
-            if (indexPath.section == 0) {
+            /*if (indexPath.section == 0) {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "FACEBOOK_INVITE_TO_FLOCK", for: indexPath) as! InviteTableViewCell
                 let button = cell.viewWithTag(1) as! UIButton
                 button.addTarget(self, action: #selector(SearchPeopleTableViewController.inviteFacebookPressed), for: .touchUpInside)
                 return cell
-            }
+            }*/
             let cell = tableView.dequeueReusableCell(withIdentifier: "INVITE_TO_FLOCK", for: indexPath) as! InviteTableViewCell
             cell.resetUI()
             var person : SwiftAddressBookPerson
@@ -556,12 +556,12 @@ extension SearchPeopleTableViewController: FBSDKAppInviteDialogDelegate{
      - Parameter error: The error.
      */
     public func appInviteDialog(_ appInviteDialog: FBSDKAppInviteDialog!, didFailWithError error: Error!) {
-        Utilities.printDebugMessage("LETS GO")
+        Utilities.printDebugMessage("INVITATION NOT SENT")
     }
     
     
     func appInviteDialog(_ appInviteDialog: FBSDKAppInviteDialog!, didCompleteWithResults results: [AnyHashable : Any]!) {
-        
-            }
+        Utilities.printDebugMessage("INVITATION SENT")
+    }
 }
 
