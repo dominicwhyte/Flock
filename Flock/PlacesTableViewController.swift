@@ -702,7 +702,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             UserDefaults.standard.set(true, forKey: "hasSeenWalkthrough") // Set defaults so no walkthrough next time
             
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            appDelegate.simpleTBC!.animateToTab(1, completion: { (navCon) in
+            appDelegate.simpleTBC!.animateToTab(2, completion: { (navCon) in
                 if let navCon = navCon as? UINavigationController {
                     let vc = navCon.topViewController as! PeopleTableViewController
                     vc.tableView.setContentOffset(CGPoint.zero, animated: true)

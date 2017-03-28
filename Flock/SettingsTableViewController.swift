@@ -207,7 +207,7 @@ class SettingsTableViewController: UITableViewController {
     @IBAction func showWalkthroughPressed(_ sender: Any) {
         self.navigationController!.popViewController(animated: true)
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        appDelegate.simpleTBC!.animateToTab(1, completion: { (navCon) in
+        appDelegate.simpleTBC!.animateToTab(2, completion: { (navCon) in
             if let navCon = navCon as? UINavigationController {
                 let vc = navCon.topViewController as! PeopleTableViewController
                 vc.tableView.setContentOffset(CGPoint.zero, animated: true)

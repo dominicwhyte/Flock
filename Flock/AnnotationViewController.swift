@@ -182,7 +182,7 @@ class AnnotationViewController: SpotlightViewController {
         case 5:
             self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width - 50, y: 42), size: CGSize(width: screenSize.width/2, height: 40), cornerRadius: 6))
         case 6:
-            appDelegate.simpleTBC!.animateToTab(4, completion: { (navCon) in
+            appDelegate.simpleTBC!.animateToTab(1, completion: { (navCon) in
                 if let navCon = navCon as? UINavigationController {
                     let vc = navCon.topViewController as! EventsViewController
                     //vc.displayVenuePopupWithVenueIDForDay(venueID: "-KeKx9Pri9kpJmNe72uQ", date: Date())
@@ -200,7 +200,7 @@ class AnnotationViewController: SpotlightViewController {
         case 7:
             self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width/2, y: screenSize.height*(3/4)), size: CGSize(width: screenSize.width, height: screenSize.height*(1/2)), cornerRadius: 6))
         case 8:
-            appDelegate.simpleTBC!.animateToTab(3, completion: { (navCon) in
+            appDelegate.simpleTBC!.animateToTab(4, completion: { (navCon) in
                 if let navCon = navCon as? UINavigationController {
                     let vc = navCon.topViewController as! ProfileViewController
                     //vc.displayVenuePopupWithVenueIDForDay(venueID: "-KeKx9Pri9kpJmNe72uQ", date: Date())
@@ -218,7 +218,7 @@ class AnnotationViewController: SpotlightViewController {
         case 9:
             self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width/2, y: screenSize.height*(0.70)), size: CGSize(width: screenSize.width, height: screenSize.height*(0.62)), cornerRadius: 6))
         case 10:
-            appDelegate.simpleTBC!.animateToTab(2, completion: { (navCon) in
+            appDelegate.simpleTBC!.animateToTab(3, completion: { (navCon) in
                 if let navCon = navCon as? UINavigationController {
                     let vc = navCon.topViewController as! ChatsTableViewController
                     //vc.displayVenuePopupWithVenueIDForDay(venueID: "-KeKx9Pri9kpJmNe72uQ", date: Date())
