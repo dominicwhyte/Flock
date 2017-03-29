@@ -26,10 +26,16 @@ class AnnotationViewController: SpotlightViewController {
         updateAnnotationView(labelAnimated)
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
+        
+        let model = UIDevice.current.model
+        print("device type=\(model)")
+        
+        
         let screenSize = UIScreen.main.bounds.size
         switch stepIndex {
         case 0:
             self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: 0, y: 0), size: CGSize(width: 0, height: 0), cornerRadius: 6))
+            
             //self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width - 50, y: 42), size: CGSize(width: 200, height: 40), cornerRadius: 6))
             
         case 1:

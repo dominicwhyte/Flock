@@ -659,14 +659,14 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         return true
     }
     
-    func displayAttendedPopup(venueName : String, venueID: String, attendFullDate : String, plannedAttendees: [String:String]) {
+    func displayAttendedPopup(venueName : String, venueID: String, attendFullDate : String, plannedAttendees: [String:String], specialEventID: String?) {
         let fullDate = DateUtilities.convertDateToStringByFormat(date: DateUtilities.getDateFromString(date: attendFullDate), dateFormat: DateUtilities.Constants.fullDateFormat)
         let displayDate = DateUtilities.convertDateToStringByFormat(date: DateUtilities.getDateFromString(date: attendFullDate), dateFormat: DateUtilities.Constants.uiDisplayFormat)
         let alert = SCLAlertView()
         alert.addButton("Invite Flock", action: {
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             if let user = appDelegate.user {
-                self.selectFlockersToInvite(userID: user.FBID, venueID : venueID, fullDate : fullDate, plannedAttendees: plannedAttendees)
+                self.selectFlockersToInvite(userID: user.FBID, venueID : venueID, fullDate : fullDate, plannedAttendees: plannedAttendees, specialEventID: specialEventID)
             }
         })
         alert.addButton("Share with Flock", action: {
@@ -684,9 +684,9 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         //        confettiView.startConfetti()
     }
     
-    func selectFlockersToInvite(userID : String, venueID: String, fullDate : String, plannedAttendees: [String:String]) {
+    func selectFlockersToInvite(userID : String, venueID: String, fullDate : String, plannedAttendees: [String:String], specialEventID: String?) {
         print("First button tapped")
-        performSegue(withIdentifier: "SELECTOR_IDENTIFIER", sender: (userID, venueID, fullDate, plannedAttendees))
+        performSegue(withIdentifier: "SELECTOR_IDENTIFIER", sender: (userID, venueID, fullDate, plannedAttendees, specialEventID))
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -730,11 +730,12 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let navController = segue.destination as? UINavigationController {
             if let peopleSelectorTableViewController = navController.topViewController as? PeopleSelectorTableViewController {
-                if let (userID, venueID, fullDate, plannedAttendees) = sender as? (String, String, String, [String:String]) {
+                if let (userID, venueID, fullDate, plannedAttendees, specialEventID) = sender as? (String, String, String, [String:String], String?) {
                     peopleSelectorTableViewController.userID = userID
                     peopleSelectorTableViewController.venueID = venueID
                     peopleSelectorTableViewController.fullDate = fullDate
                     peopleSelectorTableViewController.plannedAttendees = plannedAttendees
+                    peopleSelectorTableViewController.specialEventID = specialEventID
                 }
             }
         }
@@ -866,7 +867,7 @@ extension PlacesTableViewController: UICollectionViewDelegate, UICollectionViewD
                         DispatchQueue.main.async {
                             let venue = appDelegate.venues[venueID]!
                             Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
-                            self.displayAttendedPopup(venueName: venue.VenueNickName, venueID: venueID, attendFullDate: date, plannedAttendees: plannedFriendAttendeesForDate)
+                            self.displayAttendedPopup(venueName: venue.VenueNickName, venueID: venueID, attendFullDate: date, plannedAttendees: plannedFriendAttendeesForDate, specialEventID: specialEventID)
                         }
                     }
                     else {

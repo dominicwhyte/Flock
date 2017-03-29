@@ -50,6 +50,7 @@
         var startGoingOutTime : Double = DateUtilities.Constants.START_NIGHT_OUT_TIME
         var endGoingOutTime : Double = DateUtilities.Constants.END_NIGHT_OUT_TIME
         var goLiveButtonPressed : Bool = false
+        var alreadySentFriendRequests = [String:String]();
         
         
         func masterLogin(completion: @escaping (_ status: Bool) -> ()) {

@@ -78,7 +78,10 @@ class FirebaseClient: NSObject
                     
                     let appDelegate = UIApplication.shared.delegate as! AppDelegate
                     if let user = appDelegate.user {
-                        Utilities.sendPushNotification(title: "\(user.Name) sent you a Flock request", toUserFBID: toID)
+                        if(appDelegate.alreadySentFriendRequests[toID] == nil) {
+                            Utilities.sendPushNotification(title: "\(user.Name) sent you a Flock request", toUserFBID: toID)
+                        }
+                        appDelegate.alreadySentFriendRequests[toID] = toID
                     }
                     else {
                         Utilities.printDebugMessage("Error getting user")
@@ -91,7 +94,10 @@ class FirebaseClient: NSObject
                 {
                     let appDelegate = UIApplication.shared.delegate as! AppDelegate
                     if let user = appDelegate.user {
-                        Utilities.sendPushNotification(title: "\(user.Name) sent you a Flock request", toUserFBID: toID)
+                        if(appDelegate.alreadySentFriendRequests[toID] == nil) {
+                            Utilities.sendPushNotification(title: "\(user.Name) sent you a Flock request", toUserFBID: toID)
+                        }
+                        appDelegate.alreadySentFriendRequests[toID] = toID
                     }
                     else {
                         Utilities.printDebugMessage("Error getting user")
