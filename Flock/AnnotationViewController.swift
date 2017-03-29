@@ -26,15 +26,22 @@ class AnnotationViewController: SpotlightViewController {
         updateAnnotationView(labelAnimated)
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
-        
+        var isIpad = false
         let model = UIDevice.current.model
         print("device type=\(model)")
         
+        if(model == "iPad") {
+            isIpad = true
+        }
         
         let screenSize = UIScreen.main.bounds.size
         switch stepIndex {
         case 0:
-            self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: 0, y: 0), size: CGSize(width: 0, height: 0), cornerRadius: 6))
+            if(isIpad) {
+                self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: 0, y: 0), size: CGSize(width: 0, height: 0), cornerRadius: 6))
+            } else {
+                self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: 0, y: 0), size: CGSize(width: 0, height: 0), cornerRadius: 6))
+            }
             
             //self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width - 50, y: 42), size: CGSize(width: 200, height: 40), cornerRadius: 6))
             
@@ -94,9 +101,9 @@ class AnnotationViewController: SpotlightViewController {
              let nextViewController = storyBoard.instantiateViewController(withIdentifier: "Search") as! SearchPeopleTableViewController
              self.present(nextViewController, animated:true, completion:nil)
              let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Annotation") as! AnnotationViewController*/
-            
-            
+
             self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width - 50, y: 42), size: CGSize(width: screenSize.width/2, height: 40), cornerRadius: 6))
+            
             //spotlightView.move(Spotlight.Oval(center: CGPoint(x: screenSize.width - 75, y: 42), diameter: 50))
             
             
@@ -117,7 +124,11 @@ class AnnotationViewController: SpotlightViewController {
             //            })
             //spotlightView.move(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width / 2, y: 42), size: CGSize(width: 200, height: 40), cornerRadius: 6), moveType: .disappear)
             //self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width - 50, y: 42), size: CGSize(width: 200, height: 40), cornerRadius: 6))
-            self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: 0, y: 0), size: CGSize(width: 0, height: 0), cornerRadius: 6))
+            if(isIpad) {
+                self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: 0, y: 0), size: CGSize(width: 0, height: 0), cornerRadius: 6))
+            } else {
+                self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: 0, y: 0), size: CGSize(width: 0, height: 0), cornerRadius: 6))
+            }
         case 3:
             appDelegate.simpleTBC!.animateToTab(0, completion: { (navCon) in
                 if let navCon = navCon as? UINavigationController {
@@ -154,10 +165,18 @@ class AnnotationViewController: SpotlightViewController {
                 }
                 if(!hasPendingInvitations) {
                     print("No invites")
-                    self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width/2, y: screenSize.height*(8/20)), size: CGSize(width: screenSize.width, height: screenSize.height*(9/20)), cornerRadius: 6))
+                    if(isIpad) {
+                        self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: 0, y: 0), size: CGSize(width: 0, height: 0), cornerRadius: 6))
+                    } else {
+                        self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width/2, y: screenSize.height*(8/20)), size: CGSize(width: screenSize.width, height: screenSize.height*(9/20)), cornerRadius: 6))
+                    }
                 } else {
                     print("I have some invitations yo")
-                    self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width/2, y: screenSize.height*(8/20) + 124), size: CGSize(width: screenSize.width, height: screenSize.height*(9/20)), cornerRadius: 6))
+                    if(isIpad) {
+                        self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: 0, y: 0), size: CGSize(width: 0, height: 0), cornerRadius: 6))
+                    } else {
+                        self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width/2, y: screenSize.height*(8/20) + 124), size: CGSize(width: screenSize.width, height: screenSize.height*(9/20)), cornerRadius: 6))
+                    }
                 }
             }
           
@@ -179,14 +198,23 @@ class AnnotationViewController: SpotlightViewController {
                 }
                 if(!hasPendingInvitations) {
                     print("No invites")
-                    self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width/2, y: screenSize.height*(8/20)), size: CGSize(width: screenSize.width, height: screenSize.height*(9/20)), cornerRadius: 6))
+                    if(isIpad) {
+                        self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: 0, y: 0), size: CGSize(width: 0, height: 0), cornerRadius: 6))
+                    } else {
+                        self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width/2, y: screenSize.height*(8/20)), size: CGSize(width: screenSize.width, height: screenSize.height*(9/20)), cornerRadius: 6))
+                    }
                 } else {
                     print("I have some invitations yo")
+                    if(isIpad) {
+                        self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: 0, y: 0), size: CGSize(width: 0, height: 0), cornerRadius: 6))
+                    } else {
                     self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width/2, y: screenSize.height*(8/20) + 124), size: CGSize(width: screenSize.width, height: screenSize.height*(9/20)), cornerRadius: 6))
+                    }
                 }
             }
         case 5:
             self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width - 50, y: 42), size: CGSize(width: screenSize.width/2, height: 40), cornerRadius: 6))
+            
         case 6:
             appDelegate.simpleTBC!.animateToTab(1, completion: { (navCon) in
                 if let navCon = navCon as? UINavigationController {
@@ -202,9 +230,17 @@ class AnnotationViewController: SpotlightViewController {
                 }
                 
             })
-            self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width/2, y: screenSize.height*(1/4)), size: CGSize(width: screenSize.width, height: screenSize.height*(1/2)), cornerRadius: 6))
+            if(isIpad) {
+                self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: 0, y: 0), size: CGSize(width: 0, height: 0), cornerRadius: 6))
+            } else {
+                self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width/2, y: screenSize.height*(1/4)), size: CGSize(width: screenSize.width, height: screenSize.height*(1/2)), cornerRadius: 6))
+            }
         case 7:
-            self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width/2, y: screenSize.height*(3/4)), size: CGSize(width: screenSize.width, height: screenSize.height*(1/2)), cornerRadius: 6))
+            if(isIpad) {
+                self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: 0, y: 0), size: CGSize(width: 0, height: 0), cornerRadius: 6))
+            } else {
+                self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width/2, y: screenSize.height*(3/4)), size: CGSize(width: screenSize.width, height: screenSize.height*(1/2)), cornerRadius: 6))
+            }
         case 8:
             appDelegate.simpleTBC!.animateToTab(4, completion: { (navCon) in
                 if let navCon = navCon as? UINavigationController {
@@ -220,9 +256,17 @@ class AnnotationViewController: SpotlightViewController {
                 }
                 
             })
-            self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width/2, y: screenSize.height*(0.18)), size: CGSize(width: screenSize.width, height: screenSize.height*(0.36)), cornerRadius: 6))
+            if(isIpad) {
+                self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: 0, y: 0), size: CGSize(width: 0, height: 0), cornerRadius: 6))
+            } else {
+                self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width/2, y: screenSize.height*(0.18)), size: CGSize(width: screenSize.width, height: screenSize.height*(0.36)), cornerRadius: 6))
+            }
         case 9:
-            self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width/2, y: screenSize.height*(0.70)), size: CGSize(width: screenSize.width, height: screenSize.height*(0.62)), cornerRadius: 6))
+            if(isIpad) {
+                self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: 0, y: 0), size: CGSize(width: 0, height: 0), cornerRadius: 6))
+            } else {
+                self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: screenSize.width/2, y: screenSize.height*(0.70)), size: CGSize(width: screenSize.width, height: screenSize.height*(0.62)), cornerRadius: 6))
+            }
         case 10:
             appDelegate.simpleTBC!.animateToTab(3, completion: { (navCon) in
                 if let navCon = navCon as? UINavigationController {
@@ -238,7 +282,11 @@ class AnnotationViewController: SpotlightViewController {
                 }
                 
             })
-            self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: 0, y: 0), size: CGSize(width: 0, height: 0), cornerRadius: 6))
+            if(isIpad) {
+                self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: 0, y: 0), size: CGSize(width: 0, height: 0), cornerRadius: 6))
+            } else {
+                self.spotlightView.appear(Spotlight.RoundedRect(center: CGPoint(x: 0, y: 0), size: CGSize(width: 0, height: 0), cornerRadius: 6))
+            }
         case 11:
             dismiss(animated: true, completion: nil)
         default:
