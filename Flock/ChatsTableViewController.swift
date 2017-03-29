@@ -415,7 +415,7 @@ extension UITabBarController {
         }
         badgeView.backgroundColor = color
         badgeView.tag = index
-        if(index == 3) {
+        if(index == 7) {
             tabBar.addSubview(badgeView)
             self.positionBadges()
         }

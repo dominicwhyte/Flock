@@ -552,16 +552,16 @@
                     }
                     if let stb = self.simpleTBC {
                         if (totalUnread > 0 && totalUnread < 6) {
-                            if(stb.selectedIndex == 3) {
-                                stb.addBadge(index: 2, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
+                            if(stb.selectedIndex == 5) {
+                                //stb.addBadge(index: 3, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
                             } else {
-                                stb.addBadge(index: 3, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
+                                //stb.addBadge(index: 4, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
                             }
                         } else if (totalUnread >= 6) {
-                            if(stb.selectedIndex == 3) {
-                                stb.addBadge(index: 2, value: -1, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
+                            if(stb.selectedIndex == 5) {
+                                //stb.addBadge(index: 3, value: -1, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
                             } else {
-                                stb.addBadge(index: 3, value: -1, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
+                                //stb.addBadge(index: 4, value: -1, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
                             }
                         }
                             

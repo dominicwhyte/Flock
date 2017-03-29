@@ -265,7 +265,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, BWWalkthr
             }
             if let stb = appDelegate.simpleTBC {
                 if totalUnread > 0 {
-                    stb.addBadge(index: 3, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
+                    //stb.addBadge(index: 4, value: totalUnread, color: FlockColors.FLOCK_BLUE, font: UIFont(name: "Helvetica", size: 11)!)
                 } else {
                     stb.removeAllBadges()
                 }
