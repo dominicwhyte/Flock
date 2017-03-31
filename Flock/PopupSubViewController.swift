@@ -346,7 +346,11 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         
         UIView.animate(withDuration: 0.5, animations: { 
             self.venueImageView.alpha = 0.7
-            self.optionalEventNameLabel.text = "Open"
+            if(event.EventName != "") {
+                self.optionalEventNameLabel.text = event.EventName
+            } else {
+                self.optionalEventNameLabel.text = "Open"
+            }
         })
 
 

@@ -807,38 +807,41 @@ class FirebaseClient: NSObject
                         dataRef.child("Users").child(userID).updateChildValues(updates)
                     }
                     
-                    // See how loyal dis wonderful user is
-                    var visitWasPlanned = false
-                    if (userDict["Plans"] != nil) {
-                        let plansDict = userDict["Plans"] as! [String : AnyObject]
+                    if(add) {
+                        // See how loyal dis wonderful user is
+                        var visitWasPlanned = false
+                        if (userDict["Plans"] != nil) {
+                            let plansDict = userDict["Plans"] as! [String : AnyObject]
+                            
+                            for (_, plan) in plansDict {
+                                if((plan["Date"] as! String) == date && (plan["VenueID"] as! String) == venueID) {
+                                    visitWasPlanned = true
+                                    break
+                                }
+                            }
+                        }
                         
-                        for (_, plan) in plansDict {
-                            if((plan["Date"] as! String) == date && (plan["VenueID"] as! String) == venueID) {
-                                visitWasPlanned = true
-                                break
+                        if(visitWasPlanned) {
+                            if(snapshot.childSnapshot(forPath: userID).hasChild("Loyalties")) {
+                                var loyaltiesDict = userDict["Loyalties"] as! [String : Int]
+                                if let venueLoyaltiesCount = loyaltiesDict[venueID]  {
+                                    loyaltiesDict[venueID] = venueLoyaltiesCount + 1
+                                } else {
+                                    loyaltiesDict[venueID] = 1
+                                }
+                                let updates = ["Loyalties": loyaltiesDict]
+                                dataRef.child("Users").child(userID).updateChildValues(updates)
+                                
+                            } else {
+                                var loyaltiesDict : [String : Int] = [:]
+                                loyaltiesDict[venueID] = 1
+                                let updates = ["Loyalties": loyaltiesDict]
+                                dataRef.child("Users").child(userID).updateChildValues(updates)
+                                
                             }
                         }
                     }
                     
-                    if(visitWasPlanned) {
-                        if(snapshot.childSnapshot(forPath: userID).hasChild("Loyalties")) {
-                            var loyaltiesDict = userDict["Loyalties"] as! [String : Int]
-                            if let venueLoyaltiesCount = loyaltiesDict[venueID]  {
-                                loyaltiesDict[venueID] = venueLoyaltiesCount + 1
-                            } else {
-                                loyaltiesDict[venueID] = 1
-                            }
-                            let updates = ["Loyalties": loyaltiesDict]
-                            dataRef.child("Users").child(userID).updateChildValues(updates)
-                            
-                        } else {
-                            var loyaltiesDict : [String : Int] = [:]
-                            loyaltiesDict[venueID] = 1
-                            let updates = ["Loyalties": loyaltiesDict]
-                            dataRef.child("Users").child(userID).updateChildValues(updates)
-                            
-                        }
-                    }
                     
                     
                 } else {

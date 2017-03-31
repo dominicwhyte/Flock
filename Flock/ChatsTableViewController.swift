@@ -30,7 +30,21 @@ class ChatsTableViewController: UITableViewController {
             self.conversations.append(conversation)
             self.conversations.sort(by: { (conversation1, conversation2) -> Bool in
                 
-                conversation1.participant.Name < conversation2.participant.Name
+                var unreadCount1 = 0
+                var unreadCount2 = 0
+                if appDelegate.unreadMessageCount[conversation1.channelID] != nil {
+                    unreadCount1 = appDelegate.unreadMessageCount[conversation1.channelID]!
+                }
+                if appDelegate.unreadMessageCount[conversation2.channelID] != nil {
+                    unreadCount2 = appDelegate.unreadMessageCount[conversation2.channelID]!
+                }
+                if(unreadCount1 > 0 && unreadCount2 == 0) {
+                    return true
+                } else if (unreadCount1 == 0 && unreadCount2 > 0) {
+                    return false
+                } else {
+                    return conversation1.participant.Name < conversation2.participant.Name
+                }
             })
             
         }
@@ -63,6 +77,35 @@ class ChatsTableViewController: UITableViewController {
         searchController.searchBar.placeholder = "Search                                                                                     "
         
         tableView.tableHeaderView = searchController.searchBar
+    }
+    
+    func resetChats() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        for(FBID, channelID) in self.user!.ChannelIDs {
+            let friend = appDelegate.users[FBID]!
+            let conversation = Conversation(channelID: channelID, participant: friend, imageURL : friend.PictureURL, lastMessage: nil )
+            
+            self.conversations.append(conversation)
+            self.conversations.sort(by: { (conversation1, conversation2) -> Bool in
+                
+                var unreadCount1 = 0
+                var unreadCount2 = 0
+                if appDelegate.unreadMessageCount[conversation1.channelID] != nil {
+                    unreadCount1 = appDelegate.unreadMessageCount[conversation1.channelID]!
+                }
+                if appDelegate.unreadMessageCount[conversation2.channelID] != nil {
+                    unreadCount2 = appDelegate.unreadMessageCount[conversation2.channelID]!
+                }
+                if(unreadCount1 > 0 && unreadCount2 == 0) {
+                    return true
+                } else if (unreadCount1 == 0 && unreadCount2 > 0) {
+                    return false
+                } else {
+                    return conversation1.participant.Name < conversation2.participant.Name
+                }
+            })
+            
+        }
     }
     
     func filterContentForSearchText(_ searchText: String) {

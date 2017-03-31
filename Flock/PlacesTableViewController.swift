@@ -913,6 +913,7 @@ extension PlacesTableViewController: UICollectionViewDelegate, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
         let invitationRequest = invitationRequests[indexPath.row]
+        
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if let fromUser = appDelegate.users[invitationRequest.fromUserID], let venue = appDelegate.venues[invitationRequest.venueID] {
             let alert = SCLAlertView()
@@ -958,7 +959,16 @@ extension PlacesTableViewController: UICollectionViewDelegate, UICollectionViewD
             })
             if (fromUser.Name.components(separatedBy: " ").count != 0) {
                 if let firstName = fromUser.Name.components(separatedBy: " ").first {
-                    _ = alert.showInfo("Invite from \(firstName)", subTitle: "\(fromUser.Name) invited you to go to \(venue.VenueNickName) on \(DateUtilities.convertDateToStringByFormat(date: invitationRequest.date, dateFormat: DateUtilities.Constants.uiDisplayFormat))!")
+                    
+                    var subtitle = ""
+                    if let specialEventID = invitationRequest.specialEventID {
+                        let eventName = appDelegate.specialEvents[specialEventID]!.EventName
+                        subtitle = "\(fromUser.Name) invited you to go to \(eventName) at \(venue.VenueNickName) on \(DateUtilities.convertDateToStringByFormat(date: invitationRequest.date, dateFormat: DateUtilities.Constants.uiDisplayFormat))!"
+                    } else {
+                        subtitle = "\(fromUser.Name) invited you to go to \(venue.VenueNickName) on \(DateUtilities.convertDateToStringByFormat(date: invitationRequest.date, dateFormat: DateUtilities.Constants.uiDisplayFormat))!"
+                    }
+                    
+                    _ = alert.showInfo("Invite from \(firstName)", subTitle: subtitle)
                 }
             }
         }

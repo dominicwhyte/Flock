@@ -96,11 +96,11 @@ class ProfileTableViewController: UITableViewController {
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         var venue : Venue
-        let plan : Plan = self.plans[indexPath.row]
         if (indexPath.section == Constants.LIVE_SECTION_ROW) {
             venue = appDelegate.venues[user!.LiveClubID!]!
         }
         else {
+            let plan : Plan = self.plans[indexPath.row]
             venue = appDelegate.venues[plan.venueID]!
         }
         let cell = tableView.dequeueReusableCell(withIdentifier: "VENUE_FRIEND", for: indexPath) as! VenueFriendTableViewCell
@@ -110,6 +110,7 @@ class ProfileTableViewController: UITableViewController {
         if (indexPath.section == Constants.LIVE_SECTION_ROW) {
             cell.subtitleLabel.text = DateUtilities.convertDateToStringByFormat(date: Date(), dateFormat: DateUtilities.Constants.uiDisplayFormat)
         } else {
+            let plan : Plan = self.plans[indexPath.row]
             cell.subtitleLabel.text = DateUtilities.convertDateToStringByFormat(date: plan.date, dateFormat: DateUtilities.Constants.uiDisplayFormat)
         }
         
@@ -134,12 +135,20 @@ class ProfileTableViewController: UITableViewController {
                 }
             })
         }
-        if (plan.specialEventID != nil) {
-            cell.nameLabel.text = appDelegate.specialEvents[plan.specialEventID!]?.EventName
-            cell.profilePic.layer.borderColor = FlockColors.FLOCK_BLUE.cgColor
-            cell.nameLabel.textColor = FlockColors.FLOCK_BLUE
-            cell.subtitleLabel.textColor = FlockColors.FLOCK_BLUE
-            
+        if(indexPath.section == Constants.PLANNED_SECTION_ROW) {
+            let plan : Plan = self.plans[indexPath.row]
+            if (plan.specialEventID != nil) {
+                cell.nameLabel.text = appDelegate.specialEvents[plan.specialEventID!]?.EventName
+                cell.profilePic.layer.borderColor = FlockColors.FLOCK_BLUE.cgColor
+                cell.nameLabel.textColor = FlockColors.FLOCK_BLUE
+                cell.subtitleLabel.textColor = FlockColors.FLOCK_BLUE
+                
+            } else {
+                cell.nameLabel.text = venue.VenueName
+                cell.profilePic.layer.borderColor = UIColor.lightGray.cgColor
+                cell.nameLabel.textColor = UIColor.black
+                cell.subtitleLabel.textColor = UIColor.black
+            }
         }
         else {
             cell.nameLabel.text = venue.VenueName
@@ -147,7 +156,7 @@ class ProfileTableViewController: UITableViewController {
             cell.nameLabel.textColor = UIColor.black
             cell.subtitleLabel.textColor = UIColor.black
         }
-
+        
         
         cell.selectionStyle = .none
         cell.preservesSuperviewLayoutMargins = false

@@ -161,6 +161,24 @@ class TestingViewController: UIViewController, UIImagePickerControllerDelegate, 
         alert.showEdit("Confirm Friend Request", subTitle: "Type to/from IDs")
     }
     
+    @IBAction func clearLiveFromDatabase(_ sender: Any) {
+        let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        for (_, user) in appDelegate.users {
+            if let _ = user.LiveClubID {
+                FirebaseClient.addUserToVenueLive(date: DateUtilities.getStringFromDate(date: Date()), venueID: user.LiveClubID!, userID: user.FBID, add: false, completion: { (success) in
+                    if (success) {
+                        Utilities.printDebugMessage("Successfully unlived \(user.Name)")
+                    }
+                    else {
+                        Utilities.printDebugMessage("Error adding user to venue plans for date")
+                    }
+                    
+                })
+            }
+        }
+        Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+    }
    
     
     
