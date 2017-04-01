@@ -439,7 +439,6 @@ class FirebaseClient: NSObject
             if (snapshot.childSnapshot(forPath: "Venues").hasChild(venueID)) {
                 //add to special event a new attendee, or remove if add is False
                 if let specialEventID = specialEventID {
-                    Utilities.printDebugMessage("check1")
                     if (snapshot.childSnapshot(forPath: "Venues").childSnapshot(forPath: venueID).hasChild(EventFirebaseConstants.eventsSubgroup) && snapshot.childSnapshot(forPath: "Venues").childSnapshot(forPath: venueID).childSnapshot(forPath: EventFirebaseConstants.eventsSubgroup).hasChild(specialEventID)) {
                         
                         let dictionary :[String:AnyObject] = snapshot.childSnapshot(forPath: "Venues").value as! [String : AnyObject]
@@ -476,7 +475,11 @@ class FirebaseClient: NSObject
                         
                     }
                     else {
-                        Utilities.printDebugMessage("Error: Trying to add or remove event plan from nonexisting event. Does not complete false in case a past event was deleted")
+                        Utilities.printDebugMessage("Error: Trying to add or remove event plan from nonexisting event. Maybe event was deleted?")
+                        if (add) {
+                            completion(false)
+                            return
+                        }
                     }
                 }
                 

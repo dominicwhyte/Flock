@@ -298,9 +298,6 @@
 				583AAE331E7F7A0900D28B60 /* Utilities.swift */,
 				58F1F4A01E595A220065DA38 /* Walkthrough */,
 				5F5D379B1E43FFCE008E13E4 /* Main.storyboard */,
-				5F9E5B7E1E84824F00FAA292 /* InviteRequestTableViewCell.swift */,
-				5F9E5B7C1E8481F100FAA292 /* InviteRequestCollectionViewCell.swift */,
-				5FC231C91E82EC17008ECE6B /* InviteFriendsViewController.swift */,
 				5F3474D81E80FC3E00A29615 /* Events */,
 				58F1F4A51E5A328D0065DA38 /* Chats */,
 				5F61AF781E4C0BEB00BD6A0C /* Profile */,
@@ -375,6 +372,7 @@
 				5F5D37FE1E466A7B008E13E4 /* SearchPeopleTableViewController.swift */,
 				583AAE351E7F7A7800D28B60 /* PeopleSelectorTableViewController.swift */,
 				5F61AF6C1E4A857E00BD6A0C /* CustomSearchController.swift */,
+				5FC231C91E82EC17008ECE6B /* InviteFriendsViewController.swift */,
 				5F61AF6E1E4A858700BD6A0C /* CustomSearchBar.swift */,
 				5F5D37F11E45168D008E13E4 /* PeopleTableViewController.swift */,
 				5F5D38031E466C17008E13E4 /* SearchTableViewCell.swift */,
@@ -402,6 +400,8 @@
 		5F5D38091E46C87F008E13E4 /* Places */ = {
 			isa = PBXGroup;
 			children = (
+				5F9E5B7E1E84824F00FAA292 /* InviteRequestTableViewCell.swift */,
+				5F9E5B7C1E8481F100FAA292 /* InviteRequestCollectionViewCell.swift */,
 				5F61AF741E4BCC6300BD6A0C /* PlacesTableViewCell.swift */,
 				583AAE3B1E7F7B0900D28B60 /* PlacesTableViewController.swift */,
 				5F61AF531E47D06800BD6A0C /* PopupSubViewController.swift */,

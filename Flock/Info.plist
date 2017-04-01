@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.15</string>
+	<string>1.18</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -54,7 +54,9 @@
 	<key>NSContactsUsageDescription</key>
 	<string>Allow Flock to access your contacts so you can invite people to Flock! Flock never sends invites without your permission.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Allow Flock to use location services to check if you&apos;re at a venue. Flock always gives you the option to select whether you want to share your location with your friends.</string>
+	<string>Allow Flock to use location services to check if you're at a venue. Flock always gives you the option to select whether you want to share your location with your friends.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Allow Flock to use location services in-app to check if you're at a venue. Flock will give you the option to select whether you want to share your location with your friends.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Flock needs access to the microphone to be able to attach voice notes.</string>
 	<key>NSMotionUsageDescription</key>
@@ -80,8 +82,6 @@
 	<array>
 		<string>armv7</string>
 	</array>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Allow Flock to use location services in-app to check if you&apos;re at a venue. Flock will give you the option to select whether you want to share your location with your friends.</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

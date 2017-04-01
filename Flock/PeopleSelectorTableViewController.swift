@@ -236,7 +236,12 @@ class PeopleSelectorTableViewController: UITableViewController, UpdateSelectorTa
         self.retrieveImage(imageURL: friend.PictureURL, venueID: nil, imageView: cell.profilePic!)
         if(self.plannedAttendees[friend.FBID] != nil) {
             cell.subtitle.text = "Already planning"
+            cell.isUserInteractionEnabled = false
+            cell.selectorButton.isHidden = true
+            
         } else {
+            cell.isUserInteractionEnabled = true
+            cell.selectorButton.isHidden = false
             cell.subtitle.text = "Not planning yet"
         }
         cell.friendID = friend.FBID

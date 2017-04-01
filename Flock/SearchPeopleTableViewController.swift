@@ -66,15 +66,19 @@ class SearchPeopleTableViewController: UITableViewController, UpdateSearchTableV
     @IBAction func segmentChanged(_ sender: UISegmentedControl) {
         if (sender.selectedSegmentIndex == 1) {
             if (SwiftAddressBook.authorizationStatus() == .notDetermined) {
-                
+                let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
                 SwiftAddressBook.requestAccessWithCompletion({ (success, error) -> Void in
-                    if success {
-                        //do something with swiftAddressBook
-                        self.showInviteToFlockUI()
-                    }
-                    else {
-                        sender.selectedSegmentIndex = 0
-                        //self.showRestrictedAddressSettingsAlert()
+                    DispatchQueue.main.async {
+                        Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+                        if success {
+                            //do something with swiftAddressBook
+                            self.showInviteToFlockUI()
+                        }
+                        else {
+                            sender.selectedSegmentIndex = 0
+                            self.tableView.reloadData()
+                            //self.showRestrictedAddressSettingsAlert()
+                        }
                     }
                 })
             }

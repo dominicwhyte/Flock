@@ -111,6 +111,8 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         
     }
     
+
+    
     func goToChat(friendFBID: String) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if let user = appDelegate.user, let friendUser = appDelegate.users[friendFBID] {
@@ -131,13 +133,15 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         
         //Utilities.applyVerticalGradient(aView: bottomCover, colorTop: FlockColors.FLOCK_LIGHT_BLUE, colorBottom: FlockColors.FLOCK_GOLD)
         bottomCover.backgroundColor = UIColor.white
+        self.updateUI()
         carousel.reloadData()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        if(appDelegate.eventsNeedsToUpdate) {
-            Utilities.printDebugMessage("Updating events page")
-            appDelegate.eventsNeedsToUpdate = false
-            self.updateUI()
-        }
+//        if(appDelegate.eventsNeedsToUpdate) {
+//            Utilities.printDebugMessage("Updating events page")
+//            appDelegate.eventsNeedsToUpdate = false
+//            //self.updateUI()
+//        }
+        
     }
     
     
@@ -281,14 +285,28 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
     func updateUINoCollectionReload() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         setEventsInTimeFrame()
-        
-        let event = self.events[self.carousel.currentItemIndex]
-        self.userFBIDSofPlanningAttendees = Array(event.EventAttendeeFBIDs.values)
-        userFBIDSofPlanningAttendees = userFBIDSofPlanningAttendees.filter { (fbid) -> Bool in
-            return (appDelegate.friends[fbid] != nil)
+        let event : Event
+        if (self.carousel.currentItemIndex < self.events.count) {
+            event = self.events[self.carousel.currentItemIndex]
+            self.userFBIDSofPlanningAttendees = Array(event.EventAttendeeFBIDs.values)
+            userFBIDSofPlanningAttendees = userFBIDSofPlanningAttendees.filter { (fbid) -> Bool in
+                return (appDelegate.friends[fbid] != nil)
+            }
+            
+            self.setupLabelAndButton(event: event)
         }
-        
-        self.setupLabelAndButton(event: event)
+        else if (events.count != 0) {
+            event = self.events[0]
+            self.userFBIDSofPlanningAttendees = Array(event.EventAttendeeFBIDs.values)
+            userFBIDSofPlanningAttendees = userFBIDSofPlanningAttendees.filter { (fbid) -> Bool in
+                return (appDelegate.friends[fbid] != nil)
+            }
+            
+            self.setupLabelAndButton(event: event)
+        }
+        else {
+            setupLabelForNoEvents()
+        }
     }
     
     func updateUI() {
@@ -313,9 +331,10 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
                         Utilities.printDebugMessage("Successfully made plan to go to event")
                     }
                     else {
-                        Utilities.printDebugMessage("Error making making to go to event")
+                        Utilities.printDebugMessage("Error making plan to go to event (event deleted?)")
                     }
                     self.updateDataAndCarouselAndCollectionView({ (secondarySuccess) in
+                        self.carousel.reloadData()
                         if (!secondarySuccess) {
                             Utilities.printDebugMessage("Error refreshing events page")
                         }
@@ -331,8 +350,9 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
                 let plannedAttendees = event.EventAttendeeFBIDs
                 let specialEventID = event.EventID
                 performSegue(withIdentifier: "SELECTOR_IDENTIFIER", sender: (userID, venueID, fullDate, plannedAttendees, specialEventID))
+                carousel.reloadData()
             }
-            carousel.reloadData()
+            
         }
     }
     
