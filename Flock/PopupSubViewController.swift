@@ -46,6 +46,8 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     var allPlannedFriendsForDateCountDict = [String : Int]()
     var allCurrentFriendsForDateCountDict = 0
     
+    var buttonIsInviteButton = false
+    
     var tableView: UITableView  =   UITableView()
     
     var startDate : Date?
@@ -69,6 +71,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
             }
         }
     }
+    
     
     @IBAction func liveIconPressed(_ sender: Any) {
            let venue = self.delegate!.venueToPass!
@@ -177,6 +180,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.frame = frame
         tableView.delegate      =   self
         tableView.dataSource    =   self
+        tableView.allowsSelection = false
         
         
         tableView.register(UINib(nibName: "VenueFriendTableViewCell", bundle: nil), forCellReuseIdentifier: "VENUE_FRIEND")
@@ -194,7 +198,139 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         gradientBackgroundForImage.frame = CGRect(x: 0.0, y: 0.0, width: tableViewFrameView.frame.width + 50.0, height: gradientBackgroundForImage.frame.height)
         Utilities.applyVerticalGradient(aView: gradientBackgroundForImage, colorTop: UIColor.white, colorBottom: UIColor.black)
     }
+    /*
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let currentDay = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]
+        let friendsAttendingClubForDay = self.allFriendsForDate[currentDay]!
+        let friend = friendsAttendingClubForDay[indexPath.section][indexPath.row]
+        return friend.FBID == appDelegate.user!.FBID
+        
+    }
+
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == UITableViewCellEditingStyle.delete) {
+            // handle delete (by removing the data from your array and updating the tableview)
+        }
+    }
+    */
+    func displayUnAttendedPopup(venueName : String, attendFullDate : String) {
+        let displayDate = DateUtilities.convertDateToStringByFormat(date: DateUtilities.getDateFromString(date: attendFullDate), dateFormat: DateUtilities.Constants.uiDisplayFormat)
+        let alert = SCLAlertView()
+        //_ = alert.addButton("First Button", target:self, selector:#selector(PlacesTableViewController.shareWithFlock))
+        print("Second button tapped")
+        _ = alert.showSuccess("Confirmed", subTitle: "You've removed your plan to go to \(venueName) on \(displayDate)")
+    }
     
+    func displayUnLived(venueName : String) {
+        let alert = SCLAlertView()
+        //_ = alert.addButton("First Button", target:self, selector:#selector(PlacesTableViewController.shareWithFlock))
+        print("Second button tapped")
+        _ = alert.showSuccess("Confirmed", subTitle: "You've removed your live status for \(venueName)")
+    }
+    /*
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        Utilities.printDebugMessage("Attempting to edit row")
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let venue = self.delegate!.venueToPass!
+        
+        let planDate = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]
+        let friendsAttendingClubForDay = self.allFriendsForDate[planDate]!
+        let friend = friendsAttendingClubForDay[indexPath.section][indexPath.row]
+        
+        if (friend.FBID != appDelegate.user!.FBID) {
+            return nil
+        }
+        
+        if (indexPath.section == Constants.LIVE_SECTION_ROW) {
+            let unlive = UITableViewRowAction(style: .destructive, title: "Unlive") { (action, indexPath) in
+                // delete item at indexPath
+                let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
+                FirebaseClient.addUserToVenueLive(date: DateUtilities.getStringFromDate(date: Date()), venueID: friend.LiveClubID!, userID: friend.FBID, add: false, completion: { (success) in
+                    if (success) {
+                        Utilities.printDebugMessage("Successfully unlived")
+                        self.updateDataAndTableView({ (success) in
+                            Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+                            if (success) {
+                                DispatchQueue.main.async {
+
+                                        self.displayUnLived(venueName: venue.VenueNickName)
+
+                                }
+                            }
+                            else {
+                                Utilities.printDebugMessage("Error reloading tableview in venues")
+                            }
+                        })
+                    }
+                    else {
+                        Utilities.printDebugMessage("Error adding user to venue plans for date")
+                        Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+                    }
+                    
+                })
+            }
+            unlive.backgroundColor = FlockColors.FLOCK_GRAY
+            return [unlive]
+        }
+        
+        let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
+            // delete item at indexPath
+            let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
+            FirebaseClient.addUserToVenuePlansForDate(date: planDate, venueID: venue.VenueID, userID: appDelegate.user!.FBID, add: false, specialEventID: self.specialEventID, completion: { (success) in
+                if (success) {
+                    Utilities.printDebugMessage("Successfully removed plan to attend venue")
+                    self.updateDataAndTableView({ (success) in
+                        Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+                        if (success) {
+                            DispatchQueue.main.async {
+
+                                    self.displayUnAttendedPopup(venueName: venue.VenueNickName, attendFullDate: planDate)
+
+                            }
+                        }
+                        else {
+                            Utilities.printDebugMessage("Error reloading tableview in venues")
+                        }
+                    })
+                }
+                else {
+                    Utilities.printDebugMessage("Error adding user to venue plans for date")
+                    Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+                }
+            })
+        }
+        
+        /* V2.0
+         let share = UITableViewRowAction(style: .normal, title: "Share") { (action, indexPath) in
+         // share item at indexPath
+         }
+         */
+        
+        //share.backgroundColor = FlockColors.FLOCK_BLUE
+        delete.backgroundColor = FlockColors.FLOCK_GRAY
+        
+        //return [delete, share]
+        return [delete]
+        
+    }
+
+*/
+    //UpdateTableViewDelegate function
+    func updateDataAndTableView(_ completion: @escaping (Bool) -> Void) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.updateAllDataWithoutUpdatingLocation { (success) in
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                if (!success) {
+                    Utilities.printDebugMessage("Error updating and reloading data in table view")
+                }
+                completion(success)
+            }
+        }
+    }
+ 
     func tapDatePicker(_ sender: UITapGestureRecognizer) {
         print("\(sender.location(in: datePicker))")
         print("Item Width: \(datePicker.itemWidth))")
@@ -227,10 +363,12 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ cellForRowAttableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
         let currentDay = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]
         let friendsAttendingClubForDay = self.allFriendsForDate[currentDay]!
         let friend = friendsAttendingClubForDay[indexPath.section][indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "VENUE_FRIEND")! as! VenueFriendTableViewCell
+        cell.isEditing = true
         cell.profilePic.makeViewCircle()
         cell.nameLabel.text = friend.Name
         let planCount = friend.Plans.count
@@ -315,27 +453,35 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
             }
         }
         
-        var disable = false
+        var inviteButton = false
+        buttonIsInviteButton = false
+        
         if let plannedUsersForDate = self.allFriendsForDate[dateString]?[INDEX_OF_PLANNED_ATTENDEES] {
             
             for user in plannedUsersForDate {
                 Utilities.printDebugMessage("checking")
                 if(user.FBID == appDelegate.user!.FBID) {
                     Utilities.printDebugMessage("disabling")
-                    disable = true
+                    inviteButton = true
                     break
                 }
             }
         } else {
-            disable = true
+            inviteButton = true
             Utilities.printDebugMessage("Error with date dictionary - doesn't contain dateString")
         }
-        
-        if (specialEventID != nil) {
-            self.delegate?.changeButtonTitle(title: "GO TO \(specialEventName!.uppercased()) @ \(venueString)", shouldDisable: disable)
+        if (inviteButton) {
+            buttonIsInviteButton = true
+            self.delegate?.changeButtonTitle(title: "INVITE YOUR FLOCK")
         }
         else {
-            self.delegate?.changeButtonTitle(title: "GO TO \(venueString) ON \(dateStringInFormat.uppercased())", shouldDisable: disable)
+            
+            if (specialEventID != nil) {
+                self.delegate?.changeButtonTitle(title: "GO TO \(specialEventName!.uppercased()) @ \(venueString)")
+            }
+            else {
+                self.delegate?.changeButtonTitle(title: "GO TO \(venueString) ON \(dateStringInFormat.uppercased())")
+            }
         }
         
     }

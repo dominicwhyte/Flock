@@ -252,7 +252,13 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
                 }
             }
             if let closestEvent = closestEvent {
-                cell.nextOpenLabel.text = "Next open \(DateUtilities.convertDateToStringByFormat(date: closestEvent.EventDate, dateFormat: "E"))"
+                if (DateUtilities.dateIsToday(date: closestEvent.EventDate)) {
+                    cell.nextOpenLabel.text = "Next open tonight"
+                }
+                else {
+                    cell.nextOpenLabel.text = "Next open \(DateUtilities.convertDateToStringByFormat(date: closestEvent.EventDate, dateFormat: "E"))"
+                }
+                
             }
             else {
                 cell.nextOpenLabel.text = "Next open TBD"
@@ -270,19 +276,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             
             
             
-            //            //TEMP
-            //            let A: UInt32 = 0 // UInt32 = 32-bit positive integers (unsigned)
-            //            let B: UInt32 = 100
-            //            var number = Int(arc4random_uniform(B - A + 1) + A)
-            //
-            //            let randomLeft = 100 + number
-            //            number = Int(arc4random_uniform(B - A + 1) + A)
-            //            let randomRight = number + 1000
-            //            cell.rightStatLabel.text = "\(randomRight)\nLifetime"
-            //            cell.leftStatLabel.text = "\(randomLeft)\nBiggest Night"
-            //
-            //
-            //
+           
             
             
             
@@ -297,6 +291,21 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             else {
                 cell.subtitleLabel.text = "Be first to plan!"
             }
+            
+//                        //TEMP
+//                        let A: UInt32 = 0 // UInt32 = 32-bit positive integers (unsigned)
+//                        let B: UInt32 = 100
+//                        var number = Int(arc4random_uniform(B - A + 1) + A)
+//            
+//                        let randomLeft = 20 + number
+//                        number = Int(arc4random_uniform(B - A + 1) + A)
+//                        let randomRight = 0
+//                        cell.rightStatLabel.text = "\(randomRight)"
+//                        cell.leftStatLabel.text = "\(randomLeft)"
+            
+            
+            
+            
             
         }
         
@@ -409,6 +418,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         
         searchController.searchBar.placeholder = "Search                                                                                     "
         tableView.tableHeaderView = searchController.searchBar
+        
         //nav bar
         let menuView = BTNavigationDropdownMenu(navigationController: self.navigationController, containerView: self.navigationController!.view, title: items[0], items: items as [AnyObject])
         self.navigationController?.navigationBar.tintColor = UIColor.white
@@ -569,24 +579,18 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         }
     }
     
-    func changeButtonTitle(title: String, shouldDisable: Bool) {
-        latestAttendButton?.isEnabled = !shouldDisable
+    func changeButtonTitle(title: String) {
+        latestAttendButton?.backgroundColor = FlockColors.FLOCK_BLUE
         latestAttendButton?.setTitle(title, for: .normal)
-        if let latestAttendButton = latestAttendButton {
-            if(shouldDisable) {
-                self.disableButton(button: latestAttendButton)
-            } else {
-                latestAttendButton.backgroundColor = FlockColors.FLOCK_BLUE
-            }
-        }
     }
     
-    func disableButton(button : UIButton) {
-        button.backgroundColor = FlockColors.FLOCK_GRAY
-        //button.alpha = 0.7
-    }
     
     var latestAttendButton : DefaultButton?
+    
+    
+    func performSegueToSelector(userID : String, venueID : String, fullDate : String, plannedAttendeesForDate : [String: String], specialEventID : String?) {
+        self.performSegue(withIdentifier: "SELECTOR_IDENTIFIER", sender: (userID, venueID, fullDate, plannedAttendeesForDate, specialEventID))
+    }
     
     //Date is optional, this is if you want to start on a certain day of the week
     func showCustomDialog(venue : Venue, startDisplayDate : Date?) {
@@ -607,29 +611,54 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         // Create second button
         let todaysDate = DateUtilities.convertDateToStringByFormat(date: Date(), dateFormat: "MMMM d")
         let attendButton = DefaultButton(title: "GO TO \(venue.VenueNickName.uppercased()) ON \(todaysDate.uppercased())", dismissOnTap: true) {
-            Utilities.printDebugMessage("Attending \(venue.VenueNickName.uppercased())")
-            let date = popupSubView.stringsOfUpcomingDays[popupSubView.datePicker.selectedItemIndex]
-            
-            let plannedFriendUsersForDate = popupSubView.allFriendsForDate[popupSubView.stringsOfUpcomingDays[popupSubView.datePicker.selectedItemIndex]]![1] //1 for planned attendees
-            var plannedAttendeesForDate = [String:String]()
-            
-            for user in plannedFriendUsersForDate {
-                Utilities.printDebugMessage(user.Name)
-                plannedAttendeesForDate[user.FBID] = user.FBID
+
+            if (popupSubView.buttonIsInviteButton) {
+                Utilities.printDebugMessage("Invite flock!")
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                let userID = appDelegate.user!.FBID
+                
+                
+                
+                let venueID = self.venueToPass!.VenueID
+                let fullDate = popupSubView.stringsOfUpcomingDays[popupSubView.datePicker.selectedItemIndex]
+                
+                let plannedFriendUsersForDate = popupSubView.allFriendsForDate[popupSubView.stringsOfUpcomingDays[popupSubView.datePicker.selectedItemIndex]]![1] //1 for planned attendees
+                var plannedAttendeesForDate = [String:String]()
+                
+                for user in plannedFriendUsersForDate {
+                    Utilities.printDebugMessage(user.Name)
+                    plannedAttendeesForDate[user.FBID] = user.FBID
+                }
+                let specialEventID = popupSubView.specialEventID
+                self.performSegueToSelector(userID: userID, venueID: venueID, fullDate: fullDate, plannedAttendeesForDate: plannedAttendeesForDate, specialEventID: specialEventID)
+                //popupSubView.performSegue(withIdentifier: "SELECTOR_IDENTIFIER", sender: (userID, venueID, fullDate, plannedAttendeesForDate, specialEventID))
             }
-            
-            //Add Venue and present popup
-            self.attendVenueWithConfirmation(date: date, venueID: self.venueToPass!.VenueID, add: true, specialEventID: popupSubView.specialEventID, plannedFriendAttendeesForDate: plannedAttendeesForDate)
-            
+            else {
+                Utilities.printDebugMessage("Attending \(venue.VenueNickName.uppercased())")
+                let date = popupSubView.stringsOfUpcomingDays[popupSubView.datePicker.selectedItemIndex]
+                
+                let plannedFriendUsersForDate = popupSubView.allFriendsForDate[popupSubView.stringsOfUpcomingDays[popupSubView.datePicker.selectedItemIndex]]![1] //1 for planned attendees
+                var plannedAttendeesForDate = [String:String]()
+                
+                for user in plannedFriendUsersForDate {
+                    Utilities.printDebugMessage(user.Name)
+                    plannedAttendeesForDate[user.FBID] = user.FBID
+                }
+                
+                //Add Venue and present popup
+                self.attendVenueWithConfirmation(date: date, venueID: self.venueToPass!.VenueID, add: true, specialEventID: popupSubView.specialEventID, plannedFriendAttendeesForDate: plannedAttendeesForDate)
+            }
+
         }
         
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        attendButton.isEnabled = self.shouldAttendButtonBeEnabledUponInitialPopup(appDelegate: appDelegate)
+        
+        //attendButton.isEnabled = self.shouldAttendButtonBeEnabledUponInitialPopup(appDelegate: appDelegate)
         attendButton.backgroundColor = FlockColors.FLOCK_BLUE
+
         attendButton.setTitleColor(.white, for: .normal)
-        if(!attendButton.isEnabled) {
-            self.disableButton(button: attendButton)
-        }
+//        if(!attendButton.isEnabled) {
+//            self.disableButton(button: attendButton)
+//        }
         latestAttendButton = attendButton
         // Add buttons to dialog
         popup.addButtons([attendButton])
@@ -767,7 +796,7 @@ extension PlacesTableViewController: UISearchResultsUpdating {
 protocol VenueDelegate: class {
     var venueToPass : Venue? {get set}
     func retrieveImage(imageURL : String, venueID: String?, completion: @escaping (_ image: UIImage) -> ())
-    func changeButtonTitle(title: String, shouldDisable: Bool)
+    func changeButtonTitle(title: String)
     
 }
 /*

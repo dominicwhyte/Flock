@@ -184,6 +184,8 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         let peoplePlurality = Utilities.setPluralityForPeople(count: attendeesFBIDs.count)
         let startText = "\(attendeesFBIDs.count) \(peoplePlurality) going "
         let endText = "(\(friendsCount) \(Utilities.setPlurality(string: "friend", count: friendsCount)))"
+        
+        
         let totalText = startText + endText
         let range = (totalText as NSString).range(of: endText)
         let attributedString = NSMutableAttributedString(string:totalText)

@@ -965,11 +965,14 @@
                 }
                     //Remove the user from the club
                 else {
-                    if let liveClubID = user!.LiveClubID {
-                        FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: liveClubID, userID: self.user!.FBID, add: false, completion: { (success) in
-                            //testing func
-                            //self.showNotification(body: "TEMP NOTIFICATION. REMOVING FROM LIVE:  \(self.venues[liveClubID]!.VenueName)")
-                        })
+                    if let user = self.user {
+                        if let liveClubID = user.LiveClubID {
+                            FirebaseClient.addUserToVenueLive(date: DateUtilities.getTodayFullDate(), venueID: liveClubID, userID: user.FBID, add: false, completion: { (success) in
+                                //testing func
+                                //self.showNotification(body: "TEMP NOTIFICATION. REMOVING FROM LIVE:  \(self.venues[liveClubID]!.VenueName)")
+                            })
+                        }
+
                     }
                 }
             }

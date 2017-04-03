@@ -154,6 +154,9 @@ class ProfileTableViewController: UITableViewController {
                 
             } else {
                 cell.nameLabel.text = venue.VenueName
+                cell.profilePic.layer.borderColor = UIColor.lightGray.cgColor
+                cell.nameLabel.textColor = UIColor.black
+                cell.subtitleLabel.textColor = UIColor.black
             }
         }
         else {
@@ -219,12 +222,15 @@ class ProfileTableViewController: UITableViewController {
         }
     }
     
+    
+    
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
         var venue : Venue
+        
         if (indexPath.section == Constants.LIVE_SECTION_ROW) {
             venue = appDelegate.venues[user!.LiveClubID!]!
         }

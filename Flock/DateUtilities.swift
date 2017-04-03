@@ -93,6 +93,10 @@ class DateUtilities {
         return DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: date))
     }
     
+    static func dateIsToday(date : Date) -> Bool {
+        return daysUntilPlan(planDate: date) == 0
+    }
+    
     static func dateIsWithinOneCalendarWeek(date : Date) -> Bool {
         return DateUtilities.isWithinOneCalendarWeek(dayDiff: DateUtilities.daysUntilPlan(planDate: date))
     }

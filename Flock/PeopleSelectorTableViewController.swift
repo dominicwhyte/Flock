@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SCLAlertView
 
 class PeopleSelectorTableViewController: UITableViewController, UpdateSelectorTableViewDelegate {
     
@@ -100,6 +101,8 @@ class PeopleSelectorTableViewController: UITableViewController, UpdateSelectorTa
         }
         self.dismiss(animated: true) {
             Utilities.printDebugMessage("Successfully dismissed friend selector")
+                        let alert = SCLAlertView()
+                        _ = alert.showInfo("Invites sent!", subTitle: "Flock will send you a push notification when a friend accepts his or her invite")
         }
     }
     
