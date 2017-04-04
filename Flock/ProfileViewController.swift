@@ -116,7 +116,7 @@ class ProfileViewController: UIViewController, ProfileDelegate {
         self.profileName.text = user?.Name
         self.flockSizeLabel.text = "Flock Size:\n\(user!.Friends.count)"
         
-        self.flockSizeLabel.text = "Flock Size:\n67"
+        
 
         
         if let favoriteClubID = appDelegate.computeFavoriteClubForUser(user: user!) {
