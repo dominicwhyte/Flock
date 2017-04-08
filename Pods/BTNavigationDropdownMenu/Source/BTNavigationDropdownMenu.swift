@@ -228,7 +228,7 @@ open class BTNavigationDropdownMenu: UIView {
     fileprivate var configuration = BTConfiguration()
     fileprivate var topSeparator: UIView!
     fileprivate var menuButton: UIButton!
-    fileprivate var menuTitle: UILabel!
+    open var menuTitle: UILabel!
     fileprivate var menuArrow: UIImageView!
     fileprivate var backgroundView: UIView!
     fileprivate var tableView: BTTableView!
@@ -308,7 +308,8 @@ open class BTNavigationDropdownMenu: UIView {
             }
             selfie.didSelectItemAtIndexHandler!(indexPath)
             if selfie.shouldChangeTitleText! {
-                selfie.setMenuTitle("\(selfie.tableView.items[indexPath])")
+                self?.menuTitle.text = "\(selfie.tableView.items[indexPath])"
+                //selfie.setMenuTitle("\(selfie.tableView.items[indexPath])")
             }
             self?.hideMenu()
             self?.layoutSubviews()
@@ -461,10 +462,10 @@ open class BTNavigationDropdownMenu: UIView {
             })
     }
     
-    func setMenuTitle(_ title: String) {
-        self.menuTitle.text = title
-    }
-    
+    //func setMenuTitle(_ title: String) {
+    //    self.menuTitle.text = title
+    //}
+
     func menuButtonTapped(_ sender: UIButton) {
         self.isShown == true ? hideMenu() : showMenu()
     }

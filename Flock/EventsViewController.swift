@@ -209,12 +209,12 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         var eventView: EventView
         
         //reuse view if available, otherwise create a new view
-        if let view = view as? EventView {
-            eventView = view
-            eventView.setupEventView(event: events[index])
-            //get a reference to the label in the recycled view
-            //label = itemView.viewWithTag(1) as! UILabel
-        } else {
+//        if let view = view as? EventView {
+//            eventView = view
+//            eventView.setupEventView(event: events[index])
+//            //get a reference to the label in the recycled view
+//            //label = itemView.viewWithTag(1) as! UILabel
+//        } else {
             //don't do anything specific to the index within
             //this `if ... else` statement because the view will be
             //recycled and used with other index values later
@@ -243,7 +243,7 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
             //            label.font = label.font.withSize(50)
             //            label.tag = 1
             //            itemView.addSubview(label)
-        }
+//        }
         
         //set item label
         //remember to always set any properties of your carousel item

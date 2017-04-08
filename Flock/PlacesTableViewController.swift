@@ -17,8 +17,10 @@ import CoreLocation
 
 class PlacesTableViewController: UITableViewController, VenueDelegate {
     
-    let items = ["Princeton", "Harvard", "Dartmouth", "Stanford"]
-    var currentTab : String = "Princeton" //Which college
+    //let items = ["All", "Open Mon", "Open Tues", "Open Wed", "Open Thu", "Open Fri", "Open Sat", "Open Sun" ]
+    var items : [String] = []
+    var displayItems : [String] = []
+    var currentTab : String = "All Clubs" //Which college
     
     struct Constants {
         static let FLOCK_INVITE_REQUEST_CELL_SIZE = 129.0
@@ -34,6 +36,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     fileprivate let itemsPerRow: CGFloat = 1
     var venues = [Venue]()
     var totalPlansInDateRangeForVenueID = [String:Int]()
+    var totalPlansOnDateForVenueID = [String : [String : Int]]()
     var filteredVenues = [Venue]()
     var invitationRequests = [Invitation]()
     
@@ -83,7 +86,14 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
                     self.setDataForInvitesRequestsCollectionView()
                     self.flockInviteRequestCollectionView?.reloadData()
                     Utilities.printDebugMessage("Successfully reloaded data and tableview")
-                    self.getVenuesAndSort()
+                    
+                    if(self.currentTab == self.items[0]) {
+                        self.getVenuesAndSort()
+                    } else {
+                        if let itemIndex = self.displayItems.index(of: self.currentTab) {
+                            self.filterContentForDayOpen(self.items[itemIndex])
+                        }
+                    }
                     
                     self.filteredVenues = []
                     if self.searchController.isActive && self.searchController.searchBar.text != "" {
@@ -188,28 +198,41 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (currentTab == items[0]) {
-            tableView.separatorStyle = .none
-            tableView.backgroundView?.isHidden = false
-            if (invitationRequests.count != 0) {
-                if (section == 0) {
-                    return 1
-                }
+        tableView.separatorStyle = .none
+        tableView.backgroundView?.isHidden = false
+        
+        if (invitationRequests.count != 0) {
+            if (section == 0) {
+                return 1
             }
-            if searchController.isActive && searchController.searchBar.text != "" {
-                return self.filteredVenues.count
-            }
-            return self.venues.count
         }
-        else {
-            tableView.separatorStyle = .none
-            Utilities.printDebugMessage("No venues yet for this location.")
-            tableView.backgroundView?.isHidden = false
-            setupEmptyBackgroundView()
-            self.view.setNeedsLayout()
-            self.view.layoutIfNeeded()
-            return 0
+        if searchController.isActive && searchController.searchBar.text != "" {
+            return self.filteredVenues.count
         }
+        return self.venues.count
+        
+//        if (currentTab == items[0]) {
+//            tableView.separatorStyle = .none
+//            tableView.backgroundView?.isHidden = true
+//            if (invitationRequests.count != 0) {
+//                if (section == 0) {
+//                    return 1
+//                }
+//            }
+//            if searchController.isActive && searchController.searchBar.text != "" {
+//                return self.filteredVenues.count
+//            }
+//            return self.venues.count
+//        }
+//        else {
+//            tableView.separatorStyle = .none
+//            Utilities.printDebugMessage("No venues yet for this location.")
+//            tableView.backgroundView?.isHidden = false
+//            setupEmptyBackgroundView()
+//            self.view.setNeedsLayout()
+//            self.view.layoutIfNeeded()
+//            return 0
+//        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -225,73 +248,96 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         
         
         //Setup Cell
-        if (currentTab == items[0]) {
-            var venue : Venue
-            
-            if searchController.isActive && searchController.searchBar.text != "" {
-                venue = filteredVenues[indexPath.row]
+        
+        var venue : Venue
+        
+        if searchController.isActive && searchController.searchBar.text != "" {
+            venue = filteredVenues[indexPath.row]
+        }
+        else {
+            venue = self.venues[indexPath.row]
+        }
+        //for showing total lifetimevisits
+        //            if let lifetime = stats.lifetimeLive[venue.VenueID] {
+        //                cell.rightStatLabel.text = "\(String(lifetime))"
+        //
+        //            }
+        
+        var closestEvent : Event?
+        for (_,event) in venue.Events {
+            if (DateUtilities.dateIsWithinOneCalendarWeek(date: event.EventDate)) {
+                if (closestEvent == nil) {
+                    closestEvent = event
+                }
+                else if (DateUtilities.daysUntilPlan(planDate: closestEvent!.EventDate) > DateUtilities.daysUntilPlan(planDate: event.EventDate)) {
+                    closestEvent = event
+                }
+            }
+        }
+        if let closestEvent = closestEvent {
+            if (DateUtilities.dateIsToday(date: closestEvent.EventDate)) {
+                cell.nextOpenLabel.text = "Next open tonight"
             }
             else {
-                venue = self.venues[indexPath.row]
-            }
-            //for showing total lifetimevisits
-            //            if let lifetime = stats.lifetimeLive[venue.VenueID] {
-            //                cell.rightStatLabel.text = "\(String(lifetime))"
-            //
-            //            }
-            
-            var closestEvent : Event?
-            for (_,event) in venue.Events {
-                if (DateUtilities.dateIsWithinOneCalendarWeek(date: event.EventDate)) {
-                    if (closestEvent == nil) {
-                        closestEvent = event
-                    }
-                    else if (DateUtilities.daysUntilPlan(planDate: closestEvent!.EventDate) > DateUtilities.daysUntilPlan(planDate: event.EventDate)) {
-                        closestEvent = event
-                    }
-                }
-            }
-            if let closestEvent = closestEvent {
-                if (DateUtilities.dateIsToday(date: closestEvent.EventDate)) {
-                    cell.nextOpenLabel.text = "Next open tonight"
-                }
-                else {
-                    cell.nextOpenLabel.text = "Next open \(DateUtilities.convertDateToStringByFormat(date: closestEvent.EventDate, dateFormat: "E"))"
-                }
-                
-            }
-            else {
-                cell.nextOpenLabel.text = "Next open TBD"
+                cell.nextOpenLabel.text = "Next open \(DateUtilities.convertDateToStringByFormat(date: closestEvent.EventDate, dateFormat: "E"))"
             }
             
-            let currentLive = venue.CurrentAttendees.count
-            cell.rightStatLabel.text = "\(String(currentLive))"
-            
+        }
+        else {
+            cell.nextOpenLabel.text = "Next open TBD"
+        }
+        
+        let currentLive = venue.CurrentAttendees.count
+        cell.rightStatLabel.text = "\(String(currentLive))"
+        
+        
+        if(self.currentTab == "All Clubs") {
             if let plannedCount = totalPlansInDateRangeForVenueID[venue.VenueID] {
                 cell.leftStatLabel.text = "\(plannedCount)"
             }
             else {
                 cell.leftStatLabel.text = "0"
             }
-            
-            
-            
-           
-            
-            
-            
-            cell.placesNameLabel.text = venue.VenueNickName
-            self.retrieveImage(imageURL: venue.ImageURL, venueID: venue.VenueID, imageView: cell.backgroundImage)
-            //        cell.liveLabel.text = "\(venue.CurrentAttendees.count) live"
-            //        cell.plannedLabel.text = "\(venue.PlannedAttendees.count) planned"
-            
+        } else {
+            if let stats = appDelegate.venueStatistics {
+                if let venueCountsForDates = stats.venuePlanCountsForDatesForVenues[venue.VenueID] {
+                
+                    if let plannedCount = venueCountsForDates[DateUtilities.getDateFromString(date: self.currentTab)] {
+                        cell.leftStatLabel.text = "\(plannedCount)"
+                    } else {
+                        cell.leftStatLabel.text = "0"
+                    }
+                } else {
+                    cell.leftStatLabel.text = "0"
+                }
+            }
+            else {
+                cell.leftStatLabel.text = "0"
+            }
+        }
+        
+        cell.placesNameLabel.text = venue.VenueNickName
+        self.retrieveImage(imageURL: venue.ImageURL, venueID: venue.VenueID, imageView: cell.backgroundImage)
+        //        cell.liveLabel.text = "\(venue.CurrentAttendees.count) live"
+        //        cell.plannedLabel.text = "\(venue.PlannedAttendees.count) planned"
+        
+        if(self.currentTab != "All Clubs") {
+            if let planDictForDates = appDelegate.friendCountPlanningToAttendVenueForDates[venue.VenueID]{
+                if let plannedFriends = planDictForDates[self.currentTab] {
+                    cell.subtitleLabel.text = "\(plannedFriends) planned \(Utilities.setPlurality(string: "friend", count: plannedFriends))"
+                } else {
+                    cell.subtitleLabel.text = "Be first to plan!"
+                }
+            }
+        }
+        else {
             if let plannedFriends = appDelegate.friendCountPlanningToAttendVenueThisWeek[venue.VenueID] {
                 cell.subtitleLabel.text = "\(plannedFriends) planned \(Utilities.setPlurality(string: "friend", count: plannedFriends))"
             }
             else {
                 cell.subtitleLabel.text = "Be first to plan!"
             }
-            
+        }
 //                        //TEMP
 //                        let A: UInt32 = 0 // UInt32 = 32-bit positive integers (unsigned)
 //                        let B: UInt32 = 100
@@ -307,7 +353,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             
             
             
-        }
+        
         
         //        let modelName = UIDevice.current.modelName
         //        if (Utilities.Constants.SMALL_IPHONES.contains(modelName)) {
@@ -343,7 +389,16 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             venue = self.venues[indexPath.row]
         }
         self.venueToPass = venue
-        showCustomDialog(venue: venue, startDisplayDate: nil)
+        
+        //Utilities.printDebugMessage(self.currentTab)
+        if(self.currentTab != "All Clubs") {
+            let dateString = self.currentTab
+            let date = DateUtilities.getDateFromString(date: dateString)
+            Utilities.printDebugMessage("I'm being passed a date appropriately")
+            showCustomDialog(venue: venue, startDisplayDate: date)
+        } else {
+            showCustomDialog(venue: venue, startDisplayDate: nil)
+        }
     }
     
     func displayVenuePopupWithVenueIDForDay(venueID : String, date : Date) {
@@ -375,15 +430,20 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             for (_,venue) in appDelegate.venues {
                 totalPlansInDateRangeForVenueID[venue.VenueID] = 0
                 if let venueDates = stats.venuePlanCountsForDatesForVenues[venue.VenueID] {
+                    var venueDict = [String : Int]()
                     for (date, count) in venueDates {
                         let daysUntil = DateUtilities.daysUntilPlan(planDate: date)
                         if(DateUtilities.isValidTimeFrame(dayDiff: daysUntil)){
                             totalPlansInDateRangeForVenueID[venue.VenueID]! = count + totalPlansInDateRangeForVenueID[venue.VenueID]!
                         }
+                        // Add to specific date for venue
+                        venueDict[DateUtilities.getStringFromDate(date: date)] = count
                     }
+                    
                 }
             }
         }
+        
         self.totalPlansInDateRangeForVenueID = totalPlansInDateRangeForVenueID
         
         
@@ -401,10 +461,14 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
                 }
                 return venue1Planned > venue2Planned
             }
+        
     }
     
     
     override func viewDidLoad() {
+        
+        //Itms array for filter
+        self.setupItemsArray(dayCount: DateUtilities.Constants.NUMBER_OF_DAYS_TO_DISPLAY)
         
         //Search
         searchController.searchResultsUpdater = self
@@ -420,7 +484,19 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         tableView.tableHeaderView = searchController.searchBar
         
         //nav bar
-        let menuView = BTNavigationDropdownMenu(navigationController: self.navigationController, containerView: self.navigationController!.view, title: items[0], items: items as [AnyObject])
+        
+        var displayItems : [String] = []
+        for item in items {
+            if(item != items[0]) {
+                let date = DateUtilities.getDateFromString(date: item)
+                let title = "\(DateUtilities.convertDateToStringByFormat(date: date, dateFormat: DateUtilities.Constants.dropdownDisplayFormat))"
+                displayItems.append(title)
+            } else {
+                displayItems.append("All Clubs")
+            }
+        }
+        self.displayItems = displayItems
+        let menuView = BTNavigationDropdownMenu(navigationController: self.navigationController, containerView: self.navigationController!.view, title: items[0], items: displayItems as [AnyObject])
         self.navigationController?.navigationBar.tintColor = UIColor.white
         self.navigationController?.navigationBar.barTintColor = FlockColors.FLOCK_BLUE
         menuView.menuTitleColor = UIColor.white
@@ -430,9 +506,12 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         
         menuView.didSelectItemAtIndexHandler = {[weak self] (indexPath: Int) -> () in
             self?.currentTab = self!.items[indexPath]
-            self?.setupEmptyBackgroundView()
+            //self?.setupEmptyBackgroundView()
+            menuView.menuTitle.text = "poop:"
+            self!.filterContentForDayOpen(self!.items[indexPath])
             self?.tableView?.reloadData()
         }
+        
         
         refreshControl?.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refreshControl?.addTarget(self, action: #selector(PeopleTableViewController.refresh(refreshControl:)), for: UIControlEvents.valueChanged)
@@ -565,6 +644,75 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         }))
         tableView?.reloadData()
     }
+    
+    func filterContentForDayOpen(_ filterForDate: String) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let fullVenues = Array(appDelegate.venues.values)
+        
+        if(filterForDate == items[0]) {
+            self.venues = fullVenues.sorted { (venue1, venue2) -> Bool in
+                var venue1Planned = 0
+                var venue2Planned = 0
+                if (self.totalPlansInDateRangeForVenueID[venue1.VenueID] != nil) {
+                    venue1Planned = self.totalPlansInDateRangeForVenueID[venue1.VenueID]!
+                }
+                if (self.totalPlansInDateRangeForVenueID[venue2.VenueID] != nil) {
+                    venue2Planned = self.totalPlansInDateRangeForVenueID[venue2.VenueID]!
+                }
+                return venue1Planned > venue2Planned
+            }
+        }
+        else {
+            self.venues = (fullVenues.filter({( venue : Venue) -> Bool in
+                for (_,event) in venue.Events {
+                    if(DateUtilities.convertDateToStringByFormat(date: event.EventDate, dateFormat: DateUtilities.Constants.fullDateFormat) == filterForDate) {
+                        return true
+                    }
+                }
+                return false
+            }))
+            
+            
+            
+            
+            self.venues = self.venues.sorted { (venue1, venue2) -> Bool in
+                var venue1Planned = 0
+                var venue2Planned = 0
+                
+                if let stats = appDelegate.venueStatistics {
+                    if let venue1CountsForDates : [Date:Int] = stats.venuePlanCountsForDatesForVenues[venue1.VenueID] {
+                        if venue1CountsForDates[DateUtilities.getDateFromString(date: self.currentTab)] != nil{
+                            venue1Planned = venue1CountsForDates[DateUtilities.getDateFromString(date: self.currentTab)]!
+                        }
+                    }
+                    if let venue2CountsForDates = stats.venuePlanCountsForDatesForVenues[venue2.VenueID] {
+                        if venue2CountsForDates[DateUtilities.getDateFromString(date: self.currentTab)] != nil {
+                            venue2Planned = venue2CountsForDates[DateUtilities.getDateFromString(date: self.currentTab)]!
+                        }
+                    }
+                    
+                    
+                }
+
+
+                return venue1Planned > venue2Planned
+            }
+        }
+    }
+    
+    
+    func setupItemsArray(dayCount : Int) {
+        var fullArray : [String] = ["All Clubs"] // Should always be first option in items array
+        var dayOfWeekArray : [String] = []
+        var date = Date()
+        for _ in 0...(dayCount-1) {
+            fullArray.append(DateUtilities.convertDateToStringByFormat(date: date, dateFormat: DateUtilities.Constants.fullDateFormat))
+            dayOfWeekArray.append(DateUtilities.convertDateToStringByFormat(date: date, dateFormat: DateUtilities.Constants.shortDayOfWeekFormat))
+            date = Calendar.current.date(byAdding: .day, value: 1, to: date)!
+        }
+        self.items = fullArray
+    }
+
     
     
     func retrieveImage(imageURL : String, venueID: String?, completion: @escaping (_ image: UIImage) -> ()) {

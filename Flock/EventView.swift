@@ -29,7 +29,7 @@ class EventView: UIView {
        
         self.addSubview(backView!)
         backView!.setupBackView(event: event)
-        
+        backView?.isHidden = true
         frontView = UINib(nibName: "FrontEventView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as? FrontEventView
         frontView!.setupFrontView(event: event)
         //frontView!.transform = CGAffineTransform(scaleX: scaleFactor, y: scaleFactor)

@@ -44,6 +44,7 @@
         var venueStatistics : Statistics?
         let gcmMessageIDKey = "gcm.message_id"
         var friendCountPlanningToAttendVenueThisWeek = [String:Int]()
+        var friendCountPlanningToAttendVenueForDates = [String:[String:Int]]()
         var unreadMessageCount = [String:Int]() // maps from a ChannelID to unread message count
         var messagesForChatsTableViewController = [String:[Conversation]]()
         var appIsWakingUpFromVisit : Bool = false
@@ -330,6 +331,7 @@
             
             //For use in venues page
             var friendCountPlanningToAttendVenueThisWeek = [String:Int]()
+            var friendCountPlanningToAttendVenueForDates = [String:[String:Int]]()
             
             for (_, user) in self.users {
                 // LOYALTY
@@ -361,6 +363,22 @@
                             }
                             else {
                                 friendCountPlanningToAttendVenueThisWeek[plan.venueID] = 1
+                            }
+                            
+                            if (friendCountPlanningToAttendVenueForDates[plan.venueID] != nil) {
+                                var planDictForVenueForDates = friendCountPlanningToAttendVenueForDates[plan.venueID]!
+                                
+                                if(planDictForVenueForDates[DateUtilities.getStringFromDate(date: plan.date)] != nil) {
+                                    planDictForVenueForDates[DateUtilities.getStringFromDate(date: plan.date)]! += 1
+                                } else {
+                                    planDictForVenueForDates[DateUtilities.getStringFromDate(date: plan.date)] = 1
+                                }
+                                friendCountPlanningToAttendVenueForDates[plan.venueID] = planDictForVenueForDates
+                                
+                            } else {
+                                var planDictForVenueForDates = [String : Int]()
+                                planDictForVenueForDates[DateUtilities.getStringFromDate(date: plan.date)] = 1
+                                friendCountPlanningToAttendVenueForDates[plan.venueID] = planDictForVenueForDates
                             }
                         }
                     }
@@ -429,6 +447,7 @@
                 rank += 1
             }
             self.friendCountPlanningToAttendVenueThisWeek = friendCountPlanningToAttendVenueThisWeek
+            self.friendCountPlanningToAttendVenueForDates = friendCountPlanningToAttendVenueForDates
             
             return Statistics(maxPlansInOneNight: maxPlansInOneNight, loyalty: loyalty, popularity: popularity, lifetimeLive: lifetimeLive, venuePlanCountsForDatesForVenues: venuePlanCountsForDatesForVenues)
         }

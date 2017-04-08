@@ -16,6 +16,8 @@ class DateUtilities {
         static let dayOfWeekDateFormat = "EEEE"
         static let fullDateFormat = "yyyy-MM-dd"
         static let uiDisplayFormat = "EEEE, MMMM d"
+        static let shortDayOfWeekFormat = "E"
+        static let dropdownDisplayFormat = "E, MMM d"
         static let NUMBER_OF_DAYS_TO_DISPLAY = 10
         static let START_NIGHT_OUT_TIME : Double = 22.0
         static let END_NIGHT_OUT_TIME : Double = 6.0
