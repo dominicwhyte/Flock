@@ -20,7 +20,8 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     //let items = ["All", "Open Mon", "Open Tues", "Open Wed", "Open Thu", "Open Fri", "Open Sat", "Open Sun" ]
     var items : [String] = []
     var displayItems : [String] = []
-    var currentTab : String = "All Clubs" //Which college
+    var allText = "All Dates"
+    var currentTab : String = "All Dates" //Which college
     
     struct Constants {
         static let FLOCK_INVITE_REQUEST_CELL_SIZE = 129.0
@@ -291,7 +292,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         cell.rightStatLabel.text = "\(String(currentLive))"
         
         
-        if(self.currentTab == "All Clubs") {
+        if(self.currentTab == self.allText) {
             if let plannedCount = totalPlansInDateRangeForVenueID[venue.VenueID] {
                 cell.leftStatLabel.text = "\(plannedCount)"
             }
@@ -321,7 +322,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         //        cell.liveLabel.text = "\(venue.CurrentAttendees.count) live"
         //        cell.plannedLabel.text = "\(venue.PlannedAttendees.count) planned"
         
-        if(self.currentTab != "All Clubs") {
+        if(self.currentTab != self.allText) {
             if let planDictForDates = appDelegate.friendCountPlanningToAttendVenueForDates[venue.VenueID]{
                 if let plannedFriends = planDictForDates[self.currentTab] {
                     cell.subtitleLabel.text = "\(plannedFriends) planned \(Utilities.setPlurality(string: "friend", count: plannedFriends))"
@@ -391,7 +392,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         self.venueToPass = venue
         
         //Utilities.printDebugMessage(self.currentTab)
-        if(self.currentTab != "All Clubs") {
+        if(self.currentTab != self.allText) {
             let dateString = self.currentTab
             let date = DateUtilities.getDateFromString(date: dateString)
             Utilities.printDebugMessage("I'm being passed a date appropriately")
@@ -487,12 +488,13 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         
         var displayItems : [String] = []
         for item in items {
+            print("I'm an item and I should be \(item)")
             if(item != items[0]) {
                 let date = DateUtilities.getDateFromString(date: item)
                 let title = "\(DateUtilities.convertDateToStringByFormat(date: date, dateFormat: DateUtilities.Constants.dropdownDisplayFormat))"
                 displayItems.append(title)
             } else {
-                displayItems.append("All Clubs")
+                displayItems.append(self.allText)
             }
         }
         self.displayItems = displayItems
@@ -702,14 +704,39 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     
     
     func setupItemsArray(dayCount : Int) {
-        var fullArray : [String] = ["All Clubs"] // Should always be first option in items array
+        var fullArray : [String] = [self.allText] // Should always be first option in items array
         var dayOfWeekArray : [String] = []
         var date = Date()
-        for _ in 0...(dayCount-1) {
-            fullArray.append(DateUtilities.convertDateToStringByFormat(date: date, dateFormat: DateUtilities.Constants.fullDateFormat))
-            dayOfWeekArray.append(DateUtilities.convertDateToStringByFormat(date: date, dateFormat: DateUtilities.Constants.shortDayOfWeekFormat))
-            date = Calendar.current.date(byAdding: .day, value: 1, to: date)!
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let venues = Array(appDelegate.venues.values)
+        var validDateArray : [Date] = []
+        
+        for venue in venues {
+            for (_,event) in venue.Events {
+                if(DateUtilities.dateIsWithinValidTimeframe(date: event.EventDate)) {
+                    if(!validDateArray.contains(event.EventDate)) {
+                        validDateArray.append(event.EventDate)
+                    }
+                }
+                print(DateUtilities.getStringFromDate(date: event.EventDate))
+            }
         }
+        
+        validDateArray.sort { (date1, date2) -> Bool in
+            return date1 < date2
+        }
+        
+        for date in validDateArray {
+            fullArray.append(DateUtilities.convertDateToStringByFormat(date: date, dateFormat: DateUtilities.Constants.fullDateFormat))
+        }
+        
+        //for _ in 0...(dayCount-1) {
+        //      if(validDateArray.contains(DateUtilities.getStringFromDate(date: date))) {
+        //        fullArray.append(DateUtilities.getStringFromDate(date: date))
+        //        dayOfWeekArray.append(DateUtilities.getStringFromDate(date: date))
+        //        date = Calendar.current.date(byAdding: .day, value: 1, to: date)!
+        //    }
+        //}
         self.items = fullArray
     }
 
