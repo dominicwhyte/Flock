@@ -31,6 +31,7 @@
 		5F3474D31E805E3600A29615 /* BackEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3474D21E805E3600A29615 /* BackEventView.swift */; };
 		5F3474D71E80DA5300A29615 /* CreateEventTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3474D61E80DA5300A29615 /* CreateEventTableViewController.swift */; };
 		5F3474DA1E8240F400A29615 /* AnnotationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3474D91E8240F400A29615 /* AnnotationViewController.swift */; };
+		5F4E49751E9998D7005327CA /* SecondaryAdminViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E49741E9998D7005327CA /* SecondaryAdminViewController.swift */; };
 		5F4E94061E7C6D8800143931 /* FlockSuggestionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E94051E7C6D8800143931 /* FlockSuggestionTableViewCell.swift */; };
 		5F4E94081E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E94071E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift */; };
 		5F4E940A1E7D9C9B00143931 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E94091E7D9C9B00143931 /* SettingsTableViewController.swift */; };
@@ -126,6 +127,7 @@
 		5F3474D21E805E3600A29615 /* BackEventView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackEventView.swift; sourceTree = "<group>"; };
 		5F3474D61E80DA5300A29615 /* CreateEventTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateEventTableViewController.swift; sourceTree = "<group>"; };
 		5F3474D91E8240F400A29615 /* AnnotationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnotationViewController.swift; sourceTree = "<group>"; };
+		5F4E49741E9998D7005327CA /* SecondaryAdminViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecondaryAdminViewController.swift; sourceTree = "<group>"; };
 		5F4E94051E7C6D8800143931 /* FlockSuggestionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlockSuggestionTableViewCell.swift; sourceTree = "<group>"; };
 		5F4E94071E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlockSuggestionCollectionViewCell.swift; sourceTree = SOURCE_ROOT; };
 		5F4E94091E7D9C9B00143931 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
@@ -263,6 +265,16 @@
 			name = Events;
 			sourceTree = "<group>";
 		};
+		5F4E49761E99995B005327CA /* Admin */ = {
+			isa = PBXGroup;
+			children = (
+				5F4E94091E7D9C9B00143931 /* SettingsTableViewController.swift */,
+				5F3474D61E80DA5300A29615 /* CreateEventTableViewController.swift */,
+				5F4E49741E9998D7005327CA /* SecondaryAdminViewController.swift */,
+			);
+			name = Admin;
+			sourceTree = "<group>";
+		};
 		5F5D378B1E43FFCE008E13E4 = {
 			isa = PBXGroup;
 			children = (
@@ -300,6 +312,7 @@
 				5F5D379B1E43FFCE008E13E4 /* Main.storyboard */,
 				5F3474D81E80FC3E00A29615 /* Events */,
 				58F1F4A51E5A328D0065DA38 /* Chats */,
+				5F4E49761E99995B005327CA /* Admin */,
 				5F61AF781E4C0BEB00BD6A0C /* Profile */,
 				5F5D38091E46C87F008E13E4 /* Places */,
 				5F5D38001E466AA2008E13E4 /* People */,
@@ -392,7 +405,6 @@
 			isa = PBXGroup;
 			children = (
 				5F5D37D01E44BE44008E13E4 /* TestingViewController.swift */,
-				5F3474D61E80DA5300A29615 /* CreateEventTableViewController.swift */,
 			);
 			name = Testing;
 			sourceTree = "<group>";
@@ -419,7 +431,6 @@
 				5F61AF761E4C0BE300BD6A0C /* ProfileViewControllerCopy.swift */,
 				583DF4EF1E5CF5D300E0622A /* ProfileViewController.swift */,
 				5FE16B761E5D332500904FC2 /* ProfileTableViewController.swift */,
-				5F4E94091E7D9C9B00143931 /* SettingsTableViewController.swift */,
 				5F3474D91E8240F400A29615 /* AnnotationViewController.swift */,
 			);
 			name = Profile;
@@ -690,6 +701,7 @@
 				5FA3CABD1E565BA300247CC4 /* Channel.swift in Sources */,
 				58F1F4A91E5A340F0065DA38 /* ChatTableViewCell.swift in Sources */,
 				5F2EC01B1E7F8D61002F6D65 /* Event.swift in Sources */,
+				5F4E49751E9998D7005327CA /* SecondaryAdminViewController.swift in Sources */,
 				5F5D37F41E4536D7008E13E4 /* FriendRequestTableViewCell.swift in Sources */,
 				5F2EC0181E7F858B002F6D65 /* iCarousel.m in Sources */,
 				5F4E94081E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift in Sources */,

@@ -415,7 +415,19 @@ class FirebaseClient: NSObject
         
     }
     
-    
+    //GH function
+    class func ghAddUserToVenuePlansForDate(date: String, venueID : String, randomUserID : String, userID : String, add: Bool, specialEventID : String?, completion: @escaping (Bool) -> Void) {
+        addUserToVenuePlannedAttendeesAndSpecialEventIfNecessary(venueID: venueID, userID: randomUserID, add: add, specialEventID : specialEventID) { (venueSuccess) in
+            if (venueSuccess) {
+                addPlanToUserForDate(date: date, venueID: venueID, userID: userID, add : add, specialEventID : specialEventID,completion: { (userSuccess) in
+                    completion(userSuccess)
+                })
+            }
+            else {
+                completion(false)
+            }
+        }
+    }
     
     
     //Add plan to user plans and add user to planned attendees in venue

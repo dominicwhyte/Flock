@@ -114,6 +114,25 @@ class Utilities {
         vc.present(imagePickerController, animated: true, completion: nil)
     }
     
+    static func presentLoadingScreenAutoGetView() -> (LoadingScreenObject, UIView) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let vcView = appDelegate.getCurrentViewController()!.view!
+        vcView.isUserInteractionEnabled = false
+        let loadingSquareScreenView = UIView(frame: vcView.frame)
+        let backgroundColor = UIColor.black
+        let (r,g,b,_) = backgroundColor.rgb()!
+        loadingSquareScreenView.backgroundColor = UIColor(red: r, green: g, blue: b, alpha: 0.3)
+        let loadingSquare : AASquaresLoading = AASquaresLoading(target: loadingSquareScreenView, size: 40)
+        loadingSquare.isHidden = false
+        loadingSquare.color = UIColor.white
+        loadingSquare.backgroundColor = UIColor.clear
+        loadingSquare.start()
+        loadingSquareScreenView.isUserInteractionEnabled = false
+        //loadingSquareScreenView.addSubview(loadingSquare)
+        vcView.addSubview(loadingSquareScreenView)
+        return (LoadingScreenObject(loadingSquare: loadingSquare, view: loadingSquareScreenView), vcView)
+    }
+    
     //Presents a loading screen view ontop of vcView, blocking user interaction
     static func presentLoadingScreen(vcView : UIView) -> LoadingScreenObject {
         vcView.isUserInteractionEnabled = false

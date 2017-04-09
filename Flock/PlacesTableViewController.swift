@@ -1034,7 +1034,8 @@ extension PlacesTableViewController: UICollectionViewDelegate, UICollectionViewD
     
     func attendVenueWithConfirmation(date : String, venueID : String, add : Bool, specialEventID : String?, plannedFriendAttendeesForDate : [String : String]) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
+        //        let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
+        let (loadingScreen, foundView) = Utilities.presentLoadingScreenAutoGetView()
         FirebaseClient.addUserToVenuePlansForDate(date: date, venueID: venueID, userID: appDelegate.user!.FBID, add: true, specialEventID: specialEventID, completion: { (success) in
             if (success) {
                 appDelegate.profileNeedsToUpdate = true
@@ -1043,7 +1044,8 @@ extension PlacesTableViewController: UICollectionViewDelegate, UICollectionViewD
                     if (success) {
                         DispatchQueue.main.async {
                             let venue = appDelegate.venues[venueID]!
-                            Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+                            //Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+                            Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: foundView)
                             self.displayAttendedPopup(venueName: venue.VenueNickName, venueID: venueID, attendFullDate: date, plannedAttendees: plannedFriendAttendeesForDate, specialEventID: specialEventID)
                         }
                     }

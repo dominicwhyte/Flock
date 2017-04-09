@@ -552,12 +552,14 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
                         if(plan.venueID == venue.VenueID) {
                             let fullDate = DateUtilities.convertDateToStringByFormat(date: plan.date, dateFormat: DateUtilities.Constants.fullDateFormat)
                             //check that there is not already a plan for this friend for this day
-                            if (!allFriendsForDate[fullDate]![self.INDEX_OF_PLANNED_ATTENDEES].contains(friend)) {
+                            
+                            //KEY: this check was removed for GH purposes
+                            //if (!allFriendsForDate[fullDate]![self.INDEX_OF_PLANNED_ATTENDEES].contains(friend)) {
                                 allFriendsForDate[fullDate]![self.INDEX_OF_PLANNED_ATTENDEES].append(friend)
                                 
                                 self.allPlannedFriendsForDateCountDict[fullDate]! += 1
                                 self.allPlannedAttendeesForDateCountDict[fullDate]! += 1
-                            }
+                            //}
                             
                         }
                     } else {
