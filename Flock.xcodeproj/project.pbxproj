@@ -13,6 +13,8 @@
 		583AAE3A1E7F7ACB00D28B60 /* PeopleSelectorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583AAE391E7F7ACB00D28B60 /* PeopleSelectorTableViewCell.swift */; };
 		583AAE3C1E7F7B0900D28B60 /* PlacesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583AAE3B1E7F7B0900D28B60 /* PlacesTableViewController.swift */; };
 		583DF4F01E5CF5D300E0622A /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583DF4EF1E5CF5D300E0622A /* ProfileViewController.swift */; };
+		58C868B41F282E14002EF1EE /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C868B31F282E14002EF1EE /* MapViewController.swift */; };
+		58C868B71F2834CC002EF1EE /* style.json in Resources */ = {isa = PBXBuildFile; fileRef = 58C868B61F2834CC002EF1EE /* style.json */; };
 		58F1F4971E5956D90065DA38 /* Walkthrough.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 58F1F4961E5956D90065DA38 /* Walkthrough.storyboard */; };
 		58F1F49A1E5959C10065DA38 /* BWWalkthroughPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F1F4981E5959C10065DA38 /* BWWalkthroughPageViewController.swift */; };
 		58F1F49B1E5959C10065DA38 /* BWWalkthroughViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F1F4991E5959C10065DA38 /* BWWalkthroughViewController.swift */; };
@@ -106,6 +108,8 @@
 		583AAE391E7F7ACB00D28B60 /* PeopleSelectorTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleSelectorTableViewCell.swift; sourceTree = "<group>"; };
 		583AAE3B1E7F7B0900D28B60 /* PlacesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacesTableViewController.swift; sourceTree = "<group>"; };
 		583DF4EF1E5CF5D300E0622A /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		58C868B31F282E14002EF1EE /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		58C868B61F2834CC002EF1EE /* style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = style.json; sourceTree = "<group>"; };
 		58F1F4951E59293E0065DA38 /* Flock.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Flock.entitlements; sourceTree = "<group>"; };
 		58F1F4961E5956D90065DA38 /* Walkthrough.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Walkthrough.storyboard; sourceTree = "<group>"; };
 		58F1F4981E5959C10065DA38 /* BWWalkthroughPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BWWalkthroughPageViewController.swift; sourceTree = "<group>"; };
@@ -228,6 +232,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		58C868B51F283333002EF1EE /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				58C868B31F282E14002EF1EE /* MapViewController.swift */,
+				58C868B61F2834CC002EF1EE /* style.json */,
+			);
+			name = Map;
+			sourceTree = "<group>";
+		};
 		58F1F4A01E595A220065DA38 /* Walkthrough */ = {
 			isa = PBXGroup;
 			children = (
@@ -310,6 +323,7 @@
 				583AAE331E7F7A0900D28B60 /* Utilities.swift */,
 				58F1F4A01E595A220065DA38 /* Walkthrough */,
 				5F5D379B1E43FFCE008E13E4 /* Main.storyboard */,
+				58C868B51F283333002EF1EE /* Map */,
 				5F3474D81E80FC3E00A29615 /* Events */,
 				58F1F4A51E5A328D0065DA38 /* Chats */,
 				5F4E49761E99995B005327CA /* Admin */,
@@ -546,6 +560,7 @@
 				5F2EC0231E8049D4002F6D65 /* FrontEventView.xib in Resources */,
 				5F61AF681E4994A400BD6A0C /* Oswald-Regular.ttf in Resources */,
 				5F3474D11E805E2000A29615 /* BackEventView.xib in Resources */,
+				58C868B71F2834CC002EF1EE /* style.json in Resources */,
 				5F61AF671E4994A000BD6A0C /* Oswald-Light.ttf in Resources */,
 				5F61AF561E48230C00BD6A0C /* VenueFriendTableViewCell.xib in Resources */,
 				5F61AF601E49949400BD6A0C /* OpenSans-Light.ttf in Resources */,
@@ -632,7 +647,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		D05788A6CC5A018A55163F01 /* [CP] Embed Pods Frameworks */ = {
@@ -662,7 +677,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -710,6 +725,7 @@
 				5FC8C5641E52A8B80076F388 /* PermissionUtilities.swift in Sources */,
 				5F2EC01D1E7F8D87002F6D65 /* FirebaseConstants.swift in Sources */,
 				5F61AF6F1E4A858700BD6A0C /* CustomSearchBar.swift in Sources */,
+				58C868B41F282E14002EF1EE /* MapViewController.swift in Sources */,
 				5F5D37C51E440F4F008E13E4 /* Venue.swift in Sources */,
 				583AAE341E7F7A0900D28B60 /* Utilities.swift in Sources */,
 				5FC231CC1E8376BC008ECE6B /* InviteTableViewCell.swift in Sources */,

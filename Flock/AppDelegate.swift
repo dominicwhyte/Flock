@@ -19,6 +19,7 @@
     import FirebaseMessaging
     import OneSignal
     import Instabug
+    import GoogleMaps
     
     @UIApplicationMain
     class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate, UNUserNotificationCenterDelegate, FIRMessagingDelegate {
@@ -1168,6 +1169,8 @@
         func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
             //instabug
             Instabug.start(withToken: "292d20cd4a1c0d57de798ca15d91561d", invocationEvent: .none)
+            GMSServices.provideAPIKey("AIzaSyCJcEmuHschqe1Vzx9BlD8wWD3jhKi7StY")
+            //GMSPlacesClient.provideAPIKey("AIzaSyCJcEmuHschqe1Vzx9BlD8wWD3jhKi7StY")
             
             
             OneSignal.initWithLaunchOptions(launchOptions, appId: "35032170-d34b-4a41-9504-3ee4b725eafe", handleNotificationReceived: { (notification) in

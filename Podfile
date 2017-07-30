@@ -30,6 +30,8 @@ target 'Flock' do
    pod 'OneSignal', '~> 2.4.2'
    pod 'Instabug'
    #pod 'UPCarouselFlowLayout'
+   pod 'GoogleMaps'
+   pod 'GooglePlaces'
    pod 'ZFRippleButton'
    pod 'Gecco'
    pod 'SwiftAddressBook'

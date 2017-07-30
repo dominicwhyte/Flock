@@ -64,6 +64,13 @@ PODS:
     - FirebaseAnalytics (~> 3.7)
     - GTMSessionFetcher/Core (~> 1.1)
   - Gecco (1.0.0)
+  - GoogleMaps (2.2.0):
+    - GoogleMaps/Maps (= 2.2.0)
+  - GoogleMaps/Base (2.2.0)
+  - GoogleMaps/Maps (2.2.0):
+    - GoogleMaps/Base
+  - GooglePlaces (2.2.0):
+    - GoogleMaps/Base (= 2.2.0)
   - GoogleToolboxForMac/DebugUtils (2.1.1):
     - GoogleToolboxForMac/Defines (= 2.1.1)
   - GoogleToolboxForMac/Defines (2.1.1)
@@ -111,6 +118,8 @@ DEPENDENCIES:
   - Firebase/Messaging
   - Firebase/Storage
   - Gecco
+  - GoogleMaps
+  - GooglePlaces
   - Instabug
   - JSQMessagesViewController
   - KCFloatingActionButton (~> 2.2.0)
@@ -147,6 +156,8 @@ SPEC CHECKSUMS:
   FirebaseMessaging: df8267f378580a24174ce7861233aa11d5c90109
   FirebaseStorage: a5c55b23741a49a72af8f30f95b3bb5ddbeda12d
   Gecco: e662f949821e742997787bad7b730ccc0052e43c
+  GoogleMaps: 104c418d61ab8a05dff06ed0784c25ea9d37da45
+  GooglePlaces: bca867d5e9da15384c794b945e4226848bc6e9d9
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   GTMSessionFetcher: 5c046c76a1f859bc9c187e918f18e4fc7bb57b5e
   Instabug: 13b238537cdacc1d6a2db71a8375b0c6fbcbe248
@@ -168,6 +179,6 @@ SPEC CHECKSUMS:
   SwiftAddressBook: 88c68c6bd0c6a9cb10e5cdc80f91fd87b5e0f4ec
   ZFRippleButton: 62ea35e209757704dea697d66489fe69c13d7b77
 
-PODFILE CHECKSUM: fcc3f229ad7fb3bf0fa80683ccd52722e7a67ec9
+PODFILE CHECKSUM: c17417b47e9d1194867c850ad04262e8ebf62236
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.1.1
