@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="31f-4a-ta2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="31f-4a-ta2">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
@@ -95,7 +95,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fVh-sK-dFc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="156" y="156.97151424287858"/>
+            <point key="canvasLocation" x="712.79999999999995" y="300"/>
         </scene>
         <!--Chat View Controller-->
         <scene sceneID="hsg-8p-xPN">
@@ -135,14 +135,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ooy-Vr-zsj">
-                                <rect key="frame" x="66" y="260.5" width="243" height="147.5"/>
+                                <rect key="frame" x="66" y="260" width="243" height="147.5"/>
                                 <string key="text">Hey there, and welcome to Flock! This walkthrough will take you through using the app - once you’ve got the hang of something, just tap on the screen to move on.</string>
                                 <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Connect with friends in Flock so you can share plans, send invites, and go live with others. To add friends, tap this button." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gnh-2l-f4i">
-                                <rect key="frame" x="66" y="260.5" width="243" height="147.5"/>
+                                <rect key="frame" x="66" y="260" width="243" height="147.5"/>
                                 <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -179,7 +179,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="On your profile you can see what club you go to most (&quot;Top Place&quot;) and how many friends your're connected with (&quot;Flock Size&quot;)." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o7J-6g-B2X">
-                                <rect key="frame" x="66" y="260.5" width="243" height="147.5"/>
+                                <rect key="frame" x="66" y="260" width="243" height="147.5"/>
                                 <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -198,7 +198,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="On a night out, you can also &quot;Go Live&quot; at a club to let them know where you're having fun!" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Pb-MD-JDP">
-                                <rect key="frame" x="66" y="260.5" width="243" height="147.5"/>
+                                <rect key="frame" x="66" y="260" width="243" height="147.5"/>
                                 <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -286,13 +286,13 @@
                         <segue destination="RrJ-Ui-UhR" kind="relationship" relationship="viewControllers" id="sBD-oo-f50"/>
                         <segue destination="5jg-Hg-fKd" kind="relationship" relationship="viewControllers" id="cNT-u6-27N"/>
                         <segue destination="6Hi-b6-CvB" kind="relationship" relationship="viewControllers" id="Fbs-VX-5V2"/>
-                        <segue destination="Dhb-yd-wdf" kind="relationship" relationship="viewControllers" id="TFT-rD-8xb"/>
+                        <segue destination="hPV-uv-XIu" kind="relationship" relationship="viewControllers" id="TFT-rD-8xb"/>
                         <segue destination="QnL-CR-aJK" kind="relationship" relationship="viewControllers" id="PQY-G6-8nX"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fqd-Wz-96c" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="999" y="188"/>
+            <point key="canvasLocation" x="1936.8" y="187.55622188905548"/>
         </scene>
         <!--Places Table View Controller-->
         <scene sceneID="lUK-uJ-IGC">
@@ -1631,7 +1631,7 @@ Cap</string>
             </objects>
             <point key="canvasLocation" x="1804" y="1065.5172413793105"/>
         </scene>
-        <!--Map-->
+        <!--Map View Controller-->
         <scene sceneID="wgj-0Y-Oh7">
             <objects>
                 <viewController id="Dhb-yd-wdf" customClass="MapViewController" customModule="Flock" customModuleProvider="target" sceneMemberID="viewController">
@@ -1642,27 +1642,14 @@ Cap</string>
                     <view key="view" contentMode="scaleToFill" id="MVd-6O-isw">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="swS-kk-JCa">
-                                <rect key="frame" x="0.0" y="449" width="375" height="169"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="169" id="lZr-UQ-RLb"/>
-                                </constraints>
-                            </tableView>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="swS-kk-JCa" firstAttribute="leading" secondItem="MVd-6O-isw" secondAttribute="leadingMargin" constant="-16" id="H2f-RU-65A"/>
-                            <constraint firstItem="u6W-5v-sHb" firstAttribute="top" secondItem="swS-kk-JCa" secondAttribute="bottom" id="V3u-xM-bLk"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="swS-kk-JCa" secondAttribute="trailing" constant="-16" id="s7j-w9-JY3"/>
-                        </constraints>
+                        <gestureRecognizers/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Map" image="Marker-32" selectedImage="Marker-32" id="pg1-f1-3pT" customClass="SimpleTabBarItem" customModule="SimpleTab"/>
+                    <navigationItem key="navigationItem" id="HOV-73-0h5"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eJR-ta-HLJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-919.20000000000005" y="-309.89505247376314"/>
+            <point key="canvasLocation" x="-1015" y="135"/>
         </scene>
         <!--Chat-->
         <scene sceneID="XSx-Kn-wYe">
@@ -1679,7 +1666,7 @@ Cap</string>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lET-Bm-r1p" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="216" y="-557"/>
+            <point key="canvasLocation" x="1154.4000000000001" y="-557.27136431784118"/>
         </scene>
         <!--Chats Table View Controller-->
         <scene sceneID="5Kf-pc-uQJ">
@@ -1760,7 +1747,7 @@ Cap</string>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZXb-CJ-G82" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1167" y="-669"/>
+            <point key="canvasLocation" x="2104.8000000000002" y="-669.71514242878561"/>
         </scene>
         <!--Friends-->
         <scene sceneID="veW-a2-ceH">
@@ -1779,7 +1766,7 @@ Cap</string>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t7i-dw-68s" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2128.8000000000002" y="-317.09145427286359"/>
+            <point key="canvasLocation" x="3068" y="-317.09145427286359"/>
         </scene>
         <!--People Table View Controller-->
         <scene sceneID="05T-6g-ueh">
@@ -2148,7 +2135,7 @@ Cap</string>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sJe-UR-PIj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3036" y="-564.46776611694156"/>
+            <point key="canvasLocation" x="3975.1999999999998" y="-564.46776611694156"/>
         </scene>
         <!--Search People Table View Controller-->
         <scene sceneID="pYR-s7-D8W">
@@ -2373,7 +2360,7 @@ Cap</string>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ubs-rk-Vq3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4896.8000000000002" y="-311.69415292353824"/>
+            <point key="canvasLocation" x="5836" y="-311.69415292353824"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Val-tK-wE9">
@@ -2391,7 +2378,7 @@ Cap</string>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Y7M-Z2-2vY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3957.5999999999999" y="-311.69415292353824"/>
+            <point key="canvasLocation" x="4896.8000000000002" y="-311.69415292353824"/>
         </scene>
         <!--Places-->
         <scene sceneID="4Z5-Bp-3xs">
@@ -2466,6 +2453,25 @@ Cap</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RRN-ZH-jia" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5854" y="582"/>
+        </scene>
+        <!--Map-->
+        <scene sceneID="H0h-rh-gCV">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="hPV-uv-XIu" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Map" image="Marker-32" selectedImage="Marker-32" id="pg1-f1-3pT" customClass="SimpleTabBarItem" customModule="SimpleTab"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="xji-jn-kNJ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Dhb-yd-wdf" kind="relationship" relationship="rootViewController" id="bqE-tU-T8c"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lgO-CE-LTz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1938.4000000000001" y="-291.00449775112446"/>
         </scene>
     </scenes>
     <resources>

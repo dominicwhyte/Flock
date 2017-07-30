@@ -30,13 +30,12 @@ target 'Flock' do
    pod 'OneSignal', '~> 2.4.2'
    pod 'Instabug'
    #pod 'UPCarouselFlowLayout'
-   pod 'GoogleMaps'
    pod 'GooglePlaces'
+   pod 'GoogleMaps'
    pod 'ZFRippleButton'
    pod 'Gecco'
    pod 'SwiftAddressBook'
    pod 'KCFloatingActionButton', '~> 2.2.0'
-
   target 'FlockTests' do
     inherit! :search_paths
     # Pods for testing

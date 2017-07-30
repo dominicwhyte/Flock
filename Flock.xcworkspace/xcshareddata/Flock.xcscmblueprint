@@ -5,11 +5,13 @@
   },
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
     "5EB12E9AFDFF2B685C9050F5CC04FC79012209DD" : 9223372036854775807,
+    "6DF0C946348EBDB0CF502E1BDF932D4C538A27E8" : 9223372036854775807,
     "4C663F3AD4EAE0B30DC6438DA503D8C6994E57DA" : 9223372036854775807
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "614DB3CD-339E-4B6F-AC6D-E844D5140FD0",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
     "5EB12E9AFDFF2B685C9050F5CC04FC79012209DD" : "Flock\/",
+    "6DF0C946348EBDB0CF502E1BDF932D4C538A27E8" : "Templates\/google-maps-ios-utils\/",
     "4C663F3AD4EAE0B30DC6438DA503D8C6994E57DA" : ""
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "Flock",
@@ -25,6 +27,11 @@
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/dominicwhyte\/Flock",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "5EB12E9AFDFF2B685C9050F5CC04FC79012209DD"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/googlemaps\/google-maps-ios-utils.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "6DF0C946348EBDB0CF502E1BDF932D4C538A27E8"
     }
   ]
 }
