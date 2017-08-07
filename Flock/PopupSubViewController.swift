@@ -437,8 +437,8 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         var specialEventName : String?
         
         for (_,event) in venue.Events {
-            if (event.EventDate == date) {
-                if (event.SpecialEvent) {
+            if (event.EventStart == date) {
+                if (true) {
                     Utilities.printDebugMessage("This event is special!")
                     handleSpecialEvent(event: event)
                     specialEventName = event.EventName

@@ -266,21 +266,21 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         
         var closestEvent : Event?
         for (_,event) in venue.Events {
-            if (DateUtilities.dateIsWithinOneCalendarWeek(date: event.EventDate)) {
+            if (DateUtilities.dateIsWithinOneCalendarWeek(date: event.EventStart)) {
                 if (closestEvent == nil) {
                     closestEvent = event
                 }
-                else if (DateUtilities.daysUntilPlan(planDate: closestEvent!.EventDate) > DateUtilities.daysUntilPlan(planDate: event.EventDate)) {
+                else if (DateUtilities.daysUntilPlan(planDate: closestEvent!.EventStart) > DateUtilities.daysUntilPlan(planDate: event.EventStart)) {
                     closestEvent = event
                 }
             }
         }
         if let closestEvent = closestEvent {
-            if (DateUtilities.dateIsToday(date: closestEvent.EventDate)) {
+            if (DateUtilities.dateIsToday(date: closestEvent.EventStart)) {
                 cell.nextOpenLabel.text = "Next open tonight"
             }
             else {
-                cell.nextOpenLabel.text = "Next open \(DateUtilities.convertDateToStringByFormat(date: closestEvent.EventDate, dateFormat: "E"))"
+                cell.nextOpenLabel.text = "Next open \(DateUtilities.convertDateToStringByFormat(date: closestEvent.EventStart, dateFormat: "E"))"
             }
             
         }
@@ -667,7 +667,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         else {
             self.venues = (fullVenues.filter({( venue : Venue) -> Bool in
                 for (_,event) in venue.Events {
-                    if(DateUtilities.convertDateToStringByFormat(date: event.EventDate, dateFormat: DateUtilities.Constants.fullDateFormat) == filterForDate) {
+                    if(DateUtilities.convertDateToStringByFormat(date: event.EventStart, dateFormat: DateUtilities.Constants.fullDateFormat) == filterForDate) {
                         return true
                     }
                 }
@@ -713,12 +713,12 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         
         for venue in venues {
             for (_,event) in venue.Events {
-                if(DateUtilities.dateIsWithinValidTimeframe(date: event.EventDate)) {
-                    if(!validDateArray.contains(event.EventDate)) {
-                        validDateArray.append(event.EventDate)
+                if(DateUtilities.dateIsWithinValidTimeframe(date: event.EventStart)) {
+                    if(!validDateArray.contains(event.EventStart)) {
+                        validDateArray.append(event.EventStart)
                     }
                 }
-                print(DateUtilities.getStringFromDate(date: event.EventDate))
+                print(DateUtilities.getStringFromDate(date: event.EventStart))
             }
         }
         

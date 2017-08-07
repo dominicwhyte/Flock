@@ -43,12 +43,12 @@ class Venue: NSObject
         
         self.Events = [:]
         
-        if(dict[EventFirebaseConstants.eventsSubgroup] != nil) {
+        /*if(dict[EventFirebaseConstants.eventsSubgroup] != nil) {
             let eventDicts = dict[EventFirebaseConstants.eventsSubgroup] as! [String : [String: AnyObject]]
             for (eventID,eventDict) in eventDicts {
                 self.Events[eventID] = Event(dict: eventDict)
             }
-        }
+        }*/
     }
     
 }

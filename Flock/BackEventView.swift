@@ -39,10 +39,10 @@ class BackEventView: UIView {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
         
-        let startText = DateUtilities.convertDateToStringByFormat(date: event.EventDate, dateFormat: DateUtilities.Constants.uiDisplayFormat)
+        let startText = DateUtilities.convertDateToStringByFormat(date: event.EventStart, dateFormat: DateUtilities.Constants.uiDisplayFormat)
         let middleText = " @ "
         var endText = "TBD"
-        if let venueName = appDelegate.venues[event.VenueID]?.VenueName {
+        if let venueName = appDelegate.venues["VenueID"]?.VenueName {
             endText = venueName
         }
         let totalText = startText + middleText + endText

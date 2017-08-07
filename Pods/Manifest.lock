@@ -91,6 +91,7 @@ PODS:
   - KCFloatingActionButton (2.2.0)
   - LFTwitterProfile (0.1.1):
     - SnapKit (~> 3.0)
+  - Mapbox-iOS-SDK (3.5.3)
   - MGSwipeTableCell (1.5.6)
   - MVHorizontalPicker (0.0.2)
   - OneSignal (2.4.2)
@@ -124,6 +125,7 @@ DEPENDENCIES:
   - JSQMessagesViewController
   - KCFloatingActionButton (~> 2.2.0)
   - LFTwitterProfile
+  - Mapbox-iOS-SDK
   - MGSwipeTableCell
   - MVHorizontalPicker
   - OneSignal (~> 2.4.2)
@@ -165,6 +167,7 @@ SPEC CHECKSUMS:
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   KCFloatingActionButton: 8c71fa25774e422c8d407f82b4b27809d0cd5233
   LFTwitterProfile: 57cc1c1602e3b4cf297b3d80b85dff16b5257ad4
+  Mapbox-iOS-SDK: 742c77226b2f1e881844319d23d9f1aa2fb042bb
   MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
   MVHorizontalPicker: d0d821ef2fa0c2dd9b11c907e650f5551c2f501c
   OneSignal: a94d1ca53d05c29de4f4b150bad8ff9c4cc34f67
@@ -179,6 +182,6 @@ SPEC CHECKSUMS:
   SwiftAddressBook: 88c68c6bd0c6a9cb10e5cdc80f91fd87b5e0f4ec
   ZFRippleButton: 62ea35e209757704dea697d66489fe69c13d7b77
 
-PODFILE CHECKSUM: 6d0c39e0e2012370d709cdbb948a21a08c12ca75
+PODFILE CHECKSUM: 53a674050658d149272d6fd0d2ef13663cf94bf3
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.1.1

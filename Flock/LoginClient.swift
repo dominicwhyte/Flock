@@ -168,7 +168,7 @@ class LoginClient: NSObject
                     var specialEvents = [String:Event]()
                     for (_,venue) in venues {
                         for (eventID,event) in venue.Events {
-                            if (event.SpecialEvent) {
+                            if (true) {
                                 specialEvents[eventID] = event
                             }
                         }

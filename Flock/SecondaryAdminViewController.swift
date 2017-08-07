@@ -22,7 +22,7 @@ class SecondaryAdminViewController: UIViewController, UIPickerViewDataSource,UIP
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         for (_,event) in appDelegate.specialEvents {
-            if (DateUtilities.dateIsWithinValidTimeframe(date: event.EventDate)) {
+            if (DateUtilities.dateIsWithinValidTimeframe(date: event.EventStart)) {
                 
                 specialEvents.append(event)
             }
@@ -40,7 +40,7 @@ class SecondaryAdminViewController: UIViewController, UIPickerViewDataSource,UIP
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let venueName = appDelegate.venues[specialEvents[row].VenueID]!.VenueName
+        let venueName = appDelegate.venues["VenueID"]!.VenueName
         let eventName = specialEvents[row].EventName
         return "\(eventName) (\(venueName))"
     }
@@ -68,7 +68,7 @@ class SecondaryAdminViewController: UIViewController, UIPickerViewDataSource,UIP
         else {
             let event = specialEvents[chosenEventIndex]
             let randomGHID = "GH" + UUID().uuidString
-            FirebaseClient.ghAddUserToVenuePlansForDate(date: DateUtilities.getStringFromDate(date: event.EventDate), venueID: event.VenueID, randomUserID : randomGHID, userID: "160916481072667", add: true, specialEventID: event.EventID, completion: { (success) in
+            FirebaseClient.ghAddUserToVenuePlansForDate(date: DateUtilities.getStringFromDate(date: event.EventStart), venueID: "VenueID", randomUserID : randomGHID, userID: "160916481072667", add: true, specialEventID: event.EventID, completion: { (success) in
                 if (success) {
                     Utilities.printDebugMessage("Successfully made plan to go to event")
                     self.growthHack(numTimes: numTimes - 1)

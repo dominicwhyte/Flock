@@ -37,7 +37,7 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         self.events = []
         for (_,event) in appDelegate.specialEvents {
-            if (DateUtilities.dateIsWithinValidTimeframe(date: event.EventDate)) {
+            if (DateUtilities.dateIsWithinValidTimeframe(date: event.EventStart)) {
                 self.events.append(event)
             }
         }
@@ -173,7 +173,7 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
     func setupLabelAndButton(event : Event) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let userFriends = appDelegate.user!.Friends
-        let attendeesFBIDs = event.EventAttendeeFBIDs
+        let attendeesFBIDs = event.EventInterestedFBIDs
         var friendsCount = 0
         for (fbid,_) in attendeesFBIDs {
             if (userFriends[fbid] != nil) {
@@ -192,7 +192,7 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         attributedString.addAttribute(NSForegroundColorAttributeName, value: FlockColors.FLOCK_BLUE , range: range)
         infoLabel.attributedText = attributedString
         
-        if (event.EventAttendeeFBIDs[appDelegate.user!.FBID] == nil) {
+        if (event.EventInterestedFBIDs[appDelegate.user!.FBID] == nil) {
             submitButton.setTitle("Go to \(event.EventName)", for: .normal)
         }
         else {
@@ -290,7 +290,7 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         let event : Event
         if (self.carousel.currentItemIndex < self.events.count) {
             event = self.events[self.carousel.currentItemIndex]
-            self.userFBIDSofPlanningAttendees = Array(event.EventAttendeeFBIDs.values)
+            self.userFBIDSofPlanningAttendees = Array(event.EventInterestedFBIDs.values)
             userFBIDSofPlanningAttendees = userFBIDSofPlanningAttendees.filter { (fbid) -> Bool in
                 return (appDelegate.friends[fbid] != nil)
             }
@@ -299,7 +299,7 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         }
         else if (events.count != 0) {
             event = self.events[0]
-            self.userFBIDSofPlanningAttendees = Array(event.EventAttendeeFBIDs.values)
+            self.userFBIDSofPlanningAttendees = Array(event.EventInterestedFBIDs.values)
             userFBIDSofPlanningAttendees = userFBIDSofPlanningAttendees.filter { (fbid) -> Bool in
                 return (appDelegate.friends[fbid] != nil)
             }
@@ -326,9 +326,9 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
         if (events.count != 0) {
             let event = events[carousel.currentItemIndex]
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            if (event.EventAttendeeFBIDs[appDelegate.user!.FBID] == nil) {
+            if (event.EventInterestedFBIDs[appDelegate.user!.FBID] == nil) {
                 let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
-                FirebaseClient.addUserToVenuePlansForDate(date: DateUtilities.getStringFromDate(date: event.EventDate), venueID: event.VenueID, userID: appDelegate.user!.FBID, add: true, specialEventID: event.EventID, completion: { (success) in
+                FirebaseClient.addUserToVenuePlansForDate(date: DateUtilities.getStringFromDate(date: event.EventStart), venueID: "VenueID", userID: appDelegate.user!.FBID, add: true, specialEventID: event.EventID, completion: { (success) in
                     if (success) {
                         Utilities.printDebugMessage("Successfully made plan to go to event")
                     }
@@ -347,9 +347,9 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
             else {
                 Utilities.printDebugMessage("Invite flock!")
                 let userID = appDelegate.user!.FBID
-                let venueID = appDelegate.venues[event.VenueID]!.VenueID
-                let fullDate = DateUtilities.convertDateToStringByFormat(date: event.EventDate, dateFormat: DateUtilities.Constants.fullDateFormat)
-                let plannedAttendees = event.EventAttendeeFBIDs
+                let venueID = "VenueID"//appDelegate.venues[event.VenueID]!.VenueID
+                let fullDate = DateUtilities.convertDateToStringByFormat(date: event.EventStart, dateFormat: DateUtilities.Constants.fullDateFormat)
+                let plannedAttendees = event.EventInterestedFBIDs
                 let specialEventID = event.EventID
                 performSegue(withIdentifier: "SELECTOR_IDENTIFIER", sender: (userID, venueID, fullDate, plannedAttendees, specialEventID))
                 carousel.reloadData()
