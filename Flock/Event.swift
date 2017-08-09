@@ -1,17 +1,20 @@
 
 import UIKit
 import CoreLocation
+import Mapbox
+
 class Event: NSObject
 {
     var EventID : String
     var EventName : String
     var EventStart : Date
     var EventEnd : Date
-    var EventLocation : CLLocation?
     var EventInterestedFBIDs : [String:String]
     var EventThereFBIDs : [String:String]
     var EventType : String
     var EventImageURL : String? //if nil, use a random image
+    let Pin : MGLPointAnnotation
+    
     
     init(dict: [String: AnyObject])
     {
@@ -21,10 +24,10 @@ class Event: NSObject
         self.EventImageURL = dict["EventImageURL"] as? String
         
         var dateString = dict["EventStart"] as! String
-        self.EventStart = DateUtilities.getDateFromString(date: dateString)
+        self.EventStart = DateUtilities.getFullDateFromString(date: dateString)
         
         dateString = dict["EventEnd"] as! String
-        self.EventEnd = DateUtilities.getDateFromString(date: dateString)
+        self.EventEnd = DateUtilities.getFullDateFromString(date: dateString)
         
         if(dict["EventInterestedFBIDs"] != nil) {
             self.EventInterestedFBIDs = dict["EventInterestedFBIDs"] as! [String:String]
@@ -38,10 +41,25 @@ class Event: NSObject
             self.EventThereFBIDs = [:]
         }
         
-        if let latitude = dict["Latitude"] as? Double, let longitude = dict["Longitude"] as? Double {
-            self.EventLocation = CLLocation(latitude: latitude, longitude: longitude)
+        
+        Pin = MGLPointAnnotation()
+        
+        if let latitudeString = dict["Latitude"] as? String, let longitudeString = dict["Longitude"] as? String {
+            if let latitude = Double(latitudeString), let longitude = Double(longitudeString) {
+                Pin.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+            }
+            
         }
-
+        Pin.title = EventName
     }
-    
+}
+
+enum ActionType {
+    case interested
+    case live
+}
+
+enum EventType: String {
+    case party
+    case show
 }

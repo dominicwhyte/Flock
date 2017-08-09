@@ -16,6 +16,7 @@ class DateUtilities {
         static let dayOfWeekDateFormat = "EEEE"
         static let fullDateFormat = "yyyy-MM-dd"
         static let uiDisplayFormat = "EEEE, MMMM d"
+        static let fullestDateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         static let shortDayOfWeekFormat = "E"
         static let dropdownDisplayFormat = "E, MMM d"
         static let NUMBER_OF_DAYS_TO_DISPLAY = 10
@@ -31,6 +32,28 @@ class DateUtilities {
         return (hour >= startTime || hour < endTime)
     }
     
+    //Use these - they include time of day
+    static func getFullDateFromString(date: String) -> Date{
+        let dateString = date
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = Constants.fullestDateFormat
+        
+        let nsDate = dateFormatter.date(from: dateString)
+        return nsDate!
+    }
+    
+    static func getStringFromFullDate(date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = Constants.fullestDateFormat
+        let dateString = dateFormatter.string(from: date)
+        return dateString
+    }
+    
+    
+    
+    
+    //Depricate
     static func getDateFromString(date: String) -> Date{
         let dateString = date
         
@@ -40,12 +63,16 @@ class DateUtilities {
         let nsDate = dateFormatter.date(from: dateString)
         return nsDate!
     }
+    
+    //Depricate
     static func getStringFromDate(date: Date) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = Constants.fullDateFormat
         let dateString = dateFormatter.string(from: date)
         return dateString
     }
+    
+    
     static func getHourFromDouble(hourDouble: Double) -> String {
         var hourString: String = ""
         // First figure out the base hour

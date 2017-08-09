@@ -140,6 +140,7 @@ class LoginClient: NSObject
                     Utilities.printDebugMessage("Getting data")
                     
                     var venues = [String:Venue]()
+                    var activeEvents = [String:Event]()
                     var users = [String : User]()
                     let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]
                     
@@ -165,17 +166,17 @@ class LoginClient: NSObject
                         }
                     }
                     
-                    var specialEvents = [String:Event]()
-                    for (_,venue) in venues {
-                        for (eventID,event) in venue.Events {
-                            if (true) {
-                                specialEvents[eventID] = event
-                            }
+                    //Events
+                    
+                    if (snapshot.hasChild("Active_Events")) {
+                        let eventDicts = dictionary["Active_Events"] as! [String: AnyObject]
+                        for (_,eventDict) in eventDicts {
+                            let event = Event(dict: eventDict as! [String : AnyObject])
+                            activeEvents[event.EventID] = event
                         }
                     }
                     
-                    
-                    completion((user,venues, users, specialEvents), startTimeDouble, endTimeDouble)
+                    completion((user,venues, users, activeEvents), startTimeDouble, endTimeDouble)
                 }
                 else {
                     completion(nil, startTimeDouble, endTimeDouble)

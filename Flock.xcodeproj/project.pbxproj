@@ -54,6 +54,7 @@
 		5F3DBD821F2E7088009E9AF3 /* GMUStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3DBD671F2E7088009E9AF3 /* GMUStyle.m */; };
 		5F3DBD831F2E7088009E9AF3 /* GQTPointQuadTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3DBD6C1F2E7088009E9AF3 /* GQTPointQuadTree.m */; };
 		5F3DBD841F2E7088009E9AF3 /* GQTPointQuadTreeChild.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3DBD6E1F2E7088009E9AF3 /* GQTPointQuadTreeChild.m */; };
+		5F3DBD861F39568B009E9AF3 /* MapFirebaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3DBD851F39568B009E9AF3 /* MapFirebaseClient.swift */; };
 		5F4E49751E9998D7005327CA /* SecondaryAdminViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E49741E9998D7005327CA /* SecondaryAdminViewController.swift */; };
 		5F4E94061E7C6D8800143931 /* FlockSuggestionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E94051E7C6D8800143931 /* FlockSuggestionTableViewCell.swift */; };
 		5F4E94081E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E94071E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift */; };
@@ -210,6 +211,7 @@
 		5F3DBD6D1F2E7088009E9AF3 /* GQTPointQuadTreeChild.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GQTPointQuadTreeChild.h; sourceTree = "<group>"; };
 		5F3DBD6E1F2E7088009E9AF3 /* GQTPointQuadTreeChild.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GQTPointQuadTreeChild.m; sourceTree = "<group>"; };
 		5F3DBD6F1F2E7088009E9AF3 /* GQTPointQuadTreeItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GQTPointQuadTreeItem.h; sourceTree = "<group>"; };
+		5F3DBD851F39568B009E9AF3 /* MapFirebaseClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapFirebaseClient.swift; sourceTree = "<group>"; };
 		5F4E49741E9998D7005327CA /* SecondaryAdminViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecondaryAdminViewController.swift; sourceTree = "<group>"; };
 		5F4E94051E7C6D8800143931 /* FlockSuggestionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlockSuggestionTableViewCell.swift; sourceTree = "<group>"; };
 		5F4E94071E7CD55F00143931 /* FlockSuggestionCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlockSuggestionCollectionViewCell.swift; sourceTree = SOURCE_ROOT; };
@@ -570,6 +572,7 @@
 				5F2EC01C1E7F8D87002F6D65 /* FirebaseConstants.swift */,
 				5F5D37BD1E4405E9008E13E4 /* LoginClient.swift */,
 				5F5D37C61E4411B3008E13E4 /* FIrebaseClient.swift */,
+				5F3DBD851F39568B009E9AF3 /* MapFirebaseClient.swift */,
 			);
 			name = Firebase;
 			sourceTree = "<group>";
@@ -904,6 +907,7 @@
 				5F3DBD751F2E7088009E9AF3 /* GMUStaticCluster.m in Sources */,
 				5F3DBD771F2E7088009E9AF3 /* GMUDefaultClusterRenderer.m in Sources */,
 				5FA3CABB1E565ADA00247CC4 /* ChatViewController.swift in Sources */,
+				5F3DBD861F39568B009E9AF3 /* MapFirebaseClient.swift in Sources */,
 				58F1F49B1E5959C10065DA38 /* BWWalkthroughViewController.swift in Sources */,
 				5F3DBD7C1F2E7088009E9AF3 /* GMUGeometryCollection.m in Sources */,
 				58F1F4A41E5A20E40065DA38 /* ChatsTableViewController.swift in Sources */,

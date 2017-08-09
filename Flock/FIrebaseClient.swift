@@ -47,17 +47,7 @@ class FirebaseClient: NSObject
         
     }
     
-    class func addEvent(_ eventName : String, eventStart : Date, eventEnd : Date, eventLocation : CLLocation, eventInterstedFBIDs : [String: AnyObject], eventThereFBIDs : [String: AnyObject], eventType : String, eventImageURL : String?, completion: @escaping (Bool) -> Void)
-    {
-        
-        
-        
-        let eventID = FirebaseClient.dataRef.child("Events").childByAutoId().key
-        let updates = ["EventID" : eventID, "EventStart" : eventStart, "EventEnd" : eventEnd, "Latitude" : eventLocation.coordinate.latitude, "Longitude" : eventLocation.coordinate.longitude, "EventInterestedFBIDs" : eventInterstedFBIDs, "EventThereFBIDs" : eventThereFBIDs, "EventType" : eventType] as [String : Any]
-        dataRef.child("Events").child(eventID).updateChildValues(updates)
-        completion(true)
-        
-    }
+    
     
     //Returns successful completion if friend request is sent or if friend request confirmed (via two way requests)
     class func sendFriendRequest(_ fromID : String, toID : String, completion: @escaping (Bool) -> Void) {

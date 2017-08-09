@@ -31,7 +31,7 @@
         var window: UIWindow?
         var user: User?
         var users = [String : User]()
-        var specialEvents = [String:Event]()
+        var activeEvents = [String:Event]()
         var venues = [String:Venue]()
         var friends = [String : User]()
         var venueImages = [String : UIImage]() // indexed by IMAGEURL not VENUEID!!!!!!!!!!!!!
@@ -132,12 +132,12 @@
             LoginClient.retrieveData { (data, startTime, endTime) in
                 self.startGoingOutTime = startTime
                 self.endGoingOutTime = endTime
-                if let (user, venues, users, specialEvents) = data {
+                if let (user, venues, users, activeEvents) = data {
                     //Check user location
                     self.user = user
                     self.venues = venues
                     self.users = users
-                    self.specialEvents = specialEvents
+                    self.activeEvents = activeEvents
                     self.getAllFriends()
                     //Move to master login if slow
                     self.computeAllStats()
@@ -165,12 +165,12 @@
             LoginClient.retrieveData { (data, startTime, endTime) in
                 self.startGoingOutTime = startTime
                 self.endGoingOutTime = endTime
-                if let (user, venues, users, specialEvents) = data {
+                if let (user, venues, users, activeEvents) = data {
                     //Check user location
                     self.user = user
                     self.venues = venues
                     self.users = users
-                    self.specialEvents = specialEvents
+                    self.activeEvents = activeEvents
                     self.getAllFriends()
                     //Move to master login if slow
                     self.computeAllStats()

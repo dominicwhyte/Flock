@@ -36,11 +36,7 @@ class EventsViewController: UIViewController, iCarouselDataSource, iCarouselDele
     func setEventsInTimeFrame() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         self.events = []
-        for (_,event) in appDelegate.specialEvents {
-            if (DateUtilities.dateIsWithinValidTimeframe(date: event.EventStart)) {
-                self.events.append(event)
-            }
-        }
+        
     }
     
     func addTestEvents() {

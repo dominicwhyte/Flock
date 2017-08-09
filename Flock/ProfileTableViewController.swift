@@ -138,18 +138,12 @@ class ProfileTableViewController: UITableViewController {
         if(indexPath.section == Constants.PLANNED_SECTION_ROW) {
             let plan : Plan = self.plans[indexPath.row]
             if (plan.specialEventID != nil) {
-                if let specialEvent =  appDelegate.specialEvents[plan.specialEventID!] {
-                    cell.nameLabel.text = specialEvent.EventName
-                    cell.profilePic.layer.borderColor = FlockColors.FLOCK_BLUE.cgColor
-                    cell.nameLabel.textColor = FlockColors.FLOCK_BLUE
-                    cell.subtitleLabel.textColor = FlockColors.FLOCK_BLUE
-                }
-                else {
+                
                    cell.nameLabel.text = venue.VenueName
                     cell.profilePic.layer.borderColor = UIColor.lightGray.cgColor
                     cell.nameLabel.textColor = UIColor.black
                     cell.subtitleLabel.textColor = UIColor.black
-                }
+
                 
                 
             } else {

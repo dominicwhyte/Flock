@@ -21,12 +21,7 @@ class SecondaryAdminViewController: UIViewController, UIPickerViewDataSource,UIP
         eventsPicker.delegate = self
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        for (_,event) in appDelegate.specialEvents {
-            if (DateUtilities.dateIsWithinValidTimeframe(date: event.EventStart)) {
-                
-                specialEvents.append(event)
-            }
-        }
+        
         
         // Do any additional setup after loading the view.
     }

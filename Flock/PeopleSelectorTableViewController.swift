@@ -48,9 +48,6 @@ class PeopleSelectorTableViewController: UITableViewController, UpdateSelectorTa
         if let venueID = self.venueID {
             self.venueName = appDelegate.venues[venueID]!.VenueName
         }
-        if let specialEventID = self.specialEventID {
-            self.eventName = appDelegate.specialEvents[specialEventID]!.EventName
-        }
         
         //Search
         searchController.searchResultsUpdater = self

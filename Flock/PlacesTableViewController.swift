@@ -1038,12 +1038,9 @@ extension PlacesTableViewController: UICollectionViewDelegate, UICollectionViewD
         
         if let venue = appDelegate.venues[invitationRequest.venueID] {
             if (invitationRequest.specialEventID != nil) {
-                if let event = appDelegate.specialEvents[invitationRequest.specialEventID!] {
-                    cell.nameLabel.text = "\(event.EventName) Invite"
-                }
-                else {
+
                     cell.nameLabel.text = "\(venue.VenueNickName) Invite"
-                }
+
                 self.retrieveImage(imageURL: venue.ImageURL, venueID: venue.VenueID, imageView: cell.imageView)
             }
             else {
@@ -1168,8 +1165,7 @@ extension PlacesTableViewController: UICollectionViewDelegate, UICollectionViewD
                     
                     var subtitle = ""
                     if let specialEventID = invitationRequest.specialEventID {
-                        let eventName = appDelegate.specialEvents[specialEventID]!.EventName
-                        subtitle = "\(fromUser.Name) invited you to go to \(eventName) at \(venue.VenueNickName) on \(DateUtilities.convertDateToStringByFormat(date: invitationRequest.date, dateFormat: DateUtilities.Constants.uiDisplayFormat))!"
+
                     } else {
                         subtitle = "\(fromUser.Name) invited you to go to \(venue.VenueNickName) on \(DateUtilities.convertDateToStringByFormat(date: invitationRequest.date, dateFormat: DateUtilities.Constants.uiDisplayFormat))!"
                     }
