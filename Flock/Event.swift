@@ -51,6 +51,7 @@ class Event: NSObject
             
         }
         Pin.title = EventName
+        Pin.subtitle = EventID
     }
 }
 

@@ -168,7 +168,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         
         datePicker.tintColor = UIColor.black
         super.viewDidLoad()
-        delegate?.retrieveImage(imageURL: (delegate?.venueToPass?.ImageURL)!, venueID: (delegate?.venueToPass?.VenueID)!, completion: { (image) in
+        delegate?.retrieveImage(imageURL: (delegate?.eventToPass?.EventImageURL), venueID: (delegate?.eventToPass?.EventID)!, completion: { (image) in
             DispatchQueue.main.async {
                 self.venueImageView.image = image
             }
@@ -184,7 +184,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         
         
         tableView.register(UINib(nibName: "VenueFriendTableViewCell", bundle: nil), forCellReuseIdentifier: "VENUE_FRIEND")
-        setFriendsForVenueForDate(venue: delegate!.venueToPass!)
+        setFriendsForVenueForDate(event: delegate!.eventToPass!)
         setAttendButtonTitle()
         setLabelsForGraphic()
         
@@ -228,95 +228,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         print("Second button tapped")
         _ = alert.showSuccess("Confirmed", subTitle: "You've removed your live status for \(venueName)")
     }
-    /*
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        
-        Utilities.printDebugMessage("Attempting to edit row")
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let venue = self.delegate!.venueToPass!
-        
-        let planDate = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]
-        let friendsAttendingClubForDay = self.allFriendsForDate[planDate]!
-        let friend = friendsAttendingClubForDay[indexPath.section][indexPath.row]
-        
-        if (friend.FBID != appDelegate.user!.FBID) {
-            return nil
-        }
-        
-        if (indexPath.section == Constants.LIVE_SECTION_ROW) {
-            let unlive = UITableViewRowAction(style: .destructive, title: "Unlive") { (action, indexPath) in
-                // delete item at indexPath
-                let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
-                FirebaseClient.addUserToVenueLive(date: DateUtilities.getStringFromDate(date: Date()), venueID: friend.LiveClubID!, userID: friend.FBID, add: false, completion: { (success) in
-                    if (success) {
-                        Utilities.printDebugMessage("Successfully unlived")
-                        self.updateDataAndTableView({ (success) in
-                            Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
-                            if (success) {
-                                DispatchQueue.main.async {
 
-                                        self.displayUnLived(venueName: venue.VenueNickName)
-
-                                }
-                            }
-                            else {
-                                Utilities.printDebugMessage("Error reloading tableview in venues")
-                            }
-                        })
-                    }
-                    else {
-                        Utilities.printDebugMessage("Error adding user to venue plans for date")
-                        Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
-                    }
-                    
-                })
-            }
-            unlive.backgroundColor = FlockColors.FLOCK_GRAY
-            return [unlive]
-        }
-        
-        let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
-            // delete item at indexPath
-            let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
-            FirebaseClient.addUserToVenuePlansForDate(date: planDate, venueID: venue.VenueID, userID: appDelegate.user!.FBID, add: false, specialEventID: self.specialEventID, completion: { (success) in
-                if (success) {
-                    Utilities.printDebugMessage("Successfully removed plan to attend venue")
-                    self.updateDataAndTableView({ (success) in
-                        Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
-                        if (success) {
-                            DispatchQueue.main.async {
-
-                                    self.displayUnAttendedPopup(venueName: venue.VenueNickName, attendFullDate: planDate)
-
-                            }
-                        }
-                        else {
-                            Utilities.printDebugMessage("Error reloading tableview in venues")
-                        }
-                    })
-                }
-                else {
-                    Utilities.printDebugMessage("Error adding user to venue plans for date")
-                    Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
-                }
-            })
-        }
-        
-        /* V2.0
-         let share = UITableViewRowAction(style: .normal, title: "Share") { (action, indexPath) in
-         // share item at indexPath
-         }
-         */
-        
-        //share.backgroundColor = FlockColors.FLOCK_BLUE
-        delete.backgroundColor = FlockColors.FLOCK_GRAY
-        
-        //return [delete, share]
-        return [delete]
-        
-    }
-
-*/
     //UpdateTableViewDelegate function
     func updateDataAndTableView(_ completion: @escaping (Bool) -> Void) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -423,8 +335,8 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     
     func setAttendButtonTitle() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let venue = self.delegate!.venueToPass!
-        let venueString = venue.VenueNickName.uppercased()
+        let event = self.delegate!.eventToPass!
+        let eventName = event.EventName
         let dateString = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]
         let date = DateUtilities.getDateFromString(date: dateString)
         let dateStringInFormat = DateUtilities.convertDateToStringByFormat(date: date, dateFormat: "MMMM d")
@@ -434,9 +346,12 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         
         specialEventID = nil
         
+        
         var specialEventName : String?
         
-        for (_,event) in venue.Events {
+        // UNCOMMENT FOR SPECIAL EVENT HANDLING
+        
+        /*for (_,event) in venue.Events {
             if (event.EventStart == date) {
                 if (true) {
                     Utilities.printDebugMessage("This event is special!")
@@ -451,13 +366,25 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
                     break
                 }
             }
-        }
+        }*/
         
         var inviteButton = false
         buttonIsInviteButton = false
         
+        Utilities.printDebugMessage("Checking invite")
+        
+        let plans = appDelegate.user!.Plans
+        
+        for (_, plan) in plans {
+            Utilities.printDebugMessage("Checking plans")
+            if(plan.venueID == event.EventID) {
+                inviteButton = true
+                break
+            }
+        }
+        
         if let plannedUsersForDate = self.allFriendsForDate[dateString]?[INDEX_OF_PLANNED_ATTENDEES] {
-            
+            Utilities.printDebugMessage("Looking at users")
             for user in plannedUsersForDate {
                 Utilities.printDebugMessage("checking")
                 if(user.FBID == appDelegate.user!.FBID) {
@@ -477,10 +404,10 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         else {
             
             if (specialEventID != nil) {
-                self.delegate?.changeButtonTitle(title: "GO TO \(specialEventName!.uppercased()) @ \(venueString)")
+                self.delegate?.changeButtonTitle(title: "GO TO \(specialEventName!.uppercased()) @ \(eventName)")
             }
             else {
-                self.delegate?.changeButtonTitle(title: "GO TO \(venueString) ON \(dateStringInFormat.uppercased())")
+                self.delegate?.changeButtonTitle(title: "GO TO \(eventName) ON \(dateStringInFormat.uppercased())")
             }
         }
         
@@ -539,54 +466,42 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     //Set the dictionary to use for tableview display, maps from full string dates to array of arrays of users
-    func setFriendsForVenueForDate(venue : Venue ) {
+    func setFriendsForVenueForDate(event : Event ) {
+        
         var allFriendsForDate : [String : [[User]]] = initializeAllDictionaries()
-        let plannedAttendees = venue.PlannedAttendees
+        let plannedAttendees = event.EventInterestedFBIDs
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let friends = appDelegate.friends
         let users = appDelegate.users
         for (_, plannedAttendee) in plannedAttendees {
             if let friend = friends[plannedAttendee] {
-                for (visitID,plan) in friend.Plans {
-                    if(DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))) {
-                        if(plan.venueID == venue.VenueID) {
-                            let fullDate = DateUtilities.convertDateToStringByFormat(date: plan.date, dateFormat: DateUtilities.Constants.fullDateFormat)
-                            //check that there is not already a plan for this friend for this day
-                            
-                            //KEY: this check was removed for GH purposes
-                            //if (!allFriendsForDate[fullDate]![self.INDEX_OF_PLANNED_ATTENDEES].contains(friend)) {
-                                allFriendsForDate[fullDate]![self.INDEX_OF_PLANNED_ATTENDEES].append(friend)
-                                
-                                self.allPlannedFriendsForDateCountDict[fullDate]! += 1
-                                self.allPlannedAttendeesForDateCountDict[fullDate]! += 1
-                            //}
-                            
-                        }
-                    } else {
-                        friend.Plans[visitID] = nil
+                let fullDate = DateUtilities.convertDateToStringByFormat(date: event.EventStart, dateFormat: DateUtilities.Constants.fullDateFormat)
+                //check that there is not already a plan for this friend for this day
+                
+                //KEY: this check could be added for GH purposes
+                if(allFriendsForDate[fullDate] != nil) {
+                    if (!allFriendsForDate[fullDate]![self.INDEX_OF_PLANNED_ATTENDEES].contains(friend)) {
+                        allFriendsForDate[fullDate]![self.INDEX_OF_PLANNED_ATTENDEES].append(friend)
+                    
+                        self.allPlannedFriendsForDateCountDict[fullDate]! += 1
+                        self.allPlannedAttendeesForDateCountDict[fullDate]! += 1
                     }
                 }
             }
             else if let user = users[plannedAttendee] {
-                for (_,plan) in user.Plans {
-                    if(DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))) {
-                        if(plan.venueID == venue.VenueID) {
-                            let fullDate = DateUtilities.convertDateToStringByFormat(date: plan.date, dateFormat: DateUtilities.Constants.fullDateFormat)
+                let fullDate = DateUtilities.convertDateToStringByFormat(date: event.EventStart, dateFormat: DateUtilities.Constants.fullDateFormat)
                             
-                            self.allPlannedAttendeesForDateCountDict[fullDate]! += 1
-                        }
-                    }
-                }
+                self.allPlannedAttendeesForDateCountDict[fullDate]! += 1
             }
         }
         
         var liveUsers : [User] = []
-        for (_, currentAttendee) in venue.CurrentAttendees {
+        for (_, currentAttendee) in event.EventThereFBIDs {
             if let friend = friends[currentAttendee] {
                 liveUsers.append(friend)
             }
         }
-        self.allCurrentAttendeesForDateCountDict = venue.CurrentAttendees.count
+        self.allCurrentAttendeesForDateCountDict = event.EventThereFBIDs.count
         self.allCurrentFriendsForDateCountDict = liveUsers.count
         allFriendsForDate[DateUtilities.getTodayFullDate()]![INDEX_OF_LIVE_ATTENDEES] = liveUsers
         self.allFriendsForDate = allFriendsForDate

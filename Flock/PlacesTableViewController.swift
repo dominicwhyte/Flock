@@ -15,7 +15,7 @@ import CoreLocation
 
 
 
-class PlacesTableViewController: UITableViewController, VenueDelegate {
+class PlacesTableViewController: UITableViewController {
     
     //let items = ["All", "Open Mon", "Open Tues", "Open Wed", "Open Thu", "Open Fri", "Open Sat", "Open Sun" ]
     var items : [String] = []
@@ -33,6 +33,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
     fileprivate let sectionInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     
     internal var venueToPass: Venue?
+    internal var eventToPass: Event?
     
     fileprivate let itemsPerRow: CGFloat = 1
     var venues = [Venue]()
@@ -773,7 +774,7 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
         // Create a custom view controller
         let popupSubView = PopupSubViewController(nibName: "PopupSubViewController", bundle: nil)
         
-        popupSubView.delegate = self
+        //popupSubView.delegate = self
         
         if let date = startDisplayDate {
             popupSubView.setStartDate(date: date)
@@ -944,6 +945,10 @@ class PlacesTableViewController: UITableViewController, VenueDelegate {
             }
         }
     }
+    
+    
+    
+    
 }
 
 
@@ -968,12 +973,6 @@ extension PlacesTableViewController: UISearchResultsUpdating {
     }
 }
 
-protocol VenueDelegate: class {
-    var venueToPass : Venue? {get set}
-    func retrieveImage(imageURL : String, venueID: String?, completion: @escaping (_ image: UIImage) -> ())
-    func changeButtonTitle(title: String)
-    
-}
 /*
  public extension UIDevice {
  

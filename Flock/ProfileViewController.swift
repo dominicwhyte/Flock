@@ -103,9 +103,11 @@ class ProfileViewController: UIViewController, ProfileDelegate {
         //self.username = user!.Name
         
         if let tableVC = self.tableViewController {
+            
             tableVC.plans = Array(user!.Plans.values).filter({ (plan) -> Bool in
-                return DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))
-                
+                //return DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                return (appDelegate.activeEvents[plan.venueID] != nil)
             })
             tableVC.user = user!
             

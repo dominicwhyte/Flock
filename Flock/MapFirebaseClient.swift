@@ -19,7 +19,7 @@ class MapFirebaseClient: NSObject
     class func addEvent(_ eventName : String, eventStart : Date, eventEnd : Date, eventLocation : CLLocationCoordinate2D, eventType : EventType, eventImageURL : String?, completion: @escaping (Bool) -> Void)
     {
         let eventID = FirebaseClient.dataRef.child("Active_Events").childByAutoId().key
-        let updates = ["EventName": eventName, "EventID" : eventID, "EventStart" : DateUtilities.getStringFromFullDate(date: eventStart), "EventEnd" : DateUtilities.getStringFromFullDate(date: eventEnd), "Latitude" : eventLocation.latitude.description, "Longitude" : eventLocation.longitude.description, "EventType" : eventType.rawValue] as [String : AnyObject]
+        let updates = ["EventName": eventName as AnyObject, "EventID" : eventID as AnyObject, "EventStart" : DateUtilities.getStringFromFullDate(date: eventStart) as AnyObject, "EventEnd" : DateUtilities.getStringFromFullDate(date: eventEnd) as AnyObject, "Latitude" : eventLocation.latitude.description as AnyObject, "Longitude" : eventLocation.longitude.description as AnyObject, "EventType" : eventType.rawValue as AnyObject] as [String : AnyObject]
         dataRef.child("Active_Events").child(eventID).updateChildValues(updates)
         completion(true)
         

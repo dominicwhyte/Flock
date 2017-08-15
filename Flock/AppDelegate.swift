@@ -292,14 +292,16 @@
         
         
         //call this function if an imageURL is not in the venueImages cache
-        func getMissingImage(imageURL : String, venueID : String?, completion: @escaping (_ status: Bool) -> ()) {
-            FirebaseClient.getImageFromURL(imageURL, venueID: venueID) { (image) in
-                if let image = image {
-                    self.venueImages[imageURL] = image
-                    completion(true)
-                }
-                else {
-                    completion(false)
+        func getMissingImage(imageURL : String?, venueID : String?, completion: @escaping (_ status: Bool) -> ()) {
+            if let imageURL = imageURL {
+                FirebaseClient.getImageFromURL(imageURL, venueID: venueID) { (image) in
+                    if let image = image {
+                        self.venueImages[imageURL] = image
+                        completion(true)
+                    }
+                    else {
+                        completion(false)
+                    }
                 }
             }
         }

@@ -12,7 +12,7 @@ class ProfileTableViewController: UITableViewController {
     
     struct Constants {
         static let CELL_HEIGHT = 75
-        static let SECTION_TITLES = ["Live", "Planned"]
+        static let SECTION_TITLES = ["Live", "History"]
         static let LIVE_SECTION_ROW = 0
         static let PLANNED_SECTION_ROW = 1
         static let SECTIONS_COUNT = 2
@@ -80,7 +80,7 @@ class ProfileTableViewController: UITableViewController {
     }
     
     
-    
+    // NEED TO BE UPDATED FOR EVENTS, DON'T CLICK ON TABLE YET
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (indexPath.section == Constants.LIVE_SECTION_ROW) {
             Utilities.animateToPlacesTabWithVenueIDandDate(venueID: user!.LiveClubID!, date: Date())
@@ -95,13 +95,13 @@ class ProfileTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        var venue : Venue
+        var event : Event
         if (indexPath.section == Constants.LIVE_SECTION_ROW) {
-            venue = appDelegate.venues[user!.LiveClubID!]!
+            event = appDelegate.activeEvents[user!.LiveClubID!]!
         }
         else {
             let plan : Plan = self.plans[indexPath.row]
-            venue = appDelegate.venues[plan.venueID]!
+            event = appDelegate.activeEvents[plan.venueID]!
         }
         let cell = tableView.dequeueReusableCell(withIdentifier: "VENUE_FRIEND", for: indexPath) as! VenueFriendTableViewCell
         
@@ -113,31 +113,32 @@ class ProfileTableViewController: UITableViewController {
             let plan : Plan = self.plans[indexPath.row]
             cell.subtitleLabel.text = DateUtilities.convertDateToStringByFormat(date: plan.date, dateFormat: DateUtilities.Constants.uiDisplayFormat)
         }
-        
-        if let venueImage = appDelegate.venueImages[venue.ImageURL] {
-            cell.profilePic.image = venueImage
-            cell.profilePic.clipsToBounds = true
-            cell.profilePic.layer.borderWidth = 2
-        }
-        else {
-            appDelegate.getMissingImage(imageURL: venue.ImageURL, venueID: venue.VenueID, completion: { (status) in
-                if (status) {
-                    DispatchQueue.main.async {
-                        if let venueImage = appDelegate.venueImages[venue.ImageURL] {
-                            cell.profilePic.image = venueImage
-                            cell.profilePic.clipsToBounds = true
-                            cell.profilePic.layer.borderWidth = 2
-                        }
-                        else {
-                            Utilities.printDebugMessage("Error: could not retrieve image")
+        if let imageURL = event.EventImageURL {
+            if let eventImage = appDelegate.venueImages[event.EventImageURL!] {
+                cell.profilePic.image = eventImage
+                cell.profilePic.clipsToBounds = true
+                cell.profilePic.layer.borderWidth = 2
+            }
+            else {
+                appDelegate.getMissingImage(imageURL: event.EventImageURL, venueID: event.EventID, completion: { (status) in
+                    if (status) {
+                        DispatchQueue.main.async {
+                            if let eventImage = appDelegate.venueImages[event.EventImageURL!] {
+                                cell.profilePic.image = eventImage
+                                cell.profilePic.clipsToBounds = true
+                                cell.profilePic.layer.borderWidth = 2
+                            }
+                            else {
+                                Utilities.printDebugMessage("Error: could not retrieve image")
+                            }
                         }
                     }
-                }
-            })
+                })
+            }
         }
         if(indexPath.section == Constants.PLANNED_SECTION_ROW) {
             let plan : Plan = self.plans[indexPath.row]
-            if (plan.specialEventID != nil) {
+            /*if (plan.specialEventID != nil) {
                 
                    cell.nameLabel.text = venue.VenueName
                     cell.profilePic.layer.borderColor = UIColor.lightGray.cgColor
@@ -146,15 +147,15 @@ class ProfileTableViewController: UITableViewController {
 
                 
                 
-            } else {
-                cell.nameLabel.text = venue.VenueName
+            } else {*/
+                cell.nameLabel.text = event.EventName
                 cell.profilePic.layer.borderColor = UIColor.lightGray.cgColor
                 cell.nameLabel.textColor = UIColor.black
                 cell.subtitleLabel.textColor = UIColor.black
-            }
+            //}
         }
         else {
-            cell.nameLabel.text = venue.VenueName
+            cell.nameLabel.text = event.EventName
             cell.profilePic.layer.borderColor = UIColor.lightGray.cgColor
             cell.nameLabel.textColor = UIColor.black
             cell.subtitleLabel.textColor = UIColor.black

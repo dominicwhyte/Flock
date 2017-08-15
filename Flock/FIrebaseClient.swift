@@ -616,6 +616,125 @@ class FirebaseClient: NSObject
         })
     }
     
+    //Add plan to user plans and add user to planned attendees in venue
+    class func addInterestedUserToEvent(date: String, eventID : String, userID : String, add: Bool, completion: @escaping (Bool) -> Void) {
+        addUserToEvent(eventID: eventID, userID: userID, add: add) { (eventSuccess) in
+            if (eventSuccess) {
+                Utilities.printDebugMessage("Success adding user to event")
+                addEventToUser(date: date, eventID: eventID, userID: userID, add : add, completion: { (userSuccess) in
+                    Utilities.printDebugMessage("Success adding event to user")
+                    completion(userSuccess)
+                })
+            }
+            else {
+                completion(false)
+            }
+        }
+    }
+    
+    static func addUserToEvent(eventID : String, userID : String,  add: Bool, completion: @escaping (Bool) -> Void) {
+        
+        dataRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            if (snapshot.childSnapshot(forPath: "Active_Events").hasChild(eventID)) {
+                //add to special event a new attendee, or remove if add is False
+                
+                
+                if (snapshot.childSnapshot(forPath: "Active_Events").childSnapshot(forPath: eventID).hasChild("EventInterestedFBIDs") ) {
+                    let dictionary :[String:AnyObject] = snapshot.childSnapshot(forPath: "Active_Events").value as! [String : AnyObject]
+                    let eventDict = dictionary[eventID] as! [String: AnyObject]
+                    
+                    var eventInterestedFBIDs = eventDict["EventInterestedFBIDs"] as! [String : AnyObject]
+                    
+                    // If adding to plans
+                    if(add) {
+                        if (eventInterestedFBIDs[userID] == nil) {
+                            eventInterestedFBIDs[userID] = userID as AnyObject?
+                        }
+                    }
+                        // If removing from plans
+                    else {
+                        if (eventInterestedFBIDs[userID] != nil) {
+                            eventInterestedFBIDs[userID] = nil
+                        }
+                    }
+                    let updates = ["EventInterestedFBIDs": eventInterestedFBIDs]
+                    dataRef.child("Active_Events").child(eventID).updateChildValues(updates)
+                    completion(true)
+                    
+                }
+                    //Planned attendees dict not present
+                else
+                {
+                    if(add) {
+                        let updates = ["EventInterestedFBIDs": [userID : userID]]
+                        dataRef.child("Active_Events").child(eventID).updateChildValues(updates)
+                    }
+                    completion(true)
+                }
+                
+            }
+            else {
+                completion(false)
+            }
+        })
+    }
+    
+    static func addEventToUser(date: String, eventID : String, userID : String, add: Bool, completion: @escaping (Bool) -> Void) {
+        dataRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot) in
+            //Confirm send friend request conditions
+            if (snapshot.hasChild(userID)) {
+                if (snapshot.childSnapshot(forPath: userID).hasChild("Plans")) {
+                    let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]
+                    let userDict = dictionary[userID] as! [String: AnyObject]
+                    var plansDict = userDict["Plans"] as! [String : AnyObject]
+                    // Adding plan to user
+                    if(add) {
+                        let uniqueVisitID = UUID().uuidString
+                        var planDetails = ["Date" : date, "VenueID" : eventID]
+                        
+                        if (plansDict[uniqueVisitID] == nil) {
+                            plansDict[uniqueVisitID] = planDetails as AnyObject?
+                        }
+                        else {
+                            Utilities.printDebugMessage("Error: unique IDs are not unique")
+                        }
+                    }
+                        // Removing plan from user
+                    else {
+                        for (uniqueVisitID, plan) in plansDict {
+                            if((plan["Date"] as! String) == date && (plan["VenueID"] as! String) == eventID) {
+                                if (plansDict[uniqueVisitID] != nil) {
+                                    plansDict[uniqueVisitID] = nil
+                                }
+                            }
+                        }
+                    }
+                    
+                    let updates = ["Plans": plansDict]
+                    dataRef.child("Users").child(userID).updateChildValues(updates)
+                    completion(true)
+                }
+                    //Planned attendees dict not present
+                else
+                {
+                    if(add) {
+                        let uniqueVisitID = UUID().uuidString
+                        var planDetails = ["Date" : date, "VenueID" : eventID]
+
+                        let plansDict = [uniqueVisitID : planDetails]
+                        let updates = ["Plans": plansDict]
+                        dataRef.child("Users").child(userID).updateChildValues(updates)
+                        completion(true)
+                    }
+                }
+                
+            }
+            else {
+                completion(false)
+            }
+        })
+    }
+    
     // Add invitation to toUser for a venue on a date, with a special eventID if necessary
     static func addInvitationToUserForVenueForDate(toUserID: String, fromUserID: String, date: String, venueID : String, add: Bool, specialEventID : String?, completion: @escaping (Bool) -> Void) {
         dataRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot) in
