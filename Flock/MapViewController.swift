@@ -55,6 +55,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     var userCreatedEventType : EventType?
     var userCreatedEventStart : Date?
     
+    private var princetonBounds: MGLCoordinateBounds! ///map bounds
     
     
     
@@ -96,8 +97,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         view.addSubview(mapView!)
         
         
-        // Set the map view‘s delegate property.
-        mapView!.delegate = self
+        
         
         populateMap(mapView: mapView!)
         
@@ -254,22 +254,50 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         mapView.tintColor = .darkGray
         
-        // Set the map's bounds to Pisa, Italy.
-        /*
-         let bounds = MGLCoordinateBounds(
-         sw: CLLocationCoordinate2D(latitude: 43.7115, longitude: 10.3725),
-         ne: CLLocationCoordinate2D(latitude: 43.7318, longitude: 10.4222))
-         mapView.setVisibleCoordinateBounds(bounds, animated: false)
-         
-         */
 
         mapView.setCenter(MapUtilities.Constants.PRINCETON_LOCATION, animated: false)
-        mapView.setZoomLevel(ZoomLevel.max.rawValue, animated: true)
         mapView.isZoomEnabled = false
         mapView.isUserInteractionEnabled = true
         
+        // Set the map view‘s delegate property.
+        mapView.delegate = self
+        
+        
+        //Set map bounds 
+        let northEast = CLLocationCoordinate2D(latitude: 40.369337, longitude: -74.636084)
+        let southWest = CLLocationCoordinate2D(latitude: 40.326426, longitude: -74.668271)
+        
+        princetonBounds = MGLCoordinateBounds(sw: southWest, ne: northEast)
+        mapView.zoomLevel = ZoomLevel.max.rawValue
         return mapView
     }
+    
+   
+    //Enforces bounds to Princeton
+    
+    func mapView(_ mapView: MGLMapView, shouldChangeFrom oldCamera: MGLMapCamera, to newCamera: MGLMapCamera) -> Bool {
+        
+        // Get the current camera to restore it after.
+        let currentCamera = mapView.camera
+        
+        // From the new camera obtain the center to test if it’s inside the boundaries.
+        let newCameraCenter = newCamera.centerCoordinate
+        
+        // Set the map’s visible bounds to newCamera.
+        mapView.camera = newCamera
+        let newVisibleCoordinates = mapView.visibleCoordinateBounds
+        
+        // Revert the camera.
+        mapView.camera = currentCamera
+        
+        // Test if the newCameraCenter and newVisibleCoordinates are inside self.colorado.
+        let inside = MGLCoordinateInCoordinateBounds(newCameraCenter, self.princetonBounds)
+        let intersects = MGLCoordinateInCoordinateBounds(newVisibleCoordinates.ne, self.princetonBounds) && MGLCoordinateInCoordinateBounds(newVisibleCoordinates.sw, self.princetonBounds)
+        
+        return inside && intersects
+    }
+    
+    
     
     func reloadMapData(mapView: MGLMapView) {
         if let annotations = mapView.annotations {
@@ -285,9 +313,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        //mapView!.setZoomLevel(ZoomLevel.max.rawValue, animated: true)
-    }
     
     func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
         return nil
@@ -354,7 +379,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
                 }
             }
             self.titleLabel.text = title
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
             self.closestEvent = self.events[eventID!]
             self.plannedLabel.text = "\(self.closestEvent!.EventInterestedFBIDs.count)"
             self.liveLabel.text = "\(self.closestEvent!.EventThereFBIDs.count)"
