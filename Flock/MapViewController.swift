@@ -18,6 +18,10 @@ import M13Checkbox
 import SearchTextField
 import DateTimePicker
 import PickerController
+import Firebase
+import FirebaseDatabase
+import FirebaseAuth
+
 
 
 class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecognizerDelegate, VenueDelegate, UITableViewDelegate, UITableViewDataSource /*,MGLMapViewDelegate, UIGestureRecognizerDelegate*/ {
@@ -228,25 +232,38 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     
     func createEventLongPress(sender: UIGestureRecognizer){
         Utilities.printDebugMessage("Long press")
+        let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
         let touchPoint = sender.location(in: mapView)
-        let newCoordinates = self.mapView!.convert(touchPoint, toCoordinateFrom: mapView)
+        let eventLocation = self.mapView!.convert(touchPoint, toCoordinateFrom: mapView)
         
-        MapFirebaseClient.addEvent(self.userCreatedEventName!, eventStart: self.userCreatedEventStart!, eventEnd: self.userCreatedEventStart!, eventLocation: newCoordinates, eventType: self.userCreatedEventType!, eventImageURL: nil, eventDescription: self.userCreatedEventDescription!, eventOwner: "Test", completion: { (success) in
-            if(success) {
-                Utilities.printDebugMessage("Success")
-            } else {
-                Utilities.printDebugMessage("Failure")
+        let eventName = self.userCreatedEventName!
+        let eventStart = self.userCreatedEventStart!
+        let eventEnd = self.userCreatedEventStart!
+        let eventType = self.userCreatedEventType!
+        let eventImageURL : String? = nil
+        let eventDescription = self.userCreatedEventDescription!
+        let eventOwner = "Test Owner"
+        
+        MapFirebaseClient.addEventReturnID(eventName, eventStart: eventStart, eventEnd: eventEnd, eventLocation: eventLocation, eventType: eventType, eventImageURL: eventImageURL, eventDescription: eventDescription, eventOwner: eventOwner, completion: { (eventID) in
+            
+            let eventDict = ["EventID" : eventID as AnyObject, "EventName": eventName as AnyObject, "EventStart" : DateUtilities.getStringFromFullDate(date: eventStart) as AnyObject, "EventEnd" : DateUtilities.getStringFromFullDate(date: eventEnd) as AnyObject, "Latitude" : eventLocation.latitude.description as AnyObject, "Longitude" : eventLocation.longitude.description as AnyObject, "EventType" : eventType.rawValue as AnyObject, "EventDescription": eventDescription as AnyObject, "EventOwner": eventOwner as AnyObject] as [String : AnyObject]
+            
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            let newEvent = Event(dict: eventDict)
+            appDelegate.activeEvents[eventID] = newEvent
+            self.events[eventID] = newEvent
+            
+            let annotation = MGLPointAnnotation()
+            annotation.coordinate = eventLocation
+            annotation.title = self.userCreatedEventName
+            annotation.subtitle = eventID
 
+            self.mapView!.addAnnotation(annotation)
+            
+            DispatchQueue.main.async {
+                Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
             }
         })
-        
-        
-        
-        let annotation = MGLPointAnnotation()
-        annotation.coordinate = newCoordinates
-        annotation.title = self.userCreatedEventName
-        annotation.subtitle = ""
-        self.mapView!.addAnnotation(annotation)
     }
     
     func setupMap() -> MGLMapView {

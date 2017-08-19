@@ -15,7 +15,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     
     
     struct Constants {
-        static let SECTION_TITLES = ["Live", "Planned"]
+        static let SECTION_TITLES = ["Live", "Interested"]
         static let LIVE_SECTION_ROW = 0
         static let PLANNED_SECTION_ROW = 1
         static let CELL_HEIGHT : CGFloat = 74.0
@@ -112,49 +112,6 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         _ = alert.showInfo("Planned Friends", subTitle: "How many of your friends are planning to go to \(venueString) on \(dateStringInFormat)")
     }
     
-    
-    //Very hacky code:
-    //    var overrideBool = false
-    //    var newFrame : CGRect?
-    //
-    //    func fixHeightIfNecessary(maxHeight : CGFloat) {
-    //        if self.view.frame.height > maxHeight {
-    //            self.overrideBool = true
-    //            self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: maxHeight - 300)
-    //            newFrame =  CGRect(x: 0, y: 0, width: self.view.frame.width, height: maxHeight - 300)
-    //            tableView.frame         =   tableViewFrameView.frame
-    //            let frame = CGRect(x: tableViewFrameView.frame.minX, y: tableViewFrameView.frame.minY, width: tableViewFrameView.frame.width + 50.0, height: tableViewFrameView.frame.height)
-    //            tableView.frame = frame
-    //            tableView.delegate      =   self
-    //            tableView.dataSource    =   self
-    //
-    //            tableView.register(UINib(nibName: "VenueFriendTableViewCell", bundle: nil), forCellReuseIdentifier: "VENUE_FRIEND")
-    //            setFriendsForVenueForDate(venue: delegate!.venueToPass!)
-    //            setAttendButtonTitle()
-    //            setLabelsForGraphic()
-    //            self.view.addSubview(tableView)
-    //
-    //            self.view.setNeedsLayout()
-    //            self.view.setNeedsDisplay()
-    //            Utilities.printDebugMessage("ERROR: need to fix popup height")
-    //
-    //        }
-    //    }
-    //
-    //    override func viewDidLayoutSubviews() {
-    //
-    //        super.viewDidLayoutSubviews()
-    //        if (overrideBool) {
-    //            if let newFrame = self.newFrame {
-    //                self.view.frame = newFrame
-    //                tableView.frame         =   tableViewFrameView.frame
-    //                let frame = CGRect(x: tableViewFrameView.frame.minX, y: tableViewFrameView.frame.minY, width: tableViewFrameView.frame.width + 50.0, height: tableViewFrameView.frame.height)
-    //                tableView.frame = frame
-    //                self.view.layoutSubviews()
-    //            }
-    //        }
-    //
-    //    }
     
     override func viewDidLoad() {
         
@@ -474,7 +431,9 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         let friends = appDelegate.friends
         let users = appDelegate.users
         for (_, plannedAttendee) in plannedAttendees {
+            Utilities.printDebugMessage("Going through attendee: \(plannedAttendee.Name)")
             if let friend = friends[plannedAttendee] {
+                Utilities.printDebugMessage("\(plannedAttendee.Name) is a friend.")
                 let fullDate = DateUtilities.convertDateToStringByFormat(date: event.EventStart, dateFormat: DateUtilities.Constants.fullDateFormat)
                 //check that there is not already a plan for this friend for this day
                 
