@@ -1,0 +1,6 @@
+framework module PickerController {
+  umbrella header "PickerController-umbrella.h"
+
+  export *
+  module * { export * }
+}

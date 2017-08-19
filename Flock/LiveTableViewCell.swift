@@ -10,7 +10,7 @@ import UIKit
 import MGSwipeTableCell
 
 class LiveTableViewCell: MGSwipeTableCell, MGSwipeTableCellDelegate {
-    var venue : Venue?
+    var event : Event?
     var FBID : String?
     var chatDelegate : ChatDelegate?
     struct Constants {
@@ -19,8 +19,9 @@ class LiveTableViewCell: MGSwipeTableCell, MGSwipeTableCellDelegate {
     @IBOutlet weak var chatButton: UIButton!
     
     func swipeTableCell(_ cell: MGSwipeTableCell, tappedButtonAt index: Int, direction: MGSwipeDirection, fromExpansion: Bool) -> Bool {
-        if let venue = venue {
-            Utilities.animateToPlacesTabWithVenueIDandDate(venueID: venue.VenueID, date: Date())
+        if let event = event {
+            Utilities.animateToPlacesTabWithVenueIDandDate(venueID: event.EventID
+                , date: Date())
         }
         return true
     }
@@ -35,17 +36,17 @@ class LiveTableViewCell: MGSwipeTableCell, MGSwipeTableCellDelegate {
     @IBOutlet weak var friendName: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     
-    func setupCell(venue : Venue) {
-        self.venue = venue
-        subtitleLabel.text = venue.VenueNickName
+    func setupCell(event: Event) {
+        self.event = event
+        subtitleLabel.text = event.EventName
         var leftButtonsArray = [MGSwipeButton]()
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let venueImages = appDelegate.venueImages
         
         
-        if (UIImage(named: venue.VenueID) != nil) {
-            let venueImage = UIImage(named: venue.VenueID)
+        if (UIImage(named: event.EventID) != nil) {
+            let venueImage = UIImage(named: event.EventID)
             let button = MGSwipeButton(title: "", icon: nil, backgroundColor: UIColor.clear)
             button.setBackgroundImage(venueImage, for: .normal)
             button.frame = CGRect(x: 0, y: 0, width: Constants.CELL_HEIGHT, height: Constants.CELL_HEIGHT)
@@ -53,12 +54,13 @@ class LiveTableViewCell: MGSwipeTableCell, MGSwipeTableCellDelegate {
         }
         //imageURL not in image cache
         else {
-            appDelegate.getMissingImage(imageURL: venue.ImageURL, venueID: venue.VenueID, completion: { (status) in
+            if let imageURL = event.EventImageURL {
+            appDelegate.getMissingImage(imageURL: imageURL, venueID: event.EventID, completion: { (status) in
                 if (status) {
                     DispatchQueue.main.async {
-                        if let venueImage = venueImages[venue.ImageURL] {
+                        if let eventImage = venueImages[imageURL] {
                             let button = MGSwipeButton(title: "", icon: nil, backgroundColor: UIColor.clear)
-                            button.setBackgroundImage(venueImage, for: .normal)
+                            button.setBackgroundImage(eventImage, for: .normal)
                             button.frame = CGRect(x: 0, y: 0, width: Constants.CELL_HEIGHT, height: Constants.CELL_HEIGHT)
                             leftButtonsArray.append(button)
                         }
@@ -68,6 +70,7 @@ class LiveTableViewCell: MGSwipeTableCell, MGSwipeTableCellDelegate {
                     }
                 }
             })
+            }
         }
         
         

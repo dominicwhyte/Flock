@@ -44,31 +44,33 @@ class PlannedTableViewCell: MGSwipeTableCell, MGSwipeTableCellDelegate {
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let venueImages = appDelegate.venueImages
-        let venues = appDelegate.venues
+        let events = appDelegate.activeEvents
         
         for index in 0...(MAX_VENUES_TO_DISPLAY - 1) {
             //if there are enough plans
             if (plans.count > index) {
                 var button = MGSwipeButton(title: "", icon: UIImage(named:"cat.png"), backgroundColor: UIColor.blue)
-                if let venue = venues[plans[index].venueID] {
-                    if (UIImage(named: venue.VenueID) != nil) {
-                        let venueImage = UIImage(named: venue.VenueID)
+                if let event = events[plans[index].venueID] {
+                    if (UIImage(named: event.EventID) != nil) {
+                        let venueImage = UIImage(named: event.EventID)
                         button = MGSwipeButton(title: "", icon: nil, backgroundColor: UIColor.clear)
                         button.setBackgroundImage(venueImage, for: .normal)
                         button.frame = CGRect(x: 0, y: 0, width: Constants.CELL_HEIGHT, height: Constants.CELL_HEIGHT)
                     }
                     else {
-                        appDelegate.getMissingImage(imageURL: venue.ImageURL, venueID: venue.VenueID, completion: { (status) in
-                            if (status) {
-                                DispatchQueue.main.async {
-                                    if let venueImage = venueImages[venue.ImageURL] {
-                                        button = MGSwipeButton(title: "", icon: nil, backgroundColor: UIColor.clear)
-                                        button.setBackgroundImage(venueImage, for: .normal)
-                                        button.frame = CGRect(x: 0, y: 0, width: Constants.CELL_HEIGHT, height: Constants.CELL_HEIGHT)
+                        if let imageURL = event.EventImageURL {
+                            appDelegate.getMissingImage(imageURL: imageURL, venueID: event.EventID, completion: { (status) in
+                                if (status) {
+                                    DispatchQueue.main.async {
+                                        if let venueImage = venueImages[imageURL] {
+                                            button = MGSwipeButton(title: "", icon: nil, backgroundColor: UIColor.clear)
+                                            button.setBackgroundImage(venueImage, for: .normal)
+                                            button.frame = CGRect(x: 0, y: 0, width: Constants.CELL_HEIGHT, height: Constants.CELL_HEIGHT)
+                                        }
                                     }
                                 }
-                            }
-                        })
+                            })
+                        }
                     }
                 }
                 leftButtonsArray.append(button)
