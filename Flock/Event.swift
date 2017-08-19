@@ -14,6 +14,8 @@ class Event: NSObject
     var EventType : String
     var EventImageURL : String? //if nil, use a random image
     let Pin : MGLPointAnnotation
+    var EventDescription : String?
+    var EventOwner : String?
     
     
     init(dict: [String: AnyObject])
@@ -52,6 +54,9 @@ class Event: NSObject
         }
         Pin.title = EventName
         Pin.subtitle = EventID
+        
+        self.EventDescription = dict["EventDescription"] as? String
+        self.EventOwner = dict["EventOwner"] as? String
     }
 }
 

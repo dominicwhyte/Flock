@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'F5C592A6683B9250469C8F4C2536E569'
+               BlueprintIdentifier = '46C6292E61742ADFBEB1C3320E2FB551'
                BlueprintName = 'SwiftAddressBook'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'SwiftAddressBook.framework'>

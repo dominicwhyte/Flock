@@ -148,6 +148,8 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        
         let returnedView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 25))
         //returnedView.backgroundColor = FlockColors.FLOCK_BLUE
         
@@ -409,9 +411,9 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         case Constants.LIVE_FRIENDS_INDEX:
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.REUSE_IDENTIFIERS[indexPath.section], for: indexPath) as! LiveTableViewCell
             cell.friendName.text = friend.Name
-            if let venueID = friend.LiveClubID {
-                if (appDelegate.venues[venueID] != nil) {
-                    cell.setupCell(venue: appDelegate.venues[venueID]!)
+            if let eventID = friend.LiveClubID {
+                if (appDelegate.activeEvents[eventID] != nil) {
+                    cell.setupCell(event: appDelegate.activeEvents[eventID]!)
                 }
             }
             cell.profilePic.makeViewCircle()
