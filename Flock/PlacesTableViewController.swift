@@ -796,9 +796,9 @@ class PlacesTableViewController: UITableViewController {
                 
                 
                 let venueID = self.venueToPass!.VenueID
-                let fullDate = popupSubView.stringsOfUpcomingDays[popupSubView.datePicker.selectedItemIndex]
+                let fullDate = popupSubView.stringsOfEvents[popupSubView.datePicker.selectedItemIndex]
                 
-                let plannedFriendUsersForDate = popupSubView.allFriendsForDate[popupSubView.stringsOfUpcomingDays[popupSubView.datePicker.selectedItemIndex]]![1] //1 for planned attendees
+                let plannedFriendUsersForDate = popupSubView.allFriendsForEvent[popupSubView.stringsOfEvents[popupSubView.datePicker.selectedItemIndex]]![1] //1 for planned attendees
                 var plannedAttendeesForDate = [String:String]()
                 
                 for user in plannedFriendUsersForDate {
@@ -811,9 +811,9 @@ class PlacesTableViewController: UITableViewController {
             }
             else {
                 Utilities.printDebugMessage("Attending \(venue.VenueNickName.uppercased())")
-                let date = popupSubView.stringsOfUpcomingDays[popupSubView.datePicker.selectedItemIndex]
+                let date = popupSubView.stringsOfEvents[popupSubView.datePicker.selectedItemIndex]
                 
-                let plannedFriendUsersForDate = popupSubView.allFriendsForDate[popupSubView.stringsOfUpcomingDays[popupSubView.datePicker.selectedItemIndex]]![1] //1 for planned attendees
+                let plannedFriendUsersForDate = popupSubView.allFriendsForEvent[popupSubView.stringsOfEvents[popupSubView.datePicker.selectedItemIndex]]![1] //1 for planned attendees
                 var plannedAttendeesForDate = [String:String]()
                 
                 for user in plannedFriendUsersForDate {

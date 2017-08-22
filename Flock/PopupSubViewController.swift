@@ -37,14 +37,14 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     let INDEX_OF_PLANNED_ATTENDEES = 1
     let INDEX_OF_LIVE_ATTENDEES = 0
     var specialEventID : String?
-    var stringsOfUpcomingDays : [String] = [] // Full dates
+    var stringsOfEvents : [String] = [] // Full dates
     var imageCache = [String: UIImage]()
     //keys are yyyy-MM-dd
-    var allFriendsForDate : [String : [[User]]] = [:]
-    var allPlannedAttendeesForDateCountDict = [String : Int]()
-    var allCurrentAttendeesForDateCountDict = 0
-    var allPlannedFriendsForDateCountDict = [String : Int]()
-    var allCurrentFriendsForDateCountDict = 0
+    var allFriendsForEvent : [String : [[User]]] = [:]
+    var allPlannedAttendeesForEventCountDict = [String : Int]()
+    var allCurrentAttendeesForEventCountDict = [String : Int]()
+    var allPlannedFriendsForEventCountDict = [String : Int]()
+    var allCurrentFriendsForEventCountDict = [String : Int]()
     
     var buttonIsInviteButton = false
     
@@ -59,65 +59,58 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if let startDate = self.startDate {
-            if(DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: startDate))) {
-                let fullDate = DateUtilities.convertDateToStringByFormat(date: startDate, dateFormat: DateUtilities.Constants.fullDateFormat)
-                if let startIndex = stringsOfUpcomingDays.index(of: fullDate) {
-                    datePicker.setSelectedItemIndex(startIndex, animated: true)
-                    setAttendButtonTitle()
-                    setLabelsForGraphic()
-                    self.tableView.reloadData()
-                }
-            }
+        let eventID = self.delegate!.eventToPass!.EventID
+        
+        if let startIndex = stringsOfEvents.index(of: eventID) {
+            datePicker.setSelectedItemIndex(startIndex, animated: true)
+            setAttendButtonTitle()
+            setLabelsForGraphic()
+            self.tableView.reloadData()
         }
+        
+        
     }
     
     
     @IBAction func liveIconPressed(_ sender: Any) {
-           let venue = self.delegate!.venueToPass!
-        let venueString = venue.VenueNickName
-        let dateString = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]
-        let date = DateUtilities.getDateFromString(date: dateString)
-            let alert = SCLAlertView()
-        _ = alert.showInfo("Live Total", subTitle: "The number of people currently live at \(venueString)")
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let currentEventID = self.stringsOfEvents[datePicker.selectedItemIndex]
+        let eventString = appDelegate.activeEvents[currentEventID]!.EventName
+        let alert = SCLAlertView()
+        _ = alert.showInfo("Live Total", subTitle: "The number of people currently live at \(eventString)")
     }
     
     
     @IBAction func liveFriendsIconPressed(_ sender: Any) {
-          let venue = self.delegate!.venueToPass!
-        let venueString = venue.VenueNickName
-        let dateString = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]
-        let date = DateUtilities.getDateFromString(date: dateString)
-            let alert = SCLAlertView()
-        _ = alert.showInfo("Live Friends", subTitle: "How many of your friends are currently live at \(venueString)")
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let currentEventID = self.stringsOfEvents[datePicker.selectedItemIndex]
+        let eventString = appDelegate.activeEvents[currentEventID]!.EventName
+        let alert = SCLAlertView()
+        _ = alert.showInfo("Live Friends", subTitle: "The number of friends currently live at \(eventString)")
     }
     
     @IBAction func plannedPressed(_ sender: Any) {
-        let venue = self.delegate!.venueToPass!
-        let venueString = venue.VenueNickName
-        let dateString = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]
-        let date = DateUtilities.getDateFromString(date: dateString)
-        let dateStringInFormat = DateUtilities.convertDateToStringByFormat(date: date, dateFormat: DateUtilities.Constants.uiDisplayFormat)
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let currentEventID = self.stringsOfEvents[datePicker.selectedItemIndex]
+        let eventString = appDelegate.activeEvents[currentEventID]!.EventName
         let alert = SCLAlertView()
-        _ = alert.showInfo("Planned Total", subTitle: "The number of people planning to go to \(venueString) on \(dateStringInFormat)")
+        _ = alert.showInfo("Planned Total", subTitle: "The number of people interested in \(eventString)")
     }
     
     @IBAction func plannedFriendsPressed(_ sender: Any) {
-        let venue = self.delegate!.venueToPass!
-        let venueString = venue.VenueNickName
-        let dateString = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]
-        let date = DateUtilities.getDateFromString(date: dateString)
-        let dateStringInFormat = DateUtilities.convertDateToStringByFormat(date: date, dateFormat: DateUtilities.Constants.uiDisplayFormat)
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let currentEventID = self.stringsOfEvents[datePicker.selectedItemIndex]
+        let eventString = appDelegate.activeEvents[currentEventID]!.EventName
         let alert = SCLAlertView()
-        _ = alert.showInfo("Planned Friends", subTitle: "How many of your friends are planning to go to \(venueString) on \(dateStringInFormat)")
+        _ = alert.showInfo("Planned Friends", subTitle: "The number of friends interested in \(eventString)")
     }
     
     
     override func viewDidLoad() {
         
         
-        datePicker.titles = self.determineTitleOrder(dayCount: DateUtilities.Constants.NUMBER_OF_DAYS_TO_DISPLAY)
-        datePicker.itemWidth = 100
+        datePicker.titles = self.determineTitleOrder()
+        datePicker.itemWidth = 110
         
         datePicker.font = UIFont.boldSystemFont(ofSize: 18.0)
         
@@ -141,7 +134,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         
         
         tableView.register(UINib(nibName: "VenueFriendTableViewCell", bundle: nil), forCellReuseIdentifier: "VENUE_FRIEND")
-        setFriendsForVenueForDate(event: delegate!.eventToPass!)
+        setFriendsForEventID(event: delegate!.eventToPass!)
         setAttendButtonTitle()
         setLabelsForGraphic()
         
@@ -158,7 +151,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     /*
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let currentDay = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]
+        let currentDay = stringsOfEvents[datePicker.selectedItemIndex]
         let friendsAttendingClubForDay = self.allFriendsForDate[currentDay]!
         let friend = friendsAttendingClubForDay[indexPath.section][indexPath.row]
         return friend.FBID == appDelegate.user!.FBID
@@ -209,33 +202,43 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
             Utilities.printDebugMessage("HI I SHOULD GO RIGHT NOW PLEASE!!")
             if(datePicker.selectedItemIndex < datePicker.titles.count - 1) {
                 datePicker.setSelectedItemIndex(datePicker.selectedItemIndex + 1, animated: true)
+                let currentEventID = self.stringsOfEvents[datePicker.selectedItemIndex]
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                let event = appDelegate.activeEvents[currentEventID]!
+                setFriendsForEventID(event: event)
                 setAttendButtonTitle()
                 setLabelsForGraphic()
                 self.tableView.reloadData()
+                self.delegate?.setMapCenter(event: event)
             }
         } else if (sender.location(in: datePicker).x < (datePicker.frame.width - datePicker.itemWidth)/2) {
             Utilities.printDebugMessage("HI I SHOULD GO LEFT NOW PLEASE!!")
             if(datePicker.selectedItemIndex > 0) {
                 datePicker.setSelectedItemIndex(datePicker.selectedItemIndex - 1, animated: true)
+                let currentEventID = self.stringsOfEvents[datePicker.selectedItemIndex]
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                let event = appDelegate.activeEvents[currentEventID]!
+                setFriendsForEventID(event: event)
                 setAttendButtonTitle()
                 setLabelsForGraphic()
                 self.tableView.reloadData()
+                self.delegate?.setMapCenter(event: event)
             }
         }
     }
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let currentDay = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]
-        let friendsAttendingClubForDay = self.allFriendsForDate[currentDay]!
+        let currentDay = self.stringsOfEvents[datePicker.selectedItemIndex]
+        let friendsAttendingClubForDay = self.allFriendsForEvent[currentDay]!
         return friendsAttendingClubForDay[section].count
     }
     
     func tableView(_ cellForRowAttableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let currentDay = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]
-        let friendsAttendingClubForDay = self.allFriendsForDate[currentDay]!
-        let friend = friendsAttendingClubForDay[indexPath.section][indexPath.row]
+        let currentEvent = self.stringsOfEvents[datePicker.selectedItemIndex]
+        let friendsAttendingClubForEvent = self.allFriendsForEvent[currentEvent]!
+        let friend = friendsAttendingClubForEvent[indexPath.section][indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "VENUE_FRIEND")! as! VenueFriendTableViewCell
         cell.isEditing = true
         cell.profilePic.makeViewCircle()
@@ -276,26 +279,32 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @IBAction func pickerValueChanged(_ sender: MVHorizontalPicker) {
+        let currentEventID = self.stringsOfEvents[datePicker.selectedItemIndex]
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let event = appDelegate.activeEvents[currentEventID]!
+        setFriendsForEventID(event: event)
         setAttendButtonTitle()
         setLabelsForGraphic()
         self.tableView.reloadData()
+        self.delegate?.setMapCenter(event: event)
     }
     
     func setLabelsForGraphic() {
-        let currentDay = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]
-        self.liveFriendsLabel.text = Utilities.setPlurality(string: "\(self.allCurrentFriendsForDateCountDict) Live\nFriend", count: self.allCurrentFriendsForDateCountDict)
-        self.liveAttendeesLabel.text = "\(self.allCurrentAttendeesForDateCountDict) Live\nTotal"
-        self.plannedFriendsLabel.text = Utilities.setPlurality(string: "\(self.allPlannedFriendsForDateCountDict[currentDay]!) Planned\nFriend", count: self.allPlannedFriendsForDateCountDict[currentDay]!)
-        self.plannedAttendeesLabel.text = "\(self.allPlannedAttendeesForDateCountDict[currentDay]!) Planned\nTotal"
+        let currentEventID = self.stringsOfEvents[datePicker.selectedItemIndex]
+        self.liveFriendsLabel.text = Utilities.setPlurality(string: "\(self.allCurrentFriendsForEventCountDict[currentEventID]!) Live\nFriend", count: self.allCurrentFriendsForEventCountDict[currentEventID]!)
+        self.liveAttendeesLabel.text = "\(self.allCurrentAttendeesForEventCountDict[currentEventID]!) Live\nTotal"
+        self.plannedFriendsLabel.text = Utilities.setPlurality(string: "\(self.allPlannedFriendsForEventCountDict[currentEventID]!) Planned\nFriend", count: self.allPlannedFriendsForEventCountDict[currentEventID]!)
+        self.plannedAttendeesLabel.text = "\(self.allPlannedAttendeesForEventCountDict[currentEventID]!) Planned\nTotal"
         
     }
     
     func setAttendButtonTitle() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let event = self.delegate!.eventToPass!
+        let currentEventID = self.stringsOfEvents[datePicker.selectedItemIndex]
+        let event = appDelegate.activeEvents[currentEventID]!
         let eventName = event.EventName
-        let dateString = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]
-        let date = DateUtilities.getDateFromString(date: dateString)
+        let dateString = self.stringsOfEvents[datePicker.selectedItemIndex]
+        let date = event.EventStart
         let dateStringInFormat = DateUtilities.convertDateToStringByFormat(date: date, dateFormat: "MMMM d")
         
         venueImageView.alpha = 1
@@ -340,9 +349,9 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
             }
         }
         
-        if let plannedUsersForDate = self.allFriendsForDate[dateString]?[INDEX_OF_PLANNED_ATTENDEES] {
+        /*if let plannedUsersForEvent = self.allFriendsForEvent[event.EventID]?[INDEX_OF_PLANNED_ATTENDEES] {
             Utilities.printDebugMessage("Looking at users")
-            for user in plannedUsersForDate {
+            for user in plannedUsersForEvent {
                 Utilities.printDebugMessage("checking")
                 if(user.FBID == appDelegate.user!.FBID) {
                     Utilities.printDebugMessage("disabling")
@@ -353,7 +362,7 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         } else {
             inviteButton = true
             Utilities.printDebugMessage("Error with date dictionary - doesn't contain dateString")
-        }
+        }*/
         if (inviteButton) {
             buttonIsInviteButton = true
             self.delegate?.changeButtonTitle(title: "INVITE YOUR FLOCK")
@@ -413,8 +422,8 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        let currentDay = self.stringsOfUpcomingDays[datePicker.selectedItemIndex]
-        let friendsAttendingClubForDay = self.allFriendsForDate[currentDay]!
+        let currentDay = self.stringsOfEvents[datePicker.selectedItemIndex]
+        let friendsAttendingClubForDay = self.allFriendsForEvent[currentDay]!
         return friendsAttendingClubForDay.count
     }
     
@@ -423,34 +432,33 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     //Set the dictionary to use for tableview display, maps from full string dates to array of arrays of users
-    func setFriendsForVenueForDate(event : Event ) {
-        
-        var allFriendsForDate : [String : [[User]]] = initializeAllDictionaries()
+    func setFriendsForEventID(event : Event ) {
+
+        var allFriendsForEvent : [String : [[User]]] = initializeAllDictionaries()
         let plannedAttendees = event.EventInterestedFBIDs
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let friends = appDelegate.friends
         let users = appDelegate.users
+        let eventID = event.EventID
         for (_, plannedAttendee) in plannedAttendees {
-            Utilities.printDebugMessage("Going through attendee: \(plannedAttendee.Name)")
+            Utilities.printDebugMessage("Going through attendee: \(plannedAttendee)")
             if let friend = friends[plannedAttendee] {
-                Utilities.printDebugMessage("\(plannedAttendee.Name) is a friend.")
-                let fullDate = DateUtilities.convertDateToStringByFormat(date: event.EventStart, dateFormat: DateUtilities.Constants.fullDateFormat)
+                Utilities.printDebugMessage("\(plannedAttendee) is a friend.")
                 //check that there is not already a plan for this friend for this day
                 
-                //KEY: this check could be added for GH purposes
-                if(allFriendsForDate[fullDate] != nil) {
-                    if (!allFriendsForDate[fullDate]![self.INDEX_OF_PLANNED_ATTENDEES].contains(friend)) {
-                        allFriendsForDate[fullDate]![self.INDEX_OF_PLANNED_ATTENDEES].append(friend)
+                //KEY: this check could be removed for GH purposes
+                if(allFriendsForEvent[eventID] != nil) {
+                    if (!allFriendsForEvent[eventID]![self.INDEX_OF_PLANNED_ATTENDEES].contains(friend)) {
+                        allFriendsForEvent[eventID]![self.INDEX_OF_PLANNED_ATTENDEES].append(friend)
                     
-                        self.allPlannedFriendsForDateCountDict[fullDate]! += 1
-                        self.allPlannedAttendeesForDateCountDict[fullDate]! += 1
+                        self.allPlannedFriendsForEventCountDict[eventID]! += 1
+                        self.allPlannedAttendeesForEventCountDict[eventID]! += 1
                     }
                 }
             }
             else if let user = users[plannedAttendee] {
-                let fullDate = DateUtilities.convertDateToStringByFormat(date: event.EventStart, dateFormat: DateUtilities.Constants.fullDateFormat)
                             
-                self.allPlannedAttendeesForDateCountDict[fullDate]! += 1
+                self.allPlannedAttendeesForEventCountDict[eventID]! += 1
             }
         }
         
@@ -460,18 +468,20 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
                 liveUsers.append(friend)
             }
         }
-        self.allCurrentAttendeesForDateCountDict = event.EventThereFBIDs.count
-        self.allCurrentFriendsForDateCountDict = liveUsers.count
-        allFriendsForDate[DateUtilities.getTodayFullDate()]![INDEX_OF_LIVE_ATTENDEES] = liveUsers
-        self.allFriendsForDate = allFriendsForDate
+        self.allCurrentAttendeesForEventCountDict[eventID] = event.EventThereFBIDs.count
+        self.allCurrentFriendsForEventCountDict[eventID] = liveUsers.count
+        allFriendsForEvent[eventID]![INDEX_OF_LIVE_ATTENDEES] = liveUsers
+        self.allFriendsForEvent = allFriendsForEvent
     }
     
     func initializeAllDictionaries() -> [String : [[User]]] {
         var plannedFriendsForDate : [String : [[User]]] = [:]
-        for day in stringsOfUpcomingDays {
-            plannedFriendsForDate[day] = [[],[]]
-            allPlannedAttendeesForDateCountDict[day] = 0
-            allPlannedFriendsForDateCountDict[day] = 0
+        for event in stringsOfEvents {
+            plannedFriendsForDate[event] = [[],[]]
+            allPlannedAttendeesForEventCountDict[event] = 0
+            allCurrentAttendeesForEventCountDict[event] = 0
+            allPlannedFriendsForEventCountDict[event] = 0
+            allCurrentFriendsForEventCountDict[event] = 0
         }
         return plannedFriendsForDate
     }
@@ -499,17 +509,18 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
     
     // Determines the order for the day of the week by getting the current day, finding the index in
     // a standard week, and iterating through array
-    func determineTitleOrder(dayCount : Int) -> [String] {
+    func determineTitleOrder() -> [String] {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let activeEvents = appDelegate.activeEvents
+        var titleArray : [String] = []
         var fullArray : [String] = []
-        var dayOfWeekArray : [String] = []
-        var date = Date()
-        for _ in 0...(dayCount-1) {
-            fullArray.append(DateUtilities.convertDateToStringByFormat(date: date, dateFormat: DateUtilities.Constants.fullDateFormat))
-            dayOfWeekArray.append(DateUtilities.convertDateToStringByFormat(date: date, dateFormat: DateUtilities.Constants.dayOfWeekDateFormat))
-            date = Calendar.current.date(byAdding: .day, value: 1, to: date)!
+        for (eventID, event) in activeEvents {
+            Utilities.printDebugMessage(event.EventName)
+            titleArray.append(event.EventName)
+            fullArray.append(eventID)
         }
-        self.stringsOfUpcomingDays = fullArray
-        return dayOfWeekArray
+        self.stringsOfEvents = fullArray
+        return titleArray
     }
     
 }

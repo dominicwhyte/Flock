@@ -109,7 +109,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         tap = UITapGestureRecognizer(target: self, action: #selector(changeZoom))
         tap.numberOfTapsRequired = 1
         tap.delegate = self
-        self.mapView!.addGestureRecognizer(tap)
+        //self.mapView!.addGestureRecognizer(tap)
         
         // Long Press
         /*let createEventTap = UITapGestureRecognizer(target: self, action: "createEventTap:")
@@ -128,7 +128,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         
         // Detail window centerer
         detailWindowTap = UITapGestureRecognizer(target: self, action: #selector(centerOnEvent))
-        detailWindowTap.numberOfTapsRequired = 1
+        detailWindowTap.numberOfTapsRequired = 2
         detailWindowTap.delegate = self
         
         self.detailView.addGestureRecognizer(detailWindowTap)
@@ -184,11 +184,25 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
             let title = "\(DateUtilities.convertDateToStringByFormat(date: event.EventStart, dateFormat: DateUtilities.Constants.dropdownDisplayFormat))"
             Utilities.printDebugMessage("For event \(event.EventName) we have \(title)")
             if(!fullDates.contains(event.EventStart)) {
-                displayDates.append(title)
+                //displayDates.append(title)
                 fullDates.append(event.EventStart)
             }
             
         }
+        fullDates.sort { (date1, date2) -> Bool in
+            return date1 < date2
+        }
+        
+        for date in fullDates {
+            let title = "\(DateUtilities.convertDateToStringByFormat(date: date, dateFormat: DateUtilities.Constants.dropdownDisplayFormat))"
+            //if(!displayDates.contains(title)) {
+                displayDates.append(title)
+            //}
+            
+            
+        }
+        
+        
         self.displayDates = displayDates
         self.fullDates = fullDates
         let menuView = BTNavigationDropdownMenu(navigationController: self.navigationController, containerView: self.navigationController!.view, title: displayDates[0], items: displayDates as [AnyObject])
@@ -298,6 +312,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     func populateMap(mapView : MGLMapView) {
         for (_,event) in self.events {
             Utilities.printDebugMessage("Test" + String(event.Pin.coordinate.latitude))
+            
             mapView.addAnnotation(event.Pin)
         }
     }
@@ -325,11 +340,19 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     
     func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
         // Try to reuse the existing ‘pisa’ annotation image, if it exists.
-        var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "pisa")
+        let reuseIdentifier = reuseIdentifierForAnnotation(annotation: annotation)
+        
+        var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: reuseIdentifier)
         
         if annotationImage == nil {
             // Leaning Tower of Pisa by Stefan Spieler from the Noun Project.
-            var image = UIImage(named: "blue-college-15")!
+            var isHighlightedImage = determineHighlightedImage(latitude: annotation.coordinate.latitude, longitude: annotation.coordinate.longitude)
+            var image : UIImage?
+            if(isHighlightedImage) {
+                image = UIImage(named: "white-college-15")!
+            } else {
+                image = UIImage(named: "blue-college-15")!
+            }
             
             // The anchor point of an annotation is currently always the center. To
             // shift the anchor point to the bottom of the annotation, the image
@@ -338,13 +361,38 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
             //
             // To make this padding non-interactive, we create another image object
             // with a custom alignment rect that excludes the padding.
-            image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
+            image = image!.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image!.size.height/2, right: 0))
             
             // Initialize the ‘pisa’ annotation image with the UIImage we just loaded.
-            annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "pisa")
+            annotationImage = MGLAnnotationImage(image: image!, reuseIdentifier: reuseIdentifier)
         }
         
         return annotationImage
+    }
+    
+    func reuseIdentifierForAnnotation(annotation: MGLAnnotation) -> String {
+        var reuseIdentifier = "\(annotation.coordinate.latitude),\(annotation.coordinate.longitude)"
+        if let title = annotation.title {
+            reuseIdentifier += title!
+        }
+        if let subtitle = annotation.subtitle {
+            reuseIdentifier += subtitle!
+        }
+        return reuseIdentifier
+    }
+    
+    func determineHighlightedImage(latitude: CLLocationDegrees, longitude: CLLocationDegrees) -> Bool {
+        if let closestEvent = self.closestEvent {
+            let closestLat = closestEvent.Pin.coordinate.latitude
+            let closestLong = closestEvent.Pin.coordinate.longitude
+            if(closestLat == latitude && closestLong == longitude) {
+                return true
+            } else {
+                return false
+            }
+        } else {
+            return false
+        }
     }
     
     func mapViewRegionIsChanging(_ mapView: MGLMapView) {
@@ -358,16 +406,28 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
             var title : String?
             var eventID : String?
             var minDistance = Double.infinity
+            var annotation : MGLAnnotation?
+            var highlightedAnnotation : MGLAnnotation?
             
             let mapCenter = CLLocation(latitude: mapView.centerCoordinate.latitude, longitude: mapView.centerCoordinate.longitude)
             for pin in pins {
                 let pinLocation = CLLocation(latitude: pin.coordinate.latitude, longitude: pin.coordinate.longitude)
                 let pinDistance = pinLocation.distance(from: mapCenter)
                 
+                // Fin pin that was previously marked by being the closest
+                let reuseIdentifier = reuseIdentifierForAnnotation(annotation: pin)
+                if let annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: reuseIdentifier) {
+                    
+                    if annotationImage.image == UIImage(named: "blue-college-15")! {
+                        highlightedAnnotation = pin
+                    }
+                }
+                
                 if(pinDistance < minDistance) {
                     minDistance = pinDistance
                     title = pin.title!
                     eventID = pin.subtitle!
+                    annotation = pin
                 }
             }
             self.titleLabel.text = title
@@ -377,6 +437,33 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
             self.liveLabel.text = "\(self.closestEvent!.EventThereFBIDs.count)"
             let nextOpenDateString = DateUtilities.convertDateToStringByFormat(date: self.closestEvent!.EventStart, dateFormat: DateUtilities.Constants.uiDisplayFormat)
             self.nextOpenLabel.text = nextOpenDateString
+            
+            /*if(highlightedAnnotation != nil && annotation != nil && highlightedAnnotation!.coordinate.latitude == annotation!.coordinate.latitude &&  highlightedAnnotation!.coordinate.longitude == annotation!.coordinate.longitude) {
+             self.mapView!.removeAnnotation(highlightedAnnotation!)
+             self.mapView!.addAnnotation(highlightedAnnotation!)
+             
+             self.mapView!.removeAnnotation(annotation!)
+             self.mapView!.addAnnotation(annotation!)
+             } else {
+             if let highlightedAnnotation = highlightedAnnotation {
+             let reuseIdentifier = reuseIdentifierForAnnotation(annotation: highlightedAnnotation)
+             
+             if let annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: reuseIdentifier) {
+             Utilities.printDebugMessage("Erasing old highlighted image")
+             annotationImage.image = UIImage(named: "blue-college-15")!
+             }
+             }
+             
+             // Update pin image
+             if let annotation = annotation {
+             let reuseIdentifier = reuseIdentifierForAnnotation(annotation: annotation)
+             
+             if let annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: reuseIdentifier) {
+             Utilities.printDebugMessage("Setting highlighted image")
+             annotationImage.image = UIImage(named: "white-college-15")!
+             }
+             }
+             }*/
         }
     }
     
@@ -402,7 +489,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         // And popup subview
         
         self.eventToPass = self.closestEvent
-        self.showCustomDialog(event: eventToPass!, startDisplayDate: nil)
+        self.showCustomDialog(event: eventToPass!)
         
     }
     
@@ -489,24 +576,20 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         }
     }
     
-    func showCustomDialog(event : Event, startDisplayDate : Date?) {
+    func showCustomDialog(event : Event) {
         
         // Create a custom view controller
         let popupSubView = PopupSubViewController(nibName: "PopupSubViewController", bundle: nil)
         
         popupSubView.delegate = self
         
-        if let date = startDisplayDate {
-            popupSubView.setStartDate(date: date)
-        }
-        
         // Create the dialog
         let popup = PopupDialog(viewController: popupSubView, buttonAlignment: .horizontal, transitionStyle: .bounceDown, gestureDismissal: true)
         
         
         // Create second button
-        let todaysDate = DateUtilities.convertDateToStringByFormat(date: Date(), dateFormat: "MMMM d")
-        let attendButton = DefaultButton(title: "GO TO \(event.EventName.uppercased()) ON \(todaysDate.uppercased())", dismissOnTap: true) {
+        let eventDate = DateUtilities.convertDateToStringByFormat(date: event.EventStart, dateFormat: "MMMM d")
+        let attendButton = DefaultButton(title: "GO TO \(event.EventName.uppercased()) ON \(eventDate.uppercased())", dismissOnTap: true) {
             
             if (popupSubView.buttonIsInviteButton) {
                 Utilities.printDebugMessage("Invite flock!")
@@ -516,33 +599,35 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
                 
                 
                 let eventID = self.eventToPass!.EventID
-                let fullDate = popupSubView.stringsOfUpcomingDays[popupSubView.datePicker.selectedItemIndex]
+                let fullDate = popupSubView.stringsOfEvents[popupSubView.datePicker.selectedItemIndex]
                 
-                let plannedFriendUsersForDate = popupSubView.allFriendsForDate[popupSubView.stringsOfUpcomingDays[popupSubView.datePicker.selectedItemIndex]]![1] //1 for planned attendees
-                var plannedAttendeesForDate = [String:String]()
+                let plannedFriendUsersForEvent = popupSubView.allFriendsForEvent[popupSubView.stringsOfEvents[popupSubView.datePicker.selectedItemIndex]]![1] //1 for planned attendees
+                var plannedAttendeesForEvent = [String:String]()
                 
-                for user in plannedFriendUsersForDate {
+                for user in plannedFriendUsersForEvent {
                     Utilities.printDebugMessage(user.Name)
-                    plannedAttendeesForDate[user.FBID] = user.FBID
+                    plannedAttendeesForEvent[user.FBID] = user.FBID
                 }
                 let specialEventID = popupSubView.specialEventID
-                self.performSegueToSelector(userID: userID, venueID: eventID, fullDate: fullDate, plannedAttendeesForDate: plannedAttendeesForDate, specialEventID: specialEventID)
+                self.performSegueToSelector(userID: userID, venueID: eventID, fullDate: fullDate, plannedAttendeesForDate: plannedAttendeesForEvent, specialEventID: specialEventID)
                 //popupSubView.performSegue(withIdentifier: "SELECTOR_IDENTIFIER", sender: (userID, venueID, fullDate, plannedAttendeesForDate, specialEventID))
             }
             else {
                 Utilities.printDebugMessage("Attending \(event.EventName.uppercased())")
-                let date = popupSubView.stringsOfUpcomingDays[popupSubView.datePicker.selectedItemIndex]
+                let eventID = popupSubView.stringsOfEvents[popupSubView.datePicker.selectedItemIndex]
                 
-                let plannedFriendUsersForDate = popupSubView.allFriendsForDate[popupSubView.stringsOfUpcomingDays[popupSubView.datePicker.selectedItemIndex]]![1] //1 for planned attendees
-                var plannedAttendeesForDate = [String:String]()
+                let plannedFriendUsersForEvent = popupSubView.allFriendsForEvent[popupSubView.stringsOfEvents[popupSubView.datePicker.selectedItemIndex]]![1] //1 for planned attendees
+                var plannedAttendeesForEvent = [String:String]()
                 
-                for user in plannedFriendUsersForDate {
+                for user in plannedFriendUsersForEvent {
                     Utilities.printDebugMessage(user.Name)
-                    plannedAttendeesForDate[user.FBID] = user.FBID
+                    plannedAttendeesForEvent[user.FBID] = user.FBID
                 }
                 
+                let fullDateString = DateUtilities.getStringFromFullDate(date: event.EventStart)
+                
                 //Add Venue and present popup
-                self.attendEventWithConfirmation(date: date, eventID: self.eventToPass!.EventID, add: true, specialEventID: popupSubView.specialEventID, plannedFriendAttendeesForDate: plannedAttendeesForDate)
+                self.attendEventWithConfirmation(date: fullDateString, eventID: self.eventToPass!.EventID, add: true, specialEventID: popupSubView.specialEventID, plannedFriendAttendeesForDate: plannedAttendeesForEvent)
             }
             
         }
@@ -875,6 +960,24 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         
     }
     
+    func setMapCenter(event: Event) {
+        let mapView = self.mapView!
+        
+        let eventLocation = CLLocationCoordinate2D(latitude: event.Pin.coordinate.latitude, longitude: event.Pin.coordinate.longitude)
+        mapView.setCenter(eventLocation, animated: false)
+        
+        self.titleLabel.text = event.EventName
+
+        self.plannedLabel.text = "\(event.EventInterestedFBIDs.count)"
+        self.liveLabel.text = "\(event.EventThereFBIDs.count)"
+        let nextOpenDateString = DateUtilities.convertDateToStringByFormat(date: event.EventStart, dateFormat: DateUtilities.Constants.uiDisplayFormat)
+        self.nextOpenLabel.text = nextOpenDateString
+        
+        self.closestEvent = event
+
+        
+    }
+    
     // TABLE VIEW FUNCTIONS
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -965,7 +1068,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         let eventsArray = Array(self.events.values)
         let event = eventsArray[indexPath.row]
         self.eventToPass = event
-        self.showCustomDialog(event: event, startDisplayDate: nil)
+        self.showCustomDialog(event: event)
     }
 }
 
@@ -974,6 +1077,7 @@ protocol VenueDelegate: class {
     func retrieveImage(imageURL : String?, venueID: String?, completion: @escaping (_ image: UIImage) -> ())
     func changeButtonTitle(title: String)
     var eventToPass : Event? {get set}
+    func setMapCenter(event : Event)
     
 }
 
