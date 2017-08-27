@@ -1,0 +1,6 @@
+framework module TTHorizontalPicker {
+  umbrella header "TTHorizontalPicker-umbrella.h"
+
+  export *
+  module * { export * }
+}

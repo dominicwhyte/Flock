@@ -43,9 +43,30 @@ class ProfileViewController: UIViewController, ProfileDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //Nav bar
+        // Nav bar
+        self.navigationController?.navigationBar.tintColor = UIColor.white
+        self.navigationController?.navigationBar.barTintColor = FlockColors.FLOCK_BLUE
+        
         self.setupUser()
         setRandomSkyImage()
         // Do any additional setup after loading the view.
+        
+        
+        
+        
+        // Reretrieve images
+        let request = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name, first_name, last_name, email, picture.type(large)"])
+        let _ = request?.start(completionHandler: { (connection, result, error) in
+            guard let userInfo = result as? [String: Any] else { return } //handle the error
+            
+            //The url is nested 3 layers deep into the result so it's pretty messy
+            if let imageURL = ((userInfo["picture"] as? [String: Any])?["data"] as? [String: Any])?["url"] as? String {
+                //Download image from imageURL
+                Utilities.printDebugMessage("Acquired!")
+            }
+        })
     }
     
     let skyImages = ["sky1", "sky2", "sky3", "sky4", "sky5"]
@@ -108,6 +129,10 @@ class ProfileViewController: UIViewController, ProfileDelegate {
                 //return DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))
                 let appDelegate = UIApplication.shared.delegate as! AppDelegate
                 return (appDelegate.activeEvents[plan.venueID] != nil)
+            })
+            
+            tableVC.plans.sort(by: { (plan1, plan2) -> Bool in
+                return plan1.date < plan2.date
             })
             tableVC.user = user!
             

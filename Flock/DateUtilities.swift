@@ -122,6 +122,23 @@ class DateUtilities {
         return DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: date))
     }
     
+    static func dateIsValidEventTimeFrame(eventStart : Date, eventEnd : Date) -> Bool {
+        let daysUntil = self.daysUntilEvent(eventStart: eventStart)
+        let daysSince = self.daysSinceEvent(eventEnd: eventEnd)
+        if( daysUntil >= 0) {
+            return true
+        } else if (daysSince < 1) {
+            return true
+        }
+        return false
+    }
+    
+    static func isDuringEvent(eventStart: Date, eventEnd : Date) -> Bool {
+        let isAfterStart = eventStart < Date()
+        let isBeforeEnd = Date() < eventEnd
+        return isAfterStart && isBeforeEnd 
+    }
+    
     static func dateIsToday(date : Date) -> Bool {
         return daysUntilPlan(planDate: date) == 0
     }
@@ -137,6 +154,28 @@ class DateUtilities {
         let date1 = calendar.startOfDay(for: Date())
         let date2 = calendar.startOfDay(for: planDate)
 
+        let components = calendar.dateComponents([.day], from: date1, to: date2)
+        return components.day!
+    }
+    
+    static func daysUntilEvent(eventStart: Date) -> Int {
+        let calendar = NSCalendar.current
+        
+        // Replace the hour (time) of both dates with 00:00
+        let date1 = calendar.startOfDay(for: Date())
+        let date2 = calendar.startOfDay(for: eventStart)
+        
+        let components = calendar.dateComponents([.day], from: date1, to: date2)
+        return components.day!
+    }
+    
+    static func daysSinceEvent(eventEnd: Date) -> Int {
+        let calendar = NSCalendar.current
+        
+        // Replace the hour (time) of both dates with 00:00
+        let date2 = calendar.startOfDay(for: Date())
+        let date1 = calendar.startOfDay(for: eventEnd)
+        
         let components = calendar.dateComponents([.day], from: date1, to: date2)
         return components.day!
     }

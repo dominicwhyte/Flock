@@ -735,6 +735,159 @@ class FirebaseClient: NSObject
         })
     }
     
+    // Live Event Functions
+    
+    //Add plan to user plans and add user to planned attendees in venue
+    class func addThereUserToEventLive(date : String, eventID : String, userID : String, add: Bool, completion: @escaping (Bool) -> Void) {
+        addUserToEventLive(eventID: eventID, userID: userID, add: add) { (eventSuccess) in
+            if (eventSuccess) {
+                Utilities.printDebugMessage("Success adding user to event")
+                addEventToUserLive(date : date, eventID: eventID, userID: userID, add : add, completion: { (userSuccess) in
+                    Utilities.printDebugMessage("Success adding event to user")
+                    completion(userSuccess)
+                })
+            }
+            else {
+                completion(false)
+            }
+        }
+    }
+    
+    static func addUserToEventLive(eventID : String, userID : String,  add: Bool, completion: @escaping (Bool) -> Void) {
+        
+        dataRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            if (snapshot.childSnapshot(forPath: "Active_Events").hasChild(eventID)) {
+                //add to special event a new attendee, or remove if add is False
+                
+                
+                if (snapshot.childSnapshot(forPath: "Active_Events").childSnapshot(forPath: eventID).hasChild("EventThereFBIDs") ) {
+                    let dictionary :[String:AnyObject] = snapshot.childSnapshot(forPath: "Active_Events").value as! [String : AnyObject]
+                    let eventDict = dictionary[eventID] as! [String: AnyObject]
+                    
+                    var eventInterestedFBIDs = eventDict["EventThereFBIDs"] as! [String : AnyObject]
+                    
+                    // If adding to plans
+                    if(add) {
+                        if (eventInterestedFBIDs[userID] == nil) {
+                            eventInterestedFBIDs[userID] = userID as AnyObject?
+                        }
+                    }
+                        // If removing from plans
+                    else {
+                        if (eventInterestedFBIDs[userID] != nil) {
+                            eventInterestedFBIDs[userID] = nil
+                        }
+                    }
+                    let updates = ["EventThereFBIDs": eventInterestedFBIDs]
+                    dataRef.child("Active_Events").child(eventID).updateChildValues(updates)
+                    completion(true)
+                    
+                }
+                    //Planned attendees dict not present
+                else
+                {
+                    if(add) {
+                        let updates = ["EventThereFBIDs": [userID : userID]]
+                        dataRef.child("Active_Events").child(eventID).updateChildValues(updates)
+                    }
+                    completion(true)
+                }
+                
+            }
+            else {
+                completion(false)
+            }
+        })
+    }
+    
+    static func addEventToUserLive(date : String, eventID : String, userID : String, add: Bool, completion: @escaping (Bool) -> Void) {
+        dataRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot) in
+            //Confirm send friend request conditions
+            if (snapshot.hasChild(userID)) {
+                
+                // Add Live to User
+                if(add) {
+                    let updates = ["LiveClubID": eventID, "LastLive": date] as [String : Any]
+                    dataRef.child("Users").child(userID).updateChildValues(updates)
+                    
+                    // Add execution to users's executions
+                    let dictionary :[String:AnyObject] = snapshot.value as! [String : AnyObject]
+                    let userDict = dictionary[userID] as! [String: AnyObject]
+                    
+                    if (snapshot.childSnapshot(forPath: userID).hasChild("Executions")) {
+                        var executionsDict = userDict["Executions"] as! [String : AnyObject]
+                        // Adding execution to user
+                        
+                        let uniqueVisitID = UUID().uuidString
+                        let executionDetails = ["Date" : date, "VenueID" : eventID] as [String : Any]
+                        if (executionsDict[uniqueVisitID] == nil) {
+                            executionsDict[uniqueVisitID] = executionDetails as AnyObject?
+                        }
+                        else {
+                            Utilities.printDebugMessage("Error: unique IDs are not unique")
+                        }
+                        let updates = ["Executions": executionsDict]
+                        dataRef.child("Users").child(userID).updateChildValues(updates)
+                    }
+                        //Executions dict
+                    else
+                    {
+                        let uniqueVisitID = UUID().uuidString
+                        let executionDetails = ["Date" : date, "VenueID" : eventID] as [String : Any]
+                        let executionsDict = [uniqueVisitID : executionDetails]
+                        let updates = ["Executions": executionsDict]
+                        dataRef.child("Users").child(userID).updateChildValues(updates)
+                    }
+                    
+                    if(add) {
+                        // See how loyal dis wonderful user is
+                        var visitWasPlanned = false
+                        if (userDict["Plans"] != nil) {
+                            let plansDict = userDict["Plans"] as! [String : AnyObject]
+                            
+                            for (_, plan) in plansDict {
+                                if((plan["Date"] as! String) == date && (plan["VenueID"] as! String) == eventID) {
+                                    visitWasPlanned = true
+                                    break
+                                }
+                            }
+                        }
+                        
+                        if(visitWasPlanned) {
+                            if(snapshot.childSnapshot(forPath: userID).hasChild("Loyalties")) {
+                                var loyaltiesDict = userDict["Loyalties"] as! [String : Int]
+                                if let venueLoyaltiesCount = loyaltiesDict[eventID]  {
+                                    loyaltiesDict[eventID] = venueLoyaltiesCount + 1
+                                } else {
+                                    loyaltiesDict[eventID] = 1
+                                }
+                                let updates = ["Loyalties": loyaltiesDict]
+                                dataRef.child("Users").child(userID).updateChildValues(updates)
+                                
+                            } else {
+                                var loyaltiesDict : [String : Int] = [:]
+                                loyaltiesDict[eventID] = 1
+                                let updates = ["Loyalties": loyaltiesDict]
+                                dataRef.child("Users").child(userID).updateChildValues(updates)
+                                
+                            }
+                        }
+                    }
+                    
+                    
+                    
+                } else {
+                    dataRef.child("Users").child(userID).child("LiveClubID").removeValue()
+                }
+                completion(true)
+            }
+            else {
+                completion(false)
+            }
+        })
+    }
+
+    
     // Add invitation to toUser for a venue on a date, with a special eventID if necessary
     static func addInvitationToUserForVenueForDate(toUserID: String, fromUserID: String, date: String, venueID : String, add: Bool, specialEventID : String?, completion: @escaping (Bool) -> Void) {
         dataRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot) in

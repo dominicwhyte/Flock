@@ -16,6 +16,7 @@ class Event: NSObject
     let Pin : MGLPointAnnotation
     var EventDescription : String?
     var EventOwner : String?
+    var EventPrivacy : String?
     
     
     init(dict: [String: AnyObject])
@@ -57,6 +58,7 @@ class Event: NSObject
         
         self.EventDescription = dict["EventDescription"] as? String
         self.EventOwner = dict["EventOwner"] as? String
+        self.EventPrivacy = dict["EventPrivacy"] as? String
     }
 }
 
@@ -68,4 +70,5 @@ enum ActionType {
 enum EventType: String {
     case party
     case show
+    case custom
 }

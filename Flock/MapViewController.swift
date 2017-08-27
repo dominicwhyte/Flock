@@ -21,7 +21,7 @@ import PickerController
 import Firebase
 import FirebaseDatabase
 import FirebaseAuth
-
+import AIFlatSwitch
 
 
 class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecognizerDelegate, VenueDelegate, UITableViewDelegate, UITableViewDataSource /*,MGLMapViewDelegate, UIGestureRecognizerDelegate*/ {
@@ -58,9 +58,14 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     var userCreatedEventDescription : String?
     var userCreatedEventType : EventType?
     var userCreatedEventStart : Date?
+    var userCreatedEventEnd : Date?
+    var userCreatedEventLocation : CLLocationCoordinate2D?
+    var userCreatedEventPrivacy : String?
     
     
     
+    var privacyCheckbox : AIFlatSwitch?
+    var privacyLabel : UILabel?
     
     struct Constants {
         static let FLOCK_INVITE_REQUEST_CELL_SIZE = 129.0
@@ -87,6 +92,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     
     @IBOutlet weak var nextOpenLabel: UILabel!
     
+    @IBOutlet weak var createEventInfoView: UIView!
+    @IBOutlet weak var createEventInfoLabel: UILabel!
+    @IBOutlet weak var createEventCancelButton: UIButton!
     //let searchController = UISearchController(searchResultsController: nil)
     
     override func viewDidLoad() {
@@ -119,16 +127,16 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         self.mapView!.addGestureRecognizer(createEventTap)*/
         
         var uilgr = UILongPressGestureRecognizer(target: self, action: #selector(createEventLongPress(sender:)))
-        uilgr.minimumPressDuration = 2.0
+        uilgr.minimumPressDuration = 1.0
         
         //self.mapView!.add (uilgr)
-        
+        self.createEventInfoView.isHidden = true
         //IOS 9
         self.mapView!.addGestureRecognizer(uilgr)
         
         // Detail window centerer
         detailWindowTap = UITapGestureRecognizer(target: self, action: #selector(centerOnEvent))
-        detailWindowTap.numberOfTapsRequired = 2
+        detailWindowTap.numberOfTapsRequired = 1
         detailWindowTap.delegate = self
         
         self.detailView.addGestureRecognizer(detailWindowTap)
@@ -146,19 +154,27 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         self.view.bringSubview(toFront: interestedButton)
         self.view.bringSubview(toFront: thereButton)
         self.view.bringSubview(toFront: tableView)
+        
+        self.view.bringSubview(toFront: createEventInfoView)
+        self.view.bringSubview(toFront: createEventInfoLabel)
+        self.view.bringSubview(toFront: createEventCancelButton)
         self.tableView.isHidden = true
         
         // Aesthetic
         self.detailView.layer.cornerRadius = 20
         self.detailView.layer.borderWidth = 3.0
         self.detailView.layer.borderColor = FlockColors.FLOCK_LIGHT_GRAY.cgColor
+        self.createEventInfoView.layer.cornerRadius = 20
+        self.createEventInfoView.layer.borderWidth = 3.0
+        self.createEventInfoView.layer.borderColor = FlockColors.FLOCK_LIGHT_BLUE.cgColor
         self.interestedButton.layer.cornerRadius = 8
         self.interestedButton.layer.shadowColor = UIColor.gray.cgColor
         self.interestedButton.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
         self.interestedButton.layer.shadowOpacity = 1.0
         self.interestedButton.layer.shadowRadius = 0.0
         self.interestedButton.layer.masksToBounds = false
-        
+        self.interestedButton.adjustsImageWhenHighlighted = false
+        self.thereButton.adjustsImageWhenHighlighted = false
         self.thereButton.layer.cornerRadius = 10//self.interestedButton.frame.height/2
         self.thereButton.layer.shadowColor = UIColor.gray.cgColor
         self.thereButton.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
@@ -244,40 +260,64 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         }))*/
     }
     
+    @IBAction func cancelCreateEventButtonPressed(_ sender: Any) {
+        self.isUserCreatingEvent = false
+        self.createEventInfoView.isHidden = true
+    }
     func createEventLongPress(sender: UIGestureRecognizer){
         Utilities.printDebugMessage("Long press")
-        let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
-        let touchPoint = sender.location(in: mapView)
-        let eventLocation = self.mapView!.convert(touchPoint, toCoordinateFrom: mapView)
         
-        let eventName = self.userCreatedEventName!
-        let eventStart = self.userCreatedEventStart!
-        let eventEnd = self.userCreatedEventStart!
-        let eventType = self.userCreatedEventType!
-        let eventImageURL : String? = nil
-        let eventDescription = self.userCreatedEventDescription!
-        let eventOwner = "Test Owner"
-        
-        MapFirebaseClient.addEventReturnID(eventName, eventStart: eventStart, eventEnd: eventEnd, eventLocation: eventLocation, eventType: eventType, eventImageURL: eventImageURL, eventDescription: eventDescription, eventOwner: eventOwner, completion: { (eventID) in
-            
-            let eventDict = ["EventID" : eventID as AnyObject, "EventName": eventName as AnyObject, "EventStart" : DateUtilities.getStringFromFullDate(date: eventStart) as AnyObject, "EventEnd" : DateUtilities.getStringFromFullDate(date: eventEnd) as AnyObject, "Latitude" : eventLocation.latitude.description as AnyObject, "Longitude" : eventLocation.longitude.description as AnyObject, "EventType" : eventType.rawValue as AnyObject, "EventDescription": eventDescription as AnyObject, "EventOwner": eventOwner as AnyObject] as [String : AnyObject]
-            
+        if(self.isUserCreatingEvent) {
+            let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
+            let touchPoint = sender.location(in: mapView)
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            let newEvent = Event(dict: eventDict)
-            appDelegate.activeEvents[eventID] = newEvent
-            self.events[eventID] = newEvent
+            let user = appDelegate.user!
+            let eventLocation = self.mapView!.convert(touchPoint, toCoordinateFrom: mapView)
             
-            let annotation = MGLPointAnnotation()
-            annotation.coordinate = eventLocation
-            annotation.title = self.userCreatedEventName
-            annotation.subtitle = eventID
-
-            self.mapView!.addAnnotation(annotation)
+            let eventName = self.userCreatedEventName!
+            let eventStart = self.userCreatedEventStart!
+            let eventEnd = self.userCreatedEventEnd!
+            let eventType = self.userCreatedEventType!
+            let eventImageURL : String? = nil
+            let eventDescription = self.userCreatedEventDescription!
+            let eventOwner = user.FBID
+            let eventPrivacy = self.userCreatedEventPrivacy!
             
-            DispatchQueue.main.async {
-                Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
-            }
-        })
+            MapFirebaseClient.addEventReturnID(eventName, eventStart: eventStart, eventEnd: eventEnd, eventLocation: eventLocation, eventType: eventType, eventImageURL: eventImageURL, eventDescription: eventDescription, eventOwner: eventOwner, eventPrivacy: eventPrivacy, completion: { (eventID) in
+                
+                let eventDict = ["EventID" : eventID as AnyObject, "EventName": eventName as AnyObject, "EventStart" : DateUtilities.getStringFromFullDate(date: eventStart) as AnyObject, "EventEnd" : DateUtilities.getStringFromFullDate(date: eventEnd) as AnyObject, "Latitude" : eventLocation.latitude.description as AnyObject, "Longitude" : eventLocation.longitude.description as AnyObject, "EventType" : eventType.rawValue as AnyObject, "EventDescription": eventDescription as AnyObject, "EventOwner": eventOwner as AnyObject, "EventPrivacy": eventPrivacy as AnyObject] as [String : AnyObject]
+                
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                let newEvent = Event(dict: eventDict)
+                appDelegate.activeEvents[eventID] = newEvent
+                self.events[eventID] = newEvent
+                
+                let annotation = MGLPointAnnotation()
+                annotation.coordinate = eventLocation
+                annotation.title = self.userCreatedEventName
+                annotation.subtitle = eventID
+                
+                self.mapView!.addAnnotation(annotation)
+                
+                DispatchQueue.main.async {
+                    Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: self.view)
+                    let alert = SCLAlertView()
+                    alert.addButton("Share with Flock", action: {
+                        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                        //if let user = appDelegate.user, let venueName = appDelegate.activeEvents[chosenVenueID]?.VenueNickName {
+                        //    Utilities.sendPushNotificationToEntireFlock(title: "\(user.Name) is live at \(venueName)!")
+                        //}
+                    })
+                    _ = alert.showSuccess(Utilities.generateRandomCongratulatoryPhrase(), subTitle: "You're live!")
+                    self.isUserCreatingEvent = false
+                    self.createEventInfoView.isHidden = true
+                }
+            })
+        } else {
+            /*let touchPoint = sender.location(in: mapView)
+            let eventLocation = self.mapView!.convert(touchPoint, toCoordinateFrom: mapView)
+            self.userCreatedEventLocation =*/
+        }
     }
     
     func setupMap() -> MGLMapView {
@@ -295,8 +335,10 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
          */
 
         mapView.setCenter(MapUtilities.Constants.PRINCETON_LOCATION, animated: false)
-        mapView.setZoomLevel(ZoomLevel.max.rawValue, animated: true)
-        mapView.isZoomEnabled = false
+        mapView.setZoomLevel(ZoomLevel.min.rawValue, animated: true)
+        mapView.isZoomEnabled = true
+        mapView.maximumZoomLevel = ZoomLevel.max.rawValue
+        mapView.minimumZoomLevel = ZoomLevel.min.rawValue
         mapView.isUserInteractionEnabled = true
         
         return mapView
@@ -327,11 +369,18 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
     
     // Allow callout view to appear when an annotation is tapped.
     func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
-        return true
+        return false
     }
     
     func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
-        Utilities.printDebugMessage("Annotation only")
+        
+        if let eventID = annotation.subtitle {
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            if let event = appDelegate.activeEvents[eventID!] {
+                self.centerOnPassedEvent(event: event)
+            }
+            Utilities.printDebugMessage("Callout brings happiness")
+        }
     }
     
     func mapView(_ mapView: MGLMapView, didSelect annotationView: MGLAnnotationView) {
@@ -438,6 +487,27 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
             let nextOpenDateString = DateUtilities.convertDateToStringByFormat(date: self.closestEvent!.EventStart, dateFormat: DateUtilities.Constants.uiDisplayFormat)
             self.nextOpenLabel.text = nextOpenDateString
             
+            if(self.closestEvent!.EventInterestedFBIDs[appDelegate.user!.FBID] != nil) {
+                self.interestedButton.backgroundColor = FlockColors.FLOCK_GRAY
+                self.interestedButton.setTitle("Uninterested", for: .normal)
+            } else {
+                self.interestedButton.backgroundColor = FlockColors.FLOCK_BLUE
+                self.interestedButton.setTitle("Interested", for: .normal)
+            }
+            
+            if(appDelegate.user!.LiveClubID != nil) {
+                if(appDelegate.user!.LiveClubID! == closestEvent?.EventID) {
+                    self.thereButton.backgroundColor = FlockColors.FLOCK_GRAY
+                    self.thereButton.setTitle("Not There", for: .normal)
+                } else {
+                    self.thereButton.backgroundColor = FlockColors.FLOCK_BLUE
+                    self.thereButton.setTitle("There", for: .normal)
+                }
+            } else {
+                self.thereButton.backgroundColor = FlockColors.FLOCK_BLUE
+                self.thereButton.setTitle("There", for: .normal)
+            }
+            
             /*if(highlightedAnnotation != nil && annotation != nil && highlightedAnnotation!.coordinate.latitude == annotation!.coordinate.latitude &&  highlightedAnnotation!.coordinate.longitude == annotation!.coordinate.longitude) {
              self.mapView!.removeAnnotation(highlightedAnnotation!)
              self.mapView!.addAnnotation(highlightedAnnotation!)
@@ -493,6 +563,20 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         
     }
     
+    func centerOnPassedEvent(event: Event) {
+
+        
+        // And popup subview
+        let mapView = self.mapView!
+        self.eventToPass = event
+        self.closestEvent = event
+        let eventLocation = CLLocationCoordinate2D(latitude: event.Pin.coordinate.latitude, longitude: event.Pin.coordinate.longitude)
+        mapView.setCenter(eventLocation, animated: false)
+        self.showCustomDialog(event: event)
+    }
+    
+
+    
     
     @IBAction func interestedButtonPressed(_ sender: Any) {
         /*
@@ -505,23 +589,28 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         self.showCustomDialog(event: eventToPass!, startDisplayDate: nil)
         let eventLocation = CLLocationCoordinate2D(latitude: eventToPass!.Pin.coordinate.latitude, longitude: eventToPass!.Pin.coordinate.longitude)
         mapView!.setCenter(eventLocation, animated: false)*/
+        
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let userFBID = appDelegate.user!.FBID
         if let event = self.closestEvent {
             let date = DateUtilities.convertDateToStringByFormat(date: event.EventStart, dateFormat: DateUtilities.Constants.fullDateFormat)
             var plannedAttendees = event.EventInterestedFBIDs
             plannedAttendees[userFBID] = userFBID
-            let add = self.interestedButton.title(for: .normal) == "Interested"
+
+            let add = (self.interestedButton.currentTitle! == "Interested")
             self.attendEventWithConfirmation(date: date, eventID: event.EventID, add: add, specialEventID: nil, plannedFriendAttendeesForDate: plannedAttendees)
   
         }
+        
+        
+        //self.interestedButton.isSelected = !self.interestedButton.isSelected
         
     }
     
     
     
     @IBAction func thereButtonPressed(_ sender: Any) {
-        /*let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.goLiveButtonPressed = true
         if (!Utilities.isInternetAvailable()) {
             let alert = SCLAlertView()
@@ -529,7 +618,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         }
         else if(CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse) {
             appDelegate.locationManager.requestLocation()
-            appDelegate.presentNavBarActivityIndicator(navItem: self.navigationItem)
+            //appDelegate.presentNavBarActivityIndicator(navItem: self.navigationItem)
             
         }
         else if (CLLocationManager.authorizationStatus() == .notDetermined) {
@@ -542,7 +631,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
                 UIApplication.shared.openURL(NSURL(string: UIApplicationOpenSettingsURLString) as! URL)
             })
             _ = alert.showInfo("Oops!", subTitle: "Looks like you haven't setup your location services permissions. Hit the settings button in your profile to enable this for a better Flock experience!")
-        }*/
+        }
     }
     
     func retrieveImage(imageURL : String?, venueID: String?, completion: @escaping (_ image: UIImage) -> ()) {
@@ -671,13 +760,15 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
                             let event = self.events[eventID]!
                             Utilities.printDebugMessage("Successfully added plan to attend venue")
                             Utilities.removeLoadingScreen(loadingScreenObject: loadingScreen, vcView: foundView)
-                            self.displayAttendedPopup(venueName: event.EventName, venueID: eventID, attendFullDate: date, plannedAttendees: plannedFriendAttendeesForDate, specialEventID: specialEventID)
+                            //self.displayAttendedPopup(venueName: event.EventName, venueID: eventID, attendFullDate: date, plannedAttendees: plannedFriendAttendeesForDate, specialEventID: specialEventID)
                             if(add) {
                                 self.interestedButton.backgroundColor = FlockColors.FLOCK_GRAY
                                 self.interestedButton.setTitle("Uninterested", for: .normal)
+                                self.displayAttendedPopup(venueName: event.EventName, eventID: eventID, attendFullDate: date, plannedAttendees: plannedFriendAttendeesForDate)
                             } else {
                                 self.interestedButton.backgroundColor = FlockColors.FLOCK_BLUE
                                 self.interestedButton.setTitle("Interested", for: .normal)
+                                self.displayUnAttendedPopup(eventName: event.EventName, attendFullDate: date)
                             }
                         }
                     }
@@ -694,15 +785,23 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         
     }
     
-    func displayAttendedPopup(venueName : String, venueID: String, attendFullDate : String, plannedAttendees: [String:String], specialEventID: String?) {
+    func displayUnAttendedPopup(eventName : String, attendFullDate : String) {
+        let displayDate = DateUtilities.convertDateToStringByFormat(date: DateUtilities.getDateFromString(date: attendFullDate), dateFormat: DateUtilities.Constants.uiDisplayFormat)
+        let alert = SCLAlertView()
+        //_ = alert.addButton("First Button", target:self, selector:#selector(PlacesTableViewController.shareWithFlock))
+        print("Second button tapped")
+        _ = alert.showSuccess("Confirmed", subTitle: "You've removed your plan to go to \(eventName) on \(displayDate)")
+    }
+    
+    func displayAttendedPopup(venueName : String, eventID: String, attendFullDate : String, plannedAttendees: [String:String]) {
         let fullDate = DateUtilities.convertDateToStringByFormat(date: DateUtilities.getDateFromString(date: attendFullDate), dateFormat: DateUtilities.Constants.fullDateFormat)
         let displayDate = DateUtilities.convertDateToStringByFormat(date: DateUtilities.getDateFromString(date: attendFullDate), dateFormat: DateUtilities.Constants.uiDisplayFormat)
         let alert = SCLAlertView()
         alert.addButton("Invite Flock", action: {
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             if let user = appDelegate.user {
-                //self.selectFlockersToInvite(userID: user.FBID, venueID : venueID, fullDate : fullDate, plannedAttendees: plannedAttendees, specialEventID: specialEventID)
-                Utilities.printDebugMessage("This needs to be implemented")
+                self.selectFlockersToInvite(userID: user.FBID, eventID : eventID, fullDate : fullDate, plannedAttendees: plannedAttendees)
+                
             }
         })
         alert.addButton("Share with Flock", action: {
@@ -718,6 +817,24 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         //        let confettiView = SAConfettiView(frame: self.view.bounds)
         //        self.view.addSubview(confettiView)
         //        confettiView.startConfetti()
+    }
+    
+    func selectFlockersToInvite(userID : String, eventID: String, fullDate : String, plannedAttendees: [String:String]) {
+        print("Selecting users")
+        performSegue(withIdentifier: "SELECTOR_IDENTIFIER", sender: (userID, eventID, fullDate, plannedAttendees))
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let navController = segue.destination as? UINavigationController {
+            if let peopleSelectorTableViewController = navController.topViewController as? PeopleSelectorTableViewController {
+                if let (userID, eventID, fullDate, plannedAttendees) = sender as? (String, String, String, [String:String]) {
+                    peopleSelectorTableViewController.userID = userID
+                    peopleSelectorTableViewController.venueID = eventID
+                    peopleSelectorTableViewController.fullDate = fullDate
+                    peopleSelectorTableViewController.plannedAttendees = plannedAttendees
+                }
+            }
+        }
     }
     
     //UpdateTableViewDelegate function
@@ -749,20 +866,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         latestAttendButton?.setTitle(title, for: .normal)
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let navController = segue.destination as? UINavigationController {
-            if let peopleSelectorTableViewController = navController.topViewController as? PeopleSelectorTableViewController {
-                if let (userID, venueID, fullDate, plannedAttendees, specialEventID) = sender as? (String, String, String, [String:String], String?) {
-                    peopleSelectorTableViewController.userID = userID
-                    peopleSelectorTableViewController.venueID = venueID
-                    peopleSelectorTableViewController.fullDate = fullDate
-                    peopleSelectorTableViewController.plannedAttendees = plannedAttendees
-                    peopleSelectorTableViewController.specialEventID = specialEventID
-                }
-            }
-        }
-    }
-    
     @IBAction func listButtonPressed(_ sender: Any) {
         self.view.bringSubview(toFront: tableView)
         self.tableView.isHidden = !self.tableView.isHidden
@@ -781,17 +884,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         
         self.isUserCreatingEvent = true
         
-        alert.addButton("Cancel") {
-            print("Cancel button tapped")
-            self.isUserCreatingEvent = false
-            alert.hideView()
-            /*let picker = DateTimePicker.show()
-            picker.highlightColor = UIColor(red: 255.0/255.0, green: 138.0/255.0, blue: 138.0/255.0, alpha: 1)
-            picker.isDatePickerOnly = false // to hide time and show only date picker
-            picker.completionHandler = { date in
-                // do something after tapping done
-            }*/
-        }
+
         
         let width = 210
         let subviewWidth = 216
@@ -809,7 +902,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         textfield1.layer.borderWidth = 1.5
         textfield1.layer.cornerRadius = 5
         textfield1.placeholder = "Give your event a name!"
-        textfield1.textAlignment = NSTextAlignment.left
+        textfield1.textAlignment = NSTextAlignment.center
 
         
         // Add textfield 2
@@ -820,68 +913,31 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
         textfield2.placeholder = "(Optional) Describe your event"
         textfield2.textAlignment = NSTextAlignment.center
         
-        
-        // Add textfield 3
+        // Add textfield 2
         let textfield3 = SearchTextField(frame: CGRect(x: x, y: Int(textfield2.frame.maxY) + yOffset,width: width, height: textFieldHeight))
         textfield3.layer.borderColor = FlockColors.FLOCK_BLUE.cgColor
         textfield3.layer.borderWidth = 1.5
         textfield3.layer.cornerRadius = 5
-        textfield3.placeholder = "E.g. 'Show' or 'Pregame'"
+        textfield3.placeholder = "(Optional) Describe your event"
         textfield3.textAlignment = NSTextAlignment.center
-        
-        let item1 = SearchTextFieldItem(title: "Blue", subtitle: "Color", image: UIImage(named: "icon_blue"))
-        let item2 = SearchTextFieldItem(title: "Red", subtitle: "Color", image: UIImage(named: "icon_red"))
-        let item3 = SearchTextFieldItem(title: "Yellow", subtitle: "Color", image: UIImage(named: "icon_yellow"))
-        textfield3.filterItems([item1, item2, item3])
-        
-        // Set specific comparision options - Default: .caseInsensitive
-        textfield3.comparisonOptions = [.caseInsensitive]
-        
-        textfield3.startVisible = true
-        
-        // Handle item selection - Default behaviour: item title set to the text field
-        /*textfield3.itemSelectionHandler = { filteredResults, itemPosition in
-            // Just in case you need the item position
-            let item = filteredResults[itemPosition]
-            print("Item at position \(itemPosition): \(item.title)")
-            
-            // Do whatever you want with the picked item
-            self.textfield3.text = item.title
-        }*/
-        
-        // Then set the inline mode in true
-        //textfield3.inlineMode = true
-        
-        alert.addButton("Next") {
-            print("Next button tapped")
-            
-            // Update values with types
-            self.userCreatedEventName = textfield1.text
-            self.userCreatedEventDescription = textfield2.text
-            if( textfield3.text == "Show") {
-                self.userCreatedEventType = EventType.show
-            } else if (textfield3.text == "Pregame") {
-                self.userCreatedEventType = EventType.party
-            } else {
-                self.userCreatedEventType = EventType.party
-            }
-            
-            
-            
+
+        alert.addButton("Cancel") {
+            print("Cancel button tapped")
+            self.isUserCreatingEvent = false
             alert.hideView()
-            let picker = DateTimePicker.show()
-            picker.highlightColor = UIColor(red: 255.0/255.0, green: 138.0/255.0, blue: 138.0/255.0, alpha: 1)
-            picker.isDatePickerOnly = false
-            picker.completionHandler = { date in
-                // do something after tapping done
-                self.userCreatedEventStart = date
-                
-            }
+            /*let picker = DateTimePicker.show()
+             picker.highlightColor = UIColor(red: 255.0/255.0, green: 138.0/255.0, blue: 138.0/255.0, alpha: 1)
+             picker.isDatePickerOnly = false // to hide time and show only date picker
+             picker.completionHandler = { date in
+             // do something after tapping done
+             }*/
         }
+        
 
         subView.addSubview(textfield1)
         subView.addSubview(textfield2)
-        subView.addSubview(textfield3)
+        //subView.addSubview(textfield3)
+
         
         /*let picker = DateTimePicker.show()
         picker.highlightColor = UIColor(red: 255.0/255.0, green: 138.0/255.0, blue: 138.0/255.0, alpha: 1)
@@ -889,20 +945,100 @@ class MapViewController: UIViewController, MGLMapViewDelegate, UIGestureRecogniz
             // do something after tapping done
         }*/
         
-        let labelWidth = 100
+        let labelWidth = 80
         let labelHeight = 30
+        let labelOffset = 10
+
         
-        let label = UILabel(frame: CGRect(x: x, y: Int(textfield3.frame.maxY) + yOffset, width: labelWidth, height: labelHeight))
-        subView.addSubview(label)
+//        let label = UILabel(frame: CGRect(x: x, y: Int(textfield2.frame.maxY) + yOffset, width: labelWidth, height: labelHeight))
+//        label.text = "Private"
+//        let checkbox = UISwitch(frame: CGRect(x: labelWidth + labelOffset, y: Int(textfield2.frame.maxY) + yOffset, width: 25, height: 25))
+//        
+//        //checkbox.lineWidth = 2.0
+//        //checkbox.strokeColor = FlockColors.FLOCK_BLUE
+//        //checkbox.trailStrokeColor = FlockColors.FLOCK_LIGHT_BLUE.withAlphaComponent(0.2)
+//        checkbox.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//        checkbox.isSelected = false
+//        checkbox.onTintColor = FlockColors.FLOCK_BLUE
+//        
+//
+//        subView.addSubview(checkbox)
+//        
+//        //updateSwitchValue(label: label)
+//        subView.addSubview(label)
         
+        let segmentedControl = UISegmentedControl(frame: CGRect(x: x, y: Int(textfield2.frame.maxY) + yOffset, width: width, height: textFieldHeight))
+        //segmentedControl.setTitle("Public", forSegmentAt: 0)
+        //segmentedControl.setTitle("Private", forSegmentAt: 1)
+        segmentedControl.insertSegment(withTitle: "Public", at: 0, animated: false)
+        segmentedControl.insertSegment(withTitle: "Private", at: 1, animated: false)
+        segmentedControl.tintColor = FlockColors.FLOCK_BLUE
+        segmentedControl.selectedSegmentIndex = 0
+        subView.addSubview(segmentedControl)
         
-        //let checkbox = M13Checkbox(frame: CGRect(x: 0.0, y: 0.0, width: 40.0, height: 40.0))
-        //subView.addSubview(checkbox)
+        alert.addButton("Next") {
+            print("Next button tapped")
+            
+            // Update values with types
+            self.userCreatedEventName = textfield1.text
+            self.userCreatedEventDescription = textfield2.text
+            /*if( textfield3.text == "Show") {
+             self.userCreatedEventType = EventType.show
+             } else if (textfield3.text == "Pregame") {
+             self.userCreatedEventType = EventType.party
+             } else {
+             self.userCreatedEventType = EventType.party
+             }*/
+            self.userCreatedEventType = EventType.custom
+            
+            if(segmentedControl.selectedSegmentIndex == 0) {
+                self.userCreatedEventPrivacy = "Public"
+            } else {
+                self.userCreatedEventPrivacy = "Private"
+            }
+            self.createEventInfoView.isHidden = false
+            self.view.bringSubview(toFront: self.createEventInfoView)
+            self.view.bringSubview(toFront: self.createEventInfoLabel)
+            self.view.bringSubview(toFront: self.createEventCancelButton)
+            
+            self.createEventInfoLabel.text = "Pick when your event starts"
+            
+            alert.hideView()
+            
+            let maxDays = 9
+            let min = Date()
+            let max = Date().addingTimeInterval(TimeInterval(60 * 60 * 24 * maxDays))
+            let picker = DateTimePicker.show(minimumDate: min, maximumDate: max)
+            picker.selectedDate = Date()
+            picker.highlightColor = UIColor(red: 255.0/255.0, green: 138.0/255.0, blue: 138.0/255.0, alpha: 1)
+
+            picker.isDatePickerOnly = false
+            
+            picker.completionHandler = { date in
+                // do something after tapping done
+                self.createEventInfoLabel.text = "Pick when your event ends"
+                
+                self.userCreatedEventStart = date
+                
+                let newPicker = DateTimePicker.show(minimumDate: min, maximumDate: max)
+                newPicker.selectedDate = Date()
+                newPicker.highlightColor = UIColor(red: 255.0/255.0, green: 138.0/255.0, blue: 138.0/255.0, alpha: 1)
+                newPicker.isDatePickerOnly = false
+                newPicker.completionHandler = { newDate in
+                    // do something after tapping done
+                    self.userCreatedEventEnd = newDate
+                    self.createEventInfoLabel.text = "Press and hold on the map to select the location for your event!"
+                }
+
+                
+            }
+        }
         
         // Add the subview to the alert's UI property
         alert.customSubview = subView
-        alert.showEdit("Event", subTitle: "Create your very own event!")
+        alert.showEdit("Create Your Own Event!", subTitle: "Create your very own event!")
     }
+
     
     func didDismissAlert () {
         Utilities.printDebugMessage("Alert dismissed")

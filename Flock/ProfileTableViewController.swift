@@ -224,14 +224,14 @@ class ProfileTableViewController: UITableViewController {
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
-        var venue : Venue
+        var event : Event
         
         if (indexPath.section == Constants.LIVE_SECTION_ROW) {
-            venue = appDelegate.venues[user!.LiveClubID!]!
+            event = appDelegate.activeEvents[user!.LiveClubID!]!
         }
         else {
             let plan = self.plans[indexPath.row]
-            venue = appDelegate.venues[plan.venueID]!
+            event = appDelegate.activeEvents[plan.venueID]!
             
         }
 
@@ -245,7 +245,7 @@ class ProfileTableViewController: UITableViewController {
             let unlive = UITableViewRowAction(style: .destructive, title: "Unlive") { (action, indexPath) in
                 // delete item at indexPath
                 let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
-                FirebaseClient.addUserToVenueLive(date: DateUtilities.getStringFromDate(date: Date()), venueID: self.user!.LiveClubID!, userID: self.user!.FBID, add: false, completion: { (success) in
+                FirebaseClient.addThereUserToEventLive(date: DateUtilities.getStringFromDate(date: Date()), eventID: self.user!.LiveClubID!, userID: self.user!.FBID, add: false, completion: { (success) in
                     if (success) {
                         Utilities.printDebugMessage("Successfully unlived")
                         self.updateDataAndTableView({ (success) in
@@ -253,7 +253,7 @@ class ProfileTableViewController: UITableViewController {
                             if (success) {
                                 DispatchQueue.main.async {
                                     if let delegate = self.delegate  {
-                                        delegate.displayUnLived(venueName: venue.VenueNickName)
+                                        delegate.displayUnLived(venueName: event.EventName)
                                     }
                                     else {
                                         Utilities.printDebugMessage("Error with delegate in profile")
@@ -280,7 +280,7 @@ class ProfileTableViewController: UITableViewController {
             // delete item at indexPath
             let planDate = DateUtilities.getStringFromDate(date: self.plans[indexPath.row].date)
             let loadingScreen = Utilities.presentLoadingScreen(vcView: self.view)
-            FirebaseClient.addUserToVenuePlansForDate(date: DateUtilities.getStringFromDate(date: self.plans[indexPath.row].date), venueID: venue.VenueID, userID: appDelegate.user!.FBID, add: false, specialEventID: self.plans[indexPath.row].specialEventID, completion: { (success) in
+            FirebaseClient.addInterestedUserToEvent(date: DateUtilities.getStringFromDate(date: self.plans[indexPath.row].date), eventID: event.EventID, userID: appDelegate.user!.FBID, add: false, completion: { (success) in
                 if (success) {
                     Utilities.printDebugMessage("Successfully removed plan to attend venue")
                     self.updateDataAndTableView({ (success) in
@@ -288,7 +288,7 @@ class ProfileTableViewController: UITableViewController {
                         if (success) {
                             DispatchQueue.main.async {
                                 if let delegate = self.delegate  {
-                                    delegate.displayUnAttendedPopup(venueName: venue.VenueNickName, attendFullDate: planDate)
+                                    delegate.displayUnAttendedPopup(venueName: event.EventName, attendFullDate: planDate)
                                 }
                                 else {
                                     Utilities.printDebugMessage("Error with delegate in profile")

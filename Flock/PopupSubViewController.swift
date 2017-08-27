@@ -137,6 +137,10 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         setFriendsForEventID(event: delegate!.eventToPass!)
         setAttendButtonTitle()
         setLabelsForGraphic()
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        if (appDelegate.friendPlanCountDict.count == 0 ) {
+            setFriendSubtitle()
+        }
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.tapDatePicker(_:)))
         self.datePicker.addGestureRecognizer(tapGesture)
@@ -164,6 +168,33 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     */
+    
+    func setFriendSubtitle() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
+        var planCountDict = [String:Int]()
+        // Makes array of friends in sections
+        for friend in Array(appDelegate.friends.values) {
+            
+            if(friend.Plans.count > 0) {
+                let activeEvents = appDelegate.activeEvents
+                
+                var planCount = 0
+                for (visitID, _) in friend.Plans {
+                    if let event = activeEvents[visitID] {
+                        if(DateUtilities.dateIsValidEventTimeFrame(eventStart: event.EventStart, eventEnd: event.EventEnd)) {
+                            planCount += 1
+                        }
+                    }
+                }
+                
+                planCountDict[friend.FBID] = planCount
+                
+            }
+        }
+        appDelegate.friendPlanCountDict = planCountDict
+    }
+    
     func displayUnAttendedPopup(venueName : String, attendFullDate : String) {
         let displayDate = DateUtilities.convertDateToStringByFormat(date: DateUtilities.getDateFromString(date: attendFullDate), dateFormat: DateUtilities.Constants.uiDisplayFormat)
         let alert = SCLAlertView()
@@ -208,6 +239,9 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
                 setFriendsForEventID(event: event)
                 setAttendButtonTitle()
                 setLabelsForGraphic()
+                if (appDelegate.friendPlanCountDict.count == 0 ) {
+                    setFriendSubtitle()
+                }
                 self.tableView.reloadData()
                 self.delegate?.setMapCenter(event: event)
             }
@@ -221,6 +255,9 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
                 setFriendsForEventID(event: event)
                 setAttendButtonTitle()
                 setLabelsForGraphic()
+                if (appDelegate.friendPlanCountDict.count == 0 ) {
+                    setFriendSubtitle()
+                }
                 self.tableView.reloadData()
                 self.delegate?.setMapCenter(event: event)
             }
@@ -243,7 +280,8 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         cell.isEditing = true
         cell.profilePic.makeViewCircle()
         cell.nameLabel.text = friend.Name
-        let planCount = friend.Plans.count
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let planCount = appDelegate.friendPlanCountDict[friend.FBID]!
         if(indexPath.section == Constants.LIVE_SECTION_ROW) {
             cell.subtitleLabel.text = "Currently Live"
         }
@@ -285,6 +323,9 @@ class PopupSubViewController: UIViewController, UITableViewDelegate, UITableView
         setFriendsForEventID(event: event)
         setAttendButtonTitle()
         setLabelsForGraphic()
+        if (appDelegate.friendPlanCountDict.count == 0 ) {
+            setFriendSubtitle()
+        }
         self.tableView.reloadData()
         self.delegate?.setMapCenter(event: event)
     }

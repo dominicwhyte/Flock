@@ -52,7 +52,8 @@
         var startGoingOutTime : Double = DateUtilities.Constants.START_NIGHT_OUT_TIME
         var endGoingOutTime : Double = DateUtilities.Constants.END_NIGHT_OUT_TIME
         var goLiveButtonPressed : Bool = false
-        var alreadySentFriendRequests = [String:String]();
+        var alreadySentFriendRequests = [String:String]()
+        var friendPlanCountDict = [String:Int]()
         
         
         func masterLogin(completion: @escaping (_ status: Bool) -> ()) {
@@ -715,12 +716,12 @@
                 }
             // Present local notification with GPS accuracy
             case .background:
-                let venueName = liveVenueIDOptions[0].venue.VenueName
-                self.showNotification(body: "Having fun at \(venueName)? Swipe left to view and check in!")
+                let eventName = liveVenueIDOptions[0].event.EventName
+                self.showNotification(body: "Having fun at \(eventName)? Swipe left to view and check in!")
             // Present local notification without GPS accuracy
             case .inactive:
-                let venueName = liveVenueIDOptions[0].venue.VenueName
-                self.showNotification(body: "Having fun at \(venueName)? Swipe left to view and check in!")
+                let eventName = liveVenueIDOptions[0].event.EventName
+                self.showNotification(body: "Having fun at \(eventName)? Swipe left to view and check in!")
                 Utilities.printDebugMessage("Weird behaviour error")
             }
         }
@@ -736,13 +737,13 @@
         
         func displayPrompt() {
             if liveVenueIDOptions.count != 0 {
-                let currentVenue = liveVenueIDOptions[0].venue
+                let currentEvent = liveVenueIDOptions[0].event
                 let alert = SCLAlertView()
                 
                 //Live at first choice
-                _ = alert.addButton("Go live at \(currentVenue.VenueNickName)") {
+                _ = alert.addButton("Go live at \(currentEvent.EventName)") {
                     Utilities.printDebugMessage("Go live pressed")
-                    self.chosenVenueIDGoLiveAt = currentVenue.VenueID
+                    self.chosenVenueIDGoLiveAt = currentEvent.EventID
                     self.goLive()
                 }
                 
@@ -750,20 +751,20 @@
                 _ = alert.addButton("Live elsewhere") {
                     //Display a new popup
                     let secondaryAlert = SCLAlertView()
-                    _ = secondaryAlert.addButton("\(self.liveVenueIDOptions[0].venue.VenueNickName)") {
-                        self.chosenVenueIDGoLiveAt = self.liveVenueIDOptions[0].venue.VenueID
+                    _ = secondaryAlert.addButton("\(self.liveVenueIDOptions[0].event.EventName)") {
+                        self.chosenVenueIDGoLiveAt = self.liveVenueIDOptions[0].event.EventID
                         self.goLive()
                     }
                     if (self.liveVenueIDOptions.count >= 2) {
-                        _ = secondaryAlert.addButton("\(self.liveVenueIDOptions[1].venue.VenueNickName)") {
-                            self.chosenVenueIDGoLiveAt = self.liveVenueIDOptions[1].venue.VenueID
+                        _ = secondaryAlert.addButton("\(self.liveVenueIDOptions[1].event.EventName)") {
+                            self.chosenVenueIDGoLiveAt = self.liveVenueIDOptions[1].event.EventID
                             self.goLive()
                         }
                         
                     }
                     if (self.liveVenueIDOptions.count >= 3) {
-                        _ = secondaryAlert.addButton("\(self.liveVenueIDOptions[2].venue.VenueNickName)") {
-                            self.chosenVenueIDGoLiveAt = self.liveVenueIDOptions[2].venue.VenueID
+                        _ = secondaryAlert.addButton("\(self.liveVenueIDOptions[2].event.EventName)") {
+                            self.chosenVenueIDGoLiveAt = self.liveVenueIDOptions[2].event.EventID
                             self.goLive()
                         }
                     }
@@ -781,7 +782,7 @@
         func displayWrongTimePrompt() {
             
             let alert = SCLAlertView()
-            _ = alert.showInfo("Oops!", subTitle: "Looks like you're trying to go live, but it's not the right time. Try again when you're at a club between \(DateUtilities.getHourFromDouble(hourDouble: self.startGoingOutTime)) and \(DateUtilities.getHourFromDouble(hourDouble: self.endGoingOutTime))!")
+            _ = alert.showInfo("Oops!", subTitle: "Looks like you're trying to go live, but it's not the right time. Try again when you're at a club after the event starts!")
         }
         
         func displayAlreadyLivePrompt(venueName : String) {
@@ -967,8 +968,15 @@
             
             //Send notification if within critical radius
             let clubsAscending = distanceToClubsAscending(visitLocation: visitLocation)
-            let isValidTime = DateUtilities.isValidNightOutTime(startTime: self.startGoingOutTime, endTime: self.endGoingOutTime)
             
+            var isValidTime = false
+            for club in clubsAscending {
+                if(DateUtilities.isDuringEvent(eventStart: club.event.EventStart, eventEnd: club.event.EventEnd)) {
+                    isValidTime = true
+                    break
+                }
+            }
+
             // Handle displaying prompts if user's pressed go live and aren't doing so at the right time/place
             if(self.goLiveButtonPressed && clubsAscending.count == 0) {
                 self.displayWrongPlacePrompt()
@@ -981,7 +989,7 @@
                 if (clubsAscending.count != 0) {
                     if isValidTime {
                         liveVenueIDOptions = clubsAscending
-                        chosenVenueIDGoLiveAt = clubsAscending[0].venue.VenueID
+                        chosenVenueIDGoLiveAt = clubsAscending[0].event.EventID
                         showPopupIfActiveOrNotificationIfNot()
                     }
                 }
@@ -1099,11 +1107,12 @@
             
             var visitLocations = [VisitLocation]()
             
-            for venue in Array(self.venues.values) {
-                if let venueLocation = venue.VenueLocation {
-                    let distanceInMeters = visitLocation.distance(from: venueLocation)
+            for event in Array(self.activeEvents.values) {
+                let location : CLLocation? = CLLocation(latitude: event.Pin.coordinate.latitude, longitude: event.Pin.coordinate.longitude)
+                if let eventLocation = location {
+                    let distanceInMeters = visitLocation.distance(from: eventLocation)
                     if (distanceInMeters < Constants.CRITICAL_RADIUS) {
-                        visitLocations.append(VisitLocation(distAway: distanceInMeters, venue: venue))
+                        visitLocations.append(VisitLocation(distAway: distanceInMeters, event: event))
                     }
                 }
             }
@@ -1412,12 +1421,12 @@
     class VisitLocation: NSObject
     {
         var distAway: Double
-        var venue : Venue
+        var event : Event
         
-        init(distAway : Double, venue : Venue)
+        init(distAway : Double, event : Event)
         {
             self.distAway = distAway
-            self.venue = venue
+            self.event = event
         }
         
     }

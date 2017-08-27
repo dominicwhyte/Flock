@@ -41,6 +41,9 @@ target 'Flock' do
    pod 'SearchTextField'
    pod 'DateTimePicker'
    pod 'PickerController', '~> 0.1.0'
+   pod 'TTHorizontalPicker'
+   pod 'RAMPaperSwitch', '~> 2.0.3'
+   pod 'AIFlatSwitch', '~> 1.0.1'
   target 'FlockTests' do
     inherit! :search_paths
     # Pods for testing

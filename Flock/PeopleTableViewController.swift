@@ -96,6 +96,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
     var imageCache = [String : UIImage]()
     var userToPass : User?
     var flockSuggestionsAreHidden : Bool = false
+    var planCountDictionary = [String : Int]()
     
     override func viewDidLoad() {
         setupFacebookFlockRecommender()
@@ -121,6 +122,9 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         
         self.flockSuggestionsAreHidden = false
         
+        // Nav bar
+        self.navigationController?.navigationBar.tintColor = UIColor.white
+        self.navigationController?.navigationBar.barTintColor = FlockColors.FLOCK_BLUE
         
         //Refresh control
         refreshControl?.attributedTitle = NSAttributedString(string: "Pull to refresh")
@@ -224,7 +228,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
         var friendArrayArray : [[User]] = prepareArrays()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         friendArrayArray[Constants.FRIEND_REQUEST_INDEX] = Array(appDelegate.friendRequestUsers.values)
-        
+        var planCountDict = [String:Int]()
         // Makes array of friends in sections
         for friend in Array(appDelegate.friends.values) {
             if(friend.LiveClubID == nil && friend.Plans.count == 0) {
@@ -234,13 +238,20 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
                     friendArrayArray[Constants.LIVE_FRIENDS_INDEX].append(friend)
                 }
                 else if(friend.Plans.count > 0) {
+                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                    let activeEvents = appDelegate.activeEvents
                     
-                    for (visitID, plan) in friend.Plans {
-                        if(!DateUtilities.isValidTimeFrame(dayDiff: DateUtilities.daysUntilPlan(planDate: plan.date))) {
-                            friend.Plans[visitID] = nil
+                    var planCount = 0
+                    for (visitID, _) in friend.Plans {
+                        if let event = activeEvents[visitID] {
+                            if(DateUtilities.dateIsValidEventTimeFrame(eventStart: event.EventStart, eventEnd: event.EventEnd)) {
+                                planCount += 1
+                            }
                         }
                     }
-                    if(friend.Plans.count > 0) {
+                    
+                    planCountDict[friend.FBID] = planCount
+                    if(planCount > 0) {
                         friendArrayArray[Constants.PLANNED_FRIENDS_INDEX].append(friend)
                     } else {
                         friendArrayArray[Constants.REMAINING_FRIENDS_INDEX].append(friend)
@@ -248,6 +259,8 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
                 }
             }
         }
+        self.planCountDictionary = planCountDict
+        appDelegate.friendPlanCountDict = planCountDict
         
         // Sorting
         friendArrayArray[Constants.FRIEND_REQUEST_INDEX].sort { (user1, user2) -> Bool in
@@ -430,7 +443,7 @@ class PeopleTableViewController: UITableViewController, UpdateTableViewDelegate,
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.REUSE_IDENTIFIERS[indexPath.section], for: indexPath) as! PlannedTableViewCell
             cell.friendName.text = friend.Name
             self.retrieveImage(imageURL: friend.PictureURL, venueID: nil, imageView: cell.profilePic!)
-            let plansCount = friend.Plans.values.count
+            let plansCount = self.planCountDictionary[friend.FBID]!
             cell.subtitleLabel.text = Utilities.setPlurality(string: "\(plansCount) plan", count: plansCount)
             
             cell.setupCell(plans: Array(friend.Plans.values))
