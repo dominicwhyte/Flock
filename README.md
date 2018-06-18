@@ -4,6 +4,7 @@ Flock is an iOS application geared towards Princeton events, which reached 300+ 
 
 Presentation: [Slides](https://docs.google.com/presentation/d/1Yr8paciHRXpDfbUnhOwHhOjJJm4oee4_s6Y0TUCyj6Y/edit#slide=id.g1f40554bc0_0_486)
 App: [iOS](https://itunes.apple.com/us/app/flock-find-your-flock/id1211976124?mt=8)
+Video: [Link](https://vimeo.com/215598257)
 
 ![Alt text](https://github.com/dominicwhyte/Flock/blob/master/Screenshots/Screens.png "Optional title")
 
