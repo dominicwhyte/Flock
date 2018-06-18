@@ -1,3 +1,3 @@
 # Flock
 
-![Alt text](/Screenshots/screens.png?raw=true "Optional Title")
+![Alt text](https://github.com/dominicwhyte/Flock/blob/master/Screenshots/Screens.png "Optional title")
